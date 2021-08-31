@@ -1,0 +1,13 @@
+site_name: earthdata
+site_description: Client library for NASA APIs
+site_url: https://github.com/betolink/earthdata
+
+theme:
+    name: 'material'
+
+repo_name: betolink/earthdata
+repo_url: https://github.com/betolink/earthdata
+edit_uri: ''
+
+nav:
+    - earthdata: 'index.md'

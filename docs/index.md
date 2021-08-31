@@ -1,5 +1,4 @@
 # earthdata
-### A NASA CMR/EDL client library
 
 <p align="center">
     <em>A summary phrase to catch attention!</em>
@@ -12,9 +11,6 @@
 <a href="https://github.com/betolink/earthdata/actions?query=workflow%3APublish" target="_blank">
     <img src="https://github.com/betolink/earthdata/workflows/Publish/badge.svg" alt="Publish">
 </a>
-<a href="https://dependabot.com/" target="_blank">
-    <img src="https://flat.badgen.net/dependabot/betolink/earthdata?icon=dependabot" alt="Dependabot Enabled">
-</a>
 <a href="https://codecov.io/gh/betolink/earthdata" target="_blank">
     <img src="https://img.shields.io/codecov/c/github/betolink/earthdata?color=%2334D058" alt="Coverage">
 </a>
@@ -24,10 +20,6 @@
 <a href="https://pypi.org/project/earthdata/" target="_blank">
     <img src="https://img.shields.io/pypi/pyversions/earthdata.svg" alt="Python Versions">
 </a>
-
-
-## Overview
-
 
 ## Installing earthdata
 
@@ -54,25 +46,12 @@ poetry install
 ## Example Usage
 
 ```python
-from earthdata import auth, search
-
-auth.login('user', 'password')
-
-collections = search.collections(params)
-collections
-
-granules = search.granules(params)
-granules
-
-granules.size() # total size of the granules
-granules.data_links() # -> you can now pass this to xarray
-granules.download(10, './data') # will download 10 granules
+import earthdata
 
 # do stuff
 ```
 
 Only **Python 3.6+** is supported as required by the black, pydantic packages
-
 
 ## Contributing Guide
 
