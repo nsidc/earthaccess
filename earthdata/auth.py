@@ -1,12 +1,11 @@
 from copy import deepcopy
 from typing import Any, Dict
 
-from pydantic import BaseModel
 from requests import exceptions, session
 from requests.auth import HTTPBasicAuth
 
 
-class Auth(BaseModel):
+class Auth(object):
     """
     some data
     """
@@ -50,7 +49,7 @@ class Auth(BaseModel):
 
     def get_s3_credentials(
         self, auth_url="https://data.nsidc.earthdatacloud.nasa.gov/s3credentials"
-    ) -> Dict(str, str):
+    ) -> Dict[str, str]:
 
         cumulus_resp = self.session.get(auth_url, timeout=10, allow_redirects=True)
         auth_resp = self.session.get(
