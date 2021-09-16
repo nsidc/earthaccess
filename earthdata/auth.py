@@ -1,18 +1,24 @@
 from copy import deepcopy
-from typing import Any, Dict
+from getpass import getpass
+from typing import Any, Dict, Union
 
-from requests import exceptions, session
+from requests import session
 from requests.auth import HTTPBasicAuth
 
 
 class Auth(object):
     """
-    some data
+    Auth object for EDL operations
     """
 
-    def __init__(self, username: str, password: str):
+    def __init__(self) -> None:
         EDL_TOKEN_URL = "https://cmr.earthdata.nasa.gov/legacy-services/rest/tokens"
+        # TODO: This token will be deprecated soon, we need to reimplement bearer token.
+        # EDL_BEARER_TOKEN_URL = "https://urs.earthdata.nasa.gov/generate_token"
         self.session = session()
+
+        username = input("Enter your Earthdata Login username: ")
+        password = getpass(prompt="Enter your Earthdata password: ")
 
         if username is not None and password is not None:
             _TOKEN_DATA = (
@@ -42,14 +48,15 @@ class Auth(object):
                     f"Authentication with Earthdata Login failed with:\n{auth_resp.text}"
                 )
                 return None
+            print("You're now authenticated with NASA Earthdata Login")
             self.token = auth_resp.json()["token"]["id"]
 
-    def get_session(self) -> session:
+    def get_session(self) -> Any:
         return deepcopy(self.session)
 
     def get_s3_credentials(
-        self, auth_url="https://data.nsidc.earthdatacloud.nasa.gov/s3credentials"
-    ) -> Dict[str, str]:
+        self, auth_url: str = "https://data.nsidc.earthdatacloud.nasa.gov/s3credentials"
+    ) -> Union[Dict[str, str], None]:
 
         cumulus_resp = self.session.get(auth_url, timeout=10, allow_redirects=True)
         auth_resp = self.session.get(

@@ -11,6 +11,7 @@ python = "^3.6.2"
 pydantic = "^1.5.1"
 requests = "^2.26.0"
 python-cmr = {git = "https://github.com/nsidc/python-cmr", rev = "main"}
+rich = "^10.9.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.782"
