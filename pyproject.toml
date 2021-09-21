@@ -9,8 +9,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.7"
 pydantic = "^1.5.1"
-python-cmr = {git = "https://github.com/nsidc/python-cmr", rev = "main"}
 python-benedict = "^0.24.2"
+python-cmr = "^0.4.1"
 requests = "^2.26.0"
 s3fs = "^2021.8.1"
 

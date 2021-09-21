@@ -1395,20 +1395,13 @@ xmltodict = "*"
 [[package]]
 name = "python-cmr"
 version = "0.4.1"
-description = ""
+description = "Python wrapper to the NASA Common Metadata Repository (CMR) API."
 category = "main"
 optional = false
 python-versions = "*"
-develop = false
 
 [package.dependencies]
 requests = "*"
-
-[package.source]
-type = "git"
-url = "https://github.com/nsidc/python-cmr"
-reference = "main"
-resolved_reference = "2e306146fec5d96205be2f4683bb49ba6ebdab0d"
 
 [[package]]
 name = "python-dateutil"
@@ -1839,7 +1832,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "5cdb04c16e0869d286edbdeff98381e1759dc9c2cb1e184ce99a9c991e7f2d52"
+content-hash = "ed8479dbd4e599fc5a769461045ae34e8c23ff701385f95b5d13d24189ae8f68"
 
 [metadata.files]
 aiobotocore = [
@@ -2607,7 +2600,10 @@ python-benedict = [
     {file = "python-benedict-0.24.2.tar.gz", hash = "sha256:7c19aea66d864204f9d190381f0bedb043e5a087826fcfd5fc09ee6f53a6cf3d"},
     {file = "python_benedict-0.24.2-py3-none-any.whl", hash = "sha256:bca095b5a97069f308a749502a06db07ce72a3a8d464f0200d42a519e624e932"},
 ]
-python-cmr = []
+python-cmr = [
+    {file = "python-cmr-0.4.1.tar.gz", hash = "sha256:baa09f08fa3e09216ed9f3ac1e223ac020b5097d94e9f1f3e9acfdee3f871a40"},
+    {file = "python_cmr-0.4.1-py3-none-any.whl", hash = "sha256:ba5ebce5c2f9d49a607c141614e90d2a583c5da115ffccd02ca79536a772c306"},
+]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
