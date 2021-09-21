@@ -15,9 +15,6 @@
 <a href="https://dependabot.com/" target="_blank">
     <img src="https://flat.badgen.net/dependabot/betolink/earthdata?icon=dependabot" alt="Dependabot Enabled">
 </a>
-<a href="https://codecov.io/gh/betolink/earthdata" target="_blank">
-    <img src="https://img.shields.io/codecov/c/github/betolink/earthdata?color=%2334D058" alt="Coverage">
-</a>
 <a href="https://pypi.org/project/earthdata" target="_blank">
     <img src="https://img.shields.io/pypi/v/earthdata?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
@@ -27,6 +24,8 @@
 
 
 ## Overview
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/betolink/earthdata/main)
 
 
 ## Installing earthdata
@@ -47,6 +46,10 @@ pip install --user poetry
 # install all dependencies (including dev)
 poetry install
 
+# test
+
+poetry run pytest
+
 # develop!
 
 ```
@@ -54,24 +57,35 @@ poetry install
 ## Example Usage
 
 ```python
-from earthdata import auth, search
+from earthdata import Auth, DataGranules, DataCollections, Accessor
 
-auth.login('user', 'password')
+auth = Auth() # if we want to access NASA DATA in the cloud
 
-collections = search.collections(params)
+collections = DataCollections(auth).keyword('MODIS').get(10)
 collections
 
-granules = search.granules(params)
+granules = DataGranules(auth).concept_id('C1711961296-LPCLOUD').bounding_box(-10,20,10,50).get(5)
 granules
 
-granules.size() # total size of the granules
-granules.data_links() # -> you can now pass this to xarray
-granules.download(10, './data') # will download 10 granules
+# We provide some convenience functions for each result
+data_links = [granule.data_links() for granule in granules]
+data_links
 
-# do stuff
+# The Acessor class allows to get the granules from on-prem locations with get()
+# if you're in a AWS instance (us-west-2) you can use open() to get a fileset!
+# NOTE: Some datasets require users to accept a Licence Agreement before accessing them
+access = Accessor(auth)
+
+# This works with both, on-prem or cloud based collections**
+access.get(granules[0:10], './data')
+
+# If we are running in us-west-2 we can use open !!
+fileset = accessor.open(granules[0:10])
+
+xarray.open_mfdataset(fileset, combine='by_coords')
 ```
 
-Only **Python 3.6+** is supported as required by the black, pydantic packages
+Only **Python 3.7+** is supported as required by the black, pydantic packages
 
 
 ## Contributing Guide

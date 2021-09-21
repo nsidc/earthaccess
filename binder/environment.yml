@@ -1,0 +1,19 @@
+name: earthdata-notebook
+channels:
+- conda-forge
+dependencies:
+- python=3.8
+- jupyterlab=3
+- xarray>=0.19
+- rioxarray>=0.3
+- matplotlib-base>=3.3
+- cartopy>=0.18.0
+- ipyleaflet>=0.13
+- netcdf4>=1.5
+- h5netcdf>=0.11
+- h5py>=3.2
+- geopandas>=0.9
+- pip
+- pip:
+    - pqdm
+    - earthdata

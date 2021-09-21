@@ -51,7 +51,7 @@ import earthdata
 # do stuff
 ```
 
-Only **Python 3.6+** is supported as required by the black, pydantic packages
+Only **Python 3.7+** is supported as required by the black, pydantic packages
 
 ## Contributing Guide
 
