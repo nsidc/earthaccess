@@ -12,12 +12,27 @@ from .results import DataCollection, DataGranule
 class DataCollections(CollectionQuery):
     _fields = None
     _format = "umm_json"
+    _valid_formats_regex = [
+        "json",
+        "xml",
+        "echo10",
+        "iso",
+        "iso19115",
+        "csv",
+        "atom",
+        "kml",
+        "native",
+        "umm_json",
+    ]
 
     def __init__(self, auth: Type[Auth] = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._auth = auth
         if auth is not None:
+            self.session = self.auth._get_session()
             self.params["token"] = auth.token
+        else:
+            self.session = session()
         self.params["has_granules"] = True
         self.params["include_granule_counts"] = True
 
@@ -114,6 +129,9 @@ class DataGranules(GranuleQuery):
         self._auth = auth
         if auth is not None:
             self.params["token"] = auth.token
+            self.session = self.auth._get_session()
+        else:
+            self.session = session()
 
     def _valid_state(self) -> bool:
 

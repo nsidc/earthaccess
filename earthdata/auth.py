@@ -1,5 +1,4 @@
 import getpass
-from copy import deepcopy
 from typing import Any, Dict, Union
 
 from requests import session
@@ -57,7 +56,7 @@ class Auth(object):
             self.token = auth_resp.json()["token"]["id"]
 
     def _get_session(self) -> Any:
-        return deepcopy(self.session)
+        return self.session
 
     def _get_cloud_auth_url(self, cloud_provider: str = "") -> str:
         for provider in DAACS:
