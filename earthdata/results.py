@@ -2,15 +2,23 @@ import json
 import uuid
 from typing import Any, Dict, List
 
-from IPython.display import HTML, display
+from benedict import benedict
+
+from .formatters import _repr_granule_html
 
 
-class CustomDict(dict):
+class CustomDict(benedict):
     _basic_umm_fields_: List = []
     _basic_meta_fields_: List = []
 
-    def __init__(self, collection: Dict[str, Any], fields: List[str] = None):
+    def __init__(
+        self,
+        collection: Dict[str, Any],
+        fields: List[str] = None,
+        cloud_hosted: bool = False,
+    ):
         super().__init__(collection)
+        self.cloud_hosted = cloud_hosted
         self.uuid = str(uuid.uuid4())
         if fields is None:
             self.render_dict = self._filter_fields_(self._basic_umm_fields_)
@@ -21,14 +29,18 @@ class CustomDict(dict):
 
     def _filter_fields_(self, fields: List[str]) -> Dict[str, Any]:
 
-        filtered_dict = dict(
-            (field, self["umm"][field]) for field in fields if field in self["umm"]
-        )
-        basic_dict = dict(
-            (field, self["meta"][field])
-            for field in self._basic_meta_fields_
-            if field in self["meta"]
-        )
+        filtered_dict = {
+            "umm": dict(
+                (field, self["umm"][field]) for field in fields if field in self["umm"]
+            )
+        }
+        basic_dict = {
+            "meta": dict(
+                (field, self["meta"][field])
+                for field in self._basic_meta_fields_
+                if field in self["meta"]
+            )
+        }
         basic_dict.update(filtered_dict)
         return basic_dict
 
@@ -67,33 +79,22 @@ class DataCollection(CustomDict):
     def concept_id(self) -> str:
         return self["meta"]["concept-id"]
 
+    def abstract(self) -> str:
+        return self["umm"]["Abstract"]
+
     def landing_page(self) -> str:
         links = self._filter_related_links("LANDING PAGE")
-        return links[0]
+        if len(links) > 0:
+            return links[0]
+        return ""
+
+    def get_data(self) -> List[str]:
+        links = self._filter_related_links("GET DATA")
+        return links
 
     def __repr__(self) -> str:
         return json.dumps(
             self.render_dict, sort_keys=False, indent=2, separators=(",", ": ")
-        )
-
-    def _ipython_display_(self) -> None:
-        display(
-            HTML(
-                '<div id="{}" style="height: auto; width:100%;"></div>'.format(
-                    self.uuid
-                )
-            )
-        )
-        display(
-            HTML(
-                """<script>
-        require(["https://rawgit.com/caldwell/renderjson/master/renderjson.js"], function() {
-          renderjson.set_show_to_level(1)
-          document.getElementById('%s').appendChild(renderjson(%s))
-        });</script>
-        """
-                % (self.uuid, json.dumps(self.render_dict))
-            )
         )
 
 
@@ -135,29 +136,8 @@ class DataGranule(CustomDict):
         """
         Returns a rich representation for a data granule.
         """
-        dataviz_img = "".join(
-            [
-                f'<img src="{link}" width="240px" />'
-                for link in self.dataviz_links()[0:2]
-            ]
-        )
-        data_links = "".join(
-            [
-                f'<a href="{link}" target="_blank">{link}</a><BR>'
-                for link in self.data_links()
-            ]
-        )
-        granule_str = f"""
-        <p>
-          <b>Collection</b>: {self['umm']['CollectionReference']}<BR>
-          <b>Spatial coverage</b>: {self['umm']['SpatialExtent']}<BR>
-          <b>Temporal coverage</b>: {self['umm']['TemporalExtent']}<BR>
-          <b>Size(MB):</b> {self.size()} <BR>
-          <b>Data</b>: {data_links}<BR>
-          <span>{dataviz_img}</span>
-        </p>
-        """
-        return granule_str
+        granule_html_repr = _repr_granule_html(self)
+        return granule_html_repr
 
     def size(self) -> float:
         """
@@ -171,11 +151,19 @@ class DataGranule(CustomDict):
         )
         return total_size
 
-    def data_links(self, only_s3: bool = False) -> List[str]:
+    def _derive_s3_link(self, links: List[str]) -> str:
+        if len(links) > 0 and links[0].startswith("s3"):
+            return links[0]
+        elif (
+            len(links) > 0 and links[0].startswith("https://") and "cumulus" in links[0]
+        ):
+            return f's3://{links[0].split("nasa.gov/")[1]}'
+        return ""
+
+    def data_links(self) -> List[str]:
         links = self._filter_related_links("GET DATA")
-        s3_links = [link for link in links if link.startswith("s3")]
-        if only_s3 is True:
-            return s3_links
+        if self.cloud_hosted:
+            return [self._derive_s3_link(links)]
         return links
 
     def dataviz_links(self) -> List[str]:

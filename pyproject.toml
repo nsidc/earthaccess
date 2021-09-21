@@ -7,11 +7,12 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 pydantic = "^1.5.1"
-requests = "^2.26.0"
 python-cmr = {git = "https://github.com/nsidc/python-cmr", rev = "main"}
-rich = "^10.9.0"
+python-benedict = "^0.24.2"
+requests = "^2.26.0"
+s3fs = "^2021.8.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.782"
@@ -28,6 +29,10 @@ mkdocs = "^1.1"
 mkdocs-material = "^6.0.1"
 markdown-include = "^0.6.0"
 jupyterlab = "^3.1.10"
+s3fs = "^2021.8.1"
+xarray = "^0.19.0"
+ipyleaflet = "^0.14.0"
+responses = "^0.14.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
