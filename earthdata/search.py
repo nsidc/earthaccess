@@ -25,7 +25,7 @@ class DataCollections(CollectionQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Any, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         if auth is not None:
             self.session = auth._get_session()
@@ -123,7 +123,7 @@ class DataGranules(GranuleQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Any, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         if auth is not None:
             self.params["token"] = auth.token
@@ -183,14 +183,17 @@ class DataGranules(GranuleQuery):
                 latest = response.json()["feed"]["entry"]
             elif self._format == "umm_json":
                 json_response = response.json()["items"]
-                if self._is_cloud_hosted(json_response[0]):
-                    cloud = True
+                if len(json_response) > 0:
+                    if self._is_cloud_hosted(json_response[0]):
+                        cloud = True
+                    else:
+                        cloud = False
+                    latest = list(
+                        DataGranule(granule, cloud_hosted=cloud)
+                        for granule in response.json()["items"]
+                    )
                 else:
-                    cloud = False
-                latest = list(
-                    DataGranule(granule, cloud_hosted=cloud)
-                    for granule in response.json()["items"]
-                )
+                    latest = []
             else:
                 latest = [response.text]
 

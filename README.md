@@ -1,8 +1,7 @@
-# earthdata
-### A NASA CMR/EDL client library
+# earthdata 🌍
 
 <p align="center">
-    <em>A summary phrase to catch attention!</em>
+    <em>Client library for NASA CMR and EDL APIs</em>
 </p>
 
 <p align="center">
@@ -24,6 +23,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/betolink/earthdata/main)
 
+A Python library to search and access NASA datasets.
 
 ## Installing earthdata
 
