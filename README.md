@@ -12,9 +12,6 @@
 <a href="https://github.com/betolink/earthdata/actions?query=workflow%3APublish" target="_blank">
     <img src="https://github.com/betolink/earthdata/workflows/Publish/badge.svg" alt="Publish">
 </a>
-<a href="https://dependabot.com/" target="_blank">
-    <img src="https://flat.badgen.net/dependabot/betolink/earthdata?icon=dependabot" alt="Dependabot Enabled">
-</a>
 <a href="https://pypi.org/project/earthdata" target="_blank">
     <img src="https://img.shields.io/pypi/v/earthdata?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
