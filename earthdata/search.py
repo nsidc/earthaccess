@@ -1,10 +1,10 @@
+import datetime
 from typing import Any, List, Type
 
+import dateparser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
-from IPython.display import display
 from requests import exceptions, session
 
-from .auth import Auth
 from .daac import CLOUD_PROVIDERS
 from .results import DataCollection, DataGranule
 
@@ -96,11 +96,24 @@ class DataCollections(CollectionQuery):
             results.extend(latest)
             page += 1
 
-        if show > 20:
-            show = 20
-        [display(collection) for collection in results[0:show]]
-
         return results
+
+    def temporal(
+        self, date_from: str, date_to: str, exclude_boundary: bool = False
+    ) -> Type[CollectionQuery]:
+        """
+        Filter by an open or closed date range.
+        Dates can be provided as a datetime objects or ISO 8601 formatted strings. Multiple
+        ranges can be provided by successive calls to this method before calling execute().
+        :param date_from: earliest date of temporal range
+        :param date_to: latest date of temporal range
+        :param exclude_boundary: whether or not to exclude the date_from/to in the matched range
+        :returns: GranueQuery instance
+        """
+        parsed_from = dateparser.parse(date_from)
+        parsed_to = dateparser.parse(date_to)
+        super().temporal(parsed_from, parsed_to, exclude_boundary)
+        return self
 
 
 class DataGranules(GranuleQuery):
@@ -143,12 +156,6 @@ class DataGranules(GranuleQuery):
 
         # all good then
         return True
-
-    def display(self, limit: int = 20) -> list:
-        """"""
-        granules = self.get(limit)
-        [display(granule) for granule in granules]
-        return granules
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
         if granule["meta"]["provider-id"] in CLOUD_PROVIDERS:
@@ -204,3 +211,20 @@ class DataGranules(GranuleQuery):
             page += 1
 
         return results
+
+    def temporal(
+        self, date_from: str, date_to: str, exclude_boundary: bool = False
+    ) -> Type[GranuleQuery]:
+        """
+        Filter by an open or closed date range.
+        Dates can be provided as a datetime objects or ISO 8601 formatted strings. Multiple
+        ranges can be provided by successive calls to this method before calling execute().
+        :param date_from: earliest date of temporal range
+        :param date_to: latest date of temporal range
+        :param exclude_boundary: whether or not to exclude the date_from/to in the matched range
+        :returns: GranueQuery instance
+        """
+        parsed_from = dateparser.parse(date_from)
+        parsed_to = dateparser.parse(date_to)
+        super().temporal(parsed_from, parsed_to, exclude_boundary)
+        return self

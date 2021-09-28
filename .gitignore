@@ -18,3 +18,5 @@ build/
 
 # OS X
 .DS_Store
+
+notebooks/data/

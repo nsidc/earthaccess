@@ -13,6 +13,8 @@ python-benedict = "^0.24.2"
 python-cmr = "^0.4.1"
 requests = "^2.26.0"
 s3fs = "^2021.8.1"
+dateparser = "^1.0.0"
+pqdm = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.782"
@@ -33,6 +35,7 @@ s3fs = "^2021.8.1"
 xarray = "^0.19.0"
 ipyleaflet = "^0.14.0"
 responses = "^0.14.0"
+dask = "^2021.9.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
