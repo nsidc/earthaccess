@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthdata"
-version = "0.1.1-alpha.2"
+version = "0.1.1-alpha.3"
 description = "Client library for NASA Earthdata APIs"
 authors = ["Luis Lopez <betolin@gmail.com>"]
 license = "MIT"
