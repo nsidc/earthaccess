@@ -3,6 +3,7 @@ from typing import Any, Dict, Union
 
 from requests import session
 from requests.auth import HTTPBasicAuth
+from requests.exceptions import ConnectionError, Timeout
 
 from .daac import DAACS
 
@@ -31,7 +32,12 @@ class Auth(object):
                 "<user_ip_address>%s</user_ip_address>"
                 "</token>"
             )
-            my_ip = self.session.get("https://ipinfo.io/ip").text.strip()
+            # If the real external IP is not available using ip info we default to localhost
+            my_ip = "127.0.0.1"
+            try:
+                my_ip = self.session.get("https://ipinfo.io/ip").text.strip()
+            except (ConnectionError, Timeout):
+                pass
             self.auth = HTTPBasicAuth(username, password)
             # This token is valid for up to 3 months after is issued.
             # It's used to make authenticated calls to CMR to get back private collections

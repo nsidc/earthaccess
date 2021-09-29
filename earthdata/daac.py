@@ -1,3 +1,4 @@
+# DAACS ~= NASA Earthdata data centers
 DAACS = [
     {
         "short-name": "NSIDC",
