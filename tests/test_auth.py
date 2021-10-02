@@ -20,19 +20,14 @@ class TestCreateAuth(unittest.TestCase):
     def test_create_auth_proper_credentials(self, user_input, user_password) -> bool:
         user_input.return_value = "valid-user"
         user_password.return_value = "valid-password"
-        responses.add(
-            responses.POST,
-            "https://cmr.earthdata.nasa.gov/legacy-services/rest/tokens",
-            json={"token": {"id": "valid-token"}},
-            status=200,
-        )
+        json_response = {"token": {"id": "valid-token"}}
         responses.add(
             responses.GET,
-            "https://ipinfo.io/ip",
-            body="120.0.0.1",
+            "https://urs.earthdata.nasa.gov/api/users/tokens",
+            json=json_response,
             status=200,
         )
         # Test
         auth = Auth()
         self.assertEqual(auth.authenticated, True)
-        self.assertEqual(auth.token, "valid-token")
+        self.assertEqual(auth.token, json_response)

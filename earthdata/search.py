@@ -26,6 +26,11 @@ class DataCollections(CollectionQuery):
     ]
 
     def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
+        """
+        The DataCollection class queries against https://cmr.earthdata.nasa.gov/search/collections.umm_json
+        by default, the response has to be in umm_json in order to use the result classes.
+        :param auth: an Auth class instance in case we want to query protected collections
+        """
         super().__init__(*args, **kwargs)
         if auth is not None:
             self.session = auth._get_session()
@@ -59,10 +64,10 @@ class DataCollections(CollectionQuery):
         self.params["provider"] = provider
         return self
 
-    def get(self, limit: int = 2000, show: int = 0) -> list:
+    def get(self, limit: int = 2000) -> list:
         """
         Get all results up to some limit, even if spanning multiple pages.
-        :limit: The number of results to return
+        :param limit: The number of results to return
         :returns: query results as a list
         """
 
