@@ -32,11 +32,12 @@ class DataCollections(CollectionQuery):
         :param auth: an Auth class instance in case we want to query protected collections
         """
         super().__init__(*args, **kwargs)
-        if auth is not None:
-            self.session = auth._get_session()
-            self.params["token"] = auth.token
+        if auth is not None and auth.authenticated:
+            # To search we need the new bearer tokens from NASA Earthdata
+            self.session = auth.get_session(bearer_token=True)
         else:
             self.session = session()
+
         self.params["has_granules"] = True
         self.params["include_granule_counts"] = True
 
@@ -142,10 +143,11 @@ class DataGranules(GranuleQuery):
     ]
 
     def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
+        """"""
         super().__init__(*args, **kwargs)
-        if auth is not None:
-            self.params["token"] = auth.token
-            self.session = auth._get_session()
+        if auth is not None and auth.authenticated:
+            # To search we need the new bearer tokens from NASA Earthdata
+            self.session = auth.get_session(bearer_token=True)
         else:
             self.session = session()
 

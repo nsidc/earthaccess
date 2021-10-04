@@ -35,7 +35,7 @@ def _repr_granule_html(granule: Any) -> str:
     )
     data_links = "".join(
         [
-            f'<a href="{link}" target="_blank" class="btn btn-secondary btn-sm">link</a>'
+            f'<a href="{link}" target="_blank" class="btn btn-secondary btn-sm">{link}</a>'
             for link in granule.data_links()
         ]
     )

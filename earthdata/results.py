@@ -116,6 +116,24 @@ class DataGranule(CustomDict):
         "DataGranule",
     ]
 
+    def __init__(
+        self,
+        collection: Dict[str, Any],
+        fields: List[str] = None,
+        cloud_hosted: bool = False,
+    ):
+        super().__init__(collection)
+        self.cloud_hosted = cloud_hosted
+        # TODO: maybe add area, start date and all that as an instance value
+        self["size"] = self.size()
+        self.uuid = str(uuid.uuid4())
+        if fields is None:
+            self.render_dict = self._filter_fields_(self._basic_umm_fields_)
+        elif fields[0] == "*":
+            self.render_dict = self
+        else:
+            self.render_dict = self._filter_fields_(fields)
+
     def __repr__(self) -> str:
         """
         returns a basic representation of a data granule
@@ -155,7 +173,9 @@ class DataGranule(CustomDict):
         if len(links) > 0 and links[0].startswith("s3"):
             return links[0]
         elif (
-            len(links) > 0 and links[0].startswith("https://") and "cumulus" in links[0]
+            len(links) > 0
+            and links[0].startswith("https://")
+            and ("cumulus" in links[0] or "protected" in links[0])
         ):
             return f's3://{links[0].split("nasa.gov/")[1]}'
         return ""

@@ -23,7 +23,10 @@ class Accessor(object):
         return False
 
     def __init__(self, auth: Any) -> None:
-        self.auth = auth
+        if auth.authenticated is True:
+            self.auth = auth
+        else:
+            self.auth = None
 
     def _get_s3_filesystem(self, provider: str) -> Any:
         """
@@ -31,13 +34,19 @@ class Accessor(object):
         :param provider: any of the DAAC cloud providers e.g. POCLOUD
         :returns: a new s3fs instance
         """
-        s3_credentials = self.auth.get_s3_credentials(provider)
-        s3_fs = s3fs.S3FileSystem(
-            key=s3_credentials["accessKeyId"],
-            secret=s3_credentials["secretAccessKey"],
-            token=s3_credentials["sessionToken"],
-        )
-        return s3_fs
+        if self.auth is not None:
+            s3_credentials = self.auth.get_s3_credentials(provider)
+            s3_fs = s3fs.S3FileSystem(
+                key=s3_credentials["accessKeyId"],
+                secret=s3_credentials["secretAccessKey"],
+                token=s3_credentials["sessionToken"],
+            )
+            return s3_fs
+        else:
+            print(
+                "A valid Earthdata login instance is required to retrieve S3 credentials"
+            )
+            return None
 
     def open(self, granules: List[Any]) -> List[Any]:
         """
@@ -46,7 +55,14 @@ class Accessor(object):
         :param granules: a list of granules(DataGranule) instances
         :returns: a list of s3fs "file pointers" to s3 files
         """
+        if self.auth is None:
+            print(
+                "A valid Earthdata login instance is required to retrieve S3 credentials"
+            )
+            return []
+
         if not (len(granules) > 0 and isinstance(granules[0], DataGranule)):
+            print("To open a dataset a valid list of DataGranule instances is needed")
             return []
         provider = granules[0]["meta"]["provider-id"]
         cloud_hosted = granules[0].cloud_hosted
@@ -112,6 +128,7 @@ class Accessor(object):
                 with session.get(url, stream=True) as r:
                     r.raise_for_status()
                     with open(f"{directory}/{local_filename}", "wb") as f:
+                        # This is to cap memory usage for large files at 1MB per write to disk per thread
                         # https://docs.python-requests.org/en/master/user/quickstart/#raw-response-content
                         shutil.copyfileobj(r.raw, f, length=1024 * 1024)
             except Exception:
