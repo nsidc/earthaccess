@@ -1486,7 +1486,7 @@ watchdog = ">=0.6.0"
 
 [[package]]
 name = "python-benedict"
-version = "0.24.2"
+version = "0.24.3"
 description = "python-benedict is a dict subclass with keylist/keypath support, normalized I/O operations (base64, csv, ini, json, pickle, plist, query-string, toml, xml, yaml) and many utilities... for humans, obviously."
 category = "main"
 optional = false
@@ -2804,8 +2804,8 @@ pytest-watch = [
     {file = "pytest-watch-4.2.0.tar.gz", hash = "sha256:06136f03d5b361718b8d0d234042f7b2f203910d8568f63df2f866b547b3d4b9"},
 ]
 python-benedict = [
-    {file = "python-benedict-0.24.2.tar.gz", hash = "sha256:7c19aea66d864204f9d190381f0bedb043e5a087826fcfd5fc09ee6f53a6cf3d"},
-    {file = "python_benedict-0.24.2-py3-none-any.whl", hash = "sha256:bca095b5a97069f308a749502a06db07ce72a3a8d464f0200d42a519e624e932"},
+    {file = "python-benedict-0.24.3.tar.gz", hash = "sha256:f9d7b41cbe7fe79b3df0c12285eacf297a157fa7b5d9da461132908ab13c390f"},
+    {file = "python_benedict-0.24.3-py3-none-any.whl", hash = "sha256:408bd271ce2b83ca030283285a6fe7c987b9b67a469cf2b731417245e93cd2db"},
 ]
 python-cmr = [
     {file = "python-cmr-0.4.1.tar.gz", hash = "sha256:baa09f08fa3e09216ed9f3ac1e223ac020b5097d94e9f1f3e9acfdee3f871a40"},
