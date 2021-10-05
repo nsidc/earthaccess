@@ -5,7 +5,7 @@ from uuid import uuid4
 
 import pkg_resources
 
-STATIC_FILES = ["css/pure-min.css"]
+STATIC_FILES = ["css/iso_bootstrap4.0.0min.css", "css/styles.css"]
 
 
 @lru_cache(None)
@@ -27,32 +27,35 @@ def _repr_granule_html(granule: Any) -> str:
             {''.join([f"<style>{style}</style>" for style in css_styles])}
             </div>"""
     style = "max-height: 120px;"
-    class_img = "pure-img pure-u-1-2"
     dataviz_img = "".join(
         [
-            f'<a href="{link}"><img style="{style}" class="{class_img}" src="{link}" alt="Data Preview"/></a>'
+            f'<a href="{link}"><img style="{style}" src="{link}" alt="Data Preview"/></a>'
             for link in granule.dataviz_links()[0:2]
         ]
     )
     data_links = "".join(
         [
-            f'<button class="pure-button-sm"><a href="{link}" target="_blank">link</a></button>'
+            f'<a href="{link}" target="_blank" class="btn btn-secondary btn-sm">{link}</a>'
             for link in granule.data_links()
         ]
     )
     granule_size = granule.size()
     # TODO: probably this needs to be integrated on a list data structure
     granule_str = f"""
-      {css_inline}
-      <div class="pure-g">
-          <div class="pure-u-2-3">
+    {css_inline}
+    <div class="bootstrap">
+      <div class="container-fluid border">
+        <div class="row border w-100">
+          <div class="col-6">
             <p><b>Data</b>: {data_links}<p/>
             <p><b>Size</b>: {granule_size} MB</p>
-            <p><b>Spatial</b>: <span class="pure-u sm">{granule["umm.SpatialExtent"]}</span></p>
+            <p><b>Spatial</b>: <span>{granule["umm.SpatialExtent"]}</span></p>
           </div>
-          <div class="pure-u-1-3">
+          <div class="col-2 pull-right">
             {dataviz_img}
           </div>
+        </div>
       </div>
+    </div>
     """
     return granule_str
