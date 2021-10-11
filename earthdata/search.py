@@ -116,8 +116,12 @@ class DataCollections(CollectionQuery):
         :param exclude_boundary: whether or not to exclude the date_from/to in the matched range
         :returns: GranueQuery instance
         """
-        parsed_from = dateparser.parse(date_from)
-        parsed_to = dateparser.parse(date_to)
+        parsed_from = dateparser.parse(
+            date_from, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
+        )
+        parsed_to = dateparser.parse(
+            date_to, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
+        )
         super().temporal(parsed_from, parsed_to, exclude_boundary)
         return self
 
@@ -231,7 +235,11 @@ class DataGranules(GranuleQuery):
         :param exclude_boundary: whether or not to exclude the date_from/to in the matched range
         :returns: GranueQuery instance
         """
-        parsed_from = dateparser.parse(date_from)
-        parsed_to = dateparser.parse(date_to)
+        parsed_from = dateparser.parse(
+            date_from, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
+        )
+        parsed_to = dateparser.parse(
+            date_to, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
+        )
         super().temporal(parsed_from, parsed_to, exclude_boundary)
         return self
