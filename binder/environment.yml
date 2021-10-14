@@ -13,7 +13,9 @@ dependencies:
 - h5netcdf>=0.11
 - h5py>=3.2
 - geopandas>=0.9
+- zarr>=2.9.5
 - pip
 - pip:
     - pqdm
+    - zarr-eosdis-store
     - earthdata

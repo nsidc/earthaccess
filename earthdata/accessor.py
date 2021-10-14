@@ -124,6 +124,7 @@ class Accessor(object):
         if not os.path.exists(f"{directory}/{local_filename}"):
             try:
                 # Looks like requests.session is not threadsafe
+                # TODO: make this efficient
                 session = self.auth.get_session()
                 with session.get(url, stream=True) as r:
                     r.raise_for_status()

@@ -1,7 +1,7 @@
-import datetime
+import datetime as dt
 from typing import Any, List, Type
 
-import dateparser  # type: ignore
+import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
@@ -45,6 +45,10 @@ class DataCollections(CollectionQuery):
         self._fields = fields
         return self
 
+    def debug(self, debug: bool = True) -> Type[CollectionQuery]:
+        self._debug = True
+        return self
+
     def cloud_hosted(self, cloud_hosted: bool = True) -> Type[CollectionQuery]:
         """
         Only match granules that are hosted in the cloud.
@@ -79,6 +83,9 @@ class DataCollections(CollectionQuery):
         page = 1
         while len(results) < limit:
             params = {"page_size": page_size, "page_num": page}
+            if self._debug:
+                print(f"Fetching: {url}")
+            # TODO: implement caching
             response = self.session.get(url, params=params)
 
             try:
@@ -116,12 +123,19 @@ class DataCollections(CollectionQuery):
         :param exclude_boundary: whether or not to exclude the date_from/to in the matched range
         :returns: GranueQuery instance
         """
-        parsed_from = dateparser.parse(
-            date_from, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
-        )
-        parsed_to = dateparser.parse(
-            date_to, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
-        )
+        DEFAULT = dt.datetime(1979, 1, 1)
+        if date_from is not None:
+            try:
+                parsed_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
+            except Exception:
+                print("The provided start date was not recognized")
+                parsed_from = ""
+        if date_to is not None:
+            try:
+                parsed_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
+            except Exception:
+                print("The provided end date was not recognized")
+                parsed_to = ""
         super().temporal(parsed_from, parsed_to, exclude_boundary)
         return self
 
@@ -189,6 +203,9 @@ class DataGranules(GranuleQuery):
         page = 1
         while len(results) < limit:
             params = {"page_size": page_size, "page_num": page}
+            # TODO: should be in a logger
+            if self._debug:
+                print(f"Fetching: {url}")
 
             response = self.session.get(url, params=params)
 
@@ -223,8 +240,12 @@ class DataGranules(GranuleQuery):
 
         return results
 
+    def debug(self, debug: bool = True) -> Type[GranuleQuery]:
+        self._debug = True
+        return self
+
     def temporal(
-        self, date_from: str, date_to: str, exclude_boundary: bool = False
+        self, date_from: str = None, date_to: str = None, exclude_boundary: bool = False
     ) -> Type[GranuleQuery]:
         """
         Filter by an open or closed date range.
@@ -235,11 +256,18 @@ class DataGranules(GranuleQuery):
         :param exclude_boundary: whether or not to exclude the date_from/to in the matched range
         :returns: GranueQuery instance
         """
-        parsed_from = dateparser.parse(
-            date_from, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
-        )
-        parsed_to = dateparser.parse(
-            date_to, settings={"REQUIRE_PARTS": ["day", "month", "year"]}
-        )
+        DEFAULT = dt.datetime(1979, 1, 1)
+        if date_from is not None:
+            try:
+                parsed_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
+            except Exception:
+                print("The provided start date was not recognized")
+                parsed_from = ""
+        if date_to is not None:
+            try:
+                parsed_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
+            except Exception:
+                print("The provided end date was not recognized")
+                parsed_to = ""
         super().temporal(parsed_from, parsed_to, exclude_boundary)
         return self

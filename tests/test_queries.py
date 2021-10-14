@@ -1,6 +1,4 @@
 # package imports
-from datetime import datetime
-
 import pytest
 from earthdata.search import DataCollections, DataGranules
 
@@ -14,6 +12,13 @@ invalid_single_dates = [
     ("2001-12-45", "2001-12-21", None),
     ("2021w1", "", None),
     ("2999-02-01", "2009-01-01", None),
+]
+
+
+bbox_queries = [
+    ([-134.7, 54.9, -100.9, 69.2], True),
+    ([-10, 20, 0, 40], True),
+    ([10, 20, 30, 40], True),
 ]
 
 
@@ -31,3 +36,9 @@ def test_query_can_handle_invalid_dates(start, end, expected):
     except Exception as e:
         assert isinstance(e, ValueError)
         assert "termporal" not in granules.params
+
+
+@pytest.mark.parametrize("bbox,expected", bbox_queries)
+def test_query_handles_bbox(bbox, expected):
+    granules = DataGranules().short_name("MODIS").bounding_box(*bbox)
+    assert ("bounding_box" in granules.params) == expected

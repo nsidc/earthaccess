@@ -169,21 +169,21 @@ class DataGranule(CustomDict):
         )
         return total_size
 
-    def _derive_s3_link(self, links: List[str]) -> str:
-        if len(links) > 0 and links[0].startswith("s3"):
-            return links[0]
-        elif (
-            len(links) > 0
-            and links[0].startswith("https://")
-            and ("cumulus" in links[0] or "protected" in links[0])
-        ):
-            return f's3://{links[0].split("nasa.gov/")[1]}'
-        return ""
+    def _derive_s3_link(self, links: List[str]) -> List[str]:
+        s3_links = []
+        for link in links:
+            if link.startswith("s3"):
+                s3_links.append(link)
+            elif link.startswith("https://") and (
+                "cumulus" in link or "protected" in link
+            ):
+                s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
+        return s3_links
 
-    def data_links(self) -> List[str]:
+    def data_links(self, direct_s3: bool = True) -> List[str]:
         links = self._filter_related_links("GET DATA")
-        if self.cloud_hosted:
-            return [self._derive_s3_link(links)]
+        if self.cloud_hosted and direct_s3:
+            return self._derive_s3_link(links)
         return links
 
     def dataviz_links(self) -> List[str]:
