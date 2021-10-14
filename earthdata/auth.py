@@ -1,5 +1,7 @@
 import getpass
-from typing import Any, Dict, Union
+import os
+from os.path import exists
+from typing import Any, Dict, Optional, Union
 from urllib.parse import urlparse
 
 import requests  # type: ignore
@@ -69,13 +71,22 @@ class Auth(object):
 
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
-
+        self.authenticated = False
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
 
-        username = input("Enter your Earthdata Login username: ")
-        password = getpass.getpass(prompt="Enter your Earthdata password: ")
+    def login(self, strategy: str = "interactive") -> bool:
+        if strategy == "interactive":
+            logged = self._interactive()
+        if strategy == "netrc":
+            logged = self._netrc()
+        if strategy == "environment":
+            logged = self._environment()
+        return logged
 
+    def _get_credentials(
+        self, username: Optional[str], password: Optional[str]
+    ) -> bool:
         if username is not None and password is not None:
             self._session = SessionWithHeaderRedirection(username, password)
             token_resp = self._get_user_tokens(username, password)
@@ -85,7 +96,7 @@ class Auth(object):
                     f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
                 )
                 self.authenticated = False
-                return
+                return self.authenticated
             print("You're now authenticated with NASA Earthdata Login")
             self._credentials = (username, password)
             self.authenticated = True
@@ -99,6 +110,35 @@ class Auth(object):
                 except Exception:
                     print(resp_tokens.text)
                     self.token = None
+            return self.authenticated
+        return False
+
+    def _interactive(self) -> bool:
+        username = input("Enter your Earthdata Login username: ")
+        password = getpass.getpass(prompt="Enter your Earthdata password: ")
+        authenticated = self._get_credentials(username, password)
+        return authenticated
+
+    def _netrc(self) -> bool:
+        if exists("~/.netrc"):
+            with open("~/.netrc") as f:
+                lines = f.readlines()
+                for line in lines:
+                    if "machine urs.earthdata.nasa.gov" in line:
+                        parts = line.split("login")
+                        username = parts[1].split("password")[0].strip()
+                        password = parts[1].split("password")[1].strip()
+                        break
+                authenticated = self._get_credentials(username, password)
+                return authenticated
+            return False
+        return False
+
+    def _environment(self) -> bool:
+        username = os.getenv("CMR_USERNAME")
+        password = os.getenv("CMR_PASSWORD")
+        authenticated = self._get_credentials(username, password)
+        return authenticated
 
     def _get_cloud_auth_url(self, cloud_provider: str = "") -> str:
         for provider in DAACS:
