@@ -102,6 +102,7 @@ class Auth(object):
             tokens = token_resp.json()
             if len(tokens) > 0:
                 self.token = tokens[0]
+                self.authenticated = True
             else:
                 try:
                     resp_tokens = self._generate_user_token(username, password)
