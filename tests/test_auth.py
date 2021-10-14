@@ -13,7 +13,8 @@ class TestCreateAuth(unittest.TestCase):
         user_input.return_value = "user"
         user_password.return_value = "pass"
         auth = Auth()
-        self.assertEqual(auth.login(), False)
+        logged = auth.login()
+        self.assertEqual(logged, False)
 
     @responses.activate
     @mock.patch("builtins.input")
@@ -33,7 +34,8 @@ class TestCreateAuth(unittest.TestCase):
         )
         # Test
         auth = Auth()
-        self.assertEqual(auth.login(), True)
+        logged = auth.login()
+        self.assertEqual(logged, True)
         self.assertTrue(auth.token in json_response)
 
     @responses.activate
@@ -44,9 +46,8 @@ class TestCreateAuth(unittest.TestCase):
     ) -> bool:
         user_input.return_value = "valid-user"
         user_password.return_value = "valid-password"
-        json_response = [
-            {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
-        ]
+        json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
+
         responses.add(
             responses.GET,
             "https://urs.earthdata.nasa.gov/api/users/tokens",
@@ -62,5 +63,6 @@ class TestCreateAuth(unittest.TestCase):
         )
         # Test
         auth = Auth()
-        self.assertEqual(auth.login(), True)
-        self.assertEqual(auth.token, json_response[0])
+        logged = auth.login()
+        self.assertEqual(logged, True)
+        self.assertEqual(auth.token, json_response)

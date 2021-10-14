@@ -99,16 +99,16 @@ class Auth(object):
                 return self.authenticated
             print("You're now authenticated with NASA Earthdata Login")
             self._credentials = (username, password)
-            self.authenticated = True
             tokens = token_resp.json()
             if len(tokens) > 0:
                 self.token = tokens[0]
+                self.authenticated = True
             else:
                 try:
                     resp_tokens = self._generate_user_token(username, password)
-                    self.token = resp_tokens.json()[0]
+                    self.token = resp_tokens.json()
+                    self.authenticated = True
                 except Exception:
-                    print(resp_tokens.text)
                     self.token = None
             return self.authenticated
         return False
