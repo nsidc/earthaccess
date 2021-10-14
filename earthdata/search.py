@@ -38,6 +38,8 @@ class DataCollections(CollectionQuery):
         else:
             self.session = session()
 
+        self._debug = False
+
         self.params["has_granules"] = True
         self.params["include_granule_counts"] = True
 
@@ -168,6 +170,8 @@ class DataGranules(GranuleQuery):
             self.session = auth.get_session(bearer_token=True)
         else:
             self.session = session()
+
+        self._debug = False
 
     def _valid_state(self) -> bool:
 
