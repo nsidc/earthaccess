@@ -12,9 +12,8 @@ class TestCreateAuth(unittest.TestCase):
     def test_create_auth_wrong_credentials(self, user_input, user_password) -> bool:
         user_input.return_value = "user"
         user_password.return_value = "pass"
-        auth = Auth()
-        logged = auth.login()
-        self.assertEqual(logged, False)
+        auth = Auth().login()
+        self.assertEqual(auth.authenticated, False)
 
     @responses.activate
     @mock.patch("builtins.input")
@@ -33,9 +32,8 @@ class TestCreateAuth(unittest.TestCase):
             status=200,
         )
         # Test
-        auth = Auth()
-        logged = auth.login()
-        self.assertEqual(logged, True)
+        auth = Auth().login()
+        self.assertEqual(auth.authenticated, True)
         self.assertTrue(auth.token in json_response)
 
     @responses.activate
@@ -62,7 +60,6 @@ class TestCreateAuth(unittest.TestCase):
             status=200,
         )
         # Test
-        auth = Auth()
-        logged = auth.login()
-        self.assertEqual(logged, True)
+        auth = Auth().login()
+        self.assertEqual(auth.authenticated, True)
         self.assertEqual(auth.token, json_response)
