@@ -75,14 +75,14 @@ class Auth(object):
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
 
-    def login(self, strategy: str = "interactive") -> bool:
+    def login(self, strategy: str = "interactive") -> Any:
         if strategy == "interactive":
-            logged = self._interactive()
+            self._interactive()
         if strategy == "netrc":
-            logged = self._netrc()
+            self._netrc()
         if strategy == "environment":
-            logged = self._environment()
-        return logged
+            self._environment()
+        return self
 
     def _get_credentials(
         self, username: Optional[str], password: Optional[str]
