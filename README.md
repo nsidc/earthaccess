@@ -34,7 +34,7 @@ A Python library to search and access NASA datasets.
 Install the latest release:
 
 ```bash
-pip install earthdata
+conda install -c conda-forge earthdata
 ```
 
 Or you can clone `earthdata` and get started locally
