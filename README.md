@@ -65,7 +65,7 @@ granules = DataGranules(auth).concept_id('C1711961296-LPCLOUD').bounding_box(-10
 # We provide some convenience functions for each result
 data_links = [granule.data_links() for granule in granules]
 
-# The Acessor class allows to get the granules from on-prem locations with get()
+# The Accessor class allows to get the granules from on-prem locations with get()
 # NOTE: Some datasets require users to accept a Licence Agreement before accessing them
 access = Accessor(auth)
 

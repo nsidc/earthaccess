@@ -30,7 +30,7 @@ class Accessor(object):
 
     def _get_s3_filesystem(self, provider: str) -> Any:
         """
-        get a s3fs intance for a given cloud provider
+        get a s3fs instance for a given cloud provider
         :param provider: any of the DAAC cloud providers e.g. POCLOUD
         :returns: a new s3fs instance
         """
