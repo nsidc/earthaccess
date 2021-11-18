@@ -35,7 +35,7 @@ def test_query_can_handle_invalid_dates(start, end, expected):
         granules = granules.temporal(start, end)
     except Exception as e:
         assert isinstance(e, ValueError)
-        assert "termporal" not in granules.params
+        assert "temporal" not in granules.params
 
 
 @pytest.mark.parametrize("bbox,expected", bbox_queries)
