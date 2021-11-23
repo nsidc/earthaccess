@@ -58,6 +58,25 @@ class Auth(object):
         )
         return auth_resp
 
+    def get_session(self, bearer_token: bool = False) -> SessionWithHeaderRedirection:
+        """
+        returns a new request session instance, since looks like using a session in a context is not threadsafe
+        https://github.com/psf/requests/issues/1871
+        Session with bearer tokens are used by CMR, simple auth sessions can be used do download data
+        from on-prem DAAC data centers.
+        :returns: subclass SessionWithHeaderRedirection instance
+        """
+        if bearer_token and self.auth.authenticated:
+            session = SessionWithHeaderRedirection()
+            session.headers.update(
+                {"Authorization": f'Bearer {self.auth.token["access_token"]}'}
+            )
+            return session
+        else:
+            return SessionWithHeaderRedirection(
+                self.auth._credentials[0], self.auth._credentials[1]
+            )
+
     def _generate_user_token(self, username: str, password: str) -> Any:
         session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.post(
