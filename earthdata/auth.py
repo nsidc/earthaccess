@@ -66,15 +66,15 @@ class Auth(object):
         from on-prem DAAC data centers.
         :returns: subclass SessionWithHeaderRedirection instance
         """
-        if bearer_token and self.auth.authenticated:
+        if bearer_token and self.authenticated:
             session = SessionWithHeaderRedirection()
             session.headers.update(
-                {"Authorization": f'Bearer {self.auth.token["access_token"]}'}
+                {"Authorization": f'Bearer {self.token["access_token"]}'}
             )
             return session
         else:
             return SessionWithHeaderRedirection(
-                self.auth._credentials[0], self.auth._credentials[1]
+                self._credentials[0], self._credentials[1]
             )
 
     def _generate_user_token(self, username: str, password: str) -> Any:
