@@ -5,7 +5,7 @@ import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
-from .daac import CLOUD_PROVIDERS
+from .daac import CLOUD_PROVIDERS, DAACS
 from .results import DataCollection, DataGranule
 
 
@@ -43,11 +43,37 @@ class DataCollections(CollectionQuery):
         self.params["has_granules"] = True
         self.params["include_granule_counts"] = True
 
+    def __find_provider(
+        self, daac_short_name: str = None, cloud_hosted: bool = None
+    ) -> str:
+        for daac in DAACS:
+            if daac_short_name == daac["short-name"]:
+                if cloud_hosted:
+                    if len(daac["cloud-providers"]) > 0:
+                        return daac["cloud-providers"][0]
+                    else:
+                        # We found the DAAC but it does not have cloud data
+                        return daac["on-prem-providers"][0]
+                else:
+                    return daac["on-prem-providers"][0]
+        return ""
+
+    def print_help(self, method: str = "fields") -> None:
+        print("Class components: \n")
+        print([method for method in dir(self) if method.startswith("_") is False])
+        help(getattr(self, method))
+
     def fields(self, fields: List[str] = None) -> Type[CollectionQuery]:
+        """
+        Masks the response by only showing the fields included in this list
+        """
         self._fields = fields
         return self
 
     def debug(self, debug: bool = True) -> Type[CollectionQuery]:
+        """
+        If True, prints the actual query to CMR
+        """
         self._debug = True
         return self
 
@@ -57,18 +83,40 @@ class DataCollections(CollectionQuery):
         :param cloud_only: True to require granules only be online
         :returns: Query instance
         """
-
         if not isinstance(cloud_hosted, bool):
-            raise TypeError("Online_only must be of type bool")
+            raise TypeError("cloud_hosted must be of type bool")
 
         self.params["cloud_hosted"] = cloud_hosted
+        if hasattr(self, "DAAC"):
+            provider = self.__find_provider(self.DAAC, cloud_hosted)
+            self.params["provider"] = provider
         return self
 
     def provider(self, provider: str = "") -> Type[CollectionQuery]:
         """
-        Only match collections from a given provider
+        Only match collections from a given provider, a NASA datacenter or DAAC can have 1 or more providers
+        i.e. PODAAC is a data center or DAAC, PODAAC is the default provider for on prem data, POCLOUD is
+        the PODAAC provider for their data in the cloud.
         """
         self.params["provider"] = provider
+        return self
+
+    def data_center(self, data_center_name: str = "") -> Type[CollectionQuery]:
+        """
+        just another name for the DAAC, so is more intuitive.
+        """
+        return self.daac(data_center_name)
+
+    def daac(self, daac_short_name: str = "") -> Type[CollectionQuery]:
+        """
+        Only match collections for a given DAAC, by default the on-prem collections for the DAAC
+        """
+        if "cloud_hosted" in self.params:
+            cloud_hosted = self.params["cloud_hosted"]
+        else:
+            cloud_hosted = False
+        self.DAAC = daac_short_name
+        self.params["provider"] = self.__find_provider(daac_short_name, cloud_hosted)
         return self
 
     def get(self, limit: int = 2000) -> list:

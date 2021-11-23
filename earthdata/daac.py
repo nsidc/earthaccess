@@ -9,7 +9,7 @@ DAACS = [
         "s3-credentials": "https://data.nsidc.earthdatacloud.nasa.gov/s3credentials",
     },
     {
-        "short-name": "GHRC DAAC",
+        "short-name": "GHRCDAAC",
         "name": "Global Hydrometeorology Resource Center",
         "homepage": "https://ghrc.nsstc.nasa.gov/home/",
         "cloud-providers": ["GHRC_DAAC"],
@@ -17,7 +17,7 @@ DAACS = [
         "s3-credentials": "https://data.ghrc.earthdata.nasa.gov/s3credentials",
     },
     {
-        "short-name": "PO DAAC",
+        "short-name": "PODAAC",
         "name": "Physical Oceanography Distributed Active Archive Center",
         "homepage": "https://podaac.jpl.nasa.gov",
         "cloud-providers": ["POCLOUD"],
@@ -33,7 +33,7 @@ DAACS = [
         "s3-credentials": "",
     },
     {
-        "short-name": "ORNL DAAC",
+        "short-name": "ORNLDAAC",
         "name": "Oak Ridge National Laboratory",
         "homepage": "https://daac.ornl.gov",
         "cloud-providers": ["ORNL_CLOUD"],
@@ -41,7 +41,7 @@ DAACS = [
         "s3-credentials": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
     },
     {
-        "short-name": "LP DAAC",
+        "short-name": "LPDAAC",
         "name": " Land Processes Distributed Active Archive Center",
         "homepage": "https://lpdaac.usgs.gov",
         "cloud-providers": ["LPCLOUD"],
@@ -49,7 +49,7 @@ DAACS = [
         "s3-credentials": "https://data.lpdaac.prod.earthdatacloud.nasa.gov/s3credentials",
     },
     {
-        "short-name": "GES DISC",
+        "short-name": "GESDISC",
         "name": "NASA Goddard Earth Sciences (GES) Data and Information Services Center (DISC)",
         "homepage": "https://daac.gsfc.nasa.gov",
         "cloud-providers": ["GES_DISC"],
@@ -57,7 +57,7 @@ DAACS = [
         "s3-credentials": "",
     },
     {
-        "short-name": "OB DAAC",
+        "short-name": "OBDAAC",
         "name": "NASA's Ocean Biology Distributed Active Archive Center",
         "homepage": "https://earthdata.nasa.gov/eosdis/daacs/obdaac",
         "cloud-providers": [],

@@ -53,30 +53,44 @@ poetry install
 ## Example Usage
 
 ```python
-from earthdata import Auth, DataGranules, DataCollections, Accessor
+from earthdata import Auth, DataGranules, DataCollections, Store
 
-auth = Auth() # if we want to access NASA DATA in the cloud
-auth.login()
+auth = Auth().login() # if we want to access NASA DATA in the cloud
 
-collections = DataCollections(auth).keyword('MODIS').get(10)
+# To search for collecrtions (datasets)
 
-granules = DataGranules(auth).concept_id('C1711961296-LPCLOUD').bounding_box(-10,20,10,50).get(5)
+DatasetQuery = DataCollections().keyword('MODIS').bounding_box(-26.85,62.65,-11.86,67.08)
 
-# We provide some convenience functions for each result
+counts = DatasetQuery.hits()
+collections = DatasetQuery.get()
+
+
+# To search for granules (data files)
+GranuleQuery = DataGranules().concept_id('C1711961296-LPCLOUD').bounding_box(-10,20,10,50)
+
+# number of granules (data files) that matched our criteria
+counts = GranuleQuery.hits()
+# We get the files metadata
+granules = GranuleQuery.get(10)
+
+# earthdata provides some convenience functions for each data granule
 data_links = [granule.data_links() for granule in granules]
 
-# The Accessor class allows to get the granules from on-prem locations with get()
+# The Store class allows to get the granules from on-prem locations with get()
 # NOTE: Some datasets require users to accept a Licence Agreement before accessing them
-access = Accessor(auth)
+store = Store(auth)
 
 # This works with both, on-prem or cloud based collections**
-access.get(granules, './data')
+store.get(granules, './data')
 
 # if you're in a AWS instance (us-west-2) you can use open() to get a fileset!
-fileset = accessor.open(granules)
+fileset = store.open(granules)
 
 xarray.open_mfdataset(fileset, combine='by_coords')
 ```
+
+For more examples see the `Demo` and `EarthdataSearch` notebooks.
+
 
 Only **Python 3.7+** is supported as required by the black, pydantic packages
 
