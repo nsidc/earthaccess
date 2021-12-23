@@ -95,6 +95,16 @@ For more examples see the `Demo` and `EarthdataSearch` notebooks.
 Only **Python 3.7+** is supported as required by the black, pydantic packages
 
 
+## Code of Conduct
+
+See [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## Level of Support
+
+* This repository is not actively supported by NSIDC but we welcome issue submissions and pull requests in order to foster community contribution.
+
+<img src="docs/nsidc-logo.png" width="84px" />
+
 ## Contributing Guide
 
 Welcome! 😊👋
