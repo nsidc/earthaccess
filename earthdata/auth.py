@@ -1,5 +1,6 @@
 import getpass
 import os
+import netrc
 from os.path import exists
 from typing import Any, Dict, Optional, Union
 from urllib.parse import urlparse
@@ -120,19 +121,20 @@ class Auth(object):
         return authenticated
 
     def _netrc(self) -> bool:
-        if exists("~/.netrc"):
-            with open("~/.netrc") as f:
-                lines = f.readlines()
-                for line in lines:
-                    if "machine urs.earthdata.nasa.gov" in line:
-                        parts = line.split("login")
-                        username = parts[1].split("password")[0].strip()
-                        password = parts[1].split("password")[1].strip()
-                        break
-                authenticated = self._get_credentials(username, password)
-                return authenticated
+        try:
+            my_netrc = netrc.netrc()
+        except FileNotFoundError as err:
+            print(f"Expects .netrc in {os.path.expanduser('~')}")
+            print(err)
             return False
-        return False
+        except NetrcParseError as err:
+            print(f"Unable to parse .netrc")
+            print(err)
+            return False
+        username, _, password = my_netrc.authenticators("urs.earthdata.nasa.gov")
+        authenticated = self._get_credentials(username, password)
+        return authenticated
+
 
     def _environment(self) -> bool:
         username = os.getenv("CMR_USERNAME")
