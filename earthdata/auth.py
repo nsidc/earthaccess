@@ -147,7 +147,6 @@ class Auth(object):
         authenticated = self._get_credentials(username, password)
         return authenticated
 
-
     def _environment(self) -> bool:
         username = os.getenv("CMR_USERNAME")
         password = os.getenv("CMR_PASSWORD")
