@@ -136,7 +136,7 @@ class Auth(object):
             print(err)
             return False
         except NetrcParseError as err:
-            print(f"Unable to parse .netrc")
+            print("Unable to parse .netrc")
             print(err)
             return False
         authenticators = my_netrc.authenticators("urs.earthdata.nasa.gov")
