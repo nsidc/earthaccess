@@ -139,7 +139,11 @@ class Auth(object):
             print(f"Unable to parse .netrc")
             print(err)
             return False
-        username, _, password = my_netrc.authenticators("urs.earthdata.nasa.gov")
+        authenticators = my_netrc.authenticators("urs.earthdata.nasa.gov")
+        if authenticators is None:
+            print("Host urs.earthdata.nasa.gov not found in netrc")
+            return False
+        username, _, password = authenticators
         authenticated = self._get_credentials(username, password)
         return authenticated
 
