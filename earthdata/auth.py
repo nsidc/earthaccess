@@ -1,6 +1,7 @@
 import getpass
 import os
 import netrc
+from netrc import NetrcParseError
 from os.path import exists
 from typing import Any, Dict, Optional, Union
 from urllib.parse import urlparse
