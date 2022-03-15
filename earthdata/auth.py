@@ -1,6 +1,7 @@
 import getpass
+import netrc
 import os
-from os.path import exists
+from netrc import NetrcParseError
 from typing import Any, Dict, Optional, Union
 from urllib.parse import urlparse
 
@@ -94,11 +95,16 @@ class Auth(object):
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
 
-    def login(self, strategy: str = "interactive", cache: bool = True) -> Any:
-        if strategy == "environment" or cache is True:
-            self._environment()
-        if strategy == "interactive" and self.authenticated is False:
-            self._interactive(cache=cache)
+    def login(self, strategy: str = "interactive") -> Any:
+        """Authenticate with Earthdata login
+
+        :strategy: authentication method to used
+            "interactive" - (default) enter username and password
+            "netrc" - retrieve username and password from ~/.netrc
+            "environment" - retrieve username and password from $CMR_USERNAME and $CMR_PASSWORD
+        """
+        if strategy == "interactive":
+            self._interactive()
         if strategy == "netrc":
             self._netrc()
         return self
@@ -143,19 +149,23 @@ class Auth(object):
         return authenticated
 
     def _netrc(self) -> bool:
-        if exists("~/.netrc"):
-            with open("~/.netrc") as f:
-                lines = f.readlines()
-                for line in lines:
-                    if "machine urs.earthdata.nasa.gov" in line:
-                        parts = line.split("login")
-                        username = parts[1].split("password")[0].strip()
-                        password = parts[1].split("password")[1].strip()
-                        break
-                authenticated = self._get_credentials(username, password)
-                return authenticated
+        try:
+            my_netrc = netrc.netrc()
+        except FileNotFoundError as err:
+            print(f"Expects .netrc in {os.path.expanduser('~')}")
+            print(err)
             return False
-        return False
+        except NetrcParseError as err:
+            print("Unable to parse .netrc")
+            print(err)
+            return False
+        authenticators = my_netrc.authenticators("urs.earthdata.nasa.gov")
+        if authenticators is None:
+            print("Host urs.earthdata.nasa.gov not found in netrc")
+            return False
+        username, _, password = authenticators
+        authenticated = self._get_credentials(username, password)
+        return authenticated
 
     def _environment(self) -> bool:
         username = os.getenv("EDL_USERNAME")
