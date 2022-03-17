@@ -20,15 +20,16 @@ class CustomDict(benedict):
         super().__init__(collection)
         self.cloud_hosted = cloud_hosted
         self.uuid = str(uuid.uuid4())
+
+        self.render_dict: Any
         if fields is None:
-            self.render_dict = self._filter_fields_(self._basic_umm_fields_)
-        elif fields[0] == "*":
             self.render_dict = self
+        elif fields[0] == "basic":
+            self.render_dict = self._filter_fields_(self._basic_umm_fields_)
         else:
             self.render_dict = self._filter_fields_(fields)
 
     def _filter_fields_(self, fields: List[str]) -> Dict[str, Any]:
-
         filtered_dict = {
             "umm": dict(
                 (field, self["umm"][field]) for field in fields if field in self["umm"]
@@ -49,9 +50,10 @@ class CustomDict(benedict):
         Filter RelatedUrls from the UMM fields on CMR
         """
         matched_links: List = []
-        for link in self["umm"]["RelatedUrls"]:
-            if link["Type"] == filter:
-                matched_links.append(link["URL"])
+        if "RelatedUrls" in self["umm"]:
+            for link in self["umm"]["RelatedUrls"]:
+                if link["Type"] == filter:
+                    matched_links.append(link["URL"])
         return matched_links
 
 
@@ -74,10 +76,45 @@ class DataCollection(CustomDict):
         "DataCenters",
         "RelatedUrls",
         "ArchiveAndDistributionInformation",
+        "DirectDistributionInformation",
     ]
+
+    def summary(self) -> Dict[str, Any]:
+        # we can print only the concept-id
+
+        summary_dict: Dict[str, Any]
+        summary_dict = {
+            "short-name": self.get_umm("ShortName"),
+            "concept-id": self.concept_id(),
+            "version": self.version(),
+            "file-type": self.data_type(),
+            "get-data": self.get_data(),
+        }
+        if "Region" in self.s3_bucket():
+            summary_dict["cloud-info"] = self.s3_bucket()
+        return summary_dict
+
+    def get_umm(self, umm_field: str) -> str:
+        if umm_field in self["umm"]:
+            return self["umm"][umm_field]
+        return ""
 
     def concept_id(self) -> str:
         return self["meta"]["concept-id"]
+
+    def data_type(self) -> str:
+        if "ArchiveAndDistributionInformation" in self["umm"]:
+            return str(
+                self["umm"]["ArchiveAndDistributionInformation"][
+                    "FileDistributionInformation"
+                ]
+            )
+        return ""
+
+    def version(self) -> str:
+        if "Version" in self["umm"]:
+            return self["umm"]["Version"]
+        return ""
 
     def abstract(self) -> str:
         return self["umm"]["Abstract"]
@@ -91,6 +128,11 @@ class DataCollection(CustomDict):
     def get_data(self) -> List[str]:
         links = self._filter_related_links("GET DATA")
         return links
+
+    def s3_bucket(self) -> Dict[str, Any]:
+        if "DirectDistributionInformation" in self["umm"]:
+            return self["umm"]["DirectDistributionInformation"]
+        return {}
 
     def __repr__(self) -> str:
         return json.dumps(
@@ -127,10 +169,11 @@ class DataGranule(CustomDict):
         # TODO: maybe add area, start date and all that as an instance value
         self["size"] = self.size()
         self.uuid = str(uuid.uuid4())
+        self.render_dict: Any
         if fields is None:
-            self.render_dict = self._filter_fields_(self._basic_umm_fields_)
-        elif fields[0] == "*":
             self.render_dict = self
+        elif fields[0] == "basic":
+            self.render_dict = self._filter_fields_(self._basic_umm_fields_)
         else:
             self.render_dict = self._filter_fields_(fields)
 
@@ -180,10 +223,15 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(self, direct_s3: bool = True) -> List[str]:
+    def data_links(self, s3_only: bool = False) -> List[str]:
         links = self._filter_related_links("GET DATA")
-        if self.cloud_hosted and direct_s3:
-            return self._derive_s3_link(links)
+        s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
+        if self.cloud_hosted and s3_only:
+            if len(s3_links) == 0 and len(links) > 0:
+                return self._derive_s3_link(links)
+            else:
+                return s3_links
+        links.extend(s3_links)
         return links
 
     def dataviz_links(self) -> List[str]:

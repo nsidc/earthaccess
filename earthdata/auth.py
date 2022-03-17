@@ -59,6 +59,25 @@ class Auth(object):
         )
         return auth_resp
 
+    def get_session(self, bearer_token: bool = False) -> SessionWithHeaderRedirection:
+        """
+        returns a new request session instance, since looks like using a session in a context is not threadsafe
+        https://github.com/psf/requests/issues/1871
+        Session with bearer tokens are used by CMR, simple auth sessions can be used do download data
+        from on-prem DAAC data centers.
+        :returns: subclass SessionWithHeaderRedirection instance
+        """
+        if bearer_token and self.authenticated:
+            session = SessionWithHeaderRedirection()
+            session.headers.update(
+                {"Authorization": f'Bearer {self.token["access_token"]}'}
+            )
+            return session
+        else:
+            return SessionWithHeaderRedirection(
+                self._credentials[0], self._credentials[1]
+            )
+
     def _generate_user_token(self, username: str, password: str) -> Any:
         session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.post(
@@ -76,20 +95,19 @@ class Auth(object):
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
 
-    def login(self, strategy: str = "interactive") -> Any:
+    def login(self, strategy: str = "interactive", cache: bool = True) -> Any:
         """Authenticate with Earthdata login
 
         :strategy: authentication method to used
             "interactive" - (default) enter username and password
             "netrc" - retrieve username and password from ~/.netrc
             "environment" - retrieve username and password from $CMR_USERNAME and $CMR_PASSWORD
+        :cache: no need to input credentials after login the first time
         """
         if strategy == "interactive":
-            self._interactive()
+            self._interactive(cache)
         if strategy == "netrc":
             self._netrc()
-        if strategy == "environment":
-            self._environment()
         return self
 
     def _get_credentials(
@@ -121,10 +139,14 @@ class Auth(object):
             return self.authenticated
         return False
 
-    def _interactive(self) -> bool:
+    def _interactive(self, cache: bool = True) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
         authenticated = self._get_credentials(username, password)
+        if authenticated is True:
+            os.environ["EDL_USERNAME"] = username
+            os.environ["EDL_PASSWORD"] = password
+
         return authenticated
 
     def _netrc(self) -> bool:
@@ -147,8 +169,8 @@ class Auth(object):
         return authenticated
 
     def _environment(self) -> bool:
-        username = os.getenv("CMR_USERNAME")
-        password = os.getenv("CMR_PASSWORD")
+        username = os.getenv("EDL_USERNAME")
+        password = os.getenv("EDL_PASSWORD")
         authenticated = self._get_credentials(username, password)
         return authenticated
 
@@ -160,25 +182,6 @@ class Auth(object):
             ):
                 return str(provider["s3-credentials"])
         return ""
-
-    def get_session(self, bearer_token: bool = False) -> Any:
-        """
-        returns a new request session instance, since looks like using a session in a context is not threadsafe
-        https://github.com/psf/requests/issues/1871
-        Session with bearer tokens are used by CMR, simple auth sessions can be used do download data
-        from on-prem DAAC data centers.
-        :returns: subclass SessionWithHeaderRedirection instance
-        """
-        if bearer_token and self.authenticated:
-            session = SessionWithHeaderRedirection()
-            session.headers.update(
-                {"Authorization": f'Bearer {self.token["access_token"]}'}
-            )
-            return session
-        else:
-            return SessionWithHeaderRedirection(
-                self._credentials[0], self._credentials[1]
-            )
 
     def get_s3_credentials(
         self, cloud_provider: str = ""
