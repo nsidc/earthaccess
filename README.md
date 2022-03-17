@@ -70,7 +70,7 @@ GranuleQuery = DataGranules().concept_id('C1711961296-LPCLOUD').bounding_box(-10
 
 # number of granules (data files) that matched our criteria
 counts = GranuleQuery.hits()
-# We get the files metadata
+# We get the metadata
 granules = GranuleQuery.get(10)
 
 # earthdata provides some convenience functions for each data granule
@@ -81,11 +81,12 @@ data_links = [granule.data_links() for granule in granules]
 store = Store(auth)
 
 # This works with both, on-prem or cloud based collections**
-store.get(granules, './data')
+store.get(granules, local_path='./data')
 
 # if you're in a AWS instance (us-west-2) you can use open() to get a fileset!
 fileset = store.open(granules)
 
+# Given that this is gridded data we could
 xarray.open_mfdataset(fileset, combine='by_coords')
 ```
 
