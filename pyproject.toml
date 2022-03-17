@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthdata"
-version = "0.1.1-alpha.6"
+version = "0.2.0"
 description = "Client library for NASA Earthdata APIs"
 authors = ["Luis Lopez <betolin@gmail.com>"]
 license = "MIT"
@@ -16,7 +16,7 @@ s3fs = ">=2021.11, <2023"
 pqdm = "^0.1"
 
 [tool.poetry.dev-dependencies]
-mypy = "^0.910"
+mypy = "^0.812"
 black = "^21.11b0"
 isort = "^5"
 autoflake = "^1.3"
