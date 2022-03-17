@@ -223,10 +223,15 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(self, direct_s3: bool = True) -> List[str]:
+    def data_links(self, s3_only: bool = False) -> List[str]:
         links = self._filter_related_links("GET DATA")
-        if self.cloud_hosted and direct_s3:
-            return self._derive_s3_link(links)
+        s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
+        if self.cloud_hosted and s3_only:
+            if len(s3_links) == 0 and len(links) > 0:
+                return self._derive_s3_link(links)
+            else:
+                return s3_links
+        links.extend(s3_links)
         return links
 
     def dataviz_links(self) -> List[str]:

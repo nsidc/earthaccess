@@ -95,16 +95,17 @@ class Auth(object):
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
 
-    def login(self, strategy: str = "interactive") -> Any:
+    def login(self, strategy: str = "interactive", cache: bool = True) -> Any:
         """Authenticate with Earthdata login
 
         :strategy: authentication method to used
             "interactive" - (default) enter username and password
             "netrc" - retrieve username and password from ~/.netrc
             "environment" - retrieve username and password from $CMR_USERNAME and $CMR_PASSWORD
+        :cache: no need to input credentials after login the first time
         """
         if strategy == "interactive":
-            self._interactive()
+            self._interactive(cache)
         if strategy == "netrc":
             self._netrc()
         return self

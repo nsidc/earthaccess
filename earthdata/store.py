@@ -145,6 +145,7 @@ class Store(object):
         granules: List[Any],
         local_path: str = None,
         direct_access: bool = True,
+        provider: str = None,
         threads: int = 8,
     ) -> None:
         """
@@ -161,16 +162,22 @@ class Store(object):
         :param threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
         :returns: None
         """
-
-        provider = granules[0]["meta"]["provider-id"]
-        cloud_hosted = granules[0].cloud_hosted
-        data_links = [
-            granule.data_links(direct_s3=direct_access)[0] for granule in granules
-        ]
-        total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
-        print(
-            f" Getting {len(granules)} granules, approx download size: {total_size} GB"
-        )
+        data_links: List = []
+        if isinstance(granules[0], DataGranule):
+            provider = granules[0]["meta"]["provider-id"]
+            cloud_hosted = granules[0].cloud_hosted
+            data_links = [
+                granule.data_links(s3_only=direct_access)[0] for granule in granules
+            ]
+            total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
+            print(
+                f" Getting {len(granules)} granules, approx download size: {total_size} GB"
+            )
+        elif isinstance(granules[0], str):
+            # TODO: Fix this!
+            provider = provider
+            data_links = granules
+            cloud_hosted = direct_access
         if cloud_hosted and direct_access:
             s3_fs = self.get_s3fs_session(provider)
             # TODO: make this parallel
@@ -178,6 +185,7 @@ class Store(object):
                 s3_fs.get(file, local_path)
                 print(f"Retrieved: {file} to {local_path}")
         else:
+            # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
             self._download_onprem_granules(data_links, local_path, threads)
         return None
 

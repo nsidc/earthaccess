@@ -1,8 +1,8 @@
-name: earthdata-notebook
+name: earthdata-dev
 channels:
 - conda-forge
 dependencies:
-- python=3.8
+- python=3.9
 - jupyterlab=3
 - xarray>=0.19
 - rioxarray>=0.3
@@ -14,6 +14,8 @@ dependencies:
 - h5py>=3.2
 - geopandas>=0.9
 - zarr>=2.9.5
+- s3fs
+- dask
 - pip
 - pip:
     - pqdm
