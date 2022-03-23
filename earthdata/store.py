@@ -2,6 +2,7 @@ import datetime
 import os
 import shutil
 import traceback
+from itertools import chain
 from typing import Any, List, Union
 from uuid import uuid4
 
@@ -166,9 +167,11 @@ class Store(object):
         if isinstance(granules[0], DataGranule):
             provider = granules[0]["meta"]["provider-id"]
             cloud_hosted = granules[0].cloud_hosted
-            data_links = [
-                granule.data_links(s3_only=direct_access)[0] for granule in granules
-            ]
+            data_links = list(
+                chain.from_iterable(
+                    granule.data_links(s3_only=direct_access) for granule in granules
+                )
+            )
             total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
             print(
                 f" Getting {len(granules)} granules, approx download size: {total_size} GB"
