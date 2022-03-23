@@ -16,11 +16,6 @@ help:
 # adds anything that has a double # comment to the phony help list
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ".:*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-python-three-six:
-python-three-six: ## setup python3.6 virtual environment using poetry
-	poetry env use python3.6
-	poetry install
-
 python-three-seven:
 python-three-seven: ## setup python3.7 virtual environment using poetry
 	poetry env use python3.7

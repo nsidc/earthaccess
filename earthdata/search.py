@@ -235,9 +235,9 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
-        if granule["meta"]["provider-id"] in CLOUD_PROVIDERS:
-            data_url = granule["umm"]["RelatedUrls"][0]["URL"]
-            if "cumulus" in data_url:
+        direct_def = "GET DATA VIA DIRECT ACCESS"
+        for link in granule["umm"]["RelatedUrls"]:
+            if "protected" in link["URL"] or link["Type"] == direct_def:
                 return True
         return False
 

@@ -5,3 +5,10 @@
 .bootstrap .p {
  font-size: 18px;
 }
+
+.bootstrap .pull-right {
+    @extend .float-right;
+}
+.bootstrap .pull-left {
+    @extend .float-left;
+}

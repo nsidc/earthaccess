@@ -26,11 +26,12 @@ def _repr_granule_html(granule: Any) -> str:
     css_inline = f"""<div id="{uuid4()}" style="height: 0px; display: none">
             {''.join([f"<style>{style}</style>" for style in css_styles])}
             </div>"""
-    style = "max-height: 120px;"
+    style = "max-height: 140px;"
     dataviz_img = "".join(
         [
             f'<a href="{link}"><img style="{style}" src="{link}" alt="Data Preview"/></a>'
             for link in granule.dataviz_links()[0:2]
+            if link.startswith("http")
         ]
     )
     data_links = "".join(
@@ -39,19 +40,19 @@ def _repr_granule_html(granule: Any) -> str:
             for link in granule.data_links()
         ]
     )
-    granule_size = granule.size()
+    granule_size = round(granule.size(), 2)
     # TODO: probably this needs to be integrated on a list data structure
     granule_str = f"""
     {css_inline}
     <div class="bootstrap">
       <div class="container-fluid border">
-        <div class="row border w-100">
+        <div class="row border">
           <div class="col-6">
             <p><b>Data</b>: {data_links}<p/>
             <p><b>Size</b>: {granule_size} MB</p>
             <p><b>Spatial</b>: <span>{granule["umm.SpatialExtent"]}</span></p>
           </div>
-          <div class="col-2 pull-right">
+          <div class="col-2 offset-sm-3 pull-right">
             {dataviz_img}
           </div>
         </div>
