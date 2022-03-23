@@ -176,6 +176,8 @@ class Store(object):
             print(
                 f" Getting {len(granules)} granules, approx download size: {total_size} GB"
             )
+        if not local_path.endswith("/"):
+            local_path = f"{local_path}/"
         elif isinstance(granules[0], str):
             # TODO: Fix this!
             provider = provider
