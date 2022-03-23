@@ -93,7 +93,7 @@ xarray.open_mfdataset(fileset, combine='by_coords')
 For more examples see the `Demo` and `EarthdataSearch` notebooks.
 
 
-Only **Python 3.7+** is supported as required by the black, pydantic packages
+Only **Python 3.7+** is supported as required by the black package
 
 
 ## Code of Conduct
