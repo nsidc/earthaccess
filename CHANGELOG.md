@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+- Dropped unused `pydantic` dependency
+- Added missing `python-datutil` dependency
 
 ## [v0.2.2] 2022-03-23
 - Bug fixes to store to download multi-file granules
