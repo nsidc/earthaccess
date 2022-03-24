@@ -28,7 +28,7 @@ pytest-watch = "^4.2"
 mkdocs = "^1.1"
 mkdocs-material = "^6"
 markdown-include = "^0.6"
-responses = "^0.14"
+responses = "^0.20"
 
 [build-system]
 requires = ["poetry>=0.12"]
