@@ -605,7 +605,7 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pqdm"
-version = "0.1.0"
+version = "0.2.0"
 description = "PQDM is a TQDM and concurrent futures wrapper to allow enjoyable paralellization of progress bars."
 category = "main"
 optional = false
@@ -1032,7 +1032,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "8f674434478545e025126e5fd4a18da2b5fcf863e1d8ab4edc626b148d2c7331"
+content-hash = "6f87735b696e5f0c32b8b9a798f7a8e5de952f95d2b3127f8cde45bcd4e13be9"
 
 [metadata.files]
 aiobotocore = [
@@ -1516,8 +1516,8 @@ pluggy = [
     {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
 pqdm = [
-    {file = "pqdm-0.1.0-py2.py3-none-any.whl", hash = "sha256:da70804b2222a08fc15bf35fe94d5aa321c126e3e9789df25f2c98f482b9d419"},
-    {file = "pqdm-0.1.0.tar.gz", hash = "sha256:5b405b8799001129091d21212b3ae5845059d2ebaf3eec2d6fb8479d8b35c3c0"},
+    {file = "pqdm-0.2.0-py2.py3-none-any.whl", hash = "sha256:0da33a22ebee349a047abf8ef7fd00d85403638101d5e374b421a74188231b62"},
+    {file = "pqdm-0.2.0.tar.gz", hash = "sha256:d99d01fe498d327b440ebfe08c14c84e0dc9ecce6172ef9a31f96bb1aaf4e9e3"},
 ]
 pre-commit = [
     {file = "pre_commit-2.17.0-py2.py3-none-any.whl", hash = "sha256:725fa7459782d7bec5ead072810e47351de01709be838c2ce1726b9591dad616"},

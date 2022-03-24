@@ -13,7 +13,7 @@ python-cmr = "^0.4.1"
 python-dateutil = "^2.1"
 requests = "^2.26"
 s3fs = ">=2021.11, <2023"
-pqdm = "^0.1"
+pqdm = ">=0.1,<0.3"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.812"
