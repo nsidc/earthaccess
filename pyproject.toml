@@ -16,7 +16,7 @@ s3fs = ">=2021.11, <2023"
 pqdm = "^0.1"
 
 [tool.poetry.dev-dependencies]
-mypy = "^0.812"
+mypy = "^0.942"
 black = "^21.11b0"
 isort = "^5"
 autoflake = "^1.3"
