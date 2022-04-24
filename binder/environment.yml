@@ -1,9 +1,10 @@
 name: earthdata-dev
 channels:
 - conda-forge
+- nodefaults
 dependencies:
 - python=3.9
-- jupyterlab=3
+- jupyterlab>=3
 - xarray>=0.19
 - rioxarray>=0.3
 - matplotlib-base>=3.3
@@ -14,10 +15,17 @@ dependencies:
 - h5py>=3.2
 - geopandas>=0.9
 - zarr>=2.9.5
-- s3fs
-- dask
+- earthdata
+# documentation
+- mkdocs>=1.2
+- mkdocs-material>=7.1, <9.0
+- markdown-include>=0.6
+- mkdocstrings>=0.18
+- mkdocs-jupyter=0.18.0
+- pymdown-extensions=9.2
+- pygments=2.11.1
+- pqdm
+- ipywidgets
 - pip
 - pip:
-    - pqdm
-    - zarr-eosdis-store
-    - earthdata
+  - zarr-eosdis-store

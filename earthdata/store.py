@@ -94,7 +94,9 @@ class Store(object):
         :returns: subclass SessionWithHeaderRedirection instance
         """
         if bearer_token and self.auth.authenticated:
-            session = SessionWithHeaderRedirection()
+            session = SessionWithHeaderRedirection(
+                self.auth._credentials[0], self.auth._credentials[1]
+            )
             session.headers.update(
                 {"Authorization": f'Bearer {self.auth.token["access_token"]}'}
             )
@@ -104,33 +106,38 @@ class Store(object):
                 self.auth._credentials[0], self.auth._credentials[1]
             )
 
-    def open(self, granules: List[Any]) -> List[Any]:
+    def open(self, granules: List[Any], provider: str = None) -> List[Any]:
         """
         returns a list of S3 file objects that can be used to access files
         hosted on S3 by third party libraries like xarray
-        :param granules: a list of granules(DataGranule) instances
+        :param granules: a list of granules(DataGranule) instances or list of files
+        :param provider: cloud provider code, used when the list is made of s3 links
         :returns: a list of s3fs "file pointers" to s3 files
         """
-        fileset: List
+        fileset: List = []
+        data_links: List = []
+        if isinstance(granules[0], DataGranule):
+            provider = granules[0]["meta"]["provider-id"]
+            data_links = list(
+                chain.from_iterable(
+                    granule.data_links(access="direct") for granule in granules
+                )
+            )
+            total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
+            print(
+                f" Getting {len(granules)} granules, approx download size: {total_size} GB"
+            )
+        elif isinstance(granules[0], str) and granules[0].startswith("s3"):
+            provider = provider
+            data_links = granules
         if self.auth is None:
             print(
                 "A valid Earthdata login instance is required to retrieve S3 credentials"
             )
             return []
 
-        if not (len(granules) > 0 and isinstance(granules[0], DataGranule)):
-            print("To open a dataset a valid list of DataGranule instances is needed")
-            return []
-        provider = granules[0]["meta"]["provider-id"]
-        cloud_hosted = granules[0].cloud_hosted
-        if not cloud_hosted:
-            print("Can't open files that are not cloud hosted, try with .get()")
-            return []
         s3_fs = self.get_s3fs_session(provider=provider)
-        # We are assuming that the first GET DATA link is the data link
-        # TODO: filter by file type?
-        if s3fs is not None:
-            data_links = [granule.data_links()[0] for granule in granules]
+        if s3_fs is not None:
             try:
                 fileset = [s3_fs.open(file) for file in data_links]
             except Exception:
@@ -145,21 +152,21 @@ class Store(object):
         self,
         granules: List[Any],
         local_path: str = None,
-        direct_access: bool = True,
+        access: str = None,
         provider: str = None,
         threads: int = 8,
     ) -> None:
         """
-        Retrieves data granules from a remote storage system to a local instance.
+        Retrieves data granules from a remote storage system.
         If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
         If we run it outside the us-west-2 region and the data granules are part of a cloud-based collection
         the method will not get any files.
         If we requests data granules from an on-prem collection the data will be effectively downloaded
         to a local directory.
 
-        :param granules: a list of granules(DataGranule) instances
+        :param granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
         :param local_path: local directory to store the remote data granules
-        :param direct_access: use direct S3 access, only possible for cloud collections if the code runs on us-west-2
+        :param access: If set it will use it for the access method.
         :param threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
         :returns: None
         """
@@ -167,21 +174,25 @@ class Store(object):
         if isinstance(granules[0], DataGranule):
             provider = granules[0]["meta"]["provider-id"]
             cloud_hosted = granules[0].cloud_hosted
+            if cloud_hosted and access is None:
+                # TODO: validate that we are in us-west-2
+                access = "direct"
+            if not cloud_hosted and access is None:
+                access = "on_prem"
             data_links = list(
                 chain.from_iterable(
-                    granule.data_links(s3_only=direct_access) for granule in granules
+                    granule.data_links(access=access) for granule in granules
                 )
             )
             total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
             print(
                 f" Getting {len(granules)} granules, approx download size: {total_size} GB"
             )
-        elif isinstance(granules[0], str):
-            # TODO: Fix this!
+        elif isinstance(granules[0], str) and granules[0].startswith("http"):
             provider = provider
             data_links = granules
-            cloud_hosted = direct_access
-        if cloud_hosted and direct_access:
+        if access == "direct":
+            print(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3fs_session(provider)
             # TODO: make this parallel
             for file in data_links:
@@ -199,12 +210,19 @@ class Store(object):
         :param directory: local directory
         :returns: local filepath or an exception
         """
+        # If the get data link is an Opendap location
+        if "/opendap/" in url and url.endswith(".nc.html"):
+            url = url.replace(".html", "")
         local_filename = url.split("/")[-1]
         if not os.path.exists(f"{directory}/{local_filename}"):
             try:
                 # Looks like requests.session is not threadsafe
-                # TODO: make this efficient
+                # TODO: make this efficient using cache and async
                 session = self.get_http_session()
+                r = session.head(url)
+                if "text/html" in r.headers["Content-Type"]:
+                    # print(f"Granule file is not resolving to a valid location: {url}")
+                    return ""
                 with session.get(url, stream=True) as r:
                     r.raise_for_status()
                     with open(f"{directory}/{local_filename}", "wb") as f:

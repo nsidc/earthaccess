@@ -1,4 +1,4 @@
-import pkg_resources
+import pkg_resources  # type: ignore
 
 from .auth import Auth
 from .search import DataCollections, DataGranules

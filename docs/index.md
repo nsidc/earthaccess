@@ -21,7 +21,9 @@
     <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black">
 </a>
 
+</p>
 
+---
 
 ## Overview
 
@@ -52,7 +54,7 @@ poetry install
 
 ## Example Usage
 
-```python
+```py
 from earthdata import Auth, DataGranules, DataCollections, Store
 
 auth = Auth().login() # if we want to access NASA DATA in the cloud

@@ -4,10 +4,46 @@ site_url: https://github.com/betolink/earthdata
 
 theme:
     name: 'material'
+    palette:
+        - scheme: default
+          primary: teal
+          toggle:
+            icon: material/toggle-switch-off-outline
+            name: Switch to dark mode
+        - scheme: slate
+          toggle:
+            icon: material/toggle-switch
+            name: Switch to light mode
 
 repo_name: betolink/earthdata
 repo_url: https://github.com/betolink/earthdata
 edit_uri: ''
 
+plugins:
+  - search
+  - mkdocstrings
+  - mkdocs-jupyter:
+      execute: False
+
 nav:
-    - earthdata: 'index.md'
+    - Overview: 'index.md'
+    - Tutorials:
+        - 'Basic usage': 'tutorials/demo.ipynb'
+        - 'Accessing restricted datasets': 'tutorials/restricted-datasets.ipynb'
+        - 'Accessing on-prem datasets': 'tutorials/onprem.md'
+        - 'Accessing cloud-based datasets': 'tutorials/cloud.md'
+    - User Reference:
+      - Collections:
+          - 'Collection Queries': 'user-reference/collections/collections-query.md'
+          - 'Collection Results': 'user-reference/collections/collections.md'
+      - Granules:
+          - 'Granule Queries': 'user-reference/granules/granules-query.md'
+          - 'Granule Results': 'user-reference/granules/granules.md'
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
