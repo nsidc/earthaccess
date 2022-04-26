@@ -4,7 +4,6 @@ channels:
 - nodefaults
 dependencies:
 - python=3.9
-- jupyterlab>=3
 - xarray>=0.19
 - rioxarray>=0.3
 - matplotlib-base>=3.3
@@ -17,6 +16,8 @@ dependencies:
 - zarr>=2.9.5
 - earthdata
 # documentation
+- jupyterlab>=3
+- ipywidgets
 - mkdocs>=1.2
 - mkdocs-material>=7.1, <9.0
 - markdown-include>=0.6
@@ -24,8 +25,6 @@ dependencies:
 - mkdocs-jupyter=0.18.0
 - pymdown-extensions=9.2
 - pygments=2.11.1
-- pqdm
-- ipywidgets
 - pip
 - pip:
   - zarr-eosdis-store

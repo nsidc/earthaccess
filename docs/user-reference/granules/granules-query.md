@@ -1,5 +1,8 @@
 # Documentation for `Granules`
 
+
+### DataGranules is the class `earthdata` uses to query CMR at the **granule** level.
+
 ::: earthdata.search.DataGranules
     selection:
       inherited_members: true

@@ -1,4 +1,6 @@
-# Documentation for `Collections`
+# Documentation for `DataCollections`
+
+### DataCollections is the class `earthdata` uses to query CMR at the **dataset** level.
 
 ::: earthdata.search.DataCollections
     selection:
