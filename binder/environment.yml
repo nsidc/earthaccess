@@ -17,7 +17,6 @@ dependencies:
 - earthdata
 # documentation
 - jupyterlab>=3
-- ipywidgets
 - mkdocs>=1.2
 - mkdocs-material>=7.1, <9.0
 - markdown-include>=0.6
