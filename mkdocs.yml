@@ -47,6 +47,9 @@ nav:
           - 'Granule Results': 'user-reference/granules/granules.md'
 
 markdown_extensions:
+  - meta
+  - toc:
+      toc_depth: 1
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite

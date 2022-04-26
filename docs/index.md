@@ -1,3 +1,9 @@
+---
+hide:
+  - toc
+---
+
+
 # earthdata 🌍
 
 <p align="center">
