@@ -1,11 +1,14 @@
 # Changelog
 
 ## [Unreleased]
+
 - Fixed bug with CMR tokens
 - dropped python 3.7 support
 - updated python-cmr to NASA fork
 - added documentation for readthedocs and github
 - Auth can refresh CMR tokens
+- Dropped unused `pydantic` dependency
+- Added missing `python-datutil` dependency
 
 ## [v0.2.2] 2022-03-23
 - Bug fixes to store to download multi-file granules

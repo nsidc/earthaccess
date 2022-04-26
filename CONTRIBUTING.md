@@ -10,7 +10,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 - Read the documentation (working on adding more)
 - create the minimally reproducible issue
 - try to edit the relevant code and see if it fixes it
-- submit the fix to the provlem as a pull request
+- submit the fix to the problem as a pull request
 - include an explanation of what you did and why
 
 ## First steps to contribute new features
