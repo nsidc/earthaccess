@@ -1,5 +1,6 @@
 .idea
 .ipynb_checkpoints
+.python-version
 .mypy_cache
 __pycache__
 .pytest_cache
@@ -15,6 +16,7 @@ Pipfile
 Pipfile.lock
 build/
 *.egg-info/
+docs/tutorials/data
 
 # OS X
 .DS_Store

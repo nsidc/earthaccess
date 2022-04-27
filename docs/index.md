@@ -1,3 +1,9 @@
+---
+hide:
+  - toc
+---
+
+
 # earthdata 🌍
 
 <p align="center">
@@ -21,7 +27,9 @@
     <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black">
 </a>
 
+</p>
 
+---
 
 ## Overview
 
@@ -52,7 +60,7 @@ poetry install
 
 ## Example Usage
 
-```python
+```py
 from earthdata import Auth, DataGranules, DataCollections, Store
 
 auth = Auth().login() # if we want to access NASA DATA in the cloud
@@ -104,7 +112,7 @@ See [Code of Conduct](CODE_OF_CONDUCT.md)
 
 * This repository is not actively supported by NSIDC but we welcome issue submissions and pull requests in order to foster community contribution.
 
-<img src="docs/nsidc-logo.png" width="84px" />
+<img src="nsidc-logo.png" width="84px" />
 
 ## Contributing Guide
 

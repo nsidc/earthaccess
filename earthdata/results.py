@@ -117,7 +117,9 @@ class DataCollection(CustomDict):
         return ""
 
     def abstract(self) -> str:
-        return self["umm"]["Abstract"]
+        if "Abstract" in self["umm"]:
+            return self["umm"]["Abstract"]
+        return ""
 
     def landing_page(self) -> str:
         links = self._filter_related_links("LANDING PAGE")
@@ -204,12 +206,17 @@ class DataGranule(CustomDict):
         """
         returns the total size for the granule in MB
         """
-        total_size = sum(
-            [
-                float(s["Size"])
-                for s in self["umm"]["DataGranule"]["ArchiveAndDistributionInformation"]
-            ]
-        )
+        try:
+            total_size = sum(
+                [
+                    float(s["Size"])
+                    for s in self["umm.DataGranule.ArchiveAndDistributionInformation"]
+                    if "ArchiveAndDistributionInformation" in self["umm"]["DataGranule"]
+                ]
+            )
+        except Exception:
+            total_size = 0
+            pass
         return total_size
 
     def _derive_s3_link(self, links: List[str]) -> List[str]:
@@ -223,15 +230,19 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(self, s3_only: bool = False) -> List[str]:
+    def data_links(self, access: str = "on_prem") -> List[str]:
+        """
+        Returns the data links form a granule
+        :param access: direct or on_prem
+        :returns: the data link for the requested access type
+        """
         links = self._filter_related_links("GET DATA")
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
-        if self.cloud_hosted and s3_only:
+        if self.cloud_hosted and access == "direct":
             if len(s3_links) == 0 and len(links) > 0:
                 return self._derive_s3_link(links)
             else:
                 return s3_links
-        links.extend(s3_links)
         return links
 
     def dataviz_links(self) -> List[str]:

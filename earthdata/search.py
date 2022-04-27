@@ -192,7 +192,8 @@ class DataCollections(CollectionQuery):
 
 class DataGranules(GranuleQuery):
     """
-    A Granule oriented client for NASA CMR API
+    A Granule oriented client for NASA CMR
+
     API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html
     """
 

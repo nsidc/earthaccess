@@ -1,24 +1,21 @@
-name: Test
+name: Documentation
 
 on:
   push:
-  pull_request:
-    types: [opened, synchronize]
 
 jobs:
-  test:
+  documentation:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, '3.10']
-      fail-fast: false
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v1
+      - uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
+          channels: conda-forge
+          mamba-version: "*"
+          activate-environment: earthdata-dev
+          environment-file: binder/environment.yml
       - name: Get full python version
         id: full-python-version
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
@@ -40,7 +37,11 @@ jobs:
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
       - name: Install Dependencies
         run: poetry install
-      - name: Test
-        run: poetry run bash scripts/test.sh
-      - name: Upload coverage
-        uses: codecov/codecov-action@v1
+      - name: Build docs
+        run: poetry run bash scripts/build-docs.sh
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

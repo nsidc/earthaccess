@@ -1,13 +1,57 @@
 site_name: earthdata
-site_description: Client library for NASA APIs
-site_url: https://github.com/betolink/earthdata
+site_description: Client library for NASA Earthdata APIs
+site_url: https://github.com/nsidc/earthdata
 
 theme:
-    name: 'material'
+  name: 'material'
+  logo: earth.png
+  favicon: earth.png
+  palette:
+    - scheme: default
+      primary: teal
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 repo_name: betolink/earthdata
-repo_url: https://github.com/betolink/earthdata
+repo_url: https://github.com/nsidc/earthdata
 edit_uri: ''
 
+plugins:
+  - search
+  - mkdocstrings
+  - mkdocs-jupyter:
+      execute: False
+
 nav:
-    - earthdata: 'index.md'
+  - OVERVIEW: 'index.md'
+  - TUTORIALS:
+      - 'Basic usage': 'tutorials/demo.ipynb'
+  - HOW-TO:
+      - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
+      - 'Search and access on-prem datasets': 'tutorials/onprem.md'
+      - 'Search and cloud-based datasets': 'tutorials/cloud.md'
+  - USER REFERENCE:
+      - Glossary:
+          - 'NASA Glossary': 'user-reference/glossary/nasa-glossary.md'
+          - 'Cloud Computing Terminology': 'user-reference/glossary/cloud-glossary.md'
+      - Collections API:
+          - 'Collection Queries': 'user-reference/collections/collections-query.md'
+          - 'Collection Results': 'user-reference/collections/collections.md'
+      - Granules API:
+          - 'Granule Queries': 'user-reference/granules/granules-query.md'
+          - 'Granule Results': 'user-reference/granules/granules.md'
+
+markdown_extensions:
+  - meta
+  - toc:
+      toc_depth: 1
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
