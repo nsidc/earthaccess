@@ -220,9 +220,10 @@ class Store(object):
                 # TODO: make this efficient using cache and async
                 session = self.get_http_session()
                 r = session.head(url)
-                if "text/html" in r.headers["Content-Type"]:
-                    # print(f"Granule file is not resolving to a valid location: {url}")
-                    return ""
+                if "Content-Type" in r.headers:
+                    if "text/html" in r.headers["Content-Type"]:
+                        # print(f"Granule file is not resolving to a valid location: {url}")
+                        return ""
                 with session.get(url, stream=True) as r:
                     r.raise_for_status()
                     with open(f"{directory}/{local_filename}", "wb") as f:
