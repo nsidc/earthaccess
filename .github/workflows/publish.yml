@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: verify version matches git tag
+        run: scripts/verify_tag.sh
       - name: Build and publish to pypi
         uses: JRubics/poetry-publish@v1.8
         with:
