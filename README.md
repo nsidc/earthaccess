@@ -21,6 +21,10 @@
     <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black">
 </a>
 
+<a href="https://nsidc.github.io/earthdata/" target="_blank">
+    <img src="https://readthedocs.org/projects/earthdata/badge/?version=latest&style=plastic" alt="Documentation link">
+</a>
+
 
 
 ## Overview
@@ -55,7 +59,7 @@ poetry install
 ```python
 from earthdata import Auth, DataGranules, DataCollections, Store
 
-auth = Auth().login() # if we want to access NASA DATA in the cloud
+auth = Auth().login(strategy="netrc") # if we want to access NASA DATA in the cloud
 
 # To search for collecrtions (datasets)
 
@@ -74,7 +78,11 @@ counts = GranuleQuery.hits()
 granules = GranuleQuery.get(10)
 
 # earthdata provides some convenience functions for each data granule
-data_links = [granule.data_links() for granule in granules]
+data_links = [granule.data_links(access="direct") for granule in granules]
+
+# or if the data is an on-prem dataset
+
+data_links = [granule.data_links(access="onprem") for granule in granules]
 
 # The Store class allows to get the granules from on-prem locations with get()
 # NOTE: Some datasets require users to accept a Licence Agreement before accessing them
@@ -83,17 +91,17 @@ store = Store(auth)
 # This works with both, on-prem or cloud based collections**
 store.get(granules, local_path='./data')
 
-# if you're in a AWS instance (us-west-2) you can use open() to get a fileset!
+# if you're in a AWS instance (us-west-2) you can use open() to get a fileset of S3 files!
 fileset = store.open(granules)
 
-# Given that this is gridded data we could
+# Given that this is gridded data (Level 3 or up) we could
 xarray.open_mfdataset(fileset, combine='by_coords')
 ```
 
 For more examples see the `Demo` and `EarthdataSearch` notebooks.
 
 
-Only **Python 3.7+** is supported as required by the black package
+Only **Python 3.8+** is supported.
 
 
 ## Code of Conduct
