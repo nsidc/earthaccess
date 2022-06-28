@@ -1,4 +1,6 @@
 # DAACS ~= NASA Earthdata data centers
+from typing import Union
+
 DAACS = [
     {
         "short-name": "NSIDC",
@@ -84,3 +86,20 @@ CLOUD_PROVIDERS = [
     "GHRC_DAAC",
     "ORNL_CLOUD",
 ]
+
+
+def find_provider(
+    daac_short_name: str = None, cloud_hosted: bool = None
+) -> Union[str, None]:
+    for daac in DAACS:
+        if daac_short_name == daac["short-name"]:
+            if cloud_hosted:
+                if len(daac["cloud-providers"]) > 0:
+                    return daac["cloud-providers"][0]
+                else:
+                    # We found the DAAC but it does not have cloud data
+                    return daac["on-prem-providers"][0]
+            else:
+                # return on prem provider code
+                return daac["on-prem-providers"][0]
+    return None

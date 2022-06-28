@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthdata"
-version = "0.3.1"
+version = "0.4.0"
 description = "Client library for NASA Earthdata APIs"
 authors = ["Luis Lopez <betolin@gmail.com>"]
 license = "MIT"
@@ -13,7 +13,10 @@ python-benedict = ">=0.25"
 pqdm = ">=0.1"
 requests = ">=2.26"
 s3fs = ">=2021.11, <2024"
+fsspec = ">=2022.1"
 tinynetrc = "^1.3.1"
+aiofiles = ">=0.8.0"
+aiohttp = ">=3.8.0"
 
 [tool.poetry.dev-dependencies]
 mypy = ">=0.812"
@@ -37,7 +40,6 @@ responses = ">=0.14"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
 ipywidgets = "^7.7.0"
-widgetsnbextension = "^3.6.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

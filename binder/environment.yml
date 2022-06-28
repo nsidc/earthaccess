@@ -5,6 +5,7 @@ channels:
 dependencies:
 - python=3.9
 - xarray>=0.19
+- dask>=2022.1
 - rioxarray>=0.3
 - matplotlib-base>=3.3
 - cartopy>=0.18.0
@@ -14,8 +15,9 @@ dependencies:
 - h5py>=3.2
 - geopandas>=0.9
 - zarr>=2.9.5
-- earthdata
-# documentation
+# - earthdata
+# documentation and profiling
+- memray>=1.1
 - jupyterlab>=3
 - mkdocs>=1.2
 - mkdocs-material>=7.1, <9.0

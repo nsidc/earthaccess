@@ -127,16 +127,18 @@ class Auth(object):
         return False
 
     def get_s3_credentials(
-        self, cloud_provider: str = ""
+        self, daac: str = "", provider: str = ""
     ) -> Union[Dict[str, str], None]:
         """
         gets AWS S3 credentials for a given NASA cloud provider
         :param cloud_provider: a NASA DAAC cloud provider i.e. POCLOUD
         :returns: a python dictionary with the S3 keys or None
         """
-        auth_url = self._get_cloud_auth_url(cloud_provider)
+        auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
         if auth_url.startswith("https://"):
+            print(auth_url)
             cumulus_resp = self._session.get(auth_url, timeout=10, allow_redirects=True)
+            print(cumulus_resp.url)
             auth_resp = self._session.get(
                 cumulus_resp.url, allow_redirects=True, timeout=10
             )
@@ -149,9 +151,7 @@ class Auth(object):
         else:
             # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
             # does not have cloud collections yet
-            print(
-                f"Credentials for the cloud provider {cloud_provider} are not available"
-            )
+            print(f"Credentials for the cloud provider {daac} are not available")
             return None
 
     def get_session(self, bearer_token: bool = False) -> SessionWithHeaderRedirection:
@@ -276,17 +276,18 @@ class Auth(object):
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34
         netrc_path = Path().home().joinpath(".netrc")
-        netrc_path.touch(mode=600, exist_ok=True)
+        netrc_path.touch(mode=0o600, exist_ok=True)
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
         my_netrc.save()
         return True
 
-    def _get_cloud_auth_url(self, cloud_provider: str = "") -> str:
-        for provider in DAACS:
+    def _get_cloud_auth_url(self, daac_shortname: str = "", provider: str = "") -> str:
+        for daac in DAACS:
             if (
-                cloud_provider in provider["cloud-providers"]
-                and len(provider["s3-credentials"]) > 0
+                daac_shortname == daac["short-name"]
+                or provider in daac["cloud_providers"]
+                and len(daac["s3-credentials"]) > 0
             ):
-                return str(provider["s3-credentials"])
+                return str(daac["s3-credentials"])
         return ""

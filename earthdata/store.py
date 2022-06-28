@@ -2,34 +2,54 @@ import datetime
 import os
 import shutil
 import traceback
+from copy import deepcopy
 from itertools import chain
 from typing import Any, List, Union
 from uuid import uuid4
 
+import aiohttp
+import fsspec
 import s3fs
 from pqdm.threads import pqdm
 
-from .auth import SessionWithHeaderRedirection
+from .daac import find_provider
 from .results import DataGranule
 from .search import DataCollections
 
 
 class Store(object):
     """
-    Store class to access granules on prem or in the cloud.
+    Store class to access granules on-prem or in the cloud.
     """
 
     def __init__(self, auth: Any) -> None:
         if auth.authenticated is True:
             self.auth = auth
+            # Async operation warning, in a notebook we're already using async
+            self.jar = aiohttp.CookieJar(unsafe=True)
+            fsspec.config.conf["https"] = dict(
+                client_kwargs={
+                    "auth": aiohttp.BasicAuth(
+                        self.auth._credentials[0], self.auth._credentials[1]
+                    ),
+                    "cookie_jar": self.jar,
+                }
+            )
+            self.s3_fs = None
+            self.initial_ts = datetime.datetime.now()
         else:
+            print("Warning: the current session is not authenticated with NASA")
             self.auth = None
 
-    def _derive_provider(self, concept_id: str = None) -> str:
+    def _derive_concept_provider(self, concept_id: str = None) -> str:
         if concept_id is not None:
             provider = concept_id.split("-")[1]
             return provider
         return ""
+
+    def _derive_daac_provider(self, daac: str = None) -> Union[str, None]:
+        provider = find_provider(daac, True)
+        return provider
 
     def _is_cloud_collection(self, concept_id: str = None) -> bool:
         collection = DataCollections(self.auth).concept_id(concept_id).get()
@@ -37,79 +57,61 @@ class Store(object):
             return True
         return False
 
-    def get_file_session(
-        self,
-        granules: List[Any] = None,
-        concept_id: str = None,
-        cloud_access: bool = False,
-    ) -> Union[SessionWithHeaderRedirection, s3fs.S3FileSystem]:
-        """
-        if the collection is a cloud collection our file session will be a s3fs session,
-        if the collection is hosted by a DAAC, our session will be an https session.
-        """
-        if granules is not None and len(granules) > 0:
-            cloud_hosted = granules[0].cloud_hosted
-            provider = granules[0]["meta"]["provider-id"]
-        if concept_id is not None:
-            cloud_hosted = self._is_cloud_collection(concept_id)
-            provider = self._derive_provider(concept_id)
-        if cloud_hosted and cloud_access:
-            return self.get_s3fs_session(provider=provider)
-        elif cloud_hosted and cloud_access is False:
-            return self.get_http_session()
-        return self.get_http_session()
-
     def get_s3fs_session(
-        self, provider: str = None, concept_id: str = None
+        self, daac: str = None, concept_id: str = None, provider: str = None
     ) -> s3fs.S3FileSystem:
         """
-        get a s3fs instance for a given cloud provider
-        :param provider: any of the DAAC cloud providers e.g. POCLOUD
-        :returns: a new s3fs instance
+        Returns a s3fs instance for a given cloud provider / DAAC
+        :param daac: any of the DAACs e.g. NSIDC, PODAAC
+        :returns: a s3fs instance
         """
         if self.auth is not None:
             if concept_id is not None:
-                provider = self._derive_provider(concept_id)
-            s3_credentials = self.auth.get_s3_credentials(provider)
-            s3_fs = s3fs.S3FileSystem(
-                key=s3_credentials["accessKeyId"],
-                secret=s3_credentials["secretAccessKey"],
-                token=s3_credentials["sessionToken"],
-            )
-            return s3_fs
+                provider = self._derive_concept_provider(concept_id)
+                s3_credentials = self.auth.get_s3_credentials(provider=provider)
+            elif daac is not None:
+                s3_credentials = self.auth.get_s3_credentials(daac=daac)
+            elif provider is not None:
+                s3_credentials = self.auth.get_s3_credentials(provider=provider)
+            now = datetime.datetime.now()
+            print(s3_credentials)
+            delta_minutes = now - self.initial_ts
+            if self.s3_fs is None or delta_minutes.minute > 59:
+                self.s3_fs = s3fs.S3FileSystem(
+                    key=s3_credentials["accessKeyId"],
+                    secret=s3_credentials["secretAccessKey"],
+                    token=s3_credentials["sessionToken"],
+                )
+                self.initial_ts = datetime.datetime.now()
+            return deepcopy(self.s3_fs)
         else:
             print(
                 "A valid Earthdata login instance is required to retrieve S3 credentials"
             )
             return None
 
-    def get_http_session(
+    def get_https_session(
         self, bearer_token: bool = False
-    ) -> SessionWithHeaderRedirection:
+    ) -> fsspec.AbstractFileSystem:
         """
-        returns a new request session instance, since looks like using a session in a context is not threadsafe
-        https://github.com/psf/requests/issues/1871
-        Session with bearer tokens are used by CMR, simple auth sessions can be used do download data
-        from on-prem DAAC data centers.
-        :returns: subclass SessionWithHeaderRedirection instance
+        Returns a FSSPEC HTTPS session with bearer tokens that are used by CMR.
+        This HTTPS session can be used to download granules if we want to use a direct, lower level API
+        :returns: FSSPEC HTTPFileSystem (aiohttp client session)
         """
+        session = fsspec.filesystem("https")
         if bearer_token and self.auth.authenticated:
-            session = SessionWithHeaderRedirection(
-                self.auth._credentials[0], self.auth._credentials[1]
-            )
-            session.headers.update(
-                {"Authorization": f'Bearer {self.auth.token["access_token"]}'}
-            )
-            return session
-        else:
-            return SessionWithHeaderRedirection(
-                self.auth._credentials[0], self.auth._credentials[1]
-            )
+            session.headers[
+                "Authorization"
+            ] = f'Bearer {self.auth.token["access_token"]}'
+        return session
 
-    def open(self, granules: List[Any], provider: str = None) -> List[Any]:
+    def open(
+        self, granules: List[Any], provider: str = None, direct_access: bool = False
+    ) -> List[Any]:
         """
-        returns a list of S3 file objects that can be used to access files
-        hosted on S3 by third party libraries like xarray
+        returns a list of fsspec file-like objects that can be used to access files
+        hosted on S3 or HTTPS by third party libraries like xarray.
+
         :param granules: a list of granules(DataGranule) instances or list of files
         :param provider: cloud provider code, used when the list is made of s3 links
         :returns: a list of s3fs "file pointers" to s3 files
@@ -127,7 +129,10 @@ class Store(object):
             print(
                 f" Getting {len(granules)} granules, approx download size: {total_size} GB"
             )
-        elif isinstance(granules[0], str) and granules[0].startswith("s3"):
+        elif isinstance(granules[0], str) and (
+            granules[0].startswith("s3") or granules[0].startswith("http")
+        ):
+            # TODO: cleaver method to derive the DAAC from url?
             provider = provider
             data_links = granules
         if self.auth is None:
@@ -136,17 +141,29 @@ class Store(object):
             )
             return []
 
-        s3_fs = self.get_s3fs_session(provider=provider)
-        if s3_fs is not None:
-            try:
-                fileset = [s3_fs.open(file) for file in data_links]
-            except Exception:
-                print(
-                    "An exception occurred while trying to access remote files on S3: "
-                    "This may be caused by trying to access the data outside the us-west-2 region"
-                    f"Exception: {traceback.format_exc()}"
-                )
-        return fileset
+        if direct_access:
+            s3_fs = self.get_s3fs_session(provider=provider)
+            if s3_fs is not None:
+                try:
+                    fileset = [s3_fs.open(file) for file in data_links]
+                except Exception:
+                    print(
+                        "An exception occurred while trying to access remote files on S3: "
+                        "This may be caused by trying to access the data outside the us-west-2 region"
+                        f"Exception: {traceback.format_exc()}"
+                    )
+            return fileset
+        else:
+            https_fs = self.get_https_session()
+            if https_fs is not None:
+                try:
+                    fileset = [https_fs.open(file) for file in data_links]
+                except Exception:
+                    print(
+                        "An exception occurred while trying to access remote files via HTTPS: "
+                        f"Exception: {traceback.format_exc()}"
+                    )
+            return fileset
 
     def get(
         self,
@@ -166,7 +183,7 @@ class Store(object):
 
         :param granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
         :param local_path: local directory to store the remote data granules
-        :param access: If set it will use it for the access method.
+        :param access: direct or onprem, if set it will use it for the access method.
         :param threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
         :returns: None
         """
@@ -194,7 +211,7 @@ class Store(object):
         if access == "direct":
             print(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3fs_session(provider)
-            # TODO: make this parallel
+            # TODO: make this parallel or concurrent
             for file in data_links:
                 s3_fs.get(file, local_path)
                 print(f"Retrieved: {file} to {local_path}")
@@ -216,13 +233,14 @@ class Store(object):
         local_filename = url.split("/")[-1]
         if not os.path.exists(f"{directory}/{local_filename}"):
             try:
-                # Looks like requests.session is not threadsafe
-                # TODO: make this efficient using cache and async
-                session = self.get_http_session()
+                # TODO: make this efficient using cache
+                session = self.get_https_session()
                 r = session.head(url)
                 if "Content-Type" in r.headers:
                     if "text/html" in r.headers["Content-Type"]:
-                        # print(f"Granule file is not resolving to a valid location: {url}")
+                        print(
+                            f"Granule file is not resolving to a valid location: {url}"
+                        )
                         return ""
                 with session.get(url, stream=True) as r:
                     r.raise_for_status()
