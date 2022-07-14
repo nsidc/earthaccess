@@ -1,7 +1,6 @@
 name: earthdata-dev
 channels:
 - conda-forge
-- nodefaults
 dependencies:
 - python=3.9
 - xarray>=0.19
@@ -15,7 +14,6 @@ dependencies:
 - h5py>=3.2
 - geopandas>=0.9
 - zarr>=2.9.5
-# - earthdata
 # documentation and profiling
 - memray>=1.1
 - jupyterlab>=3
@@ -28,4 +26,5 @@ dependencies:
 - pygments=2.11.1
 - pip
 - pip:
-  - zarr-eosdis-store
+  - poetry
+  - earthdata

@@ -5,6 +5,40 @@ email, or any other method with the owners of this repository before making a ch
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+
+## Development environment
+
+
+`earthdata` is a Python library that uses Poetry to build and publish the package to PyPi, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda. 
+
+### Using Conda
+
+If we have `miniconda` installed we can use the environment file included in the binder folder, this will install all the libraries we need (including Poetry) to start developing `earthdata`
+
+```bash
+>conda env update -f binder/environment.yml
+>conda activate earthdata-dev
+>poetry install
+```
+
+After activating our environment and installing the library with Poetry we can run Jupyter lab and start testing the local distribution or we can use the scripts inside `scripts` to run the tests and linting. 
+Now we can create a feature branch and push those changes to our fork!
+
+
+### Using Poetry
+
+If we want to use Poetry, fir we need to [install it](). After installing Poetry we can use the same workflow we used for Conda, first we install the library locally:
+
+```bash
+>poetry install
+```
+
+and now we can run the local Jupyter Lab and run the scripts etc. using Poetry:
+
+```bash
+>poetry run jupyter lab
+```
+
 ## First Steps to fix an issue or bug
 
 - Read the documentation (working on adding more)

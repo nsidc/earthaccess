@@ -39,18 +39,23 @@ class TestStoreSessions(unittest.TestCase):
 
     @responses.activate
     def test_store_can_create_s3_fsspec_session(self):
-        responses.add(
-            responses.GET,
-            "https://data.nsidc.earthdatacloud.nasa.gov/s3credentials",
-            json={
-                "accessKeyId": "sure",
-                "secretAccessKey": "correct",
-                "sessionToken": "whynot",
-            },
-            status=200,
-        )
+        from earthdata.daac import DAACS
+
+        for daac in DAACS:
+            if "s3-credentials" in daac:
+                responses.add(
+                    responses.GET,
+                    daac["s3-credentials"],
+                    json={
+                        "accessKeyId": "sure",
+                        "secretAccessKey": "correct",
+                        "sessionToken": "whynot",
+                    },
+                    status=200,
+                )
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
-        s3_fs = store.get_s3fs_session(daac="NSIDC")
-        self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
+        for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC"]:
+            s3_fs = store.get_s3fs_session(daac=daac)
+            self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
         return None

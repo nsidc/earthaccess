@@ -74,9 +74,8 @@ class Store(object):
             elif provider is not None:
                 s3_credentials = self.auth.get_s3_credentials(provider=provider)
             now = datetime.datetime.now()
-            print(s3_credentials)
             delta_minutes = now - self.initial_ts
-            if self.s3_fs is None or delta_minutes.minute > 59:
+            if self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59:
                 self.s3_fs = s3fs.S3FileSystem(
                     key=s3_credentials["accessKeyId"],
                     secret=s3_credentials["secretAccessKey"],

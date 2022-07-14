@@ -286,7 +286,7 @@ class Auth(object):
         for daac in DAACS:
             if (
                 daac_shortname == daac["short-name"]
-                or provider in daac["cloud_providers"]
+                or provider in daac["cloud-providers"]
                 and len(daac["s3-credentials"]) > 0
             ):
                 return str(daac["s3-credentials"])
