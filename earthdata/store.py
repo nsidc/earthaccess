@@ -4,7 +4,7 @@ import shutil
 import traceback
 from copy import deepcopy
 from itertools import chain
-from typing import Any, List, Union
+from typing import Any, List, Type, Union
 from uuid import uuid4
 
 import aiohttp
@@ -12,6 +12,7 @@ import fsspec
 import s3fs
 from pqdm.threads import pqdm
 
+from .aiosession import AioSession
 from .daac import find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -27,14 +28,6 @@ class Store(object):
             self.auth = auth
             # Async operation warning, in a notebook we're already using async
             self.jar = aiohttp.CookieJar(unsafe=True)
-            fsspec.config.conf["https"] = dict(
-                client_kwargs={
-                    "auth": aiohttp.BasicAuth(
-                        self.auth._credentials[0], self.auth._credentials[1]
-                    ),
-                    "cookie_jar": self.jar,
-                }
-            )
             self.s3_fs = None
             self.initial_ts = datetime.datetime.now()
         else:
@@ -75,7 +68,9 @@ class Store(object):
                 s3_credentials = self.auth.get_s3_credentials(provider=provider)
             now = datetime.datetime.now()
             delta_minutes = now - self.initial_ts
-            if self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59:
+            if (
+                self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59
+            ) and s3_credentials is not None:
                 self.s3_fs = s3fs.S3FileSystem(
                     key=s3_credentials["accessKeyId"],
                     secret=s3_credentials["secretAccessKey"],
@@ -89,6 +84,10 @@ class Store(object):
             )
             return None
 
+    def _get_session(self):
+        session = AioSession()
+        return session
+
     def get_https_session(
         self, bearer_token: bool = False
     ) -> fsspec.AbstractFileSystem:
@@ -97,7 +96,20 @@ class Store(object):
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
         :returns: FSSPEC HTTPFileSystem (aiohttp client session)
         """
-        session = fsspec.filesystem("https")
+        cred = self.auth.get_session()
+        resp = cred.get("https://urs.earthdata.nasa.gov")
+        print(resp.headers)
+        fsspec.config.conf["https"] = dict(
+            client_kwargs={
+                "auth": aiohttp.BasicAuth(
+                    self.auth._credentials[0], self.auth._credentials[1]
+                ),
+                "cookie_jar": self.jar,
+                "headers": resp.headers,
+            }
+        )
+        session = fsspec.filesystem("https", get_session=self._get_session)
+
         if bearer_token and self.auth.authenticated:
             session.headers[
                 "Authorization"
