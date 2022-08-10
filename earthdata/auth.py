@@ -78,6 +78,10 @@ class Auth(object):
         return self
 
     def refresh_tokens(self) -> bool:
+        """Refresh CMR tokens
+        Tokens are used to do authenticated queries on CMR for restricted and early access datastes
+        This method renews the tokens to make sure we can query the collections allowed to our EDL user.
+        """
         if len(self.tokens) == 0:
             resp_tokens = self._generate_user_token(
                 username=self._credentials[0], password=self._credentials[1]
