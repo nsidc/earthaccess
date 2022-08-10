@@ -216,7 +216,6 @@ class DataGranule(CustomDict):
             )
         except Exception:
             total_size = 0
-            pass
         return total_size
 
     def _derive_s3_link(self, links: List[str]) -> List[str]:

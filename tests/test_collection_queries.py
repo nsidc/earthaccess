@@ -1,5 +1,4 @@
 # package imports
-import pytest
 from earthdata.search import DataCollections
 
 

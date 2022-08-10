@@ -1,8 +1,7 @@
-# Documentation for `Collection Results`
+# Documentation for `Store`
 
-::: earthdata.results.DataCollection
+::: earthdata.store.Store
     options:
       inherited_members: true
     show_root_heading: true
     show_source: false
-

@@ -17,7 +17,7 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
 
-repo_name: betolink/earthdata
+repo_name: nsidc/earthdata
 repo_url: https://github.com/nsidc/earthdata
 edit_uri: ''
 
@@ -45,7 +45,8 @@ nav:
       - Granules API:
           - 'Granule Queries': 'user-reference/granules/granules-query.md'
           - 'Granule Results': 'user-reference/granules/granules.md'
-
+      - Store API:
+          - 'Store': 'user-reference/store/store.md'
 markdown_extensions:
   - meta
   - toc:

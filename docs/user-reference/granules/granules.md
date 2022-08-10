@@ -1,11 +1,10 @@
 # Documentation for `Granule Results`
 
-::: earthdata.search.DataGranule
-    selection:
+::: earthdata.results.DataGranule
+    options:
       inherited_members: true
-    rendering:
-      show_root_heading: true
-      show_source: false
+    show_root_heading: true
+    show_source: false
 
 
 
