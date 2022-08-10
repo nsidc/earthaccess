@@ -48,7 +48,7 @@ nav:
       - Store API:
           - 'Store': 'user-reference/store/store.md'
       - Auth API:
-          - 'Store': 'user-reference/auth/auth.md'
+          - 'Auth': 'user-reference/auth/auth.md'
 markdown_extensions:
   - meta
   - toc:
