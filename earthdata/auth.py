@@ -284,7 +284,7 @@ class Auth(object):
             netrc_path.touch(exist_ok=True)
             os.chmod(netrc_path.absolute(), 0o600)
         except Exception as e:
-            print(e.with_traceback())
+            print(e)
             return False
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
