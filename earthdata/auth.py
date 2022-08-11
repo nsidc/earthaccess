@@ -279,8 +279,13 @@ class Auth(object):
 
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34
-        netrc_path = Path().home().joinpath(".netrc")
-        netrc_path.touch(mode=0o600, exist_ok=True)
+        try:
+            netrc_path = Path().home().joinpath(".netrc")
+            netrc_path.touch(exist_ok=True)
+            os.chmod(netrc_path.absolute(), 0o600)
+        except Exception as e:
+            print(e.with_traceback())
+            return False
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
         my_netrc.save()
