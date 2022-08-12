@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+* `store`
+    * uses fsspec s3fs for in cloud access and https sessions for out of region access
+    * we can open files with fsspec in and out of region (stream into xarray)
+* `auth`
+    * we can persist our credentials into a `.netrc` file
+
+* Documentation
+    * added store, auth to docs and updated mkdocs congif
+
 
 ## [v0.3.0] 2022-04-28
 
