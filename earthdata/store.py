@@ -217,7 +217,12 @@ class Store(object):
             s3_fs = self.get_s3fs_session(provider=provider)
             if s3_fs is not None:
                 try:
-                    fileset = [s3_fs.open(file) for file in data_links]
+
+                    def multi_thread_open(url: str) -> Any:
+                        return s3_fs.open(url)
+
+                    fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
+
                 except Exception:
                     print(
                         "An exception occurred while trying to access remote files on S3: "
@@ -230,8 +235,8 @@ class Store(object):
             if https_fs is not None:
                 try:
 
-                    def multi_thread_open(file: str) -> Any:
-                        return https_fs.open(file)
+                    def multi_thread_open(url: str) -> Any:
+                        return https_fs.open(url)
 
                     fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
 

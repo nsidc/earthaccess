@@ -234,7 +234,7 @@ class DataGranules(GranuleQuery):
         :returns: query results as a list
         """
         # TODO: implement caching and scroll
-        page_size = min(limit, 2000)
+        page_size = 2000
         url = self._build_url()
 
         results: List = []
