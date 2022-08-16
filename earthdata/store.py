@@ -82,7 +82,7 @@ class Store(object):
                 s3_credentials = self.auth.get_s3_credentials(provider=provider)
             now = datetime.datetime.now()
             delta_minutes = now - self.initial_ts
-            # TODO: test this mockinf the time or use https://github.com/dbader/schedule
+            # TODO: test this mocking the time or use https://github.com/dbader/schedule
             if (
                 self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59
             ) and s3_credentials is not None:
@@ -103,9 +103,9 @@ class Store(object):
         self, bearer_token: bool = False
     ) -> fsspec.AbstractFileSystem:
         """
-        Returns a FSSPEC HTTPS session with bearer tokens that are used by CMR.
+        Returns an async fsspec HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
-        :returns: FSSPEC HTTPFileSystem (aiohttp client session)
+        :returns: fsspec HTTPFileSystem (aiohttp client session)
         """
         req = self.auth.get_session()
         dummy_oauth_resource = (
@@ -140,9 +140,9 @@ class Store(object):
         self, bearer_token: bool = False
     ) -> fsspec.AbstractFileSystem:
         """
-        Returns a FSSPEC HTTPS session with bearer tokens that are used by CMR.
+        Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
-        :returns: FSSPEC HTTPFileSystem (aiohttp client session)
+        :returns: fsspec HTTPFileSystem (aiohttp client session)
         """
         req = self.auth.get_session()
         dummy_oauth_resource = (
@@ -173,29 +173,29 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: str = None,
-    ) -> List[Any]:
+    ) -> Union[List[Any], None]:
         """
         returns a list of fsspec file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
-        :param granules: a list of granules(DataGranule) instances or list of files
-        :returns: a list of s3fs "file pointers" to s3 files
+        :param granules: a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+        :returns: a list of s3fs "file pointers" to s3 files.
         """
-        print("granules need to be a list of URLs or a list of DataGranule instances")
-        return []
+        raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
     @open.register
     def _open_granules(
         self,
         granules: List[DataGranule],
         provider: str = None,
-    ) -> List[Any]:
+    ) -> Union[List[Any], None]:
 
         fileset: List = []
         data_links: List = []
         if self.running_in_aws:
             access_method = "direct"
         else:
+            # on prem is a little misleading, for cloud collections this means external access.
             access_method = "on_prem"
 
         provider = granules[0]["meta"]["provider-id"]
@@ -211,7 +211,7 @@ class Store(object):
             print(
                 "A valid Earthdata login instance is required to retrieve credentials"
             )
-            return []
+            return None
 
         if self.running_in_aws:
             s3_fs = self.get_s3fs_session(provider=provider)
@@ -229,6 +229,7 @@ class Store(object):
                         "This may be caused by trying to access the data outside the us-west-2 region"
                         f"Exception: {traceback.format_exc()}"
                     )
+                    return None
             return fileset
         else:
             https_fs = self.get_https_session()
@@ -246,6 +247,7 @@ class Store(object):
                         "An exception occurred while trying to access remote files via HTTPS: "
                         f"Exception: {traceback.format_exc()}"
                     )
+                    return None
             return fileset
 
     @open.register
@@ -253,7 +255,7 @@ class Store(object):
         self,
         granules: List[str],
         provider: str = None,
-    ) -> List[Any]:
+    ) -> Union[List[Any], None]:
 
         fileset: List = []
         data_links: List = []
@@ -264,11 +266,16 @@ class Store(object):
             # TODO: method to derive the DAAC from url?
             provider = provider
             data_links = granules
+        else:
+            print(
+                f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
+            )
+            return None
         if self.auth is None:
             print(
                 "A valid Earthdata login instance is required to retrieve S3 credentials"
             )
-            return []
+            return None
 
         if self.running_in_aws:
             s3_fs = self.get_s3fs_session(provider=provider)
@@ -281,6 +288,7 @@ class Store(object):
                         "This may be caused by trying to access the data outside the us-west-2 region"
                         f"Exception: {traceback.format_exc()}"
                     )
+                    return None
             return fileset
         else:
             https_fs = self.get_https_session()
@@ -292,6 +300,7 @@ class Store(object):
                         "An exception occurred while trying to access remote files via HTTPS: "
                         f"Exception: {traceback.format_exc()}"
                     )
+                    return None
             return fileset
 
     @singledispatchmethod
@@ -370,7 +379,7 @@ class Store(object):
         if access == "direct":
             print(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3fs_session(provider)
-            # TODO: make this parallel or concurrent
+            # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
                 print(f"Retrieved: {file} to {local_path}")
