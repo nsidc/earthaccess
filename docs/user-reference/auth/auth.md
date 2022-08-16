@@ -1,8 +1,7 @@
-# Documentation for `Collection Results`
+# Documentation for `Auth`
 
-::: earthdata.results.DataCollection
+::: earthdata.auth.Auth
     options:
       inherited_members: true
     show_root_heading: true
     show_source: false
-

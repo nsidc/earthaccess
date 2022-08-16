@@ -1,5 +1,4 @@
 from functools import lru_cache
-from html import escape
 from typing import Any, List
 from uuid import uuid4
 
