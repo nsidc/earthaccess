@@ -9,7 +9,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 ## Development environment
 
 
-`earthdata` is a Python library that uses Poetry to build and publish the package to PyPi, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda. 
+`earthdata` is a Python library that uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda. 
 
 ### Using Conda
 
