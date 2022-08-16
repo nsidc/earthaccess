@@ -27,7 +27,7 @@ Now we can create a feature branch and push those changes to our fork!
 
 ### Using Poetry
 
-If we want to use Poetry, fir we need to [install it](). After installing Poetry we can use the same workflow we used for Conda, first we install the library locally:
+If we want to use Poetry, first we need to [install it](https://python-poetry.org/docs/#installation). After installing Poetry we can use the same workflow we used for Conda, first we install the library locally:
 
 ```bash
 >poetry install
