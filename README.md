@@ -114,6 +114,12 @@ See [Code of Conduct](CODE_OF_CONDUCT.md)
 
 <img src="docs/nsidc-logo.png" width="84px" />
 
+
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=nsidc/earthdata)](https://github.com/nsidc/earthdata/graphs/contributors)
+
 ## Contributing Guide
 
 Welcome! 😊👋
