@@ -40,7 +40,7 @@ pygments = "=2.11.1"
 responses = ">=0.14"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
-ipywidgets = "^7.7.0"
+ipywidgets = "^7.7.2"
 widgetsnbextension = "^3.6.0"
 
 [build-system]
