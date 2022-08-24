@@ -106,7 +106,7 @@ Only **Python 3.7+** is supported as required by the black, pydantic packages
 
 ## Code of Conduct
 
-See [Code of Conduct](CODE_OF_CONDUCT.md)
+See [Code of Conduct](https://github.com/nsidc/earthdata/blob/main/CODE_OF_CONDUCT.md)
 
 ## Level of Support
 
@@ -118,4 +118,4 @@ See [Code of Conduct](CODE_OF_CONDUCT.md)
 
 Welcome! 😊👋
 
-> Please see the [Contributing Guide](CONTRIBUTING.md).
+> Please see the [Contributing Guide](https://github.com/nsidc/earthdata/blob/main/CONTRIBUTING.md)

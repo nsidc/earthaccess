@@ -1,6 +1,6 @@
 import json
 import uuid
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from benedict import benedict
 
@@ -80,6 +80,11 @@ class DataCollection(CustomDict):
     ]
 
     def summary(self) -> Dict[str, Any]:
+        """Summary containing short_name, concept-id, file-type, and cloud-info if the dataset is cloud hosted.
+
+        Returns:
+            Returns a sumary of the collection metadata
+        """
         # we can print only the concept-id
 
         summary_dict: Dict[str, Any]
@@ -94,15 +99,29 @@ class DataCollection(CustomDict):
             summary_dict["cloud-info"] = self.s3_bucket()
         return summary_dict
 
-    def get_umm(self, umm_field: str) -> str:
+    def get_umm(self, umm_field: str) -> Union[str, Dict[str, Any]]:
+        """
+        Parameters:
+            umm_field: Valid UMM item, i.e. `TemporalExtent`
+        Returns:
+            Returns the value of a given field inside the UMM (Unified Metadata Model)
+        """
         if umm_field in self["umm"]:
             return self["umm"][umm_field]
         return ""
 
     def concept_id(self) -> str:
+        """
+        Returns:
+          Retrurns a collection's `concept_id`, this id is the most relevant search field on granule queries.
+        """
         return self["meta"]["concept-id"]
 
     def data_type(self) -> str:
+        """
+        Returns:
+            If available, it returns the collection data type, i.e. HDF5, CSV etc
+        """
         if "ArchiveAndDistributionInformation" in self["umm"]:
             return str(
                 self["umm"]["ArchiveAndDistributionInformation"][
@@ -112,26 +131,46 @@ class DataCollection(CustomDict):
         return ""
 
     def version(self) -> str:
+        """
+        Returns:
+            returns the collection's version.
+        """
         if "Version" in self["umm"]:
             return self["umm"]["Version"]
         return ""
 
     def abstract(self) -> str:
+        """
+        Returns:
+            Returns the abstract of a collection
+        """
         if "Abstract" in self["umm"]:
             return self["umm"]["Abstract"]
         return ""
 
     def landing_page(self) -> str:
+        """
+        Returns:
+            if available it returns the first landing page for the collection, can be many.
+        """
         links = self._filter_related_links("LANDING PAGE")
         if len(links) > 0:
             return links[0]
         return ""
 
     def get_data(self) -> List[str]:
+        """
+        Returns:
+            Returns the GET DATA links, usually a link to a landing page, a DAAC portal or an FTP location.
+        """
         links = self._filter_related_links("GET DATA")
         return links
 
     def s3_bucket(self) -> Dict[str, Any]:
+        """
+        Returns:
+            Returns the S3 bucket information if the collection has it (**cloud hosted collections only**)
+        """
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
         return {}
@@ -181,7 +220,8 @@ class DataGranule(CustomDict):
 
     def __repr__(self) -> str:
         """
-        returns a basic representation of a data granule
+        Returns:
+            returns a basic representation of a data granule
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
@@ -197,14 +237,16 @@ class DataGranule(CustomDict):
 
     def _repr_html_(self) -> str:
         """
-        Returns a rich representation for a data granule.
+        Returns:
+            Returns a rich representation for a data granule if we are in a Jupyter notebook.
         """
         granule_html_repr = _repr_granule_html(self)
         return granule_html_repr
 
     def size(self) -> float:
         """
-        returns the total size for the granule in MB
+        Returns:
+            Returns the total size for the granule in MB
         """
         try:
             total_size = sum(
@@ -230,10 +272,12 @@ class DataGranule(CustomDict):
         return s3_links
 
     def data_links(self, access: str = "on_prem") -> List[str]:
-        """
-        Returns the data links form a granule
-        :param access: direct or on_prem
-        :returns: the data link for the requested access type
+        """Returns the data links form a granule
+
+        Parameters:
+            access: direct or external, direct means in-region access for cloud hosted collections.
+        Returns:
+            the data link for the requested access type
         """
         links = self._filter_related_links("GET DATA")
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
@@ -245,5 +289,9 @@ class DataGranule(CustomDict):
         return links
 
     def dataviz_links(self) -> List[str]:
+        """
+        Returns:
+            Returns the data visualization links, usually the browse images.
+        """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links

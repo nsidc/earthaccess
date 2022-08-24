@@ -14,7 +14,8 @@ from .daac import DAACS
 class SessionWithHeaderRedirection(requests.Session):
     """
     Requests removes auth headers if the redirect happens outside the
-    original req domain. This is taken from https://wiki.earthdata.nasa.gov/display/EL/How+To+Access+Data+With+Python
+    original req domain.
+    This is taken from https://wiki.earthdata.nasa.gov/display/EL/How+To+Access+Data+With+Python
     """
 
     AUTH_HOST = "urs.earthdata.nasa.gov"
@@ -60,11 +61,18 @@ class Auth(object):
     def login(self, strategy: str = "interactive", persist: bool = False) -> Any:
         """Authenticate with Earthdata login
 
-        :strategy: authentication method to used
-            "interactive" - (default) enter username and password
-            "netrc" - retrieve username and password from ~/.netrc
-            "environment" - retrieve username and password from $EDL_USERNAME and $EDL_PASSWORD
-        :persist: will persist credentials in a .netrc file
+        Parameters:
+
+            strategy (String): authentication method.
+
+                    "interactive": (default) enter username and password.
+
+                    "netrc": retrieve username and password from ~/.netrc.
+
+                    "environment": retrieve username and password from $EDL_USERNAME and $EDL_PASSWORD.
+            persist (Boolean): will persist credentials in a .netrc file
+        Returns:
+            an instance of Auth.
         """
         if self.authenticated:
             print("We are already authenticated with NASA EDL")
@@ -133,10 +141,15 @@ class Auth(object):
     def get_s3_credentials(
         self, daac: str = "", provider: str = ""
     ) -> Union[Dict[str, str], None]:
-        """
-        gets AWS S3 credentials for a given NASA cloud provider
-        :param cloud_provider: a NASA DAAC cloud provider i.e. POCLOUD
-        :returns: a python dictionary with the S3 keys or None
+        """Gets AWS S3 credentials for a given NASA cloud provider
+
+        Parameters:
+            provider: A valid cloud provider, each DAAC has a provider code for their cloud distributions
+            daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
+
+        Rreturns:
+            A Python dictionary with the temporary AWS S3 credentials
+
         """
         auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
         if auth_url.startswith("https://"):
@@ -158,13 +171,13 @@ class Auth(object):
             print(f"Credentials for the cloud provider {daac} are not available")
             return None
 
-    def get_session(self, bearer_token: bool = False) -> SessionWithHeaderRedirection:
-        """
-        Returns a new request session instance, since looks like using a session in a context is not threadsafe
-        https://github.com/psf/requests/issues/1871
-        Session with bearer tokens are used by CMR, simple auth sessions can be used do download data
-        from on-prem DAAC data centers.
-        :returns: subclass SessionWithHeaderRedirection instance
+    def get_session(self, bearer_token: bool = True) -> SessionWithHeaderRedirection:
+        """Returns a new request session instance
+
+        Parameters:
+            bearer_token (Boolean): boolean, include bearer token
+        Returns:
+            subclass SessionWithHeaderRedirection instance with Auth and bearer token headers
         """
         if bearer_token and self.authenticated:
             session = SessionWithHeaderRedirection()

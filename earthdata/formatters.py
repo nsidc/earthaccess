@@ -1,4 +1,3 @@
-from functools import lru_cache
 from typing import Any, List
 from uuid import uuid4
 
@@ -7,7 +6,6 @@ import pkg_resources
 STATIC_FILES = ["css/iso_bootstrap4.0.0min.css", "css/styles.css"]
 
 
-@lru_cache(None)
 def _load_static_files() -> List[str]:
     """Load styles"""
     return [

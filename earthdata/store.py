@@ -24,6 +24,11 @@ class Store(object):
     """
 
     def __init__(self, auth: Any) -> None:
+        """Store is the class to access data
+
+        Parameters:
+            auth (Auth): Required, Auth instance to download and access data.
+        """
         if auth.authenticated is True:
             self.auth = auth
             # Async operation warning, in a notebook we're already using async
@@ -45,7 +50,7 @@ class Store(object):
         provider = find_provider(daac, True)
         return provider
 
-    def _is_cloud_collection(self, concept_id: str = None) -> bool:
+    def _is_cloud_collection(self, concept_id: List[str]) -> bool:
         collection = DataCollections(self.auth).concept_id(concept_id).get()
         if len(collection) > 0 and "s3-links" in collection[0]["meta"]:
             return True
@@ -69,8 +74,11 @@ class Store(object):
     ) -> s3fs.S3FileSystem:
         """
         Returns a s3fs instance for a given cloud provider / DAAC
-        :param daac: any of the DAACs e.g. NSIDC, PODAAC
-        :returns: a s3fs instance
+
+        Parameters:
+            daac: any of the DAACs e.g. NSIDC, PODAAC
+        Returns:
+            a s3fs file instance
         """
         if self.auth is not None:
             if concept_id is not None:
@@ -102,10 +110,13 @@ class Store(object):
     async def get_async_https_session(
         self, bearer_token: bool = False
     ) -> fsspec.AbstractFileSystem:
-        """
-        Returns an async fsspec HTTPS session with bearer tokens that are used by CMR.
+        """Returns an async fsspec HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
-        :returns: fsspec HTTPFileSystem (aiohttp client session)
+
+        Parameters:
+            bearer_token (Boolean): if true will be used for authenticated queries on CMR
+        Returns:
+            fsspec HTTPFileSystem (aiohttp client session)
         """
         req = self.auth.get_session()
         dummy_oauth_resource = (
@@ -139,10 +150,14 @@ class Store(object):
     def get_https_session(
         self, bearer_token: bool = False
     ) -> fsspec.AbstractFileSystem:
-        """
-        Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
+        """Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
-        :returns: fsspec HTTPFileSystem (aiohttp client session)
+
+        Parameters:
+            bearer_token (Boolean): if true will be used for authenticated queries on CMR
+
+        Returns:
+            fsspec HTTPFileSystem (aiohttp client session)
         """
         req = self.auth.get_session()
         dummy_oauth_resource = (
@@ -174,12 +189,13 @@ class Store(object):
         granules: Union[List[str], List[DataGranule]],
         provider: str = None,
     ) -> Union[List[Any], None]:
-        """
-        returns a list of fsspec file-like objects that can be used to access files
+        """Returns a list of fsspec file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
-        :param granules: a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
-        :returns: a list of s3fs "file pointers" to s3 files.
+        Parameters:
+            granules (List): a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+        Returns:
+            a list of s3fs "file pointers" to s3 files.
         """
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -312,19 +328,22 @@ class Store(object):
         provider: str = None,
         threads: int = 8,
     ) -> None:
-        """
-        Retrieves data granules from a remote storage system.
-        If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
-        If we run it outside the us-west-2 region and the data granules are part of a cloud-based collection
-        the method will not get any files.
-        If we requests data granules from an on-prem collection the data will be effectively downloaded
-        to a local directory.
+        """Retrieves data granules from a remote storage system.
 
-        :param granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
-        :param local_path: local directory to store the remote data granules
-        :param access: direct or on_prem, if set it will use it for the access method.
-        :param threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
-        :returns: None
+           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
+             collection the method will not get any files.
+           * If we requests data granules from an on-prem collection the data will be effectively downloaded
+             to a local directory.
+
+        Parameters:
+            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
+            local_path: local directory to store the remote data granules
+            access: direct or on_prem, if set it will use it for the access method.
+            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+
+        Returns:
+            None
         """
         print("List of URLs or DataGranule isntances expected")
         return None
