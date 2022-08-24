@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+* improved documentation:
+    * all the underlaying methods are reimplemented for docstring compatibility
+
+## [v0.4.0] 2022-08-17
+
 * `store`
     * uses fsspec s3fs for in cloud access and https sessions for out of region access
     * we can open files with fsspec in and out of region (stream into xarray)
