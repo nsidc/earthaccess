@@ -102,7 +102,6 @@ class Auth(object):
                 )
                 return True
             else:
-                print(resp_tokens)
                 return False
         if len(self.tokens) == 1:
             resp_tokens = self._generate_user_token(
@@ -116,7 +115,6 @@ class Auth(object):
                 )
                 return True
             else:
-                print(resp_tokens)
                 return False
 
         if len(self.tokens) == 2:
@@ -153,9 +151,7 @@ class Auth(object):
         """
         auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
         if auth_url.startswith("https://"):
-            print(auth_url)
             cumulus_resp = self._session.get(auth_url, timeout=10, allow_redirects=True)
-            print(cumulus_resp.url)
             auth_resp = self._session.get(
                 cumulus_resp.url, allow_redirects=True, timeout=10
             )
