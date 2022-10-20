@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+* improved documentation:
+    * reimplemented python_cmr methods for docstring compatibility
+    * added types to method signatures
+* Using `CMR-Search-After` see #145
+
+* CI changes:
+    * Poetry is installed using the new script
+    * Dependabot alerts to monthly
+
+* Added GES_DISC S3 endpoint
+
+## [v0.4.0] 2022-08-17
+
 * `store`
     * uses fsspec s3fs for in cloud access and https sessions for out of region access
     * we can open files with fsspec in and out of region (stream into xarray)

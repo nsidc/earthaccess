@@ -21,9 +21,24 @@ repo_name: nsidc/earthdata
 repo_url: https://github.com/nsidc/earthdata
 edit_uri: ''
 
+extra_css:
+  - css/styles.css
+
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: no
+            merge_init_into_class: yes
+            show_submodules: no
+          rendering:
+            show_root_heading: false
+            show_source: false
   - mkdocs-jupyter:
       execute: False
 
@@ -50,11 +65,19 @@ nav:
       - Auth API:
           - 'Auth': 'user-reference/auth/auth.md'
 markdown_extensions:
+  - admonition
+  - callouts
+  - pymdownx.details
   - meta
   - toc:
-      toc_depth: 1
+      toc_depth: 2
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+
+watch:
+  - docs
+  - earthdata
+  - notebooks

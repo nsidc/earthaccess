@@ -1,6 +1,8 @@
 # DAACS ~= NASA Earthdata data centers
 from typing import Union
 
+import requests
+
 DAACS = [
     {
         "short-name": "NSIDC",
@@ -56,7 +58,7 @@ DAACS = [
         "homepage": "https://daac.gsfc.nasa.gov",
         "cloud-providers": ["GES_DISC"],
         "on-prem-providers": ["GES_DISC"],
-        "s3-credentials": "",
+        "s3-credentials": "https://data.gesdisc.earthdata.nasa.gov/s3credentials",
     },
     {
         "short-name": "OBDAAC",
@@ -103,3 +105,14 @@ def find_provider(
                 # return on prem provider code
                 return daac["on-prem-providers"][0]
     return None
+
+
+def find_provider_by_shortname(short_name: str, cloud_hosted: bool) -> Union[str, None]:
+    base_url = "https://cmr.earthdata.nasa.gov/search/collections.umm_json?"
+    providers = requests.get(
+        f"{base_url}&cloud_hosted={cloud_hosted}&short_name={short_name}"
+    ).json()
+    if int(providers["hits"]) > 0:
+        return providers["items"][0]["meta"]["provider-id"]
+    else:
+        return None
