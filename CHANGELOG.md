@@ -3,7 +3,15 @@
 ## [Unreleased]
 
 * improved documentation:
-    * all the underlaying methods are reimplemented for docstring compatibility
+    * reimplemented python_cmr methods for docstring compatibility
+    * added types to method signatures
+* Using `CMR-Search-After` see #145
+
+* CI changes:
+    * Poetry is installed using the new script
+    * Dependabot alerts to monthly
+
+* Added GES_DISC S3 endpoint
 
 ## [v0.4.0] 2022-08-17
 
