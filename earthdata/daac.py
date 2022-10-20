@@ -107,7 +107,7 @@ def find_provider(
     return None
 
 
-def find_provider_by_shortname(short_name, cloud_hosted) -> Union[str, None]:
+def find_provider_by_shortname(short_name: str, cloud_hosted: bool) -> Union[str, None]:
     base_url = "https://cmr.earthdata.nasa.gov/search/collections.umm_json?"
     providers = requests.get(
         f"{base_url}&cloud_hosted={cloud_hosted}&short_name={short_name}"

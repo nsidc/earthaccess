@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Any, List, Tuple, Type
+from typing import Any, Dict, List, Tuple, Type
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
@@ -423,7 +423,7 @@ class DataGranules(GranuleQuery):
 
         results: List = []
         page = 1
-        headers = {}
+        headers: Dict[str, str] = {}
         while len(results) < limit:
             params = {"page_size": page_size}
             # TODO: should be in a logger
