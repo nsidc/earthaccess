@@ -6,7 +6,7 @@ from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
 from .auth import Auth
-from .daac import find_provider
+from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
 
@@ -183,7 +183,7 @@ class DataCollections(CollectionQuery):
         self.params["provider"] = find_provider(daac_short_name, cloud_hosted)
         return self
 
-    def get(self, limit: int = 100) -> list:
+    def get(self, limit: int = 2000) -> list:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -198,7 +198,7 @@ class DataCollections(CollectionQuery):
             query results as a list of `DataCollection` instances.
         """
 
-        page_size = 2000
+        page_size = min(limit, 2000)
         url = self._build_url()
 
         results: List = []
@@ -305,6 +305,27 @@ class DataGranules(GranuleQuery):
         super().orbit_number(orbit1, orbit2)
         return self
 
+    def cloud_hosted(self, cloud_hosted: bool = True) -> Type[CollectionQuery]:
+        """Only match granules that are hosted in the cloud. This is valid for public collections and if we are using the short_name parameter. Concept-Id is unambiguous.
+
+        ???+ Tip
+            Cloud hosted collections can be public or restricted.
+            Restricted collections will not be matched using this parameter
+
+        Parameters:
+            cloud_hosted (Boolean): True to require granules only be online
+        """
+        if not isinstance(cloud_hosted, bool):
+            raise TypeError("cloud_hosted must be of type bool")
+
+        if "short_name" in self.params:
+            provider = find_provider_by_shortname(
+                self.params["short_name"], cloud_hosted
+            )
+            if provider is not None:
+                self.params["provider"] = provider
+        return self
+
     def online_only(self, online_only: bool = True) -> Type[GranuleQuery]:
         """Only match granules that are listed online and not available for download.
         The opposite of this method is downloadable().
@@ -382,7 +403,7 @@ class DataGranules(GranuleQuery):
         super().short_name(short_name)
         return self
 
-    def get(self, limit: int = 20000) -> list:
+    def get(self, limit: int = 2000) -> list:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -396,19 +417,20 @@ class DataGranules(GranuleQuery):
         Returns:
             query results as a list of `DataCollection` instances.
         """
-        # TODO: implement caching and scroll
-        page_size = 2000
+        # TODO: implement items() iterator
+        page_size = min(limit, 2000)
         url = self._build_url()
 
         results: List = []
         page = 1
+        headers = {}
         while len(results) < limit:
-            params = {"page_size": page_size, "page_num": page}
+            params = {"page_size": page_size}
             # TODO: should be in a logger
             if self._debug:
-                print(f"Fetching: {url}")
+                print(f"Fetching: {url}", f"headers: {headers}")
 
-            response = self.session.get(url, params=params)
+            response = self.session.get(url, params=params, headers=headers)
 
             try:
                 response.raise_for_status()
@@ -420,6 +442,12 @@ class DataGranules(GranuleQuery):
             elif self._format == "umm_json":
                 json_response = response.json()["items"]
                 if len(json_response) > 0:
+                    if "CMR-Search-After" in response.headers:
+                        headers["CMR-Search-After"] = response.headers[
+                            "CMR-Search-After"
+                        ]
+                    else:
+                        headers = {}
                     if self._is_cloud_hosted(json_response[0]):
                         cloud = True
                     else:
