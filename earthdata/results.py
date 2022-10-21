@@ -271,7 +271,7 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(self, access: str = "on_prem") -> List[str]:
+    def data_links(self, access: str = None) -> List[str]:
         """Returns the data links form a granule
 
         Parameters:
@@ -281,7 +281,7 @@ class DataGranule(CustomDict):
         """
         links = self._filter_related_links("GET DATA")
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
-        if self.cloud_hosted and access == "direct":
+        if self.cloud_hosted and (access is None or access == "direct"):
             if len(s3_links) == 0 and len(links) > 0:
                 return self._derive_s3_link(links)
             else:

@@ -50,7 +50,7 @@ DAACS = [
         "homepage": "https://lpdaac.usgs.gov",
         "cloud-providers": ["LPCLOUD"],
         "on-prem-providers": ["LPDAAC_ECS"],
-        "s3-credentials": "https://data.lpdaac.prod.earthdatacloud.nasa.gov/s3credentials",
+        "s3-credentials": "https://data.lpdaac.earthdatacloud.nasa.gov/s3credentials",
     },
     {
         "short-name": "GESDISC",

@@ -183,8 +183,26 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    @singledispatchmethod
     def open(
+        self,
+        granules: List[Any],
+        provider: str = None,
+    ) -> Union[List[Any], None]:
+        """Returns a list of fsspec file-like objects that can be used to access files
+        hosted on S3 or HTTPS by third party libraries like xarray.
+
+        Parameters:
+            granules (List): a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+        Returns:
+            a list of s3fs "file pointers" to s3 files.
+        """
+        if len(granules):
+            return self._open(granules, provider)
+        print("The granules list is empty, moving on...")
+        return None
+
+    @singledispatchmethod
+    def _open(
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: str = None,
@@ -199,7 +217,7 @@ class Store(object):
         """
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
-    @open.register
+    @_open.register
     def _open_granules(
         self,
         granules: List[DataGranule],
@@ -266,7 +284,7 @@ class Store(object):
                     return None
             return fileset
 
-    @open.register
+    @_open.register
     def _open_urls(
         self,
         granules: List[str],
@@ -319,10 +337,9 @@ class Store(object):
                     return None
             return fileset
 
-    @singledispatchmethod
     def get(
         self,
-        granules: Union[List[DataGranule], List[str]],
+        granules: List[Any] = [],
         local_path: str = None,
         access: str = None,
         provider: str = None,
@@ -345,14 +362,47 @@ class Store(object):
         Returns:
             None
         """
+        if len(granules):
+            self._get(granules, local_path, access, provider, threads)
+
         print("List of URLs or DataGranule isntances expected")
         return None
 
-    @get.register
+    @singledispatchmethod
+    def _get(
+        self,
+        granules: Union[List[DataGranule], List[str]],
+        local_path: str = None,
+        access: str = None,
+        provider: str = None,
+        threads: int = 8,
+    ) -> None:
+        """Retrieves data granules from a remote storage system.
+
+           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
+             collection the method will not get any files.
+           * If we requests data granules from an on-prem collection the data will be effectively downloaded
+             to a local directory.
+
+        Parameters:
+            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
+            local_path: local directory to store the remote data granules
+            access: direct or on_prem, if set it will use it for the access method. only for granules list from search
+            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+
+        Returns:
+            None
+        """
+        print("List of URLs or DataGranule isntances expected")
+        return None
+
+    @_get.register
     def _get_urls(
         self,
         granules: List[str],
         local_path: str = None,
+        access: str = None,
         provider: str = None,
         threads: int = 8,
     ) -> None:
@@ -367,14 +417,17 @@ class Store(object):
                 print(f"Retrieved: {file} to {local_path}")
         else:
             # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
+            if access is None:
+                pass
             self._download_onprem_granules(data_links, local_path, threads)
         return None
 
-    @get.register
+    @_get.register
     def _get_granules(
         self,
         granules: List[DataGranule],
         local_path: str = None,
+        access: str = None,
         provider: str = None,
         threads: int = 8,
     ) -> None:
@@ -382,8 +435,7 @@ class Store(object):
         data_links: List = []
         provider = granules[0]["meta"]["provider-id"]
         cloud_hosted = granules[0].cloud_hosted
-        access = "on_prem"
-        if cloud_hosted and self.running_in_aws:
+        if cloud_hosted and self.running_in_aws and access is None:
             # TODO: benchmark this
             access = "direct"
         data_links = list(
