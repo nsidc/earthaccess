@@ -185,7 +185,7 @@ class Store(object):
 
     def open(
         self,
-        granules: List[Any],
+        granules: Union[List[str], List[DataGranule]],
         provider: str = None,
     ) -> Union[List[Any], None]:
         """Returns a list of fsspec file-like objects that can be used to access files
@@ -235,7 +235,8 @@ class Store(object):
         provider = granules[0]["meta"]["provider-id"]
         data_links = list(
             chain.from_iterable(
-                granule.data_links(access=access_method) for granule in granules
+                granule.data_links(access=access_method, in_region=self.running_in_aws)
+                for granule in granules
             )
         )
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -339,7 +340,7 @@ class Store(object):
 
     def get(
         self,
-        granules: List[Any] = [],
+        granules: Union[List[DataGranule], List[str]],
         local_path: str = None,
         access: str = None,
         provider: str = None,
@@ -437,10 +438,13 @@ class Store(object):
         cloud_hosted = granules[0].cloud_hosted
         if cloud_hosted and self.running_in_aws and access is None:
             # TODO: benchmark this
+            print("direct???")
             access = "direct"
         data_links = list(
+            # we are not in region
             chain.from_iterable(
-                granule.data_links(access=access) for granule in granules
+                granule.data_links(access=access, in_region=self.running_in_aws)
+                for granule in granules
             )
         )
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
