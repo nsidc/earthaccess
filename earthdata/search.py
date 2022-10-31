@@ -41,6 +41,7 @@ class DataCollections(CollectionQuery):
                 for queries that need authentication e.g. restricted datasets
         """
         super().__init__(*args, **kwargs)
+        self.session = session()
         if auth is not None and auth.authenticated:
             # To search we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -286,11 +287,10 @@ class DataGranules(GranuleQuery):
     def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
+        self.session = session()
         if auth is not None and auth.authenticated:
             # To search we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
-        else:
-            self.session = session()
 
         self._debug = False
 
@@ -306,7 +306,8 @@ class DataGranules(GranuleQuery):
         return self
 
     def cloud_hosted(self, cloud_hosted: bool = True) -> Type[CollectionQuery]:
-        """Only match granules that are hosted in the cloud. This is valid for public collections and if we are using the short_name parameter. Concept-Id is unambiguous.
+        """Only match granules that are hosted in the cloud. This is valid for public
+        collections and if we are using the short_name parameter. Concept-Id is unambiguous.
 
         ???+ Tip
             Cloud hosted collections can be public or restricted.

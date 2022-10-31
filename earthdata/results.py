@@ -271,22 +271,44 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(self, access: str = "on_prem") -> List[str]:
+    def data_links(self, access: str = None, in_region: bool = False) -> List[str]:
         """Returns the data links form a granule
 
         Parameters:
             access: direct or external, direct means in-region access for cloud hosted collections.
+            in_region: if we are running in us-west-2, meant for the store class, default is False
         Returns:
             the data link for the requested access type
         """
-        links = self._filter_related_links("GET DATA")
+        https_links = self._filter_related_links("GET DATA")
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
-        if self.cloud_hosted and access == "direct":
-            if len(s3_links) == 0 and len(links) > 0:
-                return self._derive_s3_link(links)
+        if in_region:
+            # we are in us-west-2
+            if self.cloud_hosted and access is None:
+                # this is a cloud collection and we didn't specify the access type
+                # default to S3 links
+                if len(s3_links) == 0 and len(https_links) > 0:
+                    # This is guessing the S3 links for some cloud collections that for
+                    # some reason only offered HTTPS links
+                    return self._derive_s3_link(https_links)
+                else:
+                    # we have the s3 links so we return those
+                    return s3_links
             else:
+                # Even though we are in us-west-2 the user wants the HTTPS links
+                # used in region they are S3 signed links from TEA
+                # https://github.com/asfadmin/thin-egress-app
+                return https_links
+        else:
+            # we are not in region
+            if access == "direct":
+                # maybe the user wants to collect S3 links ans use them later
+                # from the cloud
                 return s3_links
-        return links
+            else:
+                # we are not in us-west-2, even cloud collections have HTTPS links
+                return https_links
+        return https_links
 
     def dataviz_links(self) -> List[str]:
         """
