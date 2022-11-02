@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [v0.4.1] 2022-11-02
 
 * improved documentation:
     * reimplemented python_cmr methods for docstring compatibility
