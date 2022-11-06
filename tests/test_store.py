@@ -18,7 +18,7 @@ class TestStoreSessions(unittest.TestCase):
         ]
         responses.add(
             responses.GET,
-            "https://urs.earthaccess.nasa.gov/api/users/tokens",
+            "https://urs.earthdata.nasa.gov/api/users/tokens",
             json=json_response,
             status=200,
         )
