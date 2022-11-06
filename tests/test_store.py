@@ -4,7 +4,7 @@ import unittest
 
 import fsspec
 import responses
-from earthdata import Auth, Store
+from earthaccess import Auth, Store
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestStoreSessions(unittest.TestCase):
         ]
         responses.add(
             responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/tokens",
+            "https://urs.earthaccess.nasa.gov/api/users/tokens",
             json=json_response,
             status=200,
         )
@@ -39,7 +39,7 @@ class TestStoreSessions(unittest.TestCase):
 
     @responses.activate
     def test_store_can_create_s3_fsspec_session(self):
-        from earthdata.daac import DAACS
+        from earthaccess.daac import DAACS
 
         for daac in DAACS:
             if "s3-credentials" in daac:

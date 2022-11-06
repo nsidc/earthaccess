@@ -1,5 +1,5 @@
 # package imports
-from earthdata.search import DataCollections
+from earthaccess.search import DataCollections
 
 
 def test_query_can_find_cloud_provider():

@@ -98,7 +98,7 @@ class Auth(object):
                 self.token = resp_tokens.json()
                 self.tokens = [self.token]
                 print(
-                    f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 return True
             else:
@@ -111,7 +111,7 @@ class Auth(object):
                 self.token = resp_tokens.json()
                 self.tokens.extend(self.token)
                 print(
-                    f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 return True
             else:
@@ -127,7 +127,7 @@ class Auth(object):
                     self.token = resp_tokens.json()
                     self.tokens[0] = self.token
                     print(
-                        f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                        f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                     )
                     return True
                 else:
@@ -205,7 +205,7 @@ class Auth(object):
             print("Unable to parse .netrc")
             print(err)
             return False
-        if my_netrc["urs.earthdata.nasa.gov"] is not None:
+        if my_netrc["urs.earthaccess.nasa.gov"] is not None:
             username = my_netrc["urs.earthdata.nasa.gov"]["login"]
             password = my_netrc["urs.earthdata.nasa.gov"]["password"]
         else:
@@ -239,7 +239,7 @@ class Auth(object):
             if len(self.tokens) == 0:
                 self.refresh_tokens()
                 print(
-                    f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 self.token = self.tokens[0]
             elif len(self.tokens) > 0:

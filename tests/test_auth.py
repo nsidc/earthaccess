@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 
 import responses
-from earthdata.auth import Auth
+from earthaccess.auth import Auth
 
 
 class TestCreateAuth(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestCreateAuth(unittest.TestCase):
         ]
         responses.add(
             responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/tokens",
+            "https://urs.earthaccess.nasa.gov/api/users/tokens",
             json=json_response,
             status=200,
         )
@@ -71,7 +71,7 @@ class TestCreateAuth(unittest.TestCase):
 
     #     responses.add(
     #         responses.GET,
-    #         "https://urs.earthdata.nasa.gov/api/users/tokens",
+    #         "https://urs.earthaccess.nasa.gov/api/users/tokens",
     #         json=[],
     #         status=200,
     #     )

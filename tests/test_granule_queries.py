@@ -1,6 +1,6 @@
 # package imports
 import pytest
-from earthdata.search import DataGranules
+from earthaccess.search import DataGranules
 
 valid_single_dates = [
     ("2001-12-12", "2001-12-21", "2001-12-12T00:00:00Z,2001-12-21T00:00:00Z"),

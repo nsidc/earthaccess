@@ -3,5 +3,5 @@
 set -e
 set -x
 
-pytest --cov=earthdata --cov=tests --cov-report=term-missing ${@}
+pytest --cov=earthaccess --cov=tests --cov-report=term-missing ${@}
 bash ./scripts/lint.sh

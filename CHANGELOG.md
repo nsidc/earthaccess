@@ -1,5 +1,9 @@
 # Changelog
 
+## [UNRELEASED]
+
+* name change
+
 ## [v0.4.1] 2022-11-02
 
 * improved documentation:
@@ -51,8 +55,8 @@
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/betolink/earthdata/compare/v0.3.0...HEAD
-[v0.3.0]: https://github.com/betolink/earthdata/releases/tag/v0.3.0
-[v0.2.2]: https://github.com/betolink/earthdata/releases/tag/v0.2.2
-[v0.2.1]: https://github.com/betolink/earthdata/releases/tag/v0.2.1
-[v0.1.0-beta.1]: https://github.com/betolink/earthdata/releases/tag/v0.1.0-beta.1
+[Unreleased]: https://github.com/betolink/earthaccess/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
+[v0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
+[v0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
+[v0.1.0-beta.1]: https://github.com/betolink/earthaccess/releases/tag/v0.1.0-beta.1

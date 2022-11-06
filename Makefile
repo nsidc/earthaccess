@@ -27,6 +27,12 @@ python-three-nine: ## setup python3.9 virtual environment using poetry
 	poetry env use python3.9
 	poetry install
 
+python-three-ten:
+python-three-ten: ## setup python3.9 virtual environment using poetry
+	poetry env use python3.10
+	poetry install
+
+
 
 
 pre-commit:
@@ -58,5 +64,5 @@ deploy-docs:
 
 install: ## uninstall and install package with python
 install:
-	poetry remove ./earthdata
-	poetry add ./earthdata
+	poetry remove ./earthaccess
+	poetry add ./earthaccess
