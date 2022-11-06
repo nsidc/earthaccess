@@ -2,7 +2,7 @@ name: earthaccess
 channels:
 - conda-forge
 dependencies:
-- python=3.10
+- python=3.9
 - earthaccess
 - xarray>=0.19
 - dask>=2022.1
