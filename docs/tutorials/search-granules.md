@@ -1,0 +1,1 @@
+# how to search for granules with a collection using spatial and temporal filters 
