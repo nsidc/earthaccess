@@ -1,1 +1,1 @@
-# how to search for granules with a collection using spatial and temporal filters 
+# how to search for granules within a collection using spatial and temporal filters 

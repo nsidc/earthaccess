@@ -47,9 +47,12 @@ nav:
   - TUTORIALS:
       - 'Basic usage': 'tutorials/demo.ipynb'
   - HOW-TO:
+      - 'Search data collections using filters': 'tutorials/search-collections.md'
+      - 'Search for granules within a collection using filters': 'tutorials/search-granules.md'
+      - 'Determine if a collection is on-prem or in the cloud': 'tutorials/storage-location.md'
+      - 'Download data from on-prem location': 'tutorials/onprem.md'
+      - 'Direct S3 access - Open/stream files in the cloud': 'tutorials/cloud.md'
       - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
-      - 'Search and access on-prem datasets': 'tutorials/onprem.md'
-      - 'Search and cloud-based datasets': 'tutorials/cloud.md'
   - USER REFERENCE:
       - Glossary:
           - 'NASA Glossary': 'user-reference/glossary/nasa-glossary.md'
