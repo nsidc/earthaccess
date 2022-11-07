@@ -1,1 +1,1 @@
-# Search and access of cloud-based datasets
+# Direct S3 access for cloud-based datasets
