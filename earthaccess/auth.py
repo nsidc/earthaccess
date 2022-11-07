@@ -205,7 +205,7 @@ class Auth(object):
             print("Unable to parse .netrc")
             print(err)
             return False
-        if my_netrc["urs.earthaccess.nasa.gov"] is not None:
+        if my_netrc["urs.earthdata.nasa.gov"] is not None:
             username = my_netrc["urs.earthdata.nasa.gov"]["login"]
             password = my_netrc["urs.earthdata.nasa.gov"]["password"]
         else:

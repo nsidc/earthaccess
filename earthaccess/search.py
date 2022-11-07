@@ -13,7 +13,7 @@ from .results import DataCollection, DataGranule
 class DataCollections(CollectionQuery):
     """
     ???+ Info
-        The DataCollection class queries against https://cmr.earthaccess.nasa.gov/search/collections.umm_json,
+        The DataCollection class queries against https://cmr.earthdata.nasa.gov/search/collections.umm_json,
         the response has to be in umm_json in order to use the result classes.
         Results will be wraped inside a `Benedict` class, an enhanced Python dictionary.
     """
@@ -267,7 +267,7 @@ class DataGranules(GranuleQuery):
     """
     A Granule oriented client for NASA CMR
 
-    API: https://cmr.earthaccess.nasa.gov/search/site/docs/search/api.html
+    API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html
     """
 
     _format = "umm_json"
