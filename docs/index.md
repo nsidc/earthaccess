@@ -63,39 +63,35 @@ poetry install
 ```py
 from earthdata import Auth, DataGranules, DataCollections, Store
 
+# Authenticate using your Earthdata login credentials (do these need to be saved in a .netrc file?)
 auth = Auth().login() # if we want to access NASA DATA in the cloud
 
-# To search for collecrtions (datasets)
+# Search for granules (files) within a data set
+GranuleQuery = DataGranules().concept_id('C1711961296-LPCLOUD').bounding_box(-10,20,10,50)
+
+# Count the number of granules that match this search criteria
+counts = GranuleQuery.hits()
+
+# Retrieve the metadata for the first 10 granules
+granules = GranuleQuery.get(10)
+
+# Find the download links for each granule within the metadata
+data_links = [granule.data_links() for granule in granules]
+
+# Download on-prem granules 
+store = store(Auth)
+store.get(granules, local_path='./data')
+
+# Or if you are in an AWS instance (region us-west-2) you can use open to stream a file
+fileset = store.open(granules)
+
+
+# You can also search and retrieve metdata for collections (data sets)
 
 DatasetQuery = DataCollections().keyword('MODIS').bounding_box(-26.85,62.65,-11.86,67.08)
 
 counts = DatasetQuery.hits()
 collections = DatasetQuery.get()
-
-
-# To search for granules (data files)
-GranuleQuery = DataGranules().concept_id('C1711961296-LPCLOUD').bounding_box(-10,20,10,50)
-
-# number of granules (data files) that matched our criteria
-counts = GranuleQuery.hits()
-# We get the metadata
-granules = GranuleQuery.get(10)
-
-# earthdata provides some convenience functions for each data granule
-data_links = [granule.data_links() for granule in granules]
-
-# The Store class allows to get the granules from on-prem locations with get()
-# NOTE: Some datasets require users to accept a Licence Agreement before accessing them
-store = Store(auth)
-
-# This works with both, on-prem or cloud based collections**
-store.get(granules, local_path='./data')
-
-# if you're in a AWS instance (us-west-2) you can use open() to get a fileset!
-fileset = store.open(granules)
-
-# Given that this is gridded data we could
-xarray.open_mfdataset(fileset, combine='by_coords')
 ```
 
 For more examples see the `Demo` and `EarthdataSearch` notebooks.
