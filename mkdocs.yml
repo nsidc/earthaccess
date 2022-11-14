@@ -47,6 +47,7 @@ nav:
   - TUTORIALS:
       - 'Basic usage': 'tutorials/demo.ipynb'
   - HOW-TO:
+      - 'Authenticate with Earthdata Login': 'tutorials/authenticate.md'
       - 'Search data collections using filters': 'tutorials/search-collections.md'
       - 'Search for granules within a collection using filters': 'tutorials/search-granules.md'
       - 'Determine if a collection is on-prem or in the cloud': 'tutorials/storage-location.md'
