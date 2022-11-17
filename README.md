@@ -22,7 +22,7 @@ A Python library to search and access NASA datasets
 </p>
 
 
-## Overview
+A python library to login, search and download or stream NASA earth science data with just a few lines of code. It can be used in code running from a personal computer or in the cloud. The only requirement to use this library is a free NASA Earthdata Login (EDL) account, you can register for one [here](https://urs.earthdata.nasa.gov)
 
 
 The real power of open science in the age of cloud computing is only unleashed to its full potential if we have easy-to-use workflows that facilitate working with data in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists are facing a steep learning curve for unintended complex systems and end up spending more time on the technicalities of the cloud and NASA APIs rather than focusing on their important science.
