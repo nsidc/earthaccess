@@ -70,7 +70,7 @@ https://www.earthdata.nasa.gov/learn/pathfinders)
 
 ## Authentication
 
-After we get a new account with EDL we can authenticate ourselves using 3 different methods:
+Once you have an EDL account, you can authenticate using one of the following three methods:
 
 1. Using a `.netrc` file
     * We can use *earthaccess* to read our credentials fom a netrc file
