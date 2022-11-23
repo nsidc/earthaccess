@@ -20,7 +20,9 @@ class SessionWithHeaderRedirection(requests.Session):
 
     AUTH_HOST = "urs.earthdata.nasa.gov"
 
-    def __init__(self, username: str = None, password: str = None) -> None:
+    def __init__(
+        self, username: Optional[str] = None, password: Optional[str] = None
+    ) -> None:
         super().__init__()
         if username and password:
             self.auth = (username, password)
@@ -175,16 +177,14 @@ class Auth(object):
         Returns:
             subclass SessionWithHeaderRedirection instance with Auth and bearer token headers
         """
+        session = SessionWithHeaderRedirection(
+            self._credentials[0], self._credentials[1]
+        )
         if bearer_token and self.authenticated:
-            session = SessionWithHeaderRedirection()
             session.headers.update(
                 {"Authorization": f'Bearer {self.token["access_token"]}'}
             )
-            return session
-        else:
-            return SessionWithHeaderRedirection(
-                self._credentials[0], self._credentials[1]
-            )
+        return session
 
     def _interactive(self, presist_credentials: bool = True) -> bool:
         username = input("Enter your Earthdata Login username: ")

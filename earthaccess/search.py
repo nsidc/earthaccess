@@ -1,5 +1,6 @@
 import datetime as dt
-from typing import Any, Dict, List, Tuple, Type
+from inspect import getmembers, ismethod
+from typing import Any, Dict, List, Optional, Tuple, Type
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
@@ -33,7 +34,7 @@ class DataCollections(CollectionQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Auth = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
         """Builds an instance of DataCollections to query CMR
 
         Parameters:
@@ -102,7 +103,22 @@ class DataCollections(CollectionQuery):
         Returns:
             Query instance
         """
-        super().parameters(**kwargs)
+        methods = {}
+        for name, func in getmembers(self, predicate=ismethod):
+            methods[name] = func
+
+        for key, val in kwargs.items():
+
+            # verify the key matches one of our methods
+            if key not in methods:
+                raise ValueError("Unknown key {}".format(key))
+
+            # call the method
+            if isinstance(val, tuple):
+                methods[key](*val)
+            else:
+                methods[key](val)
+
         return self
 
     def print_help(self, method: str = "fields") -> None:
@@ -111,7 +127,7 @@ class DataCollections(CollectionQuery):
         print([method for method in dir(self) if method.startswith("_") is False])
         help(getattr(self, method))
 
-    def fields(self, fields: List[str] = None) -> Type[CollectionQuery]:
+    def fields(self, fields: Optional[List[str]] = None) -> Type[CollectionQuery]:
         """Masks the response by only showing the fields included in this list
         Parameters:
             fields (List): list of fields to show, these fields come from the UMM model e.g. Abstract, Title
@@ -145,13 +161,6 @@ class DataCollections(CollectionQuery):
             provider = find_provider(self.DAAC, cloud_hosted)
             self.params["provider"] = provider
         return self
-
-    def entry_title(self, entry_title: str = "") -> Type[CollectionQuery]:
-        """Filter by the collection entry title.
-
-        Parameters:
-            entry_title: Entry title of the collection
-        """
 
     def provider(self, provider: str = "") -> Type[CollectionQuery]:
         """Only match collections from a given provider, a NASA datacenter or DAAC can have 1 or more providers
@@ -293,6 +302,68 @@ class DataGranules(GranuleQuery):
             self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
+
+    def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
+        """Provide query parameters as keyword arguments. The keyword needs to match the name
+        of the method, and the value should either be the value or a tuple of values.
+
+        ???+ Example
+            ```python
+            query = DataCollections.parameters(short_name="AST_L1T",
+                                               temporal=("2015-01","2015-02"),
+                                               point=(42.5, -101.25))
+            ```
+        Returns:
+            Query instance
+        """
+        methods = {}
+        for name, func in getmembers(self, predicate=ismethod):
+            methods[name] = func
+
+        for key, val in kwargs.items():
+
+            # verify the key matches one of our methods
+            if key not in methods:
+                raise ValueError("Unknown key {}".format(key))
+
+            # call the method
+            if isinstance(val, tuple):
+                methods[key](*val)
+            else:
+                methods[key](val)
+
+        return self
+
+    def provider(self, provider: str = "") -> Type[CollectionQuery]:
+        """Only match collections from a given provider, a NASA datacenter or DAAC can have 1 or more providers
+        i.e. PODAAC is a data center or DAAC, PODAAC is the default provider for on prem data, POCLOUD is
+        the PODAAC provider for their data in the cloud.
+
+        Parameters:
+            provider (String): a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
+        """
+        self.params["provider"] = provider
+        return self
+
+    def data_center(self, data_center_name: str = "") -> Type[CollectionQuery]:
+        """An alias name for `daac()`
+        Parameters:
+            data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+        """
+        return self.daac(data_center_name)
+
+    def daac(self, daac_short_name: str = "") -> Type[CollectionQuery]:
+        """Only match collections for a given DAAC, by default the on-prem collections for the DAAC
+        Parameters:
+            daac_short_name (String): a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+        """
+        if "cloud_hosted" in self.params:
+            cloud_hosted = self.params["cloud_hosted"]
+        else:
+            cloud_hosted = False
+        self.DAAC = daac_short_name
+        self.params["provider"] = find_provider(daac_short_name, cloud_hosted)
+        return self
 
     def orbit_number(self, orbit1: int, orbit2: int) -> Type[GranuleQuery]:
         """Filter by the orbit number the granule was acquired during. Either a single
@@ -479,7 +550,10 @@ class DataGranules(GranuleQuery):
         return self
 
     def temporal(
-        self, date_from: str = None, date_to: str = None, exclude_boundary: bool = False
+        self,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
+        exclude_boundary: bool = False,
     ) -> Type[GranuleQuery]:
         """Filter by an open or closed date range.
         Dates can be provided as a datetime objects or ISO 8601 formatted strings. Multiple
