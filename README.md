@@ -73,7 +73,7 @@ https://www.earthdata.nasa.gov/learn/pathfinders)
 Once you have an EDL account, you can authenticate using one of the following three methods:
 
 1. Using a `.netrc` file
-    * We can use *earthaccess* to read our credentials fom a netrc file
+    * Can use *earthaccess* to read your EDL credentials (username and password) from a `.netrc` file
 2. Reading our credentials from environment variables
     * if available we can use environment variables **EDL_USERNAME** and **EDL_PASSWORD**
 3. Interactively entering our credentials
