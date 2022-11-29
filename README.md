@@ -87,7 +87,7 @@ if not auth:
     auth = earthaccess.login(strategy="interactive", persist=True)
  ```
 
-Once we are authenticated with NASA EDL we can:
+Once you are authenticated with NASA EDL you can:
 
 * Get a file from a DAAC using a `fsspec` session.
 * Request temporary S3 credentials from a particular DAAC (needed to download or stream data from an S3 bucket in the cloud).
