@@ -144,7 +144,7 @@ data_links = [granule.data_links(access="external") for granule in results]
 
 ### Option 2: we want to download the results to a local folder
 
-This option is practical if we have the necessary space available on disk, the library will inform us about the approximate size to be downloaded and its progress.
+This option is practical if you have the necessary space available on disk, the *earthaccess* library will print out the approximate size of the download and its progress.
 ```python
 for results in query.items():
     # results is a list of up to 2000 granules (files)
