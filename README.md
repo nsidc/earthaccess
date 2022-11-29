@@ -112,7 +112,7 @@ query = earthaccess.search_data(
 
 print(f"Granules found: {query.hits()}")
 
-# We execute our query and ask for 10 results only
+# Execute the query and ask for the first 10 results
 results = query.get(10)
 
 # If we want all the results we can iterate over items() 
