@@ -90,7 +90,7 @@ if not auth:
 Once we are authenticated with NASA EDL we can:
 
 * Get a file from a DAAC using a `fsspec` session.
-* Requests temporary S3 credentials from a particular DAAC.
+* Request temporary S3 credentials from a particular DAAC (needed to download or stream data from an S3 bucket in the cloud).
 * Use the library to download or stream data directly from S3.
 * Regenerate CMR tokens (used for restricted datasets)
 
