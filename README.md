@@ -132,7 +132,7 @@ If we already have a workflow in place for downloading our data, we can use *ear
 
 ```python
 
-# if the dataset is cloud hosted there will be S3 links available, the access parameter accepts direct or external, direct access is only possible if we are in us-west-2
+# if the data set is cloud hosted there will be S3 links available. The access parameter accepts "direct" or "external", direct access is only possible if you are in the us-west-2 region in the cloud. 
 data_links = [granule.data_links(access="direct") for granule in results]
 
 # or if the data is an on-prem dataset
