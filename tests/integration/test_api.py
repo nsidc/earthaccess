@@ -1,14 +1,22 @@
 # package imports
 import logging
 import os
+import shutil
 import unittest
 
 import earthaccess
 import pytest
-import responses
 
 logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
+
+
+assertions.assertTrue("EDL_USERNAME" in os.environ)
+assertions.assertTrue("EDL_PASSWORD" in os.environ)
+
+logger.info(f"Current username: {os.environ['EDL_USERNAME']}")
+logger.info(f"earthaccess version: {earthaccess.__version__}")
+
 
 dataset_valid_params = [
     {"data_center": "NSIDC", "cloud_hosted": True},
@@ -34,22 +42,7 @@ granules_valid_params = [
 ]
 
 
-@responses.activate
 def test_auth_returns_valid_auth_class():
-    os.environ["EDL_USERNAME"] = "user"
-    os.environ["EDL_PASSWORD"] = "password"
-
-    json_response = [
-        {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
-        {"access_token": "EDL-token-2", "expiration_date": "12/16/2021"},
-    ]
-    responses.add(
-        responses.GET,
-        "https://urs.earthdata.nasa.gov/api/users/tokens",
-        json=json_response,
-        status=200,
-    )
-
     auth = earthaccess.login(strategy="environment")
     assertions.assertIsInstance(auth, earthaccess.Auth)
     assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
@@ -58,7 +51,8 @@ def test_auth_returns_valid_auth_class():
 
 def test_dataset_search_returns_none_with_no_parameters():
     results = earthaccess.search_datasets()
-    assertions.assertIsNone(results)
+    assertions.assertIsInstance(results, list)
+    assertions.assertTrue(len(results) == 0)
 
 
 @pytest.mark.parametrize("kwargs", dataset_valid_params)
@@ -73,3 +67,18 @@ def test_granules_search_returns_valid_results(kwargs):
     results = earthaccess.search_data(count=10, **kwargs)
     assertions.assertIsInstance(results, list)
     assertions.assertTrue(len(results) <= 10)
+
+
+def test_earthaccess_api_can_download_granules():
+    results = earthaccess.search_data(
+        count=2,
+        short_name="ATL08",
+        cloud_hosted=True,
+        bounding_box=(-92.86, 16.26, -91.58, 16.97),
+    )
+    local_path = "./tests/integration/data/ATL08"
+    assertions.assertIsInstance(results, list)
+    assertions.assertTrue(len(results) <= 2)
+    files = earthaccess.download(results, local_path=local_path)
+    assertions.assertIsInstance(files, list)
+    shutil.rmtree(local_path)

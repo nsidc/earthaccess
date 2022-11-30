@@ -43,27 +43,31 @@ plugins:
       execute: False
 
 nav:
-  - OVERVIEW: 'index.md'
-  - TUTORIALS:
+  - Overview: 'index.md'
+  - Tutorials:
       - 'Basic usage': 'tutorials/demo.ipynb'
-  - HOW-TO:
+  - How-To:
       - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
       - 'Search and access on-prem datasets': 'tutorials/onprem.md'
       - 'Search and cloud-based datasets': 'tutorials/cloud.md'
-  - USER REFERENCE:
+  - User Reference:
+      - API:
+          - 'Search and Access': 'user-reference/api/api.md'
+      - Modules:
+        - Collections:
+            - 'Collection Queries': 'user-reference/collections/collections-query.md'
+            - 'Collection Results': 'user-reference/collections/collections.md'
+        - Granules:
+            - 'Granule Queries': 'user-reference/granules/granules-query.md'
+            - 'Granule Results': 'user-reference/granules/granules.md'
+        - Store:
+            - 'Store': 'user-reference/store/store.md'
+        - Auth:
+            - 'Auth': 'user-reference/auth/auth.md'
+
       - Glossary:
           - 'NASA Glossary': 'user-reference/glossary/nasa-glossary.md'
           - 'Cloud Computing Terminology': 'user-reference/glossary/cloud-glossary.md'
-      - Collections API:
-          - 'Collection Queries': 'user-reference/collections/collections-query.md'
-          - 'Collection Results': 'user-reference/collections/collections.md'
-      - Granules API:
-          - 'Granule Queries': 'user-reference/granules/granules-query.md'
-          - 'Granule Results': 'user-reference/granules/granules.md'
-      - Store API:
-          - 'Store': 'user-reference/store/store.md'
-      - Auth API:
-          - 'Auth': 'user-reference/auth/auth.md'
 markdown_extensions:
   - admonition
   - callouts

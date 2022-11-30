@@ -11,11 +11,11 @@ hide:
 </p>
 
 <p align="center">
-<a href="https://github.com/betolink/earthaccess/actions?query=workflow%3ATest" target="_blank">
-    <img src="https://github.com/betolink/earthaccess/workflows/Test/badge.svg" alt="Test">
+<a href="https://github.com/nsidc/earthaccess/actions?query=workflow%3ATest" target="_blank">
+    <img src="https://github.com/nsidc/earthaccess/workflows/Test/badge.svg" alt="Test">
 </a>
-<a href="https://github.com/betolink/earthaccess/actions?query=workflow%3APublish" target="_blank">
-    <img src="https://github.com/betolink/earthaccess/workflows/Publish/badge.svg" alt="Publish">
+<a href="https://github.com/nsidc/earthaccess/actions?query=workflow%3APublish" target="_blank">
+    <img src="https://github.com/nsidc/earthaccess/workflows/Publish/badge.svg" alt="Publish">
 </a>
 <a href="https://pypi.org/project/earthaccess" target="_blank">
     <img src="https://img.shields.io/pypi/v/earthaccess?color=%2334D058&label=pypi%20package" alt="Package version">

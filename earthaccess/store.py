@@ -347,7 +347,6 @@ class Store(object):
         self,
         granules: Union[List[DataGranule], List[str]],
         local_path: Optional[str] = None,
-        access: Optional[str] = None,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -366,10 +365,10 @@ class Store(object):
             threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
 
         Returns:
-            None
+            List of downloaded files
         """
         if len(granules):
-            files = self._get(granules, local_path, access, provider, threads)
+            files = self._get(granules, local_path, provider, threads)
             return files
         else:
             print("List of URLs or DataGranule isntances expected")
@@ -380,7 +379,6 @@ class Store(object):
         self,
         granules: Union[List[DataGranule], List[str]],
         local_path: Optional[str] = None,
-        access: Optional[str] = None,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -409,7 +407,6 @@ class Store(object):
         self,
         granules: List[str],
         local_path: Optional[str] = None,
-        access: Optional[str] = None,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -424,7 +421,7 @@ class Store(object):
             return None
         if self.running_in_aws:
             print(f"Accessing cloud dataset using provider: {provider}")
-            s3_fs = self.get_s3fs_session(provider)
+            s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
             for file in data_links:
                 file_name = file.split("/")[-1]
@@ -443,7 +440,6 @@ class Store(object):
         self,
         granules: List[DataGranule],
         local_path: Optional[str] = None,
-        access: Optional[str] = None,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -452,10 +448,7 @@ class Store(object):
         downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
         cloud_hosted = granules[0].cloud_hosted
-        if cloud_hosted and self.running_in_aws and access is None:
-            # TODO: benchmark this
-            print("Using direct access links (S3)")
-            access = "direct"
+        access = "direc" if (cloud_hosted and self.running_in_aws) else "external"
         data_links = list(
             # we are not in region
             chain.from_iterable(

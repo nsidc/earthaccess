@@ -13,18 +13,18 @@ logger = logging.getLogger(__name__)
 
 
 daacs_list = [
-    {
-        "short_name": "NSIDC",
-        "collections_count": 50,
-        "collections_sample_size": 3,
-        "granules_count": 100,
-        "granules_sample_size": 2,
-        "granules_max_size_mb": 100,
-    },
+    # {
+    #     "short_name": "NSIDC",
+    #     "collections_count": 50,
+    #     "collections_sample_size": 3,
+    #     "granules_count": 100,
+    #     "granules_sample_size": 2,
+    #     "granules_max_size_mb": 100,
+    # },
     {
         "short_name": "GES_DISC",
         "collections_count": 100,
-        "collections_sample_size": 3,
+        "collections_sample_size": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 130,
@@ -32,7 +32,7 @@ daacs_list = [
     {
         "short_name": "PODAAC",
         "collections_count": 100,
-        "collections_sample_size": 3,
+        "collections_sample_size": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
@@ -40,19 +40,19 @@ daacs_list = [
     {
         "short_name": "LPDAAC",
         "collections_count": 100,
-        "collections_sample_size": 3,
+        "collections_sample_size": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
-    # {
-    #     "short_name": "ORNLDAAC",
-    #     "collections_count": 100,
-    #     "collections_sample_size": 3,
-    #     "granules_count": 100,
-    #     "granules_sample_size": 2,
-    #     "granules_max_size_mb": 50,
-    # },
+    {
+        "short_name": "ORNLDAAC",
+        "collections_count": 100,
+        "collections_sample_size": 2,
+        "granules_count": 100,
+        "granules_sample_size": 2,
+        "granules_max_size_mb": 50,
+    },
 ]
 
 assertions = unittest.TestCase("__init__")

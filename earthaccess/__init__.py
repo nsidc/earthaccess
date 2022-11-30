@@ -1,3 +1,5 @@
+from typing import Any
+
 import pkg_resources  # type: ignore
 
 from .api import download, login, open, search_data, search_datasets
@@ -18,6 +20,6 @@ __all__ = [
 ]
 
 __auth__ = Auth()
-__store__ = None
+__store__: Any = None
 
 __version__ = pkg_resources.get_distribution("earthaccess").version
