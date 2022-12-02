@@ -22,7 +22,7 @@ A Python library to search and access NASA datasets
 </p>
 
 
-## Overview
+A python library to login, search and download or stream NASA earth science data with just a few lines of code. It can be used in code running from a personal computer or in the cloud. The only requirement to use this library is a free NASA Earthdata Login (EDL) account, you can register for one [here](https://urs.earthdata.nasa.gov)
 
 
 The real power of open science in the age of cloud computing is only unleashed to its full potential if we have easy-to-use workflows that facilitate working with data in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists are facing a steep learning curve for unintended complex systems and end up spending more time on the technicalities of the cloud and NASA APIs rather than focusing on their important science.
@@ -70,14 +70,14 @@ https://www.earthdata.nasa.gov/learn/pathfinders)
 
 ## Authentication
 
-After we get a new account with EDL we can authenticate ourselves using 3 different methods:
+Once you have an EDL account, you can authenticate using one of the following three methods:
 
 1. Using a `.netrc` file
-    * We can use *earthaccess* to read our credentials fom a netrc file
-2. Reading our credentials from environment variables
-    * if available we can use environment variables **EDL_USERNAME** and **EDL_PASSWORD**
-3. Interactively entering our credentials
-    * We can ask for these credentials and even persist them to a `.netrc` file
+    * Can use *earthaccess* to read your EDL credentials (username and password) from a `.netrc` file
+2. Reading your EDL credentials from environment variables
+    * if available you can use environment variables **EDL_USERNAME** and **EDL_PASSWORD**
+3. Interactively entering your EDL credentials
+    * You can be prompted for these credentials and save them to a `.netrc` file
 
 ```python
 import earthaccess
@@ -87,10 +87,10 @@ if not auth:
     auth = earthaccess.login(strategy="interactive", persist=True)
  ```
 
-Once we are authenticated with NASA EDL we can:
+Once you are authenticated with NASA EDL you can:
 
 * Get a file from a DAAC using a `fsspec` session.
-* Requests temporary S3 credentials from a particular DAAC.
+* Request temporary S3 credentials from a particular DAAC (needed to download or stream data from an S3 bucket in the cloud).
 * Use the library to download or stream data directly from S3.
 * Regenerate CMR tokens (used for restricted datasets)
 
@@ -112,7 +112,7 @@ query = earthaccess.search_data(
 
 print(f"Granules found: {query.hits()}")
 
-# We execute our query and ask for 10 results only
+# Execute the query and ask for the first 10 results
 results = query.get(10)
 
 # If we want all the results we can iterate over items() 
@@ -132,7 +132,7 @@ If we already have a workflow in place for downloading our data, we can use *ear
 
 ```python
 
-# if the dataset is cloud hosted there will be S3 links available, the access parameter accepts direct or external, direct access is only possible if we are in us-west-2
+# if the data set is cloud hosted there will be S3 links available. The access parameter accepts "direct" or "external", direct access is only possible if you are in the us-west-2 region in the cloud. 
 data_links = [granule.data_links(access="direct") for granule in results]
 
 # or if the data is an on-prem dataset
@@ -144,7 +144,7 @@ data_links = [granule.data_links(access="external") for granule in results]
 
 ### Option 2: we want to download the results to a local folder
 
-This option is practical if we have the necessary space available on disk, the library will inform us about the approximate size to be downloaded and its progress.
+This option is practical if you have the necessary space available on disk, the *earthaccess* library will print out the approximate size of the download and its progress.
 ```python
 for results in query.items():
     # results is a list of up to 2000 granules (files)
