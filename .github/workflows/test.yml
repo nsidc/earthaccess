@@ -41,5 +41,8 @@ jobs:
         run: poetry install
       - name: Test
         run: poetry run bash scripts/test.sh
+        with:
+          EDL_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EDL_PASSWORD: ${{ secrets.EDL_PASSWORD }}
       - name: Upload coverage
         uses: codecov/codecov-action@v1

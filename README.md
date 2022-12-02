@@ -110,7 +110,7 @@ Now that we have our results we can do multiple things, we can iterate over them
 
 ## Accessing the data
 
-### Option 1: we only want the links
+### Option 1: Extracting the data links
 
 If we already have a workflow in place for downloading our data, we can use *earthaccess* as a search-only library and get HTTP links from our query results. This could be the case if our current workflow uses a different language and we only need the links as input.
 
@@ -126,7 +126,7 @@ data_links = [granule.data_links(access="external") for granule in results]
 
 > Note: as a bonus, *earthaccess* can get S3 credentials for us, or auhenticated HTTP sessions in case we want to use them with a different library.
 
-### Option 2: we want to download the results to a local folder
+### Option 2: Download the data to a local folder
 
 This option is practical if you have the necessary space available on disk, the *earthaccess* library will print out the approximate size of the download and its progress.
 ```python
@@ -134,9 +134,9 @@ files = earthaccess.download(results, "./local_folder")
 
 ```
 
-### Option 3: we want to stream the results directly to xarray
+### Option 3: Direct S3 Access - Stream the data directly to xarray 
 
-This method works better for in-region access when we are working with gridded datasets (processing level 3 and above).
+This method works best if you are in the same region as the data (us-west-2) and you are working with gridded datasets (processing level 3 and above).
 
 ```python
 import xarray as xr
@@ -144,9 +144,11 @@ import xarray as xr
 ds = xr.open_mfdataset(earthaccess.open(results, auth=auth), engine="scipy")
 
 ```
-And that's it! this code works the same for cloud hosted data and we don't have to change it if we are using DAAC hosted datasets.
 
-More examples coming soon!
+And that's it! Just one line of code, and this same piece of code will also work for data that are not hosted in the cloud, i.e. NASA hosted data sets.
+
+
+> More examples coming soon!
 
 
 ### Compatibility
