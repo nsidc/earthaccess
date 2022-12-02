@@ -1,5 +1,6 @@
 # **earthaccess** 🌍
-A Python library to search and access NASA datasets
+A python library to search, download or stream NASA Earthdata data with just a few lines of code. 
+
 
 <p align="center">
 
@@ -21,15 +22,14 @@ A Python library to search and access NASA datasets
 
 </p>
 
+## Overview
 
-A python library to login, search and download or stream NASA earth science data with just a few lines of code. It can be used in code running from a personal computer or in the cloud. The only requirement to use this library is a free NASA Earthdata Login (EDL) account, you can register for one [here](https://urs.earthdata.nasa.gov)
+The power of open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
+
+During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html) the need to provide easy-to-use tools to our users became evident. Reproducible  workflows are extremely important in the age of cloud computing and open science. We cannot afford to complicate things further; the simpler the code the better. Open Science is a collaborative effort, it involves people from different technical backgrounds. Data analysis for the pressing problems we face cannot be limited by the lack of computer engineering skills. This is the motivation behind earthaccess.
 
 
-The real power of open science in the age of cloud computing is only unleashed to its full potential if we have easy-to-use workflows that facilitate working with data in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists are facing a steep learning curve for unintended complex systems and end up spending more time on the technicalities of the cloud and NASA APIs rather than focusing on their important science.
-
-During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html) the need to provide easy-to-use tools to our users became evident. We shouldn’t need to be cloud infrastructure engineers to easily work with the data if it’s hosted on a S3 bucket. This was the main reason behind *earthaccess*, a Python library that aims to simplify our workflows to address some of the pain points of programmatic access to NASA datasets within the PyData ecosystem.
-
-With *earthaccess* we can login with NASA, search and download data with a few lines of code and even more relevant, our code will work the same way if we are running it in the cloud or from our laptop. ***earthaccess*** handles authentication with [NASA's Earthdata Login (EDL)](https://urs.earthdata.nasa.gov), search using NASA's [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html) and access through [`fsspec`](https://github.com/fsspec/filesystem_spec). If all of this sounds like gibberish... no worries we are here to help! Please ask us anything on [project board!](https://github.com/nsidc/earthdata/discussions).
+With *earthaccess* we can login with NASA Earthdata, search and download data with a few lines of code and even more relevant, our code will work the same way if we are running it in the cloud or from our laptop. ***earthaccess*** handles authentication with [NASA's Earthdata Login (EDL)](https://urs.earthdata.nasa.gov), search using NASA's [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html) and access through [`fsspec`](https://github.com/fsspec/filesystem_spec). If all of this sounds like gibberish... no worries we are here to help! Please ask us anything on [project board!](https://github.com/nsidc/earthdata/discussions).
 
 The only requirement to use this library is to open a free account with NASA [EDL](https://urs.earthdata.nasa.gov).
 
@@ -39,11 +39,10 @@ The only requirement to use this library is to open a free account with NASA [ED
 
 > **⚠️ Warning ⚠️**: The project has recently been renamed from earthdata to earthaccess. If your environment depends on earthdata, please update your reference to earthaccess v0.5.0
 
+<img src="https://user-images.githubusercontent.com/717735/205374132-78dfec51-3998-4862-89bc-d14610bf1b89.jpg" />
 
+> Artwork by Allison Horst.
 
-<a href="https://urs.earthdata.nasa.gov"><img src="https://auth.ops.maap-project.org/cas/images/urs-logo.png" /></a>
-
-<img src="https://user-images.githubusercontent.com/717735/199083271-79ce5113-b680-4fe5-a1bf-6c927bf02c75.jpg" />
 
 ## Installing earthaccess
 
@@ -60,13 +59,6 @@ pip install earthaccess
 ```
 
 Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthdata/main)
-
-## Do where do we start?
-
-Data Pathfinders guide users through the process of selecting application-specific datasets and learning how to use them through intuitive tools, facilitating equal and open access to the breadth of NASA Earth science data. The pathfinders are intended to familiarize users with and provide direct links to the applicable, commonly-used datasets across NASA’s Earth science data collections. After getting started here, there are numerous NASA resources that can help develop one’s skills further.
-
-[https://www.earthdata.nasa.gov/learn/pathfinders](
-https://www.earthdata.nasa.gov/learn/pathfinders)
 
 ## Authentication
 
@@ -98,27 +90,19 @@ Once you are authenticated with NASA EDL you can:
 ## Searching for data
 
 Once we have selected our dataset we can search for the data granules using *doi*, *short_name* or *concept_id*.
-If are not sure or we don't know ohw to search for a particular dataset we can start with the "searching for data" tutorial or through the data pathfinder program listed above. For a complete list of search parameters we can use visit the API extended documentation.
+If are not sure or we don't know how to search for a particular dataset we can start with the "searching for data" tutorial or through the [Earthdata search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the API extended documentation.
 
 ```python
 
-query = earthaccess.search_data(
+results = earthaccess.search_data(
     short_name='ATL06',
     version="005",
     cloud_hosted=True,
     bounding_box=(-10, 20, 10, 50),
-    temporal=("2020-02", "2020-03")
+    temporal=("2020-02", "2020-03"),
+    count=100
 )
 
-print(f"Granules found: {query.hits()}")
-
-# Execute the query and ask for the first 10 results
-results = query.get(10)
-
-# If we want all the results we can iterate over items() 
-# for results in query.items():
-#     print(len(results))
-#     some cool stuff
 
 ```
 
@@ -146,11 +130,7 @@ data_links = [granule.data_links(access="external") for granule in results]
 
 This option is practical if you have the necessary space available on disk, the *earthaccess* library will print out the approximate size of the download and its progress.
 ```python
-for results in query.items():
-    # results is a list of up to 2000 granules (files)
-    earthaccess.download(results,
-                         local_path="./data/atl06/",
-                         auth=auth)
+files = earthaccess.download(results, "./local_folder")
 
 ```
 
@@ -166,17 +146,8 @@ ds = xr.open_mfdataset(earthaccess.open(results, auth=auth), engine="scipy")
 ```
 And that's it! this code works the same for cloud hosted data and we don't have to change it if we are using DAAC hosted datasets.
 
-## More examples:
+More examples coming soon!
 
-* earthaccess search capabilities (searching for services and variables)
-* renovating EDL access tokens with 1 line of code
-* earthaccess and other client libraries (py-STAC, PyDAP, Harmony)
-* Searching for cloud hosted collections
-* Searching for collections under an access control list (early users)
-* Printing relevant information from a collection
-* Visualizing data granules
-* Getting S3 credentials from the DAACs
-* Direct access with S3FS session for cloud hosted collections
 
 ### Compatibility
 
@@ -194,6 +165,8 @@ See [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Glossary
 
+<a href="https://www.earthdata.nasa.gov/learn/glossary"><img src="https://auth.ops.maap-project.org/cas/images/urs-logo.png" /></a>
+
 ## Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=nsidc/earthdata)](https://github.com/nsidc/earthdata/graphs/contributors)
@@ -203,3 +176,4 @@ See [Code of Conduct](CODE_OF_CONDUCT.md)
 Welcome! 😊👋
 
 > Please see the [Contributing Guide](CONTRIBUTING.md).
+
