@@ -40,9 +40,9 @@ jobs:
       - name: Install Dependencies
         run: poetry install
       - name: Test
-        run: poetry run bash scripts/test.sh
-        with:
+        env:
           EDL_USERNAME: ${{ secrets.EDL_USERNAME }}
           EDL_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+        run: poetry run bash scripts/test.sh
       - name: Upload coverage
         uses: codecov/codecov-action@v1
