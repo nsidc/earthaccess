@@ -110,13 +110,13 @@ Now that we have our results we can do multiple things, we can iterate over them
 
 ## Accessing the data
 
-### Option 1: Extracting the data links
+### Option 1: Using the data links
 
 If we already have a workflow in place for downloading our data, we can use *earthaccess* as a search-only library and get HTTP links from our query results. This could be the case if our current workflow uses a different language and we only need the links as input.
 
 ```python
 
-# if the data set is cloud hosted there will be S3 links available. The access parameter accepts "direct" or "external", direct access is only possible if you are in the us-west-2 region in the cloud. 
+# if the data set is cloud hosted there will be S3 links available. The access parameter accepts "direct" or "external", direct access is only possible if you are in the us-west-2 region in the cloud.
 data_links = [granule.data_links(access="direct") for granule in results]
 
 # or if the data is an on-prem dataset
@@ -134,7 +134,7 @@ files = earthaccess.download(results, "./local_folder")
 
 ```
 
-### Option 3: Direct S3 Access - Stream the data directly to xarray 
+### Option 3: Direct S3 Access - Stream the data directly to xarray
 
 This method works best if you are in the same region as the data (us-west-2) and you are working with gridded datasets (processing level 3 and above).
 

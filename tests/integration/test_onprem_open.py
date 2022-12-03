@@ -8,6 +8,7 @@ import earthaccess
 import magic
 import pytest
 from earthaccess import Auth, DataCollections, DataGranules, Store
+from fsspec import AbstractFileSystem
 
 logger = logging.getLogger(__name__)
 
@@ -154,4 +155,7 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
 
         # we test that we can read some bytes and get the file type
         for file in fileset:
-            logger.info(f"File type:  {magic.from_buffer(file.read(2048))}")
+            if not isinstance(file, Exception):
+                logger.info(f"File type:  {magic.from_buffer(file.read(2048))}")
+            else:
+                logger.warning(f"File could not be open: {file}")
