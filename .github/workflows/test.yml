@@ -6,6 +6,9 @@ on:
       - earthaccess/**
       - tests/**
   pull_request:
+    paths:
+      - earthaccess/**
+      - tests/**
     types: [opened, synchronize]
 
 jobs:
