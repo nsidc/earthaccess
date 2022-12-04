@@ -2,6 +2,9 @@ name: Test
 
 on:
   push:
+    paths:
+      - earthaccess/**
+      - tests/**
   pull_request:
     types: [opened, synchronize]
 
