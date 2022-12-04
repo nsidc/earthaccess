@@ -20,7 +20,9 @@ class SessionWithHeaderRedirection(requests.Session):
 
     AUTH_HOST = "urs.earthdata.nasa.gov"
 
-    def __init__(self, username: str = None, password: str = None) -> None:
+    def __init__(
+        self, username: Optional[str] = None, password: Optional[str] = None
+    ) -> None:
         super().__init__()
         if username and password:
             self.auth = (username, password)
@@ -98,7 +100,7 @@ class Auth(object):
                 self.token = resp_tokens.json()
                 self.tokens = [self.token]
                 print(
-                    f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 return True
             else:
@@ -111,7 +113,7 @@ class Auth(object):
                 self.token = resp_tokens.json()
                 self.tokens.extend(self.token)
                 print(
-                    f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 return True
             else:
@@ -127,7 +129,7 @@ class Auth(object):
                     self.token = resp_tokens.json()
                     self.tokens[0] = self.token
                     print(
-                        f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                        f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                     )
                     return True
                 else:
@@ -175,16 +177,14 @@ class Auth(object):
         Returns:
             subclass SessionWithHeaderRedirection instance with Auth and bearer token headers
         """
+        session = SessionWithHeaderRedirection(
+            self._credentials[0], self._credentials[1]
+        )
         if bearer_token and self.authenticated:
-            session = SessionWithHeaderRedirection()
             session.headers.update(
                 {"Authorization": f'Bearer {self.token["access_token"]}'}
             )
-            return session
-        else:
-            return SessionWithHeaderRedirection(
-                self._credentials[0], self._credentials[1]
-            )
+        return session
 
     def _interactive(self, presist_credentials: bool = True) -> bool:
         username = input("Enter your Earthdata Login username: ")
@@ -239,7 +239,7 @@ class Auth(object):
             if len(self.tokens) == 0:
                 self.refresh_tokens()
                 print(
-                    f"earthdata generated a token for CMR with expiration on: {self.token['expiration_date']}"
+                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 self.token = self.tokens[0]
             elif len(self.tokens) > 0:

@@ -1,6 +1,6 @@
 import json
 import uuid
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from benedict import benedict
 
@@ -14,7 +14,7 @@ class CustomDict(benedict):
     def __init__(
         self,
         collection: Dict[str, Any],
-        fields: List[str] = None,
+        fields: Optional[List[str]] = None,
         cloud_hosted: bool = False,
     ):
         super().__init__(collection)
@@ -202,7 +202,7 @@ class DataGranule(CustomDict):
     def __init__(
         self,
         collection: Dict[str, Any],
-        fields: List[str] = None,
+        fields: Optional[List[str]] = None,
         cloud_hosted: bool = False,
     ):
         super().__init__(collection)
@@ -271,7 +271,9 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(self, access: str = None, in_region: bool = False) -> List[str]:
+    def data_links(
+        self, access: Optional[str] = None, in_region: bool = False
+    ) -> List[str]:
         """Returns the data links form a granule
 
         Parameters:

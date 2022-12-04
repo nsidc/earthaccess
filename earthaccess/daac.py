@@ -1,5 +1,5 @@
 # DAACS ~= NASA Earthdata data centers
-from typing import Union
+from typing import Optional, Union
 
 import requests
 
@@ -53,7 +53,7 @@ DAACS = [
         "s3-credentials": "https://data.lpdaac.earthdatacloud.nasa.gov/s3credentials",
     },
     {
-        "short-name": "GESDISC",
+        "short-name": "GES_DISC",
         "name": "NASA Goddard Earth Sciences (GES) Data and Information Services Center (DISC)",
         "homepage": "https://daac.gsfc.nasa.gov",
         "cloud-providers": ["GES_DISC"],
@@ -89,9 +89,31 @@ CLOUD_PROVIDERS = [
     "ORNL_CLOUD",
 ]
 
+# Some testing urls behind EDL
+DAAC_TEST_URLS = [
+    (
+        "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/"
+        "JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/"
+    ),
+    (
+        "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/"
+        "ATL03/005/2018/10/14/dummy.nc"
+    ),
+    (
+        "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/"
+        "ATL06_20181014045341_02380102_005_01.iso.xml"
+    ),
+    ("https://hydro1.gesdisc.eosdis.nasa.gov/data/GLDAS/GLDAS_NOAH10_M.2.0/1948/"),
+    (
+        "https://e4ftl01.cr.usgs.gov//DP114/MOTA/MCD43A3.006/2000.02.24/"
+        "MCD43A3.A2000055.h15v07.006.2016101151720.hdf.xml"
+    ),
+    "https://daac.ornl.gov/daacdata/npp/grassland/NPP_BCN/data/bcn_cli.txt",
+]
+
 
 def find_provider(
-    daac_short_name: str = None, cloud_hosted: bool = None
+    daac_short_name: Optional[str] = None, cloud_hosted: Optional[bool] = None
 ) -> Union[str, None]:
     for daac in DAACS:
         if daac_short_name == daac["short-name"]:

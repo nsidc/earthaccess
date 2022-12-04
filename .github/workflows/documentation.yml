@@ -14,8 +14,8 @@ jobs:
           python-version: 3.9
           channels: conda-forge
           mamba-version: "*"
-          activate-environment: earthdata-dev
-          environment-file: binder/environment.yml
+          activate-environment: earthaccess-dev
+          environment-file: binder/environment-dev.yml
       - name: Get full python version
         id: full-python-version
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")

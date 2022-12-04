@@ -1,6 +1,6 @@
 # Documentation for `Auth`
 
-::: earthdata.auth.Auth
+::: earthaccess.auth.Auth
     options:
       inherited_members: true
     show_root_heading: true
