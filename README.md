@@ -157,7 +157,7 @@ Only **Python 3.8+** is supported.
 
 ## Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=nsidc/earthdata)](https://github.com/nsidc/earthdata/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=nsidc/earthaccess)](https://github.com/nsidc/earthaccess/graphs/contributors)
 
 ## Contributing Guide
 
