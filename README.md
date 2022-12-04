@@ -1,6 +1,6 @@
 
-![earthaccess, a python library to search, download or stream NASA Earth science data with just a few lines of code
-](https://user-images.githubusercontent.com/717735/205508544-086f0c8a-bbca-4a52-8da9-ba2f4641dd2c.png)
+
+<img alt="earthaccess, a python library to search, download or stream NASA Earth science data with just a few lines of code" src="https://user-images.githubusercontent.com/717735/205517116-7a5d0f41-7acc-441e-94ba-2e541bfb7fc8.png" width="80%" align="center" />
 
 <p align="center">
 
