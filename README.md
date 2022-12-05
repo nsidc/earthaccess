@@ -55,6 +55,7 @@ With *earthaccess* we can login, search and download data with a few lines of co
 
 The only requirement to use this library is to open a free account with NASA [EDL](https://urs.earthdata.nasa.gov).
 
+<a href="https://urs.earthdata.nasa.gov"><img src="https://auth.ops.maap-project.org/cas/images/urs-logo.png" /></a>
 
 
 ### **Authentication**
@@ -169,11 +170,16 @@ Welcome! 😊👋
 
 ### Glossary
 
-<a href="https://www.earthdata.nasa.gov/learn/glossary"><img src="https://auth.ops.maap-project.org/cas/images/urs-logo.png" /></a>
+<a href="https://www.earthdata.nasa.gov/learn/glossary">NASA Earth Science Glossary</a>
+
+## License
+
+earthaccess is licensed under the MIT license. See [LICENSE](LICENSE.txt).
 
 ## Level of Support
 
-* This repository is not actively supported by NSIDC but we welcome issue submissions and pull requests in order to foster community contribution.
-
-<img src="https://raw.githubusercontent.com/nsidc/earthdata/main/docs/nsidc-logo.png" width="84px" />
+<div><img src="https://raw.githubusercontent.com/nsidc/earthdata/main/docs/nsidc-logo.png" width="84px" align="left" text-align="middle"/>
+<br>
+ This repository is not actively supported by NSIDC but we welcome issue submissions and pull requests in order to foster community contribution.
+</div>
 
