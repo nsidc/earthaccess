@@ -2,6 +2,18 @@ name: Documentation
 
 on:
   push:
+    paths:
+      - earthaccess/**
+      - tests/**
+      - docs/**
+      - notebooks/**
+  pull_request:
+    paths:
+      - earthaccess/**
+      - tests/**
+      - docs/**
+      - notebooks/**
+    types: [opened, synchronize]
 
 jobs:
   documentation:
