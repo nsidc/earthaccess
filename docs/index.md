@@ -42,20 +42,7 @@ A Python library to search and access NASA datasets.
 Install the latest release:
 
 ```bash
-conda install -c conda-forge earthdata
-```
-
-Or you can clone `earthdata` and get started locally
-
-```bash
-
-# ensure you have Poetry installed
-pip install --user poetry
-
-# install all dependencies (including dev)
-poetry install
-
-# develop!
+conda install -c conda-forge earthaccess
 ```
 
 ## Example Usage
@@ -113,5 +100,18 @@ See [Code of Conduct](https://github.com/nsidc/earthdata/blob/main/CODE_OF_CONDU
 ## Contributing Guide
 
 Welcome! 😊👋
+
+You can clone `earthaccess` and get started locally
+
+```bash
+
+# ensure you have Poetry installed
+pip install --user poetry
+
+# install all dependencies (including dev)
+poetry install
+
+# develop!
+```
 
 > Please see the [Contributing Guide](https://github.com/nsidc/earthdata/blob/main/CONTRIBUTING.md)
