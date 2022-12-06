@@ -47,38 +47,51 @@ conda install -c conda-forge earthaccess
 
 ## Example Usage
 
+# Authentication
+Authenticate using your Earthdata Login (EDL) credentials. If you have a .netrc file with these credentials in it will read that, otherwise it will prompt for your EDL username and password. 
 ```py
-from earthdata import Auth, DataGranules, DataCollections, Store
+import earthaccess
 
-# Authenticate using your Earthdata login credentials (do these need to be saved in a .netrc file?)
-auth = Auth().login() # if we want to access NASA DATA in the cloud
+auth = earthaccess.login(strategy="netrc")
+if not auth:
+    auth = earthacess.login(strategy="interactive", persist=True)
+```
 
-# Search for granules (files) within a data set
-GranuleQuery = DataGranules().concept_id('C1711961296-LPCLOUD').bounding_box(-10,20,10,50)
+# Searching for data 
+Search for granules (files) within a data set (e.g. ATL06)
 
-# Count the number of granules that match this search criteria
-counts = GranuleQuery.hits()
+```py
+results = earthaccess.search_data(
+    short_name='ATL06',
+    version="005",
+    cloud_hosted=True,
+    bounding_box=(-10, 20, 10, 50),
+    temporal=("2020-02", "2020-03"),
+    count=100
+)    
+```
 
-# Retrieve the metadata for the first 10 granules
-granules = GranuleQuery.get(10)
+# Accessing the data
 
-# Find the download links for each granule within the metadata
-data_links = [granule.data_links() for granule in granules]
+Option 1: Obtaining the data links 
 
-# Download on-prem granules 
-store = store(Auth)
-store.get(granules, local_path='./data')
+```py
+# if the data are on-prem you can obtain the HTTPS links 
+data_links = [granule.data_links(access="external") for granule in results]
 
-# Or if you are in an AWS instance (region us-west-2) you can use open to stream a file
-fileset = store.open(granules)
+# if the data are in the cloud, S3 links are available
+data_links = [granule.data_links(access="direct") for granule in results]
+```
+Option 2: Download data to a local folder 
 
+```py
+files = earthaccess.download(results, "./local_folder")
+```
 
-# You can also search and retrieve metdata for collections (data sets)
+Option 3: Direct S3 Access - Stream the data directly to xrray 
 
-DatasetQuery = DataCollections().keyword('MODIS').bounding_box(-26.85,62.65,-11.86,67.08)
-
-counts = DatasetQuery.hits()
-collections = DatasetQuery.get()
+```py 
+ds = xr.open_mfdataset(earthaccess.open(results, auth=auth), engine="scipy")
 ```
 
 For more examples see the `Demo` and `EarthdataSearch` notebooks.
