@@ -1,6 +1,4 @@
-## Search for granules within a collection using spatial and temporal filters 
-
-Import earthaccess library and search for granules within a data set. You need to know the short name which can be found on the data set landing page. 
+Import earthaccess library and search for granules within a data set using spatial and temporal filters. You need to know the short name of the data set which can be found on the data set landing page.
 
 ```py
 import earthaccess
