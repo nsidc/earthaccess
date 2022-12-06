@@ -1,6 +1,6 @@
-site_name: earthdata
+site_name: earthaccess
 site_description: Client library for NASA Earthdata APIs
-site_url: https://github.com/nsidc/earthdata
+site_url: https://github.com/nsidc/earthaccess
 
 theme:
   name: 'material'
@@ -17,8 +17,8 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
 
-repo_name: nsidc/earthdata
-repo_url: https://github.com/nsidc/earthdata
+repo_name: nsidc/earthaccess
+repo_url: https://github.com/nsidc/earthaccess
 edit_uri: ''
 
 extra_css:
