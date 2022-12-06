@@ -45,7 +45,7 @@ plugins:
 nav:
   - OVERVIEW: 'index.md'
   - TUTORIALS:
-      - 'Basic usage': 'tutorials/demo.ipynb'
+      - 'Introducing NASA earthaccess': 'tutorials/demo.ipynb'
       - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
   - HOW-TO:
       - 'Authenticate with Earthdata Login': 'tutorials/authenticate.md'
