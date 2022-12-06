@@ -1,18 +1,17 @@
 ## Search for granules within a collection using spatial and temporal filters 
 
-Import the DataGranules class
-```py
-from earthaccess import DataGranules
-```
-
-Search for granules within a data set. You need to know the short name which can be found on the data set landing page
-```py
-Query = DataGranules().short_name("ATL03").temporal("2022-05-01",2022-05-31").bounding_box(-53.4,69.6,-50.8,72.0)
-```
-
-Print the number of granules found
+Import earthaccess library and search for granules within a data set. You need to know the short name which can be found on the data set landing page. 
 
 ```py
-print(f"Granules found: {Query.hits()}")
+import earthaccess
+
+results = earthaccess.search_data(
+    short_name = "ATL06",
+    version = "005"'
+    cloud_hosted = True, 
+    bounding_box = (-10,20,10,50),
+    temporal = ("2020-02", "2020-03"),
+    count = 100
+)
 ```
 
