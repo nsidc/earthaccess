@@ -4,10 +4,10 @@ hide:
 ---
 
 
-# earthdata 🌍
+# earthaccess 🌍
 
 <p align="center">
-    <em>Client library for NASA CMR and EDL APIs</em>
+    <em>Python library to search, download or stream NASA Earth science data</em>
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@ hide:
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/betolink/earthdata/main)
 
-A Python library to search and access NASA datasets.
+A Python library to search, download or stream NASA Earth Science data with just a few lines of code.
 
 ## Installing earthdata
 
