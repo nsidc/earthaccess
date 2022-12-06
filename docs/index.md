@@ -37,7 +37,7 @@ hide:
 
 A Python library to search, download or stream NASA Earth Science data with just a few lines of code.
 
-## Installing earthdata
+## Installing earthaccess
 
 Install the latest release:
 
@@ -47,7 +47,7 @@ conda install -c conda-forge earthaccess
 
 ## Example Usage
 
-# Authentication
+### Authentication
 Authenticate using your Earthdata Login (EDL) credentials. If you have a .netrc file with these credentials in it will read that, otherwise it will prompt for your EDL username and password. 
 ```py
 import earthaccess
@@ -57,7 +57,7 @@ if not auth:
     auth = earthacess.login(strategy="interactive", persist=True)
 ```
 
-# Searching for data 
+### Searching for data 
 Search for granules (files) within a data set (e.g. ATL06)
 
 ```py
@@ -71,7 +71,7 @@ results = earthaccess.search_data(
 )    
 ```
 
-# Accessing the data
+### Accessing the data
 
 Option 1: Obtaining the data links 
 
@@ -94,7 +94,8 @@ Option 3: Direct S3 Access - Stream the data directly to xrray
 ds = xr.open_mfdataset(earthaccess.open(results, auth=auth), engine="scipy")
 ```
 
-For more examples see the `Demo` and `EarthdataSearch` notebooks.
+
+For more examples see the `Introducing NASA Earthaccess` notebook under Tutorials.
 
 
 Only **Python 3.7+** is supported as required by the black, pydantic packages
