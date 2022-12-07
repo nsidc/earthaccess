@@ -90,6 +90,23 @@ class DataCollections(CollectionQuery):
         super().keyword(text)
         return self
 
+    def doi(self, doi: str) -> Type[CollectionQuery]:
+        """Searh datasets by DOI
+
+        ???+ Tip
+            Not all datasets have an associated DOI, also DOI search works
+            only at the dataset level but not the granule (data) level.
+            We need to search by DOI, grab the concept_id and then get the data.
+
+        Parameters:
+            doi (String): DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
+        """
+        if not isinstance(doi, str):
+            raise TypeError("doi must be of type str")
+
+        self.params["doi"] = doi
+        return self
+
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
         of the method, and the value should either be the value or a tuple of values.
