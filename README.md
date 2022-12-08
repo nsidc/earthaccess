@@ -9,15 +9,15 @@
 </a>
 
 <a href="https://pypi.org/project/earthdata" target="_blank">
-    <img src="https://img.shields.io/pypi/v/earthdata?color=%2334D058&label=pypi%20package" alt="Package version">
+    <img src="https://img.shields.io/pypi/v/earthaccess?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
 
 <a href="https://pypi.org/project/earthdata/" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/earthdata.svg" alt="Python Versions">
+    <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
 <a href="https://nsidc.github.io/earthdata/" target="_blank">
-    <img src="https://readthedocs.org/projects/earthdata/badge/?version=latest&style=plastic" alt="Documentation link">
+    <img src="https://readthedocs.org/projects/earthaccess/badge/?version=latest&style=plastic" alt="Documentation link">
 </a>
 
 </p>
