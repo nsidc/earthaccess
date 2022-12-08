@@ -2,7 +2,13 @@ name: Test
 
 on:
   push:
+    paths:
+      - earthaccess/**
+      - tests/**
   pull_request:
+    paths:
+      - earthaccess/**
+      - tests/**
     types: [opened, synchronize]
 
 jobs:
@@ -10,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, '3.10']
+        python-version: [3.8, 3.9, '3.10', '3.11']
       fail-fast: false
 
     steps:
@@ -40,6 +46,9 @@ jobs:
       - name: Install Dependencies
         run: poetry install
       - name: Test
+        env:
+          EDL_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EDL_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
         uses: codecov/codecov-action@v1

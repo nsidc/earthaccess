@@ -4,7 +4,7 @@ import unittest
 
 import fsspec
 import responses
-from earthdata import Auth, Store
+from earthaccess import Auth, Store
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -33,14 +33,20 @@ class TestStoreSessions(unittest.TestCase):
     def test_store_can_create_https_fsspec_session(self):
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
-        https_fs = store.get_https_session()
+        https_fs = store.get_fsspec_session()
         self.assertEqual(type(https_fs), type(fsspec.filesystem("https")))
         return None
 
     @responses.activate
     def test_store_can_create_s3_fsspec_session(self):
-        from earthdata.daac import DAACS
+        from earthaccess.daac import DAACS
 
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
         for daac in DAACS:
             if "s3-credentials" in daac:
                 responses.add(
@@ -55,7 +61,11 @@ class TestStoreSessions(unittest.TestCase):
                 )
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
-        for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GESDISC"]:
+        for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC"]:
             s3_fs = store.get_s3fs_session(daac=daac)
             self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
+
+        for provider in ["NSIDC_CPRD", "POCLOUD", "LPCLOUDa", "ORNLCLOUD", "GES_DISC"]:
+            s3_fs = store.get_s3fs_session(provider=provider)
+            assert isinstance(s3_fs, fsspec.AbstractFileSystem)
         return None

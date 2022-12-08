@@ -1,31 +1,18 @@
-name: earthdata-dev
+name: earthaccess
 channels:
 - conda-forge
 dependencies:
 - python=3.9
+- earthaccess
 - xarray>=0.19
 - dask>=2022.1
 - rioxarray>=0.3
 - matplotlib-base>=3.3
 - cartopy>=0.18.0
-- ipyleaflet>=0.13
+- ipyleaflet>=0.15
 - netcdf4>=1.5
 - h5netcdf>=0.11
 - h5py>=3.2
 - geopandas>=0.9
 - zarr>=2.9.5
-- multimethod>=1.8
-# documentation and profiling
-- memray>=1.1
 - jupyterlab>=3
-- mkdocs>=1.2
-- mkdocs-material>=7.1, <9.0
-- markdown-include>=0.6
-- mkdocstrings-python
-- mkdocs-jupyter=0.18.0
-- pymdown-extensions=9.2
-- pygments=2.11.1
-- pip
-- pip:
-  - poetry
-  - earthdata

@@ -1,6 +1,6 @@
 # Documentation for `Collection Results`
 
-::: earthdata.results.DataCollection
+::: earthaccess.results.DataCollection
     options:
       inherited_members: true
     show_root_heading: true

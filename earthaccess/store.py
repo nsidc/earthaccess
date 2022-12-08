@@ -4,16 +4,19 @@ import shutil
 import traceback
 from copy import deepcopy
 from itertools import chain
-from typing import Any, List, Union
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
 import aiohttp
 import fsspec
+import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 
-from .daac import find_provider
+from .auth import SessionWithHeaderRedirection
+from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
 
@@ -23,7 +26,7 @@ class Store(object):
     Store class to access granules on-prem or in the cloud.
     """
 
-    def __init__(self, auth: Any) -> None:
+    def __init__(self, auth: Any, pre_authorize: bool = False) -> None:
         """Store is the class to access data
 
         Parameters:
@@ -31,22 +34,29 @@ class Store(object):
         """
         if auth.authenticated is True:
             self.auth = auth
-            # Async operation warning, in a notebook we're already using async
-            self.jar = aiohttp.CookieJar(unsafe=True)
             self.s3_fs = None
             self.initial_ts = datetime.datetime.now()
+            oauth_profile = "https://urs.earthdata.nasa.gov/profile"
+            # sets the initial URS cookie
+            self.set_requests_session(oauth_profile)
+            self._requests_cookies: Dict[str, Any] = {}
+            if pre_authorize:
+                # collect cookies from other daacs
+                for url in DAAC_TEST_URLS:
+                    self.set_requests_session(url)
+
         else:
             print("Warning: the current session is not authenticated with NASA")
             self.auth = None
         self.running_in_aws = self._am_i_in_aws()
 
-    def _derive_concept_provider(self, concept_id: str = None) -> str:
+    def _derive_concept_provider(self, concept_id: Optional[str] = None) -> str:
         if concept_id is not None:
             provider = concept_id.split("-")[1]
             return provider
         return ""
 
-    def _derive_daac_provider(self, daac: str = None) -> Union[str, None]:
+    def _derive_daac_provider(self, daac: str) -> Union[str, None]:
         provider = find_provider(daac, True)
         return provider
 
@@ -69,8 +79,45 @@ class Store(object):
             return True
         return False
 
+    def set_requests_session(
+        self, url: str, method: str = "get", bearer_token: bool = False
+    ) -> None:
+        """Sets up a `requests` session with bearer tokens that are used by CMR.
+        Mainly used to get the authentication cookies from different DAACs and URS
+        This HTTPS session can be used to download granules if we want to use a direct, lower level API
+
+        Parameters:
+            url (String): used to test the credentials and populate the class auth cookies
+            method (String): HTTP method to test. default: "GET"
+            bearer_token (Boolean): if true will be used for authenticated queries on CMR
+
+        Returns:
+            fsspec HTTPFileSystem (aiohttp client session)
+        """
+        if not hasattr(self, "_http_session"):
+            self._http_session = self.auth.get_session(bearer_token)
+
+        resp = self._http_session.request(method, url, allow_redirects=True)
+
+        if resp.status_code in [400, 401, 403]:
+            new_session = requests.Session()
+            resp_req = new_session.request(
+                method, url, allow_redirects=True, cookies=self._requests_cookies
+            )
+            if resp_req.status_code in [400, 401, 403]:
+                resp.raise_for_status()
+            else:
+                self._requests_cookies.update(new_session.cookies.get_dict())
+        elif resp.status_code >= 200 and resp.status_code <= 300:
+            self._requests_cookies = self._http_session.cookies.get_dict()
+        elif resp.status_code >= 500:
+            resp.raise_for_status()
+
     def get_s3fs_session(
-        self, daac: str = None, concept_id: str = None, provider: str = None
+        self,
+        daac: Optional[str] = None,
+        concept_id: Optional[str] = None,
+        provider: Optional[str] = None,
     ) -> s3fs.S3FileSystem:
         """
         Returns a s3fs instance for a given cloud provider / DAAC
@@ -91,6 +138,7 @@ class Store(object):
             now = datetime.datetime.now()
             delta_minutes = now - self.initial_ts
             # TODO: test this mocking the time or use https://github.com/dbader/schedule
+            # if we exceed 1 hour
             if (
                 self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59
             ) and s3_credentials is not None:
@@ -107,86 +155,43 @@ class Store(object):
             )
             return None
 
-    async def get_async_https_session(
-        self, bearer_token: bool = False
-    ) -> fsspec.AbstractFileSystem:
-        """Returns an async fsspec HTTPS session with bearer tokens that are used by CMR.
-        This HTTPS session can be used to download granules if we want to use a direct, lower level API
-
-        Parameters:
-            bearer_token (Boolean): if true will be used for authenticated queries on CMR
-        Returns:
-            fsspec HTTPFileSystem (aiohttp client session)
-        """
-        req = self.auth.get_session()
-        dummy_oauth_resource = (
-            "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/"
-            "ATL06_20181014045341_02380102_005_01.iso.xml"
-        )
-        resp = req.get(dummy_oauth_resource, allow_redirects=True)
-        if resp.status_code > 400:
-            print("There was an error authorizing this session")
-        else:
-            self._authenticated_req_session = req
-        client_kwargs = {
-            "auth": aiohttp.BasicAuth(
-                self.auth._credentials[0], self.auth._credentials[1]
-            ),
-            "trust_env": True,
-            "cookies": req.cookies.get_dict(),
-        }
-        if bearer_token and self.auth.authenticated:
-            client_kwargs["headers"] = {
-                "Authorization": f'Bearer {self.auth.token["access_token"]}'
-            }
-
-        fs = fsspec.filesystem("https", asynchronous=True, client_kwargs=client_kwargs)
-        session = await fs.set_session()
-        if session is None:
-            print("An error occurred while getting the fsspec session")
-
-        return fs
-
-    def get_https_session(
-        self, bearer_token: bool = False
-    ) -> fsspec.AbstractFileSystem:
+    def get_fsspec_session(self) -> fsspec.AbstractFileSystem:
         """Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
 
-        Parameters:
-            bearer_token (Boolean): if true will be used for authenticated queries on CMR
-
         Returns:
             fsspec HTTPFileSystem (aiohttp client session)
         """
-        req = self.auth.get_session()
-        dummy_oauth_resource = (
-            "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/"
-            "ATL06_20181014045341_02380102_005_01.iso.xml"
-        )
-        resp = req.get(dummy_oauth_resource, allow_redirects=True)
-        if resp.status_code > 400:
-            print("There was an error authorizing this session")
-        else:
-            self._authenticated_req_session = req
         client_kwargs = {
             "auth": aiohttp.BasicAuth(
                 self.auth._credentials[0], self.auth._credentials[1]
             ),
             "trust_env": True,
-            "cookies": req.cookies.get_dict(),
+            "cookies": self._requests_cookies,
         }
-        if bearer_token and self.auth.authenticated:
-            client_kwargs["headers"] = {
-                "Authorization": f'Bearer {self.auth.token["access_token"]}'
-            }
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
+
+    def get_requests_session(
+        self, bearer_token: bool = False
+    ) -> SessionWithHeaderRedirection:
+        """Returns a requests HTTPS session with bearer tokens that are used by CMR.
+        This HTTPS session can be used to download granules if we want to use a direct, lower level API
+
+        Parameters:
+            bearer_token (Boolean): if true will be used for authenticated queries on CMR
+
+        Returns:
+            requests Session
+        """
+        if not hasattr(self, "_http_session"):
+            self._http_session = self.auth.get_session()
+        return deepcopy(self._http_session)
 
     def open(
         self,
         granules: Union[List[str], List[DataGranule]],
-        provider: str = None,
+        provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
         """Returns a list of fsspec file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -205,7 +210,7 @@ class Store(object):
     def _open(
         self,
         granules: Union[List[str], List[DataGranule]],
-        provider: str = None,
+        provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
         """Returns a list of fsspec file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -221,7 +226,7 @@ class Store(object):
     def _open_granules(
         self,
         granules: List[DataGranule],
-        provider: str = None,
+        provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
 
         fileset: List = []
@@ -267,7 +272,7 @@ class Store(object):
                     return None
             return fileset
         else:
-            https_fs = self.get_https_session()
+            https_fs = self.get_fsspec_session()
             if https_fs is not None:
                 try:
 
@@ -289,7 +294,7 @@ class Store(object):
     def _open_urls(
         self,
         granules: List[str],
-        provider: str = None,
+        provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
 
         fileset: List = []
@@ -326,7 +331,7 @@ class Store(object):
                     return None
             return fileset
         else:
-            https_fs = self.get_https_session()
+            https_fs = self.get_fsspec_session()
             if https_fs is not None:
                 try:
                     fileset = [https_fs.open(file) for file in data_links]
@@ -341,11 +346,42 @@ class Store(object):
     def get(
         self,
         granules: Union[List[DataGranule], List[str]],
-        local_path: str = None,
-        access: str = None,
-        provider: str = None,
+        local_path: Optional[str] = None,
+        provider: Optional[str] = None,
         threads: int = 8,
-    ) -> None:
+    ) -> Union[None, List[str]]:
+        """Retrieves data granules from a remote storage system.
+
+           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
+             collection the method will not get any files.
+           * If we requests data granules from an on-prem collection the data will be effectively downloaded
+             to a local directory.
+
+        Parameters:
+            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
+            local_path: local directory to store the remote data granules
+            access: direct or on_prem, if set it will use it for the access method.
+            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+
+        Returns:
+            List of downloaded files
+        """
+        if len(granules):
+            files = self._get(granules, local_path, provider, threads)
+            return files
+        else:
+            print("List of URLs or DataGranule isntances expected")
+            return None
+
+    @singledispatchmethod
+    def _get(
+        self,
+        granules: Union[List[DataGranule], List[str]],
+        local_path: Optional[str] = None,
+        provider: Optional[str] = None,
+        threads: int = 8,
+    ) -> Union[None, List[str]]:
         """Retrieves data granules from a remote storage system.
 
            * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
@@ -363,38 +399,6 @@ class Store(object):
         Returns:
             None
         """
-        if len(granules):
-            self._get(granules, local_path, access, provider, threads)
-
-        print("List of URLs or DataGranule isntances expected")
-        return None
-
-    @singledispatchmethod
-    def _get(
-        self,
-        granules: Union[List[DataGranule], List[str]],
-        local_path: str = None,
-        access: str = None,
-        provider: str = None,
-        threads: int = 8,
-    ) -> None:
-        """Retrieves data granules from a remote storage system.
-
-           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
-           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
-             collection the method will not get any files.
-           * If we requests data granules from an on-prem collection the data will be effectively downloaded
-             to a local directory.
-
-        Parameters:
-            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
-            local_path: local directory to store the remote data granules
-            access: direct or on_prem, if set it will use it for the access method. only for granules list from search
-            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
-
-        Returns:
-            None
-        """
         print("List of URLs or DataGranule isntances expected")
         return None
 
@@ -402,44 +406,49 @@ class Store(object):
     def _get_urls(
         self,
         granules: List[str],
-        local_path: str = None,
-        access: str = None,
-        provider: str = None,
+        local_path: Optional[str] = None,
+        provider: Optional[str] = None,
         threads: int = 8,
-    ) -> None:
+    ) -> Union[None, List[str]]:
 
         data_links = granules
-        if self.running_in_aws and provider is not None:
+        downloaded_files: List = []
+        if provider is None and self.running_in_aws and "cumulus" in data_links[0]:
+            print(
+                "earthaccess can't yet guess the provider for cloud collections, "
+                "we need to use one from earthaccess.list_cloud_providers()"
+            )
+            return None
+        if self.running_in_aws:
             print(f"Accessing cloud dataset using provider: {provider}")
-            s3_fs = self.get_s3fs_session(provider)
+            s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
             for file in data_links:
+                file_name = file.split("/")[-1]
                 s3_fs.get(file, local_path)
                 print(f"Retrieved: {file} to {local_path}")
+                downloaded_files.append(file_name)
+            return downloaded_files
+
         else:
-            # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
-            if access is None:
-                pass
-            self._download_onprem_granules(data_links, local_path, threads)
+            # if we are not in AWS
+            return self._download_onprem_granules(data_links, local_path, threads)
         return None
 
     @_get.register
     def _get_granules(
         self,
         granules: List[DataGranule],
-        local_path: str = None,
-        access: str = None,
-        provider: str = None,
+        local_path: Optional[str] = None,
+        provider: Optional[str] = None,
         threads: int = 8,
-    ) -> None:
+    ) -> Union[None, List[str]]:
 
         data_links: List = []
+        downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
         cloud_hosted = granules[0].cloud_hosted
-        if cloud_hosted and self.running_in_aws and access is None:
-            # TODO: benchmark this
-            print("direct???")
-            access = "direct"
+        access = "direc" if (cloud_hosted and self.running_in_aws) else "external"
         data_links = list(
             # we are not in region
             chain.from_iterable(
@@ -457,10 +466,13 @@ class Store(object):
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
+                file_name = file.split("/")[-1]
                 print(f"Retrieved: {file} to {local_path}")
+                downloaded_files.append(file_name)
+            return downloaded_files
         else:
             # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
-            self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(data_links, local_path, threads)
         return None
 
     def _download_file(self, url: str, directory: str) -> str:
@@ -471,44 +483,35 @@ class Store(object):
         :returns: local filepath or an exception
         """
         # If the get data link is an Opendap location
-        if "/opendap/" in url and url.endswith(".nc.html"):
+        if "opendap" in url and url.endswith(".html"):
             url = url.replace(".html", "")
         local_filename = url.split("/")[-1]
-        if not os.path.exists(f"{directory}/{local_filename}"):
+        path = Path(directory) / Path(local_filename)
+        local_path = str(path)
+        if not os.path.exists(local_path):
             try:
-                # TODO: make this efficient using caching
-                self.get_https_session()
-                session = self._authenticated_req_session
-
-                r = session.head(url)
-                if "Content-Type" in r.headers:
-                    if "text/html" in r.headers["Content-Type"]:
-                        print(
-                            f"Granule file is not resolving to a valid location: {url}"
-                        )
-                        return ""
-                with session.get(url, stream=True) as r:
+                session = self.auth.get_session(False)
+                with session.get(
+                    url,
+                    stream=True,
+                    allow_redirects=True,
+                ) as r:
                     r.raise_for_status()
-                    with open(f"{directory}/{local_filename}", "wb") as f:
+                    with open(local_path, "wb") as f:
                         # This is to cap memory usage for large files at 1MB per write to disk per thread
                         # https://docs.python-requests.org/en/master/user/quickstart/#raw-response-content
                         shutil.copyfileobj(r.raw, f, length=1024 * 1024)
             except Exception:
                 print(f"Error while downloading the file {local_filename}")
                 print(traceback.format_exc())
-                raise
+                raise Exception
         else:
             print(f"File {local_filename} already downloaded")
         return local_filename
 
-    def _download_cloud_granules(
-        self, urls: List[str], directory: str = None, threads: int = 8
-    ) -> None:
-        return None
-
     def _download_onprem_granules(
-        self, urls: List[str], directory: str = None, threads: int = 8
-    ) -> None:
+        self, urls: List[str], directory: Optional[str] = None, threads: int = 8
+    ) -> List[Any]:
         """
         downloads a list of URLS into the data directory.
         :param urls: list of granule URLs from an on-prem collection
@@ -523,7 +526,7 @@ class Store(object):
             print(
                 "We need to be logged into NASA EDL in order to download data granules"
             )
-            return None
+            return []
         if directory is None:
             directory_prefix = f"./data/{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}"
         else:
@@ -532,9 +535,10 @@ class Store(object):
             os.makedirs(directory_prefix)
 
         arguments = [(url, directory_prefix) for url in urls]
-        result = pqdm(
-            arguments, self._download_file, n_jobs=threads, argument_type="args"
+        results = pqdm(
+            arguments,
+            self._download_file,
+            n_jobs=threads,
+            argument_type="args",
         )
-        if result is None:
-            pass
-        return
+        return results

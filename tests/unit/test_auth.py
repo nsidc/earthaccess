@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 
 import responses
-from earthdata.auth import Auth
+from earthaccess.auth import Auth
 
 
 class TestCreateAuth(unittest.TestCase):
@@ -63,19 +63,3 @@ class TestCreateAuth(unittest.TestCase):
         auth = Auth().login()
         self.assertEqual(auth.authenticated, True)
         self.assertEqual(auth.token, json_response)
-
-    # @responses.activate
-    # @mock.patch("builtins.open", new_callable=mock.mock_open, read_data="data")
-    # def test_auth_can_read_netrc(self, mock_file) -> bool:
-    #     json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
-
-    #     responses.add(
-    #         responses.GET,
-    #         "https://urs.earthdata.nasa.gov/api/users/tokens",
-    #         json=[],
-    #         status=200,
-    #     )
-    #     auth = Auth().login(strategy="netrc")
-    #     self.assertEqual(auth.authenticated, True)
-    #     mock_file.assert_called_with("path/to/open")
-    #     self.assertEqual(auth.token, json_response)
