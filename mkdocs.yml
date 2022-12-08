@@ -43,14 +43,18 @@ plugins:
       execute: False
 
 nav:
-  - Overview: 'index.md'
-  - Tutorials:
-      - 'Basic usage': 'tutorials/demo.ipynb'
-  - How-To:
+  - OVERVIEW: 'index.md'
+  - TUTORIALS:
+      - 'Introducing NASA earthaccess': 'tutorials/demo.ipynb'
       - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
-      - 'Search and access on-prem datasets': 'tutorials/onprem.md'
-      - 'Search and cloud-based datasets': 'tutorials/cloud.md'
-  - User Reference:
+  - HOW-TO:
+      - 'Authenticate with Earthdata Login': 'tutorials/authenticate.md'
+      - 'Search data collections using filters': 'tutorials/search-collections.md'
+      - 'Search for granules within a collection using filters': 'tutorials/search-granules.md'
+      - 'Determine if a collection is on-prem or in the cloud': 'tutorials/storage-location.md'
+      - 'Download data from on-prem location': 'tutorials/onprem.md'
+      - 'Direct S3 access - Open/stream files in the cloud': 'tutorials/cloud.md'
+  - USER REFERENCE:
       - API:
           - 'Search and Access': 'user-reference/api/api.md'
       - Modules:
@@ -64,10 +68,10 @@ nav:
             - 'Store': 'user-reference/store/store.md'
         - Auth:
             - 'Auth': 'user-reference/auth/auth.md'
-
       - Glossary:
           - 'NASA Glossary': 'user-reference/glossary/nasa-glossary.md'
           - 'Cloud Computing Terminology': 'user-reference/glossary/cloud-glossary.md'
+
 markdown_extensions:
   - admonition
   - callouts

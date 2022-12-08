@@ -135,11 +135,8 @@ def download(
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
-       * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
-       * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
-         collection the method will not get any files.
-       * If we requests data granules from an on-prem collection the data will be effectively downloaded
-         to a local directory.
+       * If we run this in the cloud, we will be using S3 to move data to `local_path`
+       * If we run it outside AWS (us-west-2 region) and the dataset is cloud hostes we'll use HTTP links
 
     Parameters:
         granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)

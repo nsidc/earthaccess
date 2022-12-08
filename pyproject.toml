@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthaccess"
-version = "0.4.5"
+version = "0.4.6"
 homepage = "https://github.com/nsidc/earthaccess"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]

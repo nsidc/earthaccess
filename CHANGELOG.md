@@ -2,7 +2,13 @@
 
 ## [UNRELEASED]
 
-* name change
+## [v0.4.6] 2022-12-13
+
+* Features:
+    * search collections by DOI
+    * new API documentation and simplified notation to access data
+* CI changes:
+    * only run the publish workflow after a release on github
 
 ## [v0.4.1] 2022-11-02
 
