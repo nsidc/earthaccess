@@ -10,3 +10,11 @@ def test_query_can_find_cloud_provider():
     # OBDAAC does not have a cloud provider so it should default to the on prem provider
     query = DataCollections().cloud_hosted(True).daac("OBDAAC")
     assert query.params["provider"] == "OB_DAAC"
+
+
+def test_querybuilder_can_handle_doi():
+    doi = "10.5067/AQR50-3Q7CS"
+    query = DataCollections().doi(doi)
+    assert query.params["doi"] == doi
+    query = DataCollections().cloud_hosted(True).daac("PODAAC").doi(doi)
+    assert query.params["doi"] == doi
