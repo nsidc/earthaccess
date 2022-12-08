@@ -2,7 +2,7 @@
 
 ## [UNRELEASED]
 
-## [v0.4.6] 2022-12-13
+## [v0.4.6] 2022-12-08
 
 * Features:
     * search collections by DOI
