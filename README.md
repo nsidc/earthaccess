@@ -5,7 +5,7 @@
 <p align="center">
 
 <a href="https://twitter.com/allison_horst" target="_blank">
-    <img src="https://img.shields.io/badge/Art%20By-Allison%20Horst-red" alt="Art Designer: Allison Horst">
+    <img src="https://img.shields.io/badge/Art%20By-Allison%20Horst-blue" alt="Art Designer: Allison Horst">
 </a>
 
 <a href="https://pypi.org/project/earthdata" target="_blank">
