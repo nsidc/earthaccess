@@ -240,8 +240,7 @@ class Store(object):
         provider = granules[0]["meta"]["provider-id"]
         data_links = list(
             chain.from_iterable(
-                granule.data_links(access=access_method, in_region=self.running_in_aws)
-                for granule in granules
+                granule.data_links(access=access_method) for granule in granules
             )
         )
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)

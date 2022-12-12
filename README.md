@@ -29,7 +29,7 @@
 
 In the age of cloud computing, the power of open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
 
-During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html) the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort, it involves people from different technical backgrounds. Data analysis for the pressing problems we face cannot be limited by the complexity of the underlaying systems and thus providing easy access to NASA Earthdata is the main motivation behind this library.
+During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html) the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort, it involves people from different technical backgrounds and data analysis for the pressing problems we face cannot be limited by the complexity of the underlaying systems. Therefore, providing easy access to NASA Earthdata regardless of the data location (cloud or NASA hosted) is the main motivation behind this Python library.
 
 ## **Installing earthaccess**
 
