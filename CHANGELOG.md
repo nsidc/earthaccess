@@ -2,6 +2,13 @@
 
 ## [UNRELEASED]
 
+## [v0.4.7] 2022-12-11
+
+* bug fixes:
+    * fixed open() for direct access
+    * python-magic is a test dependency so moved to the dev section.
+    * Minor edits in the README
+
 ## [v0.4.6] 2022-12-08
 
 * Features:
