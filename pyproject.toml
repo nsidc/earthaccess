@@ -59,7 +59,7 @@ markdown-include = ">=0.6"
 mkdocstrings = {extras = ["python"], version = "^0.19.0"}
 mkdocs-jupyter = "=0.19.0"
 pymdown-extensions = "=9.2"
-pygments = "=2.11.1"
+pygments = "=2.13.0"
 responses = ">=0.14"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
