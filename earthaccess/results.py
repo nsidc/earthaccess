@@ -257,7 +257,19 @@ class DataGranule(CustomDict):
                 ]
             )
         except Exception:
-            total_size = 0
+            try:
+                total_size = sum(
+                    [
+                        float(s["SizeInBytes"])
+                        for s in self[
+                            "umm.DataGranule.ArchiveAndDistributionInformation"
+                        ]
+                        if "ArchiveAndDistributionInformation"
+                        in self["umm"]["DataGranule"]
+                    ]
+                ) / (1024 * 1024)
+            except Exception:
+                total_size = 0
         return total_size
 
     def _derive_s3_link(self, links: List[str]) -> List[str]:

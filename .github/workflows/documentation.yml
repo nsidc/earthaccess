@@ -18,16 +18,15 @@ on:
 jobs:
   documentation:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v3
+        uses: mamba-org/provision-with-micromamba@main
         with:
-          python-version: 3.9
-          channels: conda-forge
-          mamba-version: "*"
-          activate-environment: earthaccess-dev
           environment-file: binder/environment-dev.yml
+          activate-name: earthaccess-dev
       - name: Get full python version
         id: full-python-version
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
