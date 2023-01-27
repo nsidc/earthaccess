@@ -106,7 +106,7 @@ def search_data(
     return query.get_all()
 
 
-def login(strategy: str = "interactive") -> Auth:
+def login(strategy: str = "interactive", persist: bool = False) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/)
 
     Parameters:
@@ -122,7 +122,7 @@ def login(strategy: str = "interactive") -> Auth:
     Returns:
         an instance of Auth.
     """
-    earthaccess.__auth__.login(strategy=strategy)
+    earthaccess.__auth__.login(strategy=strategy, persist=persist)
     earthaccess.__store__ = Store(earthaccess.__auth__)
     return earthaccess.__auth__
 
