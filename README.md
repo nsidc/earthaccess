@@ -29,7 +29,7 @@
 
 In the age of cloud computing, the power of open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
 
-During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html) the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort, it involves people from different technical backgrounds and data analysis for the pressing problems we face cannot be limited by the complexity of the underlaying systems. Therefore, providing easy access to NASA Earthdata regardless of the data location (cloud or NASA hosted) is the main motivation behind this Python library.
+During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html), the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort; it involves people from different technical backgrounds, and the data analysis to solve the pressing problems we face cannot be limited by the complexity of the underlying systems. Therefore, providing easy access to NASA Earthdata regardless of the data storage location (hosted within or outside of the cloud) is the main motivation behind this Python library.
 
 ## **Installing earthaccess**
 
@@ -88,7 +88,7 @@ Once you are authenticated with NASA EDL you can:
 ### **Searching for data**
 
 Once we have selected our dataset we can search for the data granules using *doi*, *short_name* or *concept_id*.
-If we are not sure or we don't know how to search for a particular dataset, we can start with the "searching for data" tutorial or through the [Earthdata search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended API documentation.
+If we are not sure or we don't know how to search for a particular dataset, we can start with the ["Introducing NASA earthaccess"](https://nsidc.github.io/earthaccess/tutorials/demo/#querying-for-datasets) tutorial or through the [NASA Earthdata Search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended [API documentation](https://nsidc.github.io/earthaccess/user-reference/api/api/).
 
 ```python
 
@@ -104,7 +104,7 @@ results = earthaccess.search_data(
 
 ```
 
-Now that we have our results we can do multiple things, we can iterate over them to get HTTP (or S3) links; we can download the files to a local folder or we can open these files and stream their content directly to other libraries e.g. xarray.
+Now that we have our results we can do multiple things: We can iterate over them to get HTTP (or S3) links, we can download the files to a local folder, or we can open these files and stream their content directly to other libraries e.g. xarray.
 
 ### **Accessing the data**
 
@@ -126,7 +126,7 @@ data_links = [granule.data_links(access="external") for granule in results]
 
 **Option 2: Download data to a local folder**
 
-This option is practical if you have the necessary space available on disk, the *earthaccess* library will print out the approximate size of the download and its progress.
+This option is practical if you have the necessary space available on disk. The *earthaccess* library will print out the approximate size of the download and its progress.
 ```python
 files = earthaccess.download(results, "./local_folder")
 
@@ -134,7 +134,7 @@ files = earthaccess.download(results, "./local_folder")
 
 **Option 3: Direct S3 Access - Stream data directly to xarray**
 
-This method works best if you are in the same region as the data (us-west-2) and you are working with gridded datasets (processing level 3 and above).
+This method works best if you are in the same Amazon Web Services (AWS) region as the data (us-west-2) and you are working with gridded datasets (processing level 3 and above).
 
 ```python
 import xarray as xr
@@ -143,7 +143,7 @@ ds = xr.open_mfdataset(earthaccess.open(results, auth=auth), engine="scipy")
 
 ```
 
-And that's it! Just one line of code, and this same piece of code will also work for data that are not hosted in the cloud, i.e. NASA hosted data sets.
+And that's it! Just one line of code, and this same piece of code will also work for data that are not hosted in the cloud, i.e. located at NASA storage centers.
 
 
 > More examples coming soon!
