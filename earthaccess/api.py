@@ -7,7 +7,8 @@ from fsspec import AbstractFileSystem
 import earthaccess
 
 from .auth import Auth
-from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
+from .search import (CollectionQuery, DataCollections, DataGranules,
+                     GranuleQuery)
 from .store import Store
 from .utils import _validation as validate
 
@@ -181,7 +182,7 @@ def open(
     Returns:
         a list of s3fs "file pointers" to s3 files.
     """
-    results = earthaccess.__store__.open(granules, provider)
+    results = earthaccess.__store__.open(granules=granules, provider=provider)
     return results
 
 

@@ -243,7 +243,7 @@ class Store(object):
             )
             return None
 
-        if self.running_in_aws:
+        if self.running_in_aws and granules[0].startswith("s3"):
             s3_fs = self.get_s3fs_session(provider=provider)
             if s3_fs is not None:
                 try:
@@ -271,7 +271,6 @@ class Store(object):
 
                     fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
 
-                    # fileset = [https_fs.open(file) for file in data_links]
                 except Exception:
                     print(
                         "An exception occurred while trying to access remote files via HTTPS: "
