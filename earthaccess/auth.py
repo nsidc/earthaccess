@@ -34,7 +34,6 @@ class SessionWithHeaderRedirection(requests.Session):
         url = prepared_request.url
 
         if "Authorization" in headers:
-
             original_parsed = urlparse(response.request.url)
             redirect_parsed = urlparse(url)
             if (
@@ -42,7 +41,6 @@ class SessionWithHeaderRedirection(requests.Session):
                 and redirect_parsed.hostname != self.AUTH_HOST
                 and original_parsed.hostname != self.AUTH_HOST
             ):
-
                 del headers["Authorization"]
         return
 
@@ -60,16 +58,16 @@ class Auth(object):
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
         self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
 
-    def login(self, strategy: str = "interactive", persist: bool = False) -> Any:
+    def login(self, strategy: str = "netrc", persist: bool = False) -> Any:
         """Authenticate with Earthdata login
 
         Parameters:
 
             strategy (String): authentication method.
 
-                    "interactive": (default) enter username and password.
+                    "interactive": enter username and password.
 
-                    "netrc": retrieve username and password from ~/.netrc.
+                    "netrc": (default) retrieve username and password from ~/.netrc.
 
                     "environment": retrieve username and password from $EDL_USERNAME and $EDL_PASSWORD.
             persist (Boolean): will persist credentials in a .netrc file
@@ -138,9 +136,7 @@ class Auth(object):
 
         return False
 
-    def get_s3_credentials(
-        self, daac: str = "", provider: str = ""
-    ) -> Union[Dict[str, str], None]:
+    def get_s3_credentials(self, daac: str = "", provider: str = "") -> Dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider
 
         Parameters:
@@ -151,35 +147,32 @@ class Auth(object):
             A Python dictionary with the temporary AWS S3 credentials
 
         """
+        session = self.get_session()
         auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
         if auth_url.startswith("https://"):
-            cumulus_resp = self._session.get(auth_url, timeout=10, allow_redirects=True)
-            auth_resp = self._session.get(
-                cumulus_resp.url, allow_redirects=True, timeout=10
-            )
+            cumulus_resp = session.get(auth_url, timeout=10, allow_redirects=True)
+            auth_resp = session.get(cumulus_resp.url, allow_redirects=True, timeout=10)
             if not (auth_resp.ok):  # type: ignore
                 print(
                     f"Authentication with Earthdata Login failed with:\n{auth_resp.text}"
                 )
-                return None
+                return {}
             return auth_resp.json()
         else:
             # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
             # does not have cloud collections yet
             print(f"Credentials for the cloud provider {daac} are not available")
-            return None
+            return {}
 
-    def get_session(self, bearer_token: bool = True) -> SessionWithHeaderRedirection:
+    def get_session(self, bearer_token: bool = True) -> requests.Session:
         """Returns a new request session instance
 
         Parameters:
             bearer_token (Boolean): boolean, include bearer token
         Returns:
-            subclass SessionWithHeaderRedirection instance with Auth and bearer token headers
+            class Session instance with Auth and bearer token headers
         """
-        session = SessionWithHeaderRedirection(
-            self._credentials[0], self._credentials[1]
-        )
+        session = requests.Session()
         if bearer_token and self.authenticated:
             session.headers.update(
                 {"Authorization": f'Bearer {self.token["access_token"]}'}
@@ -198,13 +191,11 @@ class Auth(object):
         try:
             my_netrc = Netrc()
         except FileNotFoundError as err:
-            print(f"Expects .netrc in {os.path.expanduser('~')}")
-            print(err)
-            return False
+            print(f"No .netrc found in {os.path.expanduser('~')}")
+            raise err
         except NetrcParseError as err:
             print("Unable to parse .netrc")
-            print(err)
-            return False
+            raise err
         if my_netrc["urs.earthdata.nasa.gov"] is not None:
             username = my_netrc["urs.earthdata.nasa.gov"]["login"]
             password = my_netrc["urs.earthdata.nasa.gov"]["password"]
@@ -217,13 +208,13 @@ class Auth(object):
         username = os.getenv("EDL_USERNAME")
         password = os.getenv("EDL_PASSWORD")
         authenticated = self._get_credentials(username, password)
+        print("Using environment variables for EDL")
         return authenticated
 
     def _get_credentials(
         self, username: Optional[str], password: Optional[str]
     ) -> bool:
         if username is not None and password is not None:
-            self._session = SessionWithHeaderRedirection(username, password)
             token_resp = self._get_user_tokens(username, password)
 
             if not (token_resp.ok):  # type: ignore

@@ -8,14 +8,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
-import aiohttp
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 
-from .auth import SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -38,8 +36,8 @@ class Store(object):
             self.initial_ts = datetime.datetime.now()
             oauth_profile = "https://urs.earthdata.nasa.gov/profile"
             # sets the initial URS cookie
-            self.set_requests_session(oauth_profile)
             self._requests_cookies: Dict[str, Any] = {}
+            self.set_requests_session(oauth_profile)
             if pre_authorize:
                 # collect cookies from other daacs
                 for url in DAAC_TEST_URLS:
@@ -162,19 +160,15 @@ class Store(object):
         Returns:
             fsspec HTTPFileSystem (aiohttp client session)
         """
+        token = self.auth.token["access_token"]
         client_kwargs = {
-            "auth": aiohttp.BasicAuth(
-                self.auth._credentials[0], self.auth._credentials[1]
-            ),
+            "headers": {"Authorization": f"Bearer {token}"},
             "trust_env": True,
-            "cookies": self._requests_cookies,
         }
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(
-        self, bearer_token: bool = False
-    ) -> SessionWithHeaderRedirection:
+    def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
 
@@ -184,9 +178,7 @@ class Store(object):
         Returns:
             requests Session
         """
-        if not hasattr(self, "_http_session"):
-            self._http_session = self.auth.get_session()
-        return deepcopy(self._http_session)
+        return self.auth.get_session()
 
     def open(
         self,
@@ -228,7 +220,6 @@ class Store(object):
         granules: List[DataGranule],
         provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
-
         fileset: List = []
         data_links: List = []
         if self.running_in_aws:
@@ -295,7 +286,6 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
-
         fileset: List = []
         data_links: List = []
 
@@ -320,7 +310,11 @@ class Store(object):
             s3_fs = self.get_s3fs_session(provider=provider)
             if s3_fs is not None:
                 try:
-                    fileset = [s3_fs.open(file) for file in data_links]
+
+                    def multi_thread_open(url: str) -> Any:
+                        return s3_fs.open(url)
+
+                    fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
                 except Exception:
                     print(
                         "An exception occurred while trying to access remote files on S3: "
@@ -333,7 +327,12 @@ class Store(object):
             https_fs = self.get_fsspec_session()
             if https_fs is not None:
                 try:
-                    fileset = [https_fs.open(file) for file in data_links]
+
+                    def multi_thread_open(url: str) -> Any:
+                        return https_fs.open(url)
+
+                    fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
+
                 except Exception:
                     print(
                         "An exception occurred while trying to access remote files via HTTPS: "
@@ -409,7 +408,6 @@ class Store(object):
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
-
         data_links = granules
         downloaded_files: List = []
         if provider is None and self.running_in_aws and "cumulus" in data_links[0]:
@@ -442,7 +440,6 @@ class Store(object):
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
-
         data_links: List = []
         downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
@@ -489,7 +486,7 @@ class Store(object):
         local_path = str(path)
         if not os.path.exists(local_path):
             try:
-                session = self.auth.get_session(False)
+                session = self.auth.get_session()
                 with session.get(
                     url,
                     stream=True,

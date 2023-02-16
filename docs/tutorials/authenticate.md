@@ -1,8 +1,7 @@
 ## Authenticate with Earthdata Login
 
-Import earthaccess
 ```py
-from earthaccess
+import earthaccess
 ```
 
 If you have a .netrc file with your Earthdata Login credentials

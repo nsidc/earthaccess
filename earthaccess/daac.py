@@ -34,7 +34,7 @@ DAACS = [
         "homepage": "https://asf.alaska.edu",
         "cloud-providers": ["ASF"],
         "on-prem-providers": ["ASF"],
-        "s3-credentials": "",
+        "s3-credentials": "https://sentinel1.asf.alaska.edu/s3credentials",
     },
     {
         "short-name": "ORNLDAAC",

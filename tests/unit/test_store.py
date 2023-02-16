@@ -61,11 +61,18 @@ class TestStoreSessions(unittest.TestCase):
                 )
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
-        for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC"]:
+        for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC", "ASF"]:
             s3_fs = store.get_s3fs_session(daac=daac)
             self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
 
-        for provider in ["NSIDC_CPRD", "POCLOUD", "LPCLOUDa", "ORNLCLOUD", "GES_DISC"]:
+        for provider in [
+            "NSIDC_CPRD",
+            "POCLOUD",
+            "LPCLOUD",
+            "ORNLCLOUD",
+            "GES_DISC",
+            "ASF",
+        ]:
             s3_fs = store.get_s3fs_session(provider=provider)
             assert isinstance(s3_fs, fsspec.AbstractFileSystem)
         return None

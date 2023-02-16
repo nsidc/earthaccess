@@ -2,6 +2,10 @@ name: Documentation
 
 on:
   push:
+    branches:
+      - main
+      - dev
+      - documentation
     paths:
       - earthaccess/**
       - tests/**
