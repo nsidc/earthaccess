@@ -2,7 +2,6 @@
 
 ## [UNRELEASED]
 
-## [v0.5.0] 2023-02-16
 * bug fixes:
     * @JessicaS11 fixed a bug where the Auth class was invoked without the proper parameters
     * if a user specifies the netrc strategy and there is no netrc an exception is raised
