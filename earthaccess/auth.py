@@ -213,7 +213,13 @@ class Auth(object):
         username = os.getenv("EDL_USERNAME")
         password = os.getenv("EDL_PASSWORD")
         authenticated = self._get_credentials(username, password)
-        print("Using environment variables for EDL")
+        if authenticated:
+            print("Using environment variables for EDL")
+        else:
+            print(
+                "EDL_USERNAME and EDL_PASSWORD are not set in the current environment, try "
+                "setting them or use a different strategy (netrc, interactive)"
+            )
         return authenticated
 
     def _get_credentials(
