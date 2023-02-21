@@ -16,7 +16,7 @@ If your Earthdata Login credentials are set as environment variables: EDL_USERNA
 auth = earthaccess.login(strategy="environment")
 ```
 
-If you wish to enter your Earthdata Login credentials when prompted
+If you wish to enter your Earthdata Login credentials when prompted with optional persistence to .netrc
 
 ```py
 auth = earthaccess.login(strategy="interactive", persist=True)
