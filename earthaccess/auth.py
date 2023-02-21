@@ -183,8 +183,11 @@ class Auth(object):
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
         authenticated = self._get_credentials(username, password)
-        if authenticated is True and presist_credentials is True:
-            self._persist_user_credentials(username, password)
+        if authenticated:
+            print("Using user provided credentials for EDL")
+            if presist_credentials:
+                print("Persisting credentials to .netrc")
+                self._persist_user_credentials(username, password)
         return authenticated
 
     def _netrc(self) -> bool:
@@ -202,6 +205,8 @@ class Auth(object):
         else:
             return False
         authenticated = self._get_credentials(username, password)
+        if authenticated:
+            print("Using .netrc file for EDL")
         return authenticated
 
     def _environment(self) -> bool:

@@ -3,11 +3,13 @@ from typing import Any
 import pkg_resources  # type: ignore
 
 from .api import (
+    collection_query,
     download,
     get_fsspec_https_session,
     get_requests_https_session,
     get_s3_credentials,
     get_s3fs_session,
+    granule_query,
     login,
     open,
     search_data,
@@ -25,6 +27,8 @@ __all__ = [
     "get_fsspec_https_session",
     "get_s3fs_session",
     "get_s3_credentials",
+    "granule_query",
+    "collection_query",
     "open",
     "download",
     "DataGranules",

@@ -205,10 +205,14 @@ def collection_query(cloud_hosted: bool = True) -> Type[CollectionQuery]:
     Returns:
         class earthaccess.DataCollections: a query builder instance for data collections.
     """
-    return DataCollections(earthaccess.__auth__).cloud_hosted(cloud_hosted)
+    if earthaccess.__auth__.authenticated:
+        query_builder = DataCollections(earthaccess.__auth__).cloud_hosted(cloud_hosted)
+    else:
+        query_builder = DataCollections().cloud_hosted(cloud_hosted)
+    return query_builder
 
 
-def granule_query(doi: Optional[str] = None) -> Type[GranuleQuery]:
+def granule_query() -> Type[GranuleQuery]:
     """Returns a query builder instance for data granules
 
     Parameters:
@@ -217,7 +221,11 @@ def granule_query(doi: Optional[str] = None) -> Type[GranuleQuery]:
     Returns:
         class earthaccess.DataGranules: a query builder instance for data granules.
     """
-    return DataGranules(earthaccess.__auth__).doi(doi)
+    if earthaccess.__auth__.authenticated:
+        query_builder = DataGranules(earthaccess.__auth__)
+    else:
+        query_builder = DataGranules()
+    return query_builder
 
 
 def get_fsspec_https_session() -> AbstractFileSystem:
@@ -258,3 +266,8 @@ def get_s3fs_session(
 ) -> s3fs.S3FileSystem:
     session = earthaccess.__store__.get_s3fs_session(daac=daac, provider=provider)
     return session
+
+
+def get_edl_token() -> str:
+    token = earthaccess.__auth__.token
+    return token
