@@ -2,5 +2,6 @@
 #
 set -ex
 
-pip install .
+poetry config virtualenvs.create false
+poetry install --no-dev
 

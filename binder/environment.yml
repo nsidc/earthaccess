@@ -15,3 +15,4 @@ dependencies:
 - geopandas>=0.9
 - zarr>=2.9.5
 - jupyterlab>=3
+- poetry
