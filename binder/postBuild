@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+set -ex
 
-cd earthaccess && poetry install
+pip install .
 
