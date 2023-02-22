@@ -8,14 +8,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
-import aiohttp
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 
-from .auth import SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -38,8 +36,8 @@ class Store(object):
             self.initial_ts = datetime.datetime.now()
             oauth_profile = "https://urs.earthdata.nasa.gov/profile"
             # sets the initial URS cookie
-            self.set_requests_session(oauth_profile)
             self._requests_cookies: Dict[str, Any] = {}
+            self.set_requests_session(oauth_profile)
             if pre_authorize:
                 # collect cookies from other daacs
                 for url in DAAC_TEST_URLS:
@@ -162,19 +160,15 @@ class Store(object):
         Returns:
             fsspec HTTPFileSystem (aiohttp client session)
         """
+        token = self.auth.token["access_token"]
         client_kwargs = {
-            "auth": aiohttp.BasicAuth(
-                self.auth._credentials[0], self.auth._credentials[1]
-            ),
+            "headers": {"Authorization": f"Bearer {token}"},
             "trust_env": True,
-            "cookies": self._requests_cookies,
         }
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(
-        self, bearer_token: bool = False
-    ) -> SessionWithHeaderRedirection:
+    def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
 
@@ -184,9 +178,7 @@ class Store(object):
         Returns:
             requests Session
         """
-        if not hasattr(self, "_http_session"):
-            self._http_session = self.auth.get_session()
-        return deepcopy(self._http_session)
+        return self.auth.get_session()
 
     def open(
         self,
@@ -228,21 +220,8 @@ class Store(object):
         granules: List[DataGranule],
         provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
-
         fileset: List = []
         data_links: List = []
-        if self.running_in_aws:
-            access_method = "direct"
-        else:
-            # on prem is a little misleading, for cloud collections this means external access.
-            access_method = "on_prem"
-
-        provider = granules[0]["meta"]["provider-id"]
-        data_links = list(
-            chain.from_iterable(
-                granule.data_links(access=access_method) for granule in granules
-            )
-        )
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
         print(f" Opening {len(granules)} granules, approx size: {total_size} GB")
 
@@ -253,7 +232,20 @@ class Store(object):
             return None
 
         if self.running_in_aws:
-            s3_fs = self.get_s3fs_session(provider=provider)
+            if granules[0].cloud_hosted:
+                access_method = "direct"
+                provider = granules[0]["meta"]["provider-id"]
+                s3_fs = self.get_s3fs_session(provider=provider)
+            else:
+                access_method = "on_prem"
+                s3_fs = None
+
+            data_links = list(
+                chain.from_iterable(
+                    granule.data_links(access=access_method) for granule in granules
+                )
+            )
+
             if s3_fs is not None:
                 try:
 
@@ -269,24 +261,17 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     )
                     return None
+            else:
+                fileset = self._open_urls_https(data_links, n_jobs=8)
             return fileset
         else:
-            https_fs = self.get_fsspec_session()
-            if https_fs is not None:
-                try:
-
-                    def multi_thread_open(url: str) -> Any:
-                        return https_fs.open(url)
-
-                    fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
-
-                    # fileset = [https_fs.open(file) for file in data_links]
-                except Exception:
-                    print(
-                        "An exception occurred while trying to access remote files via HTTPS: "
-                        f"Exception: {traceback.format_exc()}"
-                    )
-                    return None
+            access_method = "on_prem"
+            data_links = list(
+                chain.from_iterable(
+                    granule.data_links(access=access_method) for granule in granules
+                )
+            )
+            fileset = self._open_urls_https(data_links, n_jobs=8)
             return fileset
 
     @_open.register
@@ -295,7 +280,6 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
     ) -> Union[List[Any], None]:
-
         fileset: List = []
         data_links: List = []
 
@@ -316,30 +300,38 @@ class Store(object):
             )
             return None
 
-        if self.running_in_aws:
-            s3_fs = self.get_s3fs_session(provider=provider)
-            if s3_fs is not None:
-                try:
-                    fileset = [s3_fs.open(file) for file in data_links]
-                except Exception:
-                    print(
-                        "An exception occurred while trying to access remote files on S3: "
-                        "This may be caused by trying to access the data outside the us-west-2 region"
-                        f"Exception: {traceback.format_exc()}"
-                    )
-                    return None
-            return fileset
+        if self.running_in_aws and granules[0].startswith("s3"):
+            if provider is not None:
+                s3_fs = self.get_s3fs_session(provider=provider)
+                if s3_fs is not None:
+                    try:
+
+                        def multi_thread_open(url: str) -> Any:
+                            return s3_fs.open(url)
+
+                        fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
+                    except Exception:
+                        print(
+                            "An exception occurred while trying to access remote files on S3: "
+                            "This may be caused by trying to access the data outside the us-west-2 region"
+                            f"Exception: {traceback.format_exc()}"
+                        )
+                        return None
+                else:
+                    print(f"Provider {provider} has no valid cloud credentials")
+                return fileset
+            else:
+                print(
+                    "earthaccess cannot derive the DAAC provider from URLs only, a provider is needed e.g. POCLOUD"
+                )
+                return None
         else:
-            https_fs = self.get_fsspec_session()
-            if https_fs is not None:
-                try:
-                    fileset = [https_fs.open(file) for file in data_links]
-                except Exception:
-                    print(
-                        "An exception occurred while trying to access remote files via HTTPS: "
-                        f"Exception: {traceback.format_exc()}"
-                    )
-                    return None
+            if granules[0].startswith("s3"):
+                print(
+                    "We cannot open S3 links when we are not in-region, try using HTTPS links"
+                )
+                return None
+            fileset = self._open_urls_https(data_links, 8)
             return fileset
 
     def get(
@@ -409,7 +401,6 @@ class Store(object):
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
-
         data_links = granules
         downloaded_files: List = []
         if provider is None and self.running_in_aws and "cumulus" in data_links[0]:
@@ -442,7 +433,6 @@ class Store(object):
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
-
         data_links: List = []
         downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
@@ -489,7 +479,7 @@ class Store(object):
         local_path = str(path)
         if not os.path.exists(local_path):
             try:
-                session = self.auth.get_session(False)
+                session = self.auth.get_session()
                 with session.get(
                     url,
                     stream=True,
@@ -541,3 +531,22 @@ class Store(object):
             argument_type="args",
         )
         return results
+
+    def _open_urls_https(
+        self, urls: List[str] = [], n_jobs: int = 8
+    ) -> List[fsspec.AbstractFileSystem]:
+        https_fs = self.get_fsspec_session()
+        if https_fs is not None:
+            try:
+
+                def multi_thread_open(url: str) -> Any:
+                    return https_fs.open(url)
+
+                fileset = pqdm(urls, multi_thread_open, n_jobs=8)
+
+            except Exception:
+                print(
+                    "An exception occurred while trying to access remote files via HTTPS: "
+                    f"Exception: {traceback.format_exc()}"
+                )
+        return fileset

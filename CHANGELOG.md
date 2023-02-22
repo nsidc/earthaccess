@@ -2,6 +2,17 @@
 
 ## [UNRELEASED]
 
+* bug fixes:
+    * @JessicaS11 fixed a bug where the Auth class was invoked without the proper parameters
+    * if a user specifies the netrc strategy and there is no netrc an exception is raised
+    * Opening files using URLs was not working properly on AWS, thanks to @amfriesz for reporting it! 
+* CI changes:
+    * documentation is now only built for the main, dev and documentation branches
+    * noteboks are executed every time the documentation gets published!
+* New features:
+    * we can now use the top level API to get S3 credentials, authenticated fsspec and requests sessions!
+    * ASF direct access for Sentinel1 products is now available
+
 ## [v0.4.7] 2022-12-11
 
 * bug fixes:

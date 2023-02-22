@@ -2,6 +2,10 @@ name: Documentation
 
 on:
   push:
+    branches:
+      - main
+      - dev
+      - documentation
     paths:
       - earthaccess/**
       - tests/**
@@ -18,25 +22,15 @@ on:
 jobs:
   documentation:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v3
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
         with:
-          python-version: 3.9
-          channels: conda-forge
-          mamba-version: "*"
-          activate-environment: earthaccess-dev
-          environment-file: binder/environment-dev.yml
-      - name: Get full python version
-        id: full-python-version
-        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
-      - name: Install poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-      - name: Configure poetry
-        run: poetry config virtualenvs.in-project true
+          virtualenvs-create: true
+          virtualenvs-in-project: false
+          virtualenvs-path: .venv
+          installer-parallel: true
       - name: Set up cache
         uses: actions/cache@v1
         id: cache

@@ -8,28 +8,27 @@ import earthaccess
 import magic
 import pytest
 from earthaccess import Auth, DataCollections, DataGranules, Store
-from fsspec import AbstractFileSystem
 
 logger = logging.getLogger(__name__)
 
 
 daacs_list = [
-    # {
-    #     "short_name": "NSIDC",
-    #     "collections_count": 50,
-    #     "collections_sample_size": 3,
-    #     "granules_count": 100,
-    #     "granules_sample_size": 2,
-    #     "granules_max_size_mb": 100,
-    # },
     {
-        "short_name": "GES_DISC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "short_name": "NSIDC",
+        "collections_count": 50,
+        "collections_sample_size": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
-        "granules_max_size_mb": 130,
+        "granules_max_size_mb": 100,
     },
+    # {
+    #     "short_name": "GES_DISC",
+    #     "collections_count": 100,
+    #     "collections_sample_size": 2,
+    #     "granules_count": 100,
+    #     "granules_sample_size": 2,
+    #     "granules_max_size_mb": 130,
+    # },
     {
         "short_name": "PODAAC",
         "collections_count": 100,

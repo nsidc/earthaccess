@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+set -ex
+
+poetry config virtualenvs.create false
+poetry install --no-dev
+

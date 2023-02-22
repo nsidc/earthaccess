@@ -125,7 +125,6 @@ class DataCollections(CollectionQuery):
             methods[name] = func
 
         for key, val in kwargs.items():
-
             # verify the key matches one of our methods
             if key not in methods:
                 raise ValueError("Unknown key {}".format(key))
@@ -338,7 +337,6 @@ class DataGranules(GranuleQuery):
             methods[name] = func
 
         for key, val in kwargs.items():
-
             # verify the key matches one of our methods
             if key not in methods:
                 raise ValueError("Unknown key {}".format(key))
@@ -464,7 +462,6 @@ class DataGranules(GranuleQuery):
         return self
 
     def _valid_state(self) -> bool:
-
         # spatial params must be paired with a collection limiting parameter
         spatial_keys = ["point", "polygon", "bounding_box", "line"]
         collection_keys = ["short_name", "entry_title", "concept_id"]

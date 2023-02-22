@@ -12,7 +12,7 @@ class TestCreateAuth(unittest.TestCase):
     def test_create_auth_wrong_credentials(self, user_input, user_password) -> bool:
         user_input.return_value = "user"
         user_password.return_value = "pass"
-        auth = Auth().login()
+        auth = Auth().login(strategy="interactive")
         self.assertEqual(auth.authenticated, False)
 
     @responses.activate
@@ -32,7 +32,7 @@ class TestCreateAuth(unittest.TestCase):
             status=200,
         )
         # Test
-        auth = Auth().login()
+        auth = Auth().login(strategy="interactive")
         self.assertEqual(auth.authenticated, True)
         self.assertTrue(auth.token in json_response)
 
@@ -60,6 +60,6 @@ class TestCreateAuth(unittest.TestCase):
             status=200,
         )
         # Test
-        auth = Auth().login()
+        auth = Auth().login(strategy="interactive")
         self.assertEqual(auth.authenticated, True)
         self.assertEqual(auth.token, json_response)

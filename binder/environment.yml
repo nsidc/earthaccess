@@ -3,7 +3,6 @@ channels:
 - conda-forge
 dependencies:
 - python=3.9
-- earthaccess
 - xarray>=0.19
 - dask>=2022.1
 - rioxarray>=0.3
@@ -16,3 +15,4 @@ dependencies:
 - geopandas>=0.9
 - zarr>=2.9.5
 - jupyterlab>=3
+- poetry

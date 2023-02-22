@@ -1,11 +1,13 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
+import requests
+import s3fs
 from fsspec import AbstractFileSystem
 
 import earthaccess
 
 from .auth import Auth
-from .search import DataCollections, DataGranules
+from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .utils import _validation as validate
 
@@ -106,14 +108,16 @@ def search_data(
     return query.get_all()
 
 
-def login(strategy: str = "interactive", persist: bool = False) -> Auth:
+def login(strategy: str = "all", persist: bool = False) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/)
 
     Parameters:
 
         strategy (String): authentication method.
 
-                "interactive": (default) enter username and password.
+                "all": (default) try all methods until one works
+
+                "interactive": enter username and password.
 
                 "netrc": retrieve username and password from ~/.netrc.
 
@@ -122,8 +126,21 @@ def login(strategy: str = "interactive", persist: bool = False) -> Auth:
     Returns:
         an instance of Auth.
     """
-    earthaccess.__auth__.login(strategy=strategy, persist=persist)
-    earthaccess.__store__ = Store(earthaccess.__auth__)
+    if strategy == "all":
+        for strategy in ["environment", "netrc", "interactive"]:
+            try:
+                earthaccess.__auth__.login(strategy=strategy, persist=persist)
+            except Exception:
+                pass
+
+            if earthaccess.__auth__.authenticated:
+                earthaccess.__store__ = Store(earthaccess.__auth__)
+                break
+    else:
+        earthaccess.__auth__.login(strategy=strategy, persist=persist)
+        if earthaccess.__auth__.authenticated:
+            earthaccess.__store__ = Store(earthaccess.__auth__)
+
     return earthaccess.__auth__
 
 
@@ -164,9 +181,93 @@ def open(
     Returns:
         a list of s3fs "file pointers" to s3 files.
     """
-    results = earthaccess.__store__.open(granules, provider)
+    results = earthaccess.__store__.open(granules=granules, provider=provider)
     return results
 
 
 def get_s3_credentials(daac: str, provider: str) -> Dict[str, Any]:
-    return {}
+    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets
+
+    Parameters:
+        daac: a DAAC short_name like NSIDC or PODAAC etc
+        provider: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+    Returns:
+        a dictionary with S3 credentials for the DAAC or provider
+    """
+    return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
+
+
+def collection_query(cloud_hosted: bool = True) -> Type[CollectionQuery]:
+    """Returns a query builder instance for NASA collections (datasets)
+
+    Parameters:
+        cloud_hosted (Boolean): initializes the query builder for cloud hosted collections.
+    Returns:
+        class earthaccess.DataCollections: a query builder instance for data collections.
+    """
+    if earthaccess.__auth__.authenticated:
+        query_builder = DataCollections(earthaccess.__auth__).cloud_hosted(cloud_hosted)
+    else:
+        query_builder = DataCollections().cloud_hosted(cloud_hosted)
+    return query_builder
+
+
+def granule_query() -> Type[GranuleQuery]:
+    """Returns a query builder instance for data granules
+
+    Parameters:
+        cloud_hosted (Boolean): initializes the query builder for a particular DOI
+        if we have it.
+    Returns:
+        class earthaccess.DataGranules: a query builder instance for data granules.
+    """
+    if earthaccess.__auth__.authenticated:
+        query_builder = DataGranules(earthaccess.__auth__)
+    else:
+        query_builder = DataGranules()
+    return query_builder
+
+
+def get_fsspec_https_session() -> AbstractFileSystem:
+    """Returns a fsspec session that can be used to access datafiles across many different DAACs
+
+    Returns:
+        class AbstractFileSystem: an fsspec instance able to access data across DAACs
+
+    Examples:
+        ```python
+        import earthaccess
+
+        earthaccess.login()
+        fs = earthaccess.get_fsspec_https_session()
+        with fs.open(DAAC_GRANULE) as f:
+            f.read(10)
+        ```
+
+    """
+    session = earthaccess.__store__.get_fsspec_session()
+    return session
+
+
+def get_requests_https_session() -> requests.Session:
+    """Returns a requests Session instance with an authorized bearer token
+    this is useful to make requests to restricted URLs like data granules or services that
+    require authentication with NASA EDL.
+
+    Returns:
+        class requests.Session: an authenticated requests Session instance.
+    """
+    session = earthaccess.__store__.get_requests_session()
+    return session
+
+
+def get_s3fs_session(
+    daac: Optional[str] = None, provider: Optional[str] = None
+) -> s3fs.S3FileSystem:
+    session = earthaccess.__store__.get_s3fs_session(daac=daac, provider=provider)
+    return session
+
+
+def get_edl_token() -> str:
+    token = earthaccess.__auth__.token
+    return token

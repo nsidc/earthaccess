@@ -40,7 +40,7 @@ plugins:
             show_root_heading: false
             show_source: false
   - mkdocs-jupyter:
-      execute: False
+      execute: True
 
 nav:
   - OVERVIEW: 'index.md'
