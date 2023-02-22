@@ -243,7 +243,7 @@ class Store(object):
             )
             return None
 
-        if self.running_in_aws and granules[0].startswith("s3"):
+        if self.running_in_aws:
             s3_fs = self.get_s3fs_session(provider=provider)
             if s3_fs is not None:
                 try:
@@ -305,7 +305,7 @@ class Store(object):
             )
             return None
 
-        if self.running_in_aws:
+        if self.running_in_aws and granules[0].startswith("s3"):
             s3_fs = self.get_s3fs_session(provider=provider)
             if s3_fs is not None:
                 try:
