@@ -1,11 +1,14 @@
 # Changelog
 
-## [UNRELEASED]
+## Unreleased
+
+## [v0.5.0] 2023-02-23
 
 * bug fixes:
     * @JessicaS11 fixed a bug where the Auth class was invoked without the proper parameters
     * if a user specifies the netrc strategy and there is no netrc an exception is raised
-    * Opening files using URLs was not working properly on AWS, thanks to @amfriesz for reporting it! 
+    * S3 URLs broke the Store class when opened outside AWS
+    * Opening files using URLs was not working properly on AWS, thanks to @amfriesz for reporting it!
 * CI changes:
     * documentation is now only built for the main, dev and documentation branches
     * noteboks are executed every time the documentation gets published!
