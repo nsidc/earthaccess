@@ -139,7 +139,7 @@ This method works best if you are in the same Amazon Web Services (AWS) region a
 ```python
 import xarray as xr
 
-ds = xr.open_mfdataset(earthaccess.open(results, auth=auth), engine="scipy")
+ds = xr.open_mfdataset(earthaccess.open(results))
 
 ```
 
