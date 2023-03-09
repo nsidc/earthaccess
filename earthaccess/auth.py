@@ -200,7 +200,7 @@ class Auth(object):
         else:
             return {}
 
-    def _interactive(self, presist_credentials: bool = True) -> bool:
+    def _interactive(self, presist_credentials: bool = False) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
         authenticated = self._get_credentials(username, password)
