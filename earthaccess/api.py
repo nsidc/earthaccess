@@ -7,7 +7,8 @@ from fsspec import AbstractFileSystem
 import earthaccess
 
 from .auth import Auth
-from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
+from .search import (CollectionQuery, DataCollections, DataGranules,
+                     GranuleQuery)
 from .store import Store
 from .utils import _validation as validate
 
@@ -185,7 +186,9 @@ def open(
     return results
 
 
-def get_s3_credentials(daac: str, provider: str) -> Dict[str, Any]:
+def get_s3_credentials(
+    daac: Optional[str] = None, provider: Optional[str] = None
+) -> Dict[str, Any]:
     """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets
 
     Parameters:

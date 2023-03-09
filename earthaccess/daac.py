@@ -11,6 +11,7 @@ DAACS = [
         "cloud-providers": ["NSIDC_CPRD"],
         "on-prem-providers": ["NSIDC_ECS"],
         "s3-credentials": "https://data.nsidc.earthdatacloud.nasa.gov/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "GHRCDAAC",
@@ -19,6 +20,7 @@ DAACS = [
         "cloud-providers": ["GHRC_DAAC"],
         "on-prem-providers": ["GHRC_DAAC"],
         "s3-credentials": "https://data.ghrc.earthdata.nasa.gov/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "PODAAC",
@@ -27,6 +29,7 @@ DAACS = [
         "cloud-providers": ["POCLOUD"],
         "on-prem-providers": ["PODAAC"],
         "s3-credentials": "https://archive.podaac.earthdata.nasa.gov/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "ASF",
@@ -35,6 +38,7 @@ DAACS = [
         "cloud-providers": ["ASF"],
         "on-prem-providers": ["ASF"],
         "s3-credentials": "https://sentinel1.asf.alaska.edu/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "ORNLDAAC",
@@ -43,6 +47,7 @@ DAACS = [
         "cloud-providers": ["ORNL_CLOUD"],
         "on-prem-providers": ["ORNL_DAAC"],
         "s3-credentials": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "LPDAAC",
@@ -51,6 +56,7 @@ DAACS = [
         "cloud-providers": ["LPCLOUD"],
         "on-prem-providers": ["LPDAAC_ECS"],
         "s3-credentials": "https://data.lpdaac.earthdatacloud.nasa.gov/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "GES_DISC",
@@ -59,6 +65,7 @@ DAACS = [
         "cloud-providers": ["GES_DISC"],
         "on-prem-providers": ["GES_DISC"],
         "s3-credentials": "https://data.gesdisc.earthdata.nasa.gov/s3credentials",
+        "EULAS": [],
     },
     {
         "short-name": "OBDAAC",
@@ -67,6 +74,7 @@ DAACS = [
         "cloud-providers": [],
         "on-prem-providers": ["OB_DAAC"],
         "s3-credentials": "",
+        "EULAS": [],
     },
     {
         "short-name": "SEDAC",
@@ -75,6 +83,7 @@ DAACS = [
         "cloud-providers": [],
         "on-prem-providers": ["SEDAC"],
         "s3-credentials": "",
+        "EULAS": [],
     },
 ]
 

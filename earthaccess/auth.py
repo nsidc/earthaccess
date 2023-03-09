@@ -2,7 +2,7 @@ import getpass
 import os
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 import requests  # type: ignore
@@ -55,6 +55,7 @@ class Auth(object):
         self.authenticated = False
         self.tokens: List = []
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
+        self.EDL_GET_PROFILE = "https://urs.earthdata.nasa.gov/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
         self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
 
@@ -147,21 +148,32 @@ class Auth(object):
             A Python dictionary with the temporary AWS S3 credentials
 
         """
-        session = self.get_session()
-        auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
-        if auth_url.startswith("https://"):
-            cumulus_resp = session.get(auth_url, timeout=10, allow_redirects=True)
-            auth_resp = session.get(cumulus_resp.url, allow_redirects=True, timeout=10)
-            if not (auth_resp.ok):  # type: ignore
-                print(
-                    f"Authentication with Earthdata Login failed with:\n{auth_resp.text}"
+        if self.authenticated:
+            session = SessionWithHeaderRedirection(self.username, self.password)
+            auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
+            if auth_url.startswith("https://"):
+                cumulus_resp = session.get(auth_url, timeout=10, allow_redirects=True)
+                auth_resp = session.get(
+                    cumulus_resp.url, allow_redirects=True, timeout=10
                 )
+                if not (auth_resp.ok):  # type: ignore
+                    print(
+                        f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
+                    )
+                    eula_url = "https://urs.earthdata.nasa.gov/users/earthaccess/unaccepted_eulas"
+                    apps_url = "https://urs.earthdata.nasa.gov/application_search"
+                    print(
+                        f"Consider accepting the EULAs available at {eula_url} and applications at {apps_url}"
+                    )
+                    return {}
+                return auth_resp.json()
+            else:
+                # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
+                # does not have cloud collections yet
+                print(f"Credentials for the cloud provider {daac} are not available")
                 return {}
-            return auth_resp.json()
         else:
-            # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
-            # does not have cloud collections yet
-            print(f"Credentials for the cloud provider {daac} are not available")
+            print("We need to auhtenticate with EDL first")
             return {}
 
     def get_session(self, bearer_token: bool = True) -> requests.Session:
@@ -178,6 +190,15 @@ class Auth(object):
                 {"Authorization": f'Bearer {self.token["access_token"]}'}
             )
         return session
+
+    def get_user_profile(self) -> Dict[str, Any]:
+        if hasattr(self, "username"):
+            session = self.get_session()
+            url = self.EDL_GET_PROFILE.replace("<USERNAME>", self.username)
+            user_profile = session.get(url)
+            return user_profile
+        else:
+            return {}
 
     def _interactive(self, presist_credentials: bool = True) -> bool:
         username = input("Enter your Earthdata Login username: ")
@@ -210,8 +231,14 @@ class Auth(object):
         return authenticated
 
     def _environment(self) -> bool:
-        username = os.getenv("EDL_USERNAME")
-        password = os.getenv("EDL_PASSWORD")
+        if "EDL_USERNAME" in os.environ:
+            username = os.getenv("EDL_USERNAME")
+        if "EARTHDATA_USERNAME" in os.environ:
+            username = os.getenv("EARTHDATA_USERNAME")
+        if "EDL_PASSWORD" in os.environ:
+            password = os.getenv("EDL_PASSWORD")
+        if "EARTHDATA_PASSWORD" in os.environ:
+            password = os.getenv("EARTHDATA_PASSWORD")
         authenticated = self._get_credentials(username, password)
         if authenticated:
             print("Using environment variables for EDL")
@@ -235,6 +262,9 @@ class Auth(object):
                 return False
             print("You're now authenticated with NASA Earthdata Login")
             self._credentials = (username, password)
+            self.username = username
+            self.password = password
+
             self.tokens = token_resp.json()
             self.authenticated = True
 
@@ -249,6 +279,12 @@ class Auth(object):
                 print(
                     f"Using token with expiration date: {self.token['expiration_date']}"
                 )
+            profile = self.get_user_profile().json()
+            if "email_address" in profile:
+                self.user_profile = profile
+                self.email = profile["email_address"]
+            else:
+                self.email = ""
 
         return self.authenticated
 
