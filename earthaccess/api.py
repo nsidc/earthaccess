@@ -7,7 +7,8 @@ from fsspec import AbstractFileSystem
 import earthaccess
 
 from .auth import Auth
-from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
+from .search import (CollectionQuery, DataCollections, DataGranules,
+                     GranuleQuery)
 from .store import Store
 from .utils import _validation as validate
 
@@ -266,10 +267,21 @@ def get_requests_https_session() -> requests.Session:
 def get_s3fs_session(
     daac: Optional[str] = None, provider: Optional[str] = None
 ) -> s3fs.S3FileSystem:
+    """Rreturns a fsspec s3fs file session for direct access when we are in us-west-2
+
+    Returns:
+        class s3fs.S3FileSystem: an authenticated s3fs session valid for 1 hour
+    """
     session = earthaccess.__store__.get_s3fs_session(daac=daac, provider=provider)
     return session
 
 
 def get_edl_token() -> str:
+    """Returns the current token used for EDL
+
+    Returns:
+        str: EDL token
+
+    """
     token = earthaccess.__auth__.token
     return token
