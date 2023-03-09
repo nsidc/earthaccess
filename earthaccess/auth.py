@@ -137,7 +137,9 @@ class Auth(object):
 
         return False
 
-    def get_s3_credentials(self, daac: str = "", provider: str = "") -> Dict[str, str]:
+    def get_s3_credentials(
+        self, daac: Optional[str] = "", provider: Optional[str] = ""
+    ) -> Dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider
 
         Parameters:
@@ -195,7 +197,7 @@ class Auth(object):
         if hasattr(self, "username"):
             session = self.get_session()
             url = self.EDL_GET_PROFILE.replace("<USERNAME>", self.username)
-            user_profile = session.get(url)
+            user_profile = session.get(url).json()
             return user_profile
         else:
             return {}
@@ -279,7 +281,7 @@ class Auth(object):
                 print(
                     f"Using token with expiration date: {self.token['expiration_date']}"
                 )
-            profile = self.get_user_profile().json()
+            profile = self.get_user_profile()
             if "email_address" in profile:
                 self.user_profile = profile
                 self.email = profile["email_address"]
@@ -338,7 +340,9 @@ class Auth(object):
         my_netrc.save()
         return True
 
-    def _get_cloud_auth_url(self, daac_shortname: str = "", provider: str = "") -> str:
+    def _get_cloud_auth_url(
+        self, daac_shortname: Optional[str] = "", provider: Optional[str] = ""
+    ) -> str:
         for daac in DAACS:
             if (
                 daac_shortname == daac["short-name"]
