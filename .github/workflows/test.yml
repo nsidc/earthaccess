@@ -49,6 +49,8 @@ jobs:
         env:
           EDL_USERNAME: ${{ secrets.EDL_USERNAME }}
           EDL_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+          EARTHACCESS_TEST_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EARTHACCESS_TEST_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
         uses: codecov/codecov-action@v1
