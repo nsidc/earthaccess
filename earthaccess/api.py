@@ -258,6 +258,17 @@ def get_requests_https_session() -> requests.Session:
 
     Returns:
         class requests.Session: an authenticated requests Session instance.
+
+    Examples:
+        ```python
+        import earthaccess
+
+        earthaccess.login()
+
+        req_session = earthaccess.get_requests_https_session()
+        data = req_session.get(granule_url, headers = {"Range": "bytes=0-100"})
+
+        ```
     """
     session = earthaccess.__store__.get_requests_session()
     return session
@@ -266,7 +277,7 @@ def get_requests_https_session() -> requests.Session:
 def get_s3fs_session(
     daac: Optional[str] = None, provider: Optional[str] = None
 ) -> s3fs.S3FileSystem:
-    """Rreturns a fsspec s3fs file session for direct access when we are in us-west-2
+    """Returns a fsspec s3fs file session for direct access when we are in us-west-2
 
     Returns:
         class s3fs.S3FileSystem: an authenticated s3fs session valid for 1 hour
