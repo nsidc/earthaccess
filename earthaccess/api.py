@@ -199,7 +199,7 @@ def get_s3_credentials(
     return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 
-def collection_query(cloud_hosted: bool = True) -> Type[CollectionQuery]:
+def collection_query() -> Type[CollectionQuery]:
     """Returns a query builder instance for NASA collections (datasets)
 
     Parameters:
@@ -208,9 +208,9 @@ def collection_query(cloud_hosted: bool = True) -> Type[CollectionQuery]:
         class earthaccess.DataCollections: a query builder instance for data collections.
     """
     if earthaccess.__auth__.authenticated:
-        query_builder = DataCollections(earthaccess.__auth__).cloud_hosted(cloud_hosted)
+        query_builder = DataCollections(earthaccess.__auth__)
     else:
-        query_builder = DataCollections().cloud_hosted(cloud_hosted)
+        query_builder = DataCollections()
     return query_builder
 
 
