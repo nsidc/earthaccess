@@ -93,7 +93,7 @@ class Auth(object):
         """
         if len(self.tokens) == 0:
             resp_tokens = self._generate_user_token(
-                username=self._credentials[0], password=self._credentials[1]
+                username=self.username, password=self.password
             )
             if resp_tokens.ok:
                 self.token = resp_tokens.json()
@@ -106,7 +106,7 @@ class Auth(object):
                 return False
         if len(self.tokens) == 1:
             resp_tokens = self._generate_user_token(
-                username=self._credentials[0], password=self._credentials[1]
+                username=self.username, password=self.password
             )
             if resp_tokens.ok:
                 self.token = resp_tokens.json()
@@ -122,7 +122,7 @@ class Auth(object):
             resp_revoked = self._revoke_user_token(self.token["access_token"])
             if resp_revoked:
                 resp_tokens = self._generate_user_token(
-                    username=self._credentials[0], password=self._credentials[1]
+                    username=self.username, password=self.password
                 )
                 if resp_tokens.ok:
                     self.token = resp_tokens.json()
@@ -188,13 +188,15 @@ class Auth(object):
         """
         session = requests.Session()
         if bearer_token and self.authenticated:
+            # This will avoid the use of the netrc after we are logged in
+            session.trust_env = False
             session.headers.update(
                 {"Authorization": f'Bearer {self.token["access_token"]}'}
             )
         return session
 
     def get_user_profile(self) -> Dict[str, Any]:
-        if hasattr(self, "username"):
+        if hasattr(self, "username") and self.authenticated:
             session = self.get_session()
             url = self.EDL_GET_PROFILE.replace("<USERNAME>", self.username)
             user_profile = session.get(url).json()
@@ -263,7 +265,6 @@ class Auth(object):
                 )
                 return False
             print("You're now authenticated with NASA Earthdata Login")
-            self._credentials = (username, password)
             self.username = username
             self.password = password
 
@@ -313,18 +314,19 @@ class Auth(object):
         return auth_resp
 
     def _revoke_user_token(self, token: str) -> bool:
-        session = SessionWithHeaderRedirection(
-            self._credentials[0], self._credentials[1]
-        )
-        auth_resp = session.post(
-            self.EDL_REVOKE_TOKEN,
-            params={"token": token},
-            headers={
-                "Accept": "application/json",
-            },
-            timeout=10,
-        )
-        return auth_resp.ok
+        if self.authenticated:
+            session = SessionWithHeaderRedirection(self.username, self.password)
+            auth_resp = session.post(
+                self.EDL_REVOKE_TOKEN,
+                params={"token": token},
+                headers={
+                    "Accept": "application/json",
+                },
+                timeout=10,
+            )
+            return auth_resp.ok
+        else:
+            return False
 
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34
