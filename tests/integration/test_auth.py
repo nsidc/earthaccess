@@ -51,7 +51,7 @@ def delete_netrc():
 def test_auth_can_read_earthdata_env_variables():
     activate_environment("earthdata")
     auth = earthaccess.login(strategy="environment")
-    logger.info(f"Current username: {auth._credentials[0]}")
+    logger.info(f"Current username: {auth.username}")
     logger.info(f"earthaccess version: {earthaccess.__version__}")
 
     assertions.assertIsInstance(auth, earthaccess.Auth)
@@ -62,7 +62,7 @@ def test_auth_can_read_earthdata_env_variables():
 def test_auth_can_read_from_edl_env_variables():
     activate_environment("edl")
     auth = earthaccess.login(strategy="environment")
-    logger.info(f"Current username: {auth._credentials[0]}")
+    logger.info(f"Current username: {auth.username}")
     logger.info(f"earthaccess version: {earthaccess.__version__}")
 
     assertions.assertIsInstance(auth, earthaccess.Auth)
