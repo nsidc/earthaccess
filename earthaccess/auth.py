@@ -235,14 +235,8 @@ class Auth(object):
         return authenticated
 
     def _environment(self) -> bool:
-        if "EDL_USERNAME" in os.environ:
-            username = os.getenv("EDL_USERNAME")
-        if "EARTHDATA_USERNAME" in os.environ:
-            username = os.getenv("EARTHDATA_USERNAME")
-        if "EDL_PASSWORD" in os.environ:
-            password = os.getenv("EDL_PASSWORD")
-        if "EARTHDATA_PASSWORD" in os.environ:
-            password = os.getenv("EARTHDATA_PASSWORD")
+        username = os.getenv("EARTHDATA_USERNAME")
+        password = os.getenv("EARTHDATA_PASSWORD")
         authenticated = self._get_credentials(username, password)
         if authenticated:
             print("Using environment variables for EDL")

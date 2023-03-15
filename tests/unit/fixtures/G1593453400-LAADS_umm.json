@@ -1,0 +1,144 @@
+{
+  "hits": 1,
+  "took": 542,
+  "items": [
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G1593453400-LAADS",
+        "revision-id": 3,
+        "native-id": "LAADS:4389864073",
+        "provider-id": "LAADS",
+        "format": "application/echo10+xml",
+        "revision-date": "2021-01-16T12:11:23.241Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "2019-02-20T04:30:00.000Z",
+            "EndingDateTime": "2019-02-20T04:35:00.000Z"
+          }
+        },
+        "GranuleUR": "LAADS:4389864073",
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "GPolygons": [
+                {
+                  "Boundary": {
+                    "Points": [
+                      {
+                        "Longitude": -51.923123,
+                        "Latitude": 62.328467
+                      },
+                      {
+                        "Longitude": -10.377255,
+                        "Latitude": 56.577721
+                      },
+                      {
+                        "Longitude": 19.845911,
+                        "Latitude": 69.099596
+                      },
+                      {
+                        "Longitude": -60.901471,
+                        "Latitude": 80.417613
+                      },
+                      {
+                        "Longitude": -51.923123,
+                        "Latitude": 62.328467
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2019-02-20T23:55:49.160Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2021-01-16T12:11:20.610Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "MYD021KM",
+          "Version": "6"
+        },
+        "PGEVersionClass": {
+          "PGEVersion": "6.1.37_27"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/6/MYD021KM/2019/051/MYD021KM.A2019051.0430.006.2019051235515.hdf",
+            "Type": "GET DATA",
+            "MimeType": "application/x-hdfeos"
+          },
+          {
+            "URL": "https://ladsweb.modaps.eosdis.nasa.gov/opendap/allData/6/MYD021KM/2019/051/MYD021KM.A2019051.0430.006.2019051235515.hdf.html",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "This file may be accessed using OPeNDAP directly from this link",
+            "MimeType": "text/html"
+          },
+          {
+            "URL": "http://doi.org/10.5067/MODIS/MYD021KM.006",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "A link to Data set landing page",
+            "MimeType": "text/html"
+          },
+          {
+            "URL": "https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/6/MYBRGB/2019/051/MYBRGB.A2019051.0430.006.2019052000816.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "Description": "This Browse file may be downloaded directly from this link",
+            "MimeType": "image/jpeg"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "AQUA"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Night",
+          "Identifiers": [
+            {
+              "Identifier": "MYD021KM.A2019051.0430.006.2019051235515.hdf",
+              "IdentifierType": "ProducerGranuleId"
+            }
+          ],
+          "ProductionDateTime": "2019-02-20T23:55:15.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 65.8373498916626,
+              "SizeInBytes": 69035465,
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "Aqua",
+            "Instruments": [
+              {
+                "ShortName": "MODIS"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    }
+  ]
+}

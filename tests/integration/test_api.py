@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
 
 
-assertions.assertTrue("EDL_USERNAME" in os.environ)
-assertions.assertTrue("EDL_PASSWORD" in os.environ)
+assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
+assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
 
-logger.info(f"Current username: {os.environ['EDL_USERNAME']}")
+logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
 logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 

@@ -1,0 +1,251 @@
+{
+  "hits": 1,
+  "took": 350,
+  "items": [
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2159085058-NSIDC_ECS",
+        "revision-id": 2,
+        "native-id": "SC:ATL06.005:228825416",
+        "provider-id": "NSIDC_ECS",
+        "format": "application/iso:smap+xml",
+        "revision-date": "2021-11-23T06:14:29.307Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "2019-02-21T12:19:05.196Z",
+            "EndingDateTime": "2019-02-21T12:24:16.042Z"
+          }
+        },
+        "OrbitCalculatedSpatialDomains": [
+          {
+            "OrbitNumber": 2429,
+            "EquatorCrossingLongitude": -40.35812957405553,
+            "EquatorCrossingDateTime": "2019-02-21T12:03:18.922Z"
+          }
+        ],
+        "GranuleUR": "SC:ATL06.005:228825416",
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Orbit": {
+              "AscendingCrossing": -40.35812957405553,
+              "StartLatitude": 59.5,
+              "StartDirection": "A",
+              "EndLatitude": 80,
+              "EndDirection": "A"
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2021-11-04T23:19:23.384Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2021-11-22T19:32:23.788Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "EntryTitle": "ATLAS/ICESat-2 L3A Land Ice Height V005"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2019.02.21/ATL06_20190221121851_08410203_005_01.h5",
+            "Type": "GET DATA",
+            "MimeType": "application/x-hdfeos"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.default.default1.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.default.default2.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1l.atl06_quality_summary.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1l.h_li.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1l.h_li_sigma.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1l.n_fit_photons.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1l.signal_selection_source.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1r.atl06_quality_summary.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1r.h_li.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1r.h_li_sigma.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1r.n_fit_photons.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt1r.signal_selection_source.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2l.atl06_quality_summary.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2l.h_li.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2l.h_li_sigma.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2l.n_fit_photons.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2l.signal_selection_source.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2r.atl06_quality_summary.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2r.h_li.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2r.h_li_sigma.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2r.n_fit_photons.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt2r.signal_selection_source.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3l.atl06_quality_summary.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3l.h_li.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3l.h_li_sigma.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3l.n_fit_photons.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3l.signal_selection_source.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3r.atl06_quality_summary.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3r.h_li.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3r.h_li_sigma.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3r.n_fit_photons.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.05/ATL06_20190221121851_08410203_005_01_BRW.gt3r.signal_selection_source.jpg",
+            "Type": "GET RELATED VISUALIZATION",
+            "MimeType": "image/jpeg"
+          },
+          {
+            "URL": "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2019.02.21/ATL06_20190221121851_08410203_005_01.iso.xml",
+            "Type": "VIEW RELATED INFORMATION",
+            "MimeType": "text/xml"
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Unspecified",
+          "Identifiers": [
+            {
+              "Identifier": "ATL06_20190221121851_08410203_005_01.h5",
+              "IdentifierType": "ProducerGranuleId"
+            }
+          ],
+          "ProductionDateTime": "2021-09-08T05:36:40.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 59.1940822601,
+              "SizeUnit": "NA"
+            }
+          ]
+        },
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    }
+  ]
+}

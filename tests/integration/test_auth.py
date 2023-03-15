@@ -13,26 +13,15 @@ assertions = unittest.TestCase("__init__")
 NETRC_PATH = pathlib.Path.home() / pathlib.Path(".netrc")
 
 
-def activate_environment(prefix):
+def activate_environment():
     earthaccess.__auth__ = earthaccess.Auth()
-    if prefix == "earthdata":
-        if "EDL_USERNAME" in os.environ:
-            os.environ.pop("EDL_USERNAME")
-        if "EDL_PASSWORD" in os.environ:
-            os.environ.pop("EDL_PASSWORD")
-        os.environ["EARTHDATA_USERNAME"] = os.getenv("EARTHACCESS_TEST_USERNAME")
-        os.environ["EARTHDATA_PASSWORD"] = os.getenv("EARTHACCESS_TEST_PASSWORD")
-    elif prefix == "edl":
-        if "EARTHDATA_USERNAME" in os.environ:
-            os.environ.pop("EARTHDATA_USERNAME")
-        if "EARTHDATA_PASSWORD" in os.environ:
-            os.environ.pop("EARTHDATA_PASSWORD")
-        os.environ["EDL_USERNAME"] = os.getenv("EARTHACCESS_TEST_USERNAME")
-        os.environ["EDL_PASSWORD"] = os.getenv("EARTHACCESS_TEST_PASSWORD")
+    # the original comes from github secrets
+    os.environ["EARTHDATA_USERNAME"] = os.getenv("EARTHACCESS_TEST_USERNAME", "")
+    os.environ["EARTHDATA_PASSWORD"] = os.getenv("EARTHACCESS_TEST_PASSWORD", "")
 
 
 def activate_netrc():
-    activate_environment("earthdata")
+    activate_environment()
     username = os.environ["EARTHDATA_USERNAME"]
     password = os.environ["EARTHDATA_PASSWORD"]
 
@@ -49,7 +38,7 @@ def delete_netrc():
 
 
 def test_auth_can_read_earthdata_env_variables():
-    activate_environment("earthdata")
+    activate_environment()
     auth = earthaccess.login(strategy="environment")
     logger.info(f"Current username: {auth.username}")
     logger.info(f"earthaccess version: {earthaccess.__version__}")
@@ -60,7 +49,7 @@ def test_auth_can_read_earthdata_env_variables():
 
 
 def test_auth_can_read_from_edl_env_variables():
-    activate_environment("edl")
+    activate_environment()
     auth = earthaccess.login(strategy="environment")
     logger.info(f"Current username: {auth.username}")
     logger.info(f"earthaccess version: {earthaccess.__version__}")
@@ -78,7 +67,7 @@ def test_auth_can_read_from_netrc_file():
 
 
 def test_auth_throws_exception_if_netrc_is_not_present():
-    activate_environment("edl")
+    activate_environment()
     delete_netrc()
     with pytest.raises(Exception) as e_info:
         earthaccess.login(strategy="netrc")
@@ -87,7 +76,7 @@ def test_auth_throws_exception_if_netrc_is_not_present():
 
 
 def test_auth_populates_attrs():
-    activate_environment("edl")
+    activate_environment()
     auth = earthaccess.login(strategy="environment")
     assertions.assertIsInstance(auth, earthaccess.Auth)
     assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
@@ -95,7 +84,7 @@ def test_auth_populates_attrs():
 
 
 def test_auth_returns_valid_s3_credentials():
-    activate_environment("edl")
+    activate_environment()
     auth = earthaccess.login(strategy="environment")
     assertions.assertIsInstance(auth, earthaccess.Auth)
     assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
@@ -103,14 +92,14 @@ def test_auth_returns_valid_s3_credentials():
 
 
 def test_auth_can_create_authenticated_requests_sessions():
-    activate_environment("edl")
+    activate_environment()
     session = earthaccess.get_requests_https_session()
     assertions.assertTrue("Authorization" in session.headers)
     assertions.assertTrue("Bearer" in session.headers["Authorization"])
 
 
 def test_auth_can_fetch_s3_credentials():
-    activate_environment("edl")
+    activate_environment()
     auth = earthaccess.login(strategy="environment")
     assertions.assertTrue(auth.authenticated)
     for daac in earthaccess.daac.DAACS:

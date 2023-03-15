@@ -1,0 +1,96 @@
+{
+  "feed": {
+    "updated": "2023-03-12T23:17:01.003Z",
+    "id": "https://cmr.earthdata.nasa.gov:443/search/granules.json?concept_id=G1594284907-GES_DISC",
+    "title": "ECHO granule metadata",
+    "entry": [
+      {
+        "producer_granule_id": "NLDAS_NOAH0125_H.A20190220.0000.002.grb",
+        "boxes": [
+          "25 -125 53 -67"
+        ],
+        "time_start": "2019-02-20T00:00:00.000Z",
+        "updated": "2019-02-23T18:11:12.000Z",
+        "dataset_id": "NLDAS Noah Land Surface Model L4 Hourly 0.125 x 0.125 degree V002 (NLDAS_NOAH0125_H) at GES DISC",
+        "data_center": "GES_DISC",
+        "title": "NLDAS_NOAH0125_H.002:NLDAS_NOAH0125_H.A20190220.0000.002.grb",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "UNSPECIFIED",
+        "time_end": "2019-02-20T00:00:00.000Z",
+        "id": "G1594284907-GES_DISC",
+        "original_format": "ECHO10",
+        "granule_size": "6.69670295715332",
+        "browse_flag": false,
+        "collection_concept_id": "C1233767642-GES_DISC",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://hydro1.gesdisc.eosdis.nasa.gov/data/NLDAS/NLDAS_NOAH0125_H.002/2019/051/NLDAS_NOAH0125_H.A20190220.0000.002.grb"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://disc.gsfc.nasa.gov/datacollection/NLDAS_NOAH0125_H_002.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://hydro1.gesdisc.eosdis.nasa.gov/data/NLDAS/NLDAS_NOAH0125_H.002/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://search.earthdata.nasa.gov/search?q=NLDAS_NOAH0125_H"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://hydro1.gesdisc.eosdis.nasa.gov/dods/NLDAS_NOAH0125_H.002"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://hydro1.gesdisc.eosdis.nasa.gov/data/NLDAS/NLDAS_NOAH0125_H.002/doc/gribtab_NLDAS_NOAH.002.txt"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://hydro1.gesdisc.eosdis.nasa.gov/data/NLDAS/README.NLDAS2.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://ldas.gsfc.nasa.gov/nldas/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://disc.gsfc.nasa.gov/information/howto?tags=hydrology"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://disc.gsfc.nasa.gov/information/documents?title=Hydrology%20Documentation"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://disc.gsfc.nasa.gov/information/tools?title=Hydrology%20Data%20Rods"
+          }
+        ]
+      }
+    ]
+  }
+}
