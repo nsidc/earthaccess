@@ -10,7 +10,7 @@ If you have a .netrc file with your Earthdata Login credentials
 auth = earthaccess.login(strategy="netrc")
 ```
 
-If your Earthdata Login credentials are set as environment variables: EDL_USERNAME, EDL_PASSWORD
+If your Earthdata Login credentials are set as environment variables: EARTHDATA_USERNAME, EARTHDATA_PASSWORD
 
 ```py
 auth = earthaccess.login(strategy="environment")

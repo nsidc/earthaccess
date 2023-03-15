@@ -58,7 +58,6 @@ daacs_list = [
 assertions = unittest.TestCase("__init__")
 
 # we need to use a valid EDL credential
-# EDL_USERNAME, EDL_PASSWORD
 
 assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
 assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)

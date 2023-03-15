@@ -70,7 +70,7 @@ class Auth(object):
 
                     "netrc": (default) retrieve username and password from ~/.netrc.
 
-                    "environment": retrieve username and password from $EDL_USERNAME and $EDL_PASSWORD.
+                    "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist (Boolean): will persist credentials in a .netrc file
         Returns:
             an instance of Auth.
@@ -242,7 +242,7 @@ class Auth(object):
             print("Using environment variables for EDL")
         else:
             print(
-                "EDL_USERNAME and EDL_PASSWORD are not set in the current environment, try "
+                "EARTHDATA_USERNAME and EARTHDATA_PASSWORD are not set in the current environment, try "
                 "setting them or use a different strategy (netrc, interactive)"
             )
         return authenticated

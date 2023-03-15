@@ -121,7 +121,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
                 "netrc": retrieve username and password from ~/.netrc.
 
-                "environment": retrieve username and password from $EDL_USERNAME and $EDL_PASSWORD.
+                "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
         persist (Boolean): will persist credentials in a .netrc file
     Returns:
         an instance of Auth.

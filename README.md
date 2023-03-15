@@ -65,7 +65,7 @@ Once you have an EDL account, you can authenticate using one of the following th
 1. Using a `.netrc` file
     * Can use *earthaccess* to read your EDL credentials (username and password) from a `.netrc` file
 2. Reading your EDL credentials from environment variables
-    * if available you can use environment variables **EDL_USERNAME** and **EDL_PASSWORD**
+    * if available you can use environment variables **EARTHDATA_USERNAME** and **EARTHDATA_PASSWORD**
 3. Interactively entering your EDL credentials
     * You can be prompted for these credentials and save them to a `.netrc` file
 
