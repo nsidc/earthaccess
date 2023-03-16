@@ -33,6 +33,8 @@ During several workshops organized by [NASA Openscapes](https://nasa-openscapes.
 
 ## **Installing earthaccess**
 
+You will need Python 3.8 or higher installed.
+
 Install the latest release using conda
 
 ```bash
