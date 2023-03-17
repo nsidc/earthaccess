@@ -8,7 +8,7 @@
     * Notebooks updated to use the new top level API
 
 * CI changes:
-    * documentation for readthedocs fixed by including poetry as teh default tool
+    * documentation for readthedocs fixed by including poetry as the default tool
     * injected new secrets to test Auth using the IcePyx convention (EARTHDATA_USERNAME)
 * New Features
     * we can get the user's profile with auth.user_profile which includes the user email
