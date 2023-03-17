@@ -9,7 +9,7 @@
 
 * CI changes:
     * documentation for readthedocs fixed by including poetry as the default tool
-    * injected new secrets to test Auth using the IcePyx convention (EARTHDATA_USERNAME)
+    * injected new secrets to test Auth using the icepyx convention (EARTHDATA_USERNAME)
 * New Features
     * we can get the user's profile with auth.user_profile which includes the user email
 ## [v0.5.0] 2023-02-23
