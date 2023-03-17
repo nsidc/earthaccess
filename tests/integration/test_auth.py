@@ -72,14 +72,6 @@ def test_auth_populates_attrs():
     assertions.assertTrue(earthaccess.__auth__.authenticated)
 
 
-def test_auth_returns_valid_s3_credentials():
-    activate_environment()
-    auth = earthaccess.login(strategy="environment")
-    assertions.assertIsInstance(auth, earthaccess.Auth)
-    assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
-    assertions.assertTrue(earthaccess.__auth__.authenticated)
-
-
 def test_auth_can_create_authenticated_requests_sessions():
     activate_environment()
     session = earthaccess.get_requests_https_session()
