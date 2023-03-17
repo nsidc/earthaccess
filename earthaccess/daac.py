@@ -85,6 +85,15 @@ DAACS = [
         "s3-credentials": "",
         "eulas": [],
     },
+    {
+        "short-name": "LAADS",
+        "name": "Level-1 and Atmosphere Archive & Distribution System Distributed Active Archive Center",
+        "homepage": "https://ladsweb.modaps.eosdis.nasa.gov/",
+        "cloud-providers": ["LAADS"],
+        "on-prem-providers": ["LAADS"],
+        "s3-credentials": "https://data.laadsdaac.earthdatacloud.nasa.gov/s3credentials",
+        "eulas": [],
+    },
 ]
 
 
@@ -96,6 +105,7 @@ CLOUD_PROVIDERS = [
     "ASF",
     "GHRC_DAAC",
     "ORNL_CLOUD",
+    "LAADS",
 ]
 
 # Some testing urls behind EDL

@@ -154,9 +154,9 @@ class Auth(object):
             session = SessionWithHeaderRedirection(self.username, self.password)
             auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
             if auth_url.startswith("https://"):
-                cumulus_resp = session.get(auth_url, timeout=10, allow_redirects=True)
+                cumulus_resp = session.get(auth_url, timeout=15, allow_redirects=True)
                 auth_resp = session.get(
-                    cumulus_resp.url, allow_redirects=True, timeout=10
+                    cumulus_resp.url, allow_redirects=True, timeout=15
                 )
                 if not (auth_resp.ok):  # type: ignore
                     print(
