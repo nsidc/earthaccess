@@ -409,7 +409,7 @@ class Store(object):
                 "we need to use one from earthaccess.list_cloud_providers()"
             )
             return None
-        if self.running_in_aws:
+        if self.running_in_aws and data_links[0].startswith("s3"):
             print(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
