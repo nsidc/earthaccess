@@ -16,8 +16,8 @@
     <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
-<a href="https://nsidc.github.io/earthdata/" target="_blank">
-    <img src="https://readthedocs.org/projects/earthaccess/badge/?version=latest&style=plastic" alt="Documentation link">
+<a href='https://earthdata.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/earthdata/badge/?version=latest' alt='Documentation Status' />
 </a>
 
 </p>
@@ -47,7 +47,7 @@ Using Pip
 pip install earthaccess
 ```
 
-Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthdata/main)
+Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
 
 
 ## **Usage**
@@ -74,9 +74,8 @@ Once you have an EDL account, you can authenticate using one of the following th
 ```python
 import earthaccess
 
-auth = earthaccess.login(strategy="netrc")
-if not auth:
-    auth = earthaccess.login(strategy="interactive", persist=True)
+auth = earthaccess.login()
+
 ```
 
 Once you are authenticated with NASA EDL you can:
