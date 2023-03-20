@@ -1,0 +1,290 @@
+{
+  "feed": {
+    "updated": "2023-03-12T23:09:54.872Z",
+    "id": "https://cmr.earthdata.nasa.gov:443/search/granules.json?concept_id=G2160242605-NSIDC_ECS",
+    "title": "ECHO granule metadata",
+    "entry": [
+      {
+        "producer_granule_id": "ATL08_20190221121851_08410203_005_01.h5",
+        "time_start": "2019-02-21T12:18:57.077Z",
+        "orbit": {
+          "ascending_crossing": "-40.35812957405553",
+          "start_lat": "59.5",
+          "start_direction": "A",
+          "end_lat": "80",
+          "end_direction": "A"
+        },
+        "updated": "2021-11-22T21:11:03.152Z",
+        "orbit_calculated_spatial_domains": [
+          {
+            "equator_crossing_date_time": "2019-02-21T12:03:18.922Z",
+            "equator_crossing_longitude": "-40.35812957405553",
+            "orbit_number": "2429"
+          }
+        ],
+        "dataset_id": "ATLAS/ICESat-2 L3A Land and Vegetation Height V005",
+        "data_center": "NSIDC_ECS",
+        "title": "SC:ATL08.005:229324795",
+        "coordinate_system": "ORBIT",
+        "time_end": "2019-02-21T12:24:16.044Z",
+        "id": "G2160242605-NSIDC_ECS",
+        "original_format": "ISO-SMAP",
+        "granule_size": "99.5857028961",
+        "browse_flag": true,
+        "polygons": [
+          [
+            "58.13514814533861 -47.79869158859275 76.62413302972358 -54.67433508157976 77.78463055907766 -55.65948204030133 77.83817676951094 -54.146243325401755 76.67308982518216 -53.28761796863526 58.15656934712126 -47.18623526999909 58.13514814533861 -47.79869158859275"
+          ]
+        ],
+        "collection_concept_id": "C2144424132-NSIDC_ECS",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "type": "application/x-hdfeos",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL08.005/2019.02.21/ATL08_20190221121851_08410203_005_01.h5"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.default.default1.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.default.default2.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1l.groundtrack.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1l.h_canopy_abs.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1l.h_te_median.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1l.n_ca_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1l.n_te_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1r.groundtrack.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1r.h_canopy_abs.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1r.h_te_median.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1r.n_ca_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt1r.n_te_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2l.groundtrack.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2l.h_canopy_abs.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2l.h_te_median.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2l.n_ca_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2l.n_te_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2r.groundtrack.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2r.h_canopy_abs.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2r.h_te_median.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2r.n_ca_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt2r.n_te_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3l.groundtrack.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3l.h_canopy_abs.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3l.h_te_median.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3l.n_ca_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3l.n_te_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3r.groundtrack.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3r.h_canopy_abs.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3r.h_te_median.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3r.n_ca_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP0/BRWS/Browse.001/2021.11.06/ATL08_20190221121851_08410203_005_01_BRW.gt3r.n_te_photons.jpg"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "type": "text/xml",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL08.005/2019.02.21/ATL08_20190221121851_08410203_005_01.iso.xml"
+          },
+          {
+            "inherited": true,
+            "length": "0.0KB",
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://n5eil01u.ecs.nsidc.org/ATLAS/ATL08.005/"
+          },
+          {
+            "inherited": true,
+            "length": "0.0KB",
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://search.earthdata.nasa.gov/search?q=ATL08+V005"
+          },
+          {
+            "inherited": true,
+            "length": "0.0KB",
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://openaltimetry.org/"
+          },
+          {
+            "inherited": true,
+            "length": "0.0KB",
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://nsidc.org/data/data-access-tool/ATL08/versions/5/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.5067/ATLAS/ATL08.005"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.5067/ATLAS/ATL08.005"
+          }
+        ]
+      }
+    ]
+  }
+}

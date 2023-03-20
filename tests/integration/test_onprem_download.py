@@ -22,14 +22,14 @@ daacs_list = [
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
-    # {
-    #     "short_name": "GES_DISC",
-    #     "collections_count": 100,
-    #     "collections_sample_size": 2,
-    #     "granules_count": 100,
-    #     "granules_sample_size": 2,
-    #     "granules_max_size_mb": 130,
-    # },
+    {
+        "short_name": "GES_DISC",
+        "collections_count": 100,
+        "collections_sample_size": 2,
+        "granules_count": 100,
+        "granules_sample_size": 2,
+        "granules_max_size_mb": 130,
+    },
     {
         "short_name": "PODAAC",
         "collections_count": 100,
@@ -59,14 +59,13 @@ daacs_list = [
 assertions = unittest.TestCase("__init__")
 
 # we need to use a valid EDL credential
-# EDL_USERNAME, EDL_PASSWORD
 
-assertions.assertTrue("EDL_USERNAME" in os.environ)
-assertions.assertTrue("EDL_PASSWORD" in os.environ)
+assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
+assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
 
 auth = Auth().login(strategy="environment")
 assertions.assertTrue(auth.authenticated)
-logger.info(f"Current username: {os.environ['EDL_USERNAME']}")
+logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
 logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 store = Store(auth)

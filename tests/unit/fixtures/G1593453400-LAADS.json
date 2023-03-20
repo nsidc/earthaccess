@@ -1,0 +1,96 @@
+{
+  "feed": {
+    "updated": "2023-03-12T23:20:23.487Z",
+    "id": "https://cmr.earthdata.nasa.gov:443/search/granules.json?concept_id=G1593453400-LAADS",
+    "title": "ECHO granule metadata",
+    "entry": [
+      {
+        "producer_granule_id": "MYD021KM.A2019051.0430.006.2019051235515.hdf",
+        "time_start": "2019-02-20T04:30:00.000Z",
+        "updated": "2021-01-16T12:11:20.610Z",
+        "dataset_id": "MODIS/Aqua Calibrated Radiances 5-Min L1B Swath 1km V006",
+        "data_center": "LAADS",
+        "title": "LAADS:4389864073",
+        "coordinate_system": "GEODETIC",
+        "day_night_flag": "NIGHT",
+        "time_end": "2019-02-20T04:35:00.000Z",
+        "id": "G1593453400-LAADS",
+        "original_format": "ECHO10",
+        "granule_size": "65.8373498916626",
+        "browse_flag": true,
+        "polygons": [
+          [
+            "62.328467 -51.923123 56.577721 -10.377255 69.099596 19.845911 80.417613 -60.901471 62.328467 -51.923123"
+          ]
+        ],
+        "collection_concept_id": "C203234523-LAADS",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "type": "application/x-hdfeos",
+            "hreflang": "en-US",
+            "href": "https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/6/MYD021KM/2019/051/MYD021KM.A2019051.0430.006.2019051235515.hdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "type": "text/html",
+            "title": "This file may be accessed using OPeNDAP directly from this link (OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://ladsweb.modaps.eosdis.nasa.gov/opendap/allData/6/MYD021KM/2019/051/MYD021KM.A2019051.0430.006.2019051235515.hdf.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "type": "text/html",
+            "title": "A link to Data set landing page (Data Set Landing Page)",
+            "hreflang": "en-US",
+            "href": "http://doi.org/10.5067/MODIS/MYD021KM.006"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/browse#",
+            "type": "image/jpeg",
+            "title": "This Browse file may be downloaded directly from this link",
+            "hreflang": "en-US",
+            "href": "https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/6/MYBRGB/2019/051/MYBRGB.A2019051.0430.006.2019052000816.jpg"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://modaps.nascom.nasa.gov/services/about/product_descriptions_aqua.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://ladsweb.modaps.eosdis.nasa.gov/search/order/2/MYD021KM--6"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/6/MYD021KM/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://mcst.gsfc.nasa.gov/l1b/product-information"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://mcst.gsfc.nasa.gov/content/l1b-documents"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "hreflang": "en-US",
+            "href": "https://ladsweb.modaps.eosdis.nasa.gov/opendap/RemoteResources/laads/allData/6/MYD021KM/contents.html"
+          }
+        ]
+      }
+    ]
+  }
+}

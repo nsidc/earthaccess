@@ -1,6 +1,5 @@
+from importlib.metadata import version
 from typing import Any
-
-import pkg_resources  # type: ignore
 
 from .api import (
     collection_query,
@@ -40,4 +39,4 @@ __all__ = [
 __auth__ = Auth()
 __store__: Any = None
 
-__version__ = pkg_resources.get_distribution("earthaccess").version
+__version__ = version("earthaccess")

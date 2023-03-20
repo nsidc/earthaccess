@@ -1,0 +1,146 @@
+{
+  "feed": {
+    "updated": "2023-03-12T23:14:42.101Z",
+    "id": "https://cmr.earthdata.nasa.gov:443/search/granules.json?concept_id=G1618495041-GES_DISC",
+    "title": "ECHO granule metadata",
+    "entry": [
+      {
+        "producer_granule_id": "3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+        "boxes": [
+          "-90 -180 90 180"
+        ],
+        "time_start": "2019-02-20T00:00:00.000Z",
+        "updated": "2019-06-12T02:47:11.000Z",
+        "dataset_id": "GPM IMERG Final Precipitation L3 Half Hourly 0.1 degree x 0.1 degree V06 (GPM_3IMERGHH) at GES DISC",
+        "data_center": "GES_DISC",
+        "title": "GPM_3IMERGHH.06:3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "UNSPECIFIED",
+        "time_end": "2019-02-20T00:29:59.999Z",
+        "id": "G1618495041-GES_DISC",
+        "original_format": "ECHO10",
+        "granule_size": "10.07326889038086",
+        "browse_flag": false,
+        "collection_concept_id": "C1598621093-GES_DISC",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download 3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+            "hreflang": "en-US",
+            "href": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGHH.06/2019/051/3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://gesdisc-cumulus-prod-protected/GPM_L3/GPM_3IMERGHH.06/2019/051/3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "type": "application/x-hdf",
+            "title": "The OPENDAP location for the granule. (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/GPM_L3/GPM_3IMERGHH.06/2019/051/3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.gesdisc.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://disc.gsfc.nasa.gov/datacollection/GPM_3IMERGHH_06.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHH.06/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "hreflang": "en-US",
+            "href": "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/GPM_L3/GPM_3IMERGHH.06/contents.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://gpm1.gesdisc.eosdis.nasa.gov/dods/GPM_3IMERGHH_06.info"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://gpm1.gesdisc.eosdis.nasa.gov/thredds/catalog/aggregation/GPM_3IMERGHH.06/catalog.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://search.earthdata.nasa.gov/search?q=GPM_3IMERGHH_06"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERG_ATBD_V06.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/MorphingInV06IMERG.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERG_doc.06.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_QI.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_TRMMera-caveats.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/doc/README.GPM.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERG_V06_release_notes.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://gpmweb2https.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://gpm.nasa.gov"
+          }
+        ]
+      }
+    ]
+  }
+}

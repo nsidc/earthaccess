@@ -10,8 +10,8 @@ from earthaccess import Auth, Store
 class TestStoreSessions(unittest.TestCase):
     @responses.activate
     def setUp(self):
-        os.environ["EDL_USERNAME"] = "user"
-        os.environ["EDL_PASSWORD"] = "password"
+        os.environ["EARTHDATA_USERNAME"] = "user"
+        os.environ["EARTHDATA_PASSWORD"] = "password"
         json_response = [
             {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
             {"access_token": "EDL-token-2", "expiration_date": "12/16/2021"},
@@ -22,15 +22,28 @@ class TestStoreSessions(unittest.TestCase):
             json=json_response,
             status=200,
         )
-
-        self.auth = Auth().login(strategy="environment")
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/api/users/user?client_id=ntD0YGC_SM3Bjs-Tnxd7bg",
+            json={},
+            status=200,
+        )
+        self.auth = Auth()
+        self.auth.login(strategy="environment")
         self.assertEqual(self.auth.authenticated, True)
         self.assertTrue(self.auth.token in json_response)
 
     def tearDown(self):
         self.auth = None
 
+    @responses.activate
     def test_store_can_create_https_fsspec_session(self):
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
         https_fs = store.get_fsspec_session()
@@ -41,12 +54,6 @@ class TestStoreSessions(unittest.TestCase):
     def test_store_can_create_s3_fsspec_session(self):
         from earthaccess.daac import DAACS
 
-        responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/profile",
-            json={},
-            status=200,
-        )
         for daac in DAACS:
             if "s3-credentials" in daac:
                 responses.add(
@@ -59,6 +66,13 @@ class TestStoreSessions(unittest.TestCase):
                     },
                     status=200,
                 )
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
+
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
         for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC", "ASF"]:

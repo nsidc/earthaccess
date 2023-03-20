@@ -121,7 +121,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
                 "netrc": retrieve username and password from ~/.netrc.
 
-                "environment": retrieve username and password from $EDL_USERNAME and $EDL_PASSWORD.
+                "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
         persist (Boolean): will persist credentials in a .netrc file
     Returns:
         an instance of Auth.
@@ -185,7 +185,9 @@ def open(
     return results
 
 
-def get_s3_credentials(daac: str, provider: str) -> Dict[str, Any]:
+def get_s3_credentials(
+    daac: Optional[str] = None, provider: Optional[str] = None
+) -> Dict[str, Any]:
     """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets
 
     Parameters:
@@ -197,7 +199,7 @@ def get_s3_credentials(daac: str, provider: str) -> Dict[str, Any]:
     return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 
-def collection_query(cloud_hosted: bool = True) -> Type[CollectionQuery]:
+def collection_query() -> Type[CollectionQuery]:
     """Returns a query builder instance for NASA collections (datasets)
 
     Parameters:
@@ -206,9 +208,9 @@ def collection_query(cloud_hosted: bool = True) -> Type[CollectionQuery]:
         class earthaccess.DataCollections: a query builder instance for data collections.
     """
     if earthaccess.__auth__.authenticated:
-        query_builder = DataCollections(earthaccess.__auth__).cloud_hosted(cloud_hosted)
+        query_builder = DataCollections(earthaccess.__auth__)
     else:
-        query_builder = DataCollections().cloud_hosted(cloud_hosted)
+        query_builder = DataCollections()
     return query_builder
 
 
@@ -256,6 +258,17 @@ def get_requests_https_session() -> requests.Session:
 
     Returns:
         class requests.Session: an authenticated requests Session instance.
+
+    Examples:
+        ```python
+        import earthaccess
+
+        earthaccess.login()
+
+        req_session = earthaccess.get_requests_https_session()
+        data = req_session.get(granule_url, headers = {"Range": "bytes=0-100"})
+
+        ```
     """
     session = earthaccess.__store__.get_requests_session()
     return session
@@ -264,10 +277,21 @@ def get_requests_https_session() -> requests.Session:
 def get_s3fs_session(
     daac: Optional[str] = None, provider: Optional[str] = None
 ) -> s3fs.S3FileSystem:
+    """Returns a fsspec s3fs file session for direct access when we are in us-west-2
+
+    Returns:
+        class s3fs.S3FileSystem: an authenticated s3fs session valid for 1 hour
+    """
     session = earthaccess.__store__.get_s3fs_session(daac=daac, provider=provider)
     return session
 
 
 def get_edl_token() -> str:
+    """Returns the current token used for EDL
+
+    Returns:
+        str: EDL token
+
+    """
     token = earthaccess.__auth__.token
     return token
