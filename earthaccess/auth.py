@@ -161,11 +161,11 @@ class Auth(object):
                 )
                 if not (auth_resp.ok):  # type: ignore
                     # Let's try to authenticate with Bearer tokens
-                    session = self.get_session()
-                    cumulus_resp = session.get(
+                    _session = self.get_session()
+                    cumulus_resp = _session.get(
                         auth_url, timeout=15, allow_redirects=True
                     )
-                    auth_resp = session.get(
+                    auth_resp = _session.get(
                         cumulus_resp.url, allow_redirects=True, timeout=15
                     )
                     if not (auth_resp.ok):
