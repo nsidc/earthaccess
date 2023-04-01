@@ -16,7 +16,6 @@ class DataCollections(CollectionQuery):
     ???+ Info
         The DataCollection class queries against https://cmr.earthdata.nasa.gov/search/collections.umm_json,
         the response has to be in umm_json in order to use the result classes.
-        Results will be wraped inside a `Benedict` class, an enhanced Python dictionary.
     """
 
     _fields = None
