@@ -47,7 +47,7 @@ def _repr_granule_html(granule: Any) -> str:
           <div class="col-6">
             <p><b>Data</b>: {data_links}<p/>
             <p><b>Size</b>: {granule_size} MB</p>
-            <p><b>Spatial</b>: <span>{granule["umm.SpatialExtent"]}</span></p>
+            <p><b>Spatial</b>: <span>{granule["umm"]["SpatialExtent"]}</span></p>
           </div>
           <div class="col-2 offset-sm-3 pull-right">
             {dataviz_img}
