@@ -2,12 +2,10 @@ import json
 import uuid
 from typing import Any, Dict, List, Optional, Union
 
-from benedict import benedict
-
 from .formatters import _repr_granule_html
 
 
-class CustomDict(benedict):
+class CustomDict(dict):
     _basic_umm_fields_: List = []
     _basic_meta_fields_: List = []
 
@@ -249,23 +247,22 @@ class DataGranule(CustomDict):
             Returns the total size for the granule in MB
         """
         try:
+            data_granule = self["mmm"]["DataGranule"]
             total_size = sum(
                 [
                     float(s["Size"])
-                    for s in self["umm.DataGranule.ArchiveAndDistributionInformation"]
-                    if "ArchiveAndDistributionInformation" in self["umm"]["DataGranule"]
+                    for s in data_granule["ArchiveAndDistributionInformation"]
+                    if "ArchiveAndDistributionInformation" in data_granule
                 ]
             )
         except Exception:
             try:
+                data_granule = self["mmm"]["DataGranule"]
                 total_size = sum(
                     [
                         float(s["SizeInBytes"])
-                        for s in self[
-                            "umm.DataGranule.ArchiveAndDistributionInformation"
-                        ]
-                        if "ArchiveAndDistributionInformation"
-                        in self["umm"]["DataGranule"]
+                        for s in data_granule["ArchiveAndDistributionInformation"]
+                        if "ArchiveAndDistributionInformation" in data_granule
                     ]
                 ) / (1024 * 1024)
             except Exception:

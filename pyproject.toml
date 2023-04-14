@@ -29,7 +29,6 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 python-cmr = ">=0.7"
-python-benedict = ">=0.25, <0.28.3"
 pqdm = ">=0.1"
 requests = ">=2.26,<3.0.0"
 s3fs = ">=2021.11, <2024"

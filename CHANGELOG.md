@@ -2,16 +2,20 @@
 
 ## Unreleased
 
+## [v0.5.1] 2023-03-20
+
 * bug fixes:
     * get_s3_credentials() only worked when a netrc file was present, bug reported by @scottyhq and @JessicaS11
     * including tests for all DAAC S3 endpoints
     * Notebooks updated to use the new top level API
+    * removed magic from dependencies (not available in windows and not used but just in tests)
 
 * CI changes:
     * documentation for readthedocs fixed by including poetry as the default tool
     * injected new secrets to test Auth using the icepyx convention (EARTHDATA_USERNAME)
 * New Features
     * we can get the user's profile with auth.user_profile which includes the user email
+    * added LAAD as a supported DAAC
 ## [v0.5.0] 2023-02-23
 
 * bug fixes:
@@ -92,7 +96,12 @@
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/betolink/earthaccess/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.5.1...HEAD
+[v0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
+[v0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.0
+[v0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
+[v0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
+[v0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1
 [v0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
 [v0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
