@@ -7,8 +7,7 @@ from fsspec import AbstractFileSystem
 import earthaccess
 
 from .auth import Auth
-from .search import (CollectionQuery, DataCollections, DataGranules,
-                     GranuleQuery)
+from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .utils import _validation as validate
 
@@ -197,9 +196,11 @@ def get_s3_credentials(
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
     """
-    return earthaccess.__auth__.get_s3_credentials(
-        daac=daac.upper(), provider=provider.upper()
-    )
+    if daac is not None:
+        daac = daac.upper()
+    if provider is not None:
+        provider = provider.upper()
+    return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 
 def collection_query() -> Type[CollectionQuery]:
