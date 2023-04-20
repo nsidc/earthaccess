@@ -196,6 +196,10 @@ def get_s3_credentials(
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
     """
+    if daac is not None:
+        daac = daac.upper()
+    if provider is not None:
+        provider = provider.upper()
     return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 

@@ -140,7 +140,8 @@ class Auth(object):
     def get_s3_credentials(
         self, daac: Optional[str] = "", provider: Optional[str] = ""
     ) -> Dict[str, str]:
-        """Gets AWS S3 credentials for a given NASA cloud provider
+        """Gets AWS S3 credentials for a given NASA cloud provider, the
+        easier way is to use the DAAC short name. provider is optional if we know it.
 
         Parameters:
             provider: A valid cloud provider, each DAAC has a provider code for their cloud distributions
@@ -159,15 +160,26 @@ class Auth(object):
                     cumulus_resp.url, allow_redirects=True, timeout=15
                 )
                 if not (auth_resp.ok):  # type: ignore
-                    print(
-                        f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
+                    # Let's try to authenticate with Bearer tokens
+                    _session = self.get_session()
+                    cumulus_resp = _session.get(
+                        auth_url, timeout=15, allow_redirects=True
                     )
-                    eula_url = "https://urs.earthdata.nasa.gov/users/earthaccess/unaccepted_eulas"
-                    apps_url = "https://urs.earthdata.nasa.gov/application_search"
-                    print(
-                        f"Consider accepting the EULAs available at {eula_url} and applications at {apps_url}"
+                    auth_resp = _session.get(
+                        cumulus_resp.url, allow_redirects=True, timeout=15
                     )
-                    return {}
+                    if not (auth_resp.ok):
+                        print(
+                            f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
+                        )
+                        eula_url = "https://urs.earthdata.nasa.gov/users/earthaccess/unaccepted_eulas"
+                        apps_url = "https://urs.earthdata.nasa.gov/application_search"
+                        print(
+                            f"Consider accepting the EULAs available at {eula_url} and applications at {apps_url}"
+                        )
+                        return {}
+
+                    return auth_resp.json()
                 return auth_resp.json()
             else:
                 # This happens if the cloud provider doesn't list the S3 credentials or the DAAC

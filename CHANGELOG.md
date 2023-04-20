@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## [v0.5.2] 2023-04-21
+* bug fixes:
+    * Fixing #230 by removing Benedict as the dict handler, thanks to @psarka!
+    * S3 credential endpoints are tried woth tokens and basic auth until all the DAACs accept the same auth
+
+* Core dependencies:
+    * Removed Benedict as the default dict for JSON coming from CMR.
 
 ## [v0.5.1] 2023-03-20
 
@@ -96,7 +102,8 @@
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.5.2...HEAD
+[v0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.0
 [v0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
