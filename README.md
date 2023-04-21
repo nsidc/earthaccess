@@ -8,16 +8,16 @@
     <img src="https://img.shields.io/badge/Art%20By-Allison%20Horst-blue" alt="Art Designer: Allison Horst">
 </a>
 
-<a href="https://pypi.org/project/earthdata" target="_blank">
+<a href="https://pypi.org/project/earthaccess" target="_blank">
     <img src="https://img.shields.io/pypi/v/earthaccess?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
 
-<a href="https://pypi.org/project/earthdata/" target="_blank">
+<a href="https://pypi.org/project/earthaccess/" target="_blank">
     <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
 <a href='https://earthdata.readthedocs.io/en/latest/?badge=latest'>
-    <img src='https://readthedocs.org/projects/earthdata/badge/?version=latest' alt='Documentation Status' />
+    <img src='https://readthedocs.org/projects/earthaccess/badge/?version=latest' alt='Documentation Status' />
 </a>
 
 </p>
