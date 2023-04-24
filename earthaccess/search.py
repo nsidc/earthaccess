@@ -412,6 +412,24 @@ class DataGranules(GranuleQuery):
                 self.params["provider"] = provider
         return self
 
+    def granule_name(self, granule_name: str) -> Type[CollectionQuery]:
+        """Find granules matching either granule ur or producer granule id,
+        queries using the readable_granule_name metadata field.
+
+        ???+ Tip
+            We can use wirldcards on a granule name to further refine our search
+            i.e. MODGRNLD.*.daily.*
+
+        Parameters:
+            granule_name (String): granule name (accepts wildcards)
+        """
+        if not isinstance(granule_name, str):
+            raise TypeError("granule_name must be of type string")
+
+        self.params["readable_granule_name"] = granule_name
+        self.params["options[readable_granule_name][pattern]"] = True
+        return self
+
     def online_only(self, online_only: bool = True) -> Type[GranuleQuery]:
         """Only match granules that are listed online and not available for download.
         The opposite of this method is downloadable().

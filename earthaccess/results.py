@@ -247,7 +247,7 @@ class DataGranule(CustomDict):
             Returns the total size for the granule in MB
         """
         try:
-            data_granule = self["mmm"]["DataGranule"]
+            data_granule = self["umm"]["DataGranule"]
             total_size = sum(
                 [
                     float(s["Size"])
@@ -257,7 +257,7 @@ class DataGranule(CustomDict):
             )
         except Exception:
             try:
-                data_granule = self["mmm"]["DataGranule"]
+                data_granule = self["umm"]["DataGranule"]
                 total_size = sum(
                     [
                         float(s["SizeInBytes"])
