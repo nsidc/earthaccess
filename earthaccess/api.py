@@ -44,7 +44,7 @@ def search_datasets(
     Examples:
         ```python
         datasets = earthaccess.search_datasets(
-            keywords="sea surface anomaly",
+            keyword="sea surface anomaly",
             cloud_hosted=True
         )
         ```
