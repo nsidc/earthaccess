@@ -3,6 +3,7 @@ import os
 import unittest
 
 import fsspec
+import pytest
 import responses
 from earthaccess import Auth, Store
 
@@ -89,4 +90,9 @@ class TestStoreSessions(unittest.TestCase):
         ]:
             s3_fs = store.get_s3fs_session(provider=provider)
             assert isinstance(s3_fs, fsspec.AbstractFileSystem)
+
+        # Ensure informative error is raised
+        with pytest.raises(ValueError, match="parameters must be specified"):
+            store.get_s3fs_session()
+
         return None

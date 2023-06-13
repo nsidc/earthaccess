@@ -126,6 +126,11 @@ class Store(object):
             a s3fs file instance
         """
         if self.auth is not None:
+            if not any([concept_id, daac, provider]):
+                raise ValueError(
+                    "At least one of the concept_id, daac, or provider "
+                    "parameters must be specified."
+                )
             if concept_id is not None:
                 provider = self._derive_concept_provider(concept_id)
                 s3_credentials = self.auth.get_s3_credentials(provider=provider)
