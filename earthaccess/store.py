@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
+import earthaccess
 import fsspec
 import requests
 import s3fs
@@ -17,6 +18,48 @@ from pqdm.threads import pqdm
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
+
+
+def _open_files(files, granuales, fs):
+    def multi_thread_open(url: str) -> Any:
+        # return fs.open(url)
+        return EarthAccessFile(fs.open(url[0]), url[1])
+
+    fileset = pqdm(zip(files, granuales), multi_thread_open, n_jobs=8)
+    return fileset
+
+
+def make_instance(cls, granuale, args, kwargs):
+    if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
+        # On AWS but not using a S3File
+        return earthaccess.open([granuale])[0]
+    else:
+        return cls(*args, **kwargs)
+
+
+class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
+    def __init__(self, f, granuale):
+        self.f = f
+        self.granuale = granuale
+        super().__init__(
+            fs=f.fs,
+            path=f.mode,
+            mode=f.mode,
+            block_size=f.blocksize,
+            autocommit=f.autocommit,
+            # cache_type="readahead",
+            # cache_options=None,
+            size=f.size,
+            **f.kwargs,
+        )
+
+    def __reduce__(self):
+        return make_instance, (
+            type(self),
+            self.granuale,
+            self.storage_args,
+            self.storage_options,
+        )
 
 
 class Store(object):
@@ -253,12 +296,7 @@ class Store(object):
 
             if s3_fs is not None:
                 try:
-
-                    def multi_thread_open(url: str) -> Any:
-                        return s3_fs.open(url)
-
-                    fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
-
+                    fileset = _open_files(data_links, granules, s3_fs)
                 except Exception:
                     print(
                         "An exception occurred while trying to access remote files on S3: "
@@ -267,7 +305,7 @@ class Store(object):
                     )
                     return None
             else:
-                fileset = self._open_urls_https(data_links, n_jobs=8)
+                fileset = self._open_urls_https(data_links, granules, n_jobs=8)
             return fileset
         else:
             access_method = "on_prem"
@@ -276,7 +314,7 @@ class Store(object):
                     granule.data_links(access=access_method) for granule in granules
                 )
             )
-            fileset = self._open_urls_https(data_links, n_jobs=8)
+            fileset = self._open_urls_https(data_links, granules, n_jobs=8)
             return fileset
 
     @_open.register
@@ -310,11 +348,7 @@ class Store(object):
                 s3_fs = self.get_s3fs_session(provider=provider)
                 if s3_fs is not None:
                     try:
-
-                        def multi_thread_open(url: str) -> Any:
-                            return s3_fs.open(url)
-
-                        fileset = pqdm(data_links, multi_thread_open, n_jobs=8)
+                        fileset = _open_files(data_links, granules, s3_fs)
                     except Exception:
                         print(
                             "An exception occurred while trying to access remote files on S3: "
@@ -336,7 +370,7 @@ class Store(object):
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
                 return None
-            fileset = self._open_urls_https(data_links, 8)
+            fileset = self._open_urls_https(data_links, granules, 8)
             return fileset
 
     def get(
@@ -538,17 +572,12 @@ class Store(object):
         return results
 
     def _open_urls_https(
-        self, urls: List[str] = [], n_jobs: int = 8
+        self, urls: List[str] = [], granuales=[], n_jobs: int = 8
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
         if https_fs is not None:
             try:
-
-                def multi_thread_open(url: str) -> Any:
-                    return https_fs.open(url)
-
-                fileset = pqdm(urls, multi_thread_open, n_jobs=8)
-
+                fileset = _open_files(urls, granuales, https_fs)
             except Exception:
                 print(
                     "An exception occurred while trying to access remote files via HTTPS: "
