@@ -29,12 +29,14 @@ def _open_files(files, granuales, fs):
     return fileset
 
 
-def make_instance(cls, granuale, args, kwargs):
+def make_instance(cls, granuale, _reduce):
     if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
         # On AWS but not using a S3File
         return earthaccess.open([granuale])[0]
     else:
-        return cls(*args, **kwargs)
+        func = _reduce[0]
+        args = _reduce[1]
+        return func(*args)
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
@@ -57,8 +59,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         return make_instance, (
             type(self),
             self.granuale,
-            self.storage_args,
-            self.storage_options,
+            self.f.__reduce__(),
         )
 
 
