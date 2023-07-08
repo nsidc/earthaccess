@@ -7,6 +7,7 @@ from itertools import chain
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
+from functools import lru_cache
 
 import earthaccess
 import fsspec
@@ -21,9 +22,9 @@ from .search import DataCollections
 
 
 def _open_files(files, granuales, fs):
-    def multi_thread_open(url: str) -> Any:
-        # return fs.open(url)
-        return EarthAccessFile(fs.open(url[0]), url[1])
+    def multi_thread_open(data) -> Any:
+        url, granuale = data
+        return EarthAccessFile(fs.open(url), granuale)
 
     fileset = pqdm(zip(files, granuales), multi_thread_open, n_jobs=8)
     return fileset
@@ -32,7 +33,7 @@ def _open_files(files, granuales, fs):
 def make_instance(cls, granuale, _reduce):
     if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
         # On AWS but not using a S3File. Reopen the file in this case for direct S3 access.
-        return earthaccess.open([granuale])[0]
+        return EarthAccessFile(earthaccess.open([granuale])[0], granuale)
     else:
         func = _reduce[0]
         args = _reduce[1]
@@ -45,8 +46,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         self.granuale = granuale
     
     def __getattr__(self, method):
-        if method not in ("__init__", "__reduce__"):
-            return getattr(self.f, method)
+        return getattr(self.f, method)
 
     def __reduce__(self):
         return make_instance, (
@@ -148,6 +148,7 @@ class Store(object):
         elif resp.status_code >= 500:
             resp.raise_for_status()
 
+    @lru_cache
     def get_s3fs_session(
         self,
         daac: Optional[str] = None,
@@ -195,6 +196,7 @@ class Store(object):
             )
             return None
 
+    @lru_cache
     def get_fsspec_session(self) -> fsspec.AbstractFileSystem:
         """Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
