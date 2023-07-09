@@ -46,11 +46,11 @@ jobs:
         run: poetry run bash scripts/build-docs.sh
 
       - name: Deploy
+        if: |
+          github.event_name != 'push'
+          && github.ref == 'refs/heads/main'
+          && github.repository == 'nsidc/earthaccess'
         uses: peaceiris/actions-gh-pages@v3
         with:
-          EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
-          EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
-          EARTHACCESS_TEST_USERNAME: ${{ secrets.EDL_USERNAME }}
-          EARTHACCESS_TEST_PASSWORD: ${{ secrets.EDL_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
