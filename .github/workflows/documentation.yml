@@ -11,12 +11,14 @@ on:
       - tests/**
       - docs/**
       - notebooks/**
+      - .github/workflows/documentation.yml
   pull_request:
     paths:
       - earthaccess/**
       - tests/**
       - docs/**
       - notebooks/**
+      - .github/workflows/documentation.yml
     types: [opened, synchronize]
 
 jobs:
