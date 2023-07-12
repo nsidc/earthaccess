@@ -129,7 +129,7 @@ class Store(object):
             if not any([concept_id, daac, provider]):
                 raise ValueError(
                     "At least one of the concept_id, daac, or provider "
-                    "parameters must be specified."
+                    "parameters must be specified. "
                 )
             if concept_id is not None:
                 provider = self._derive_concept_provider(concept_id)
