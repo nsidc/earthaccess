@@ -164,7 +164,13 @@ def download(
     Returns:
         List of downloaded files
     """
-    results = earthaccess.__store__.get(granules, local_path, provider, threads)
+    try:
+        results = earthaccess.__store__.get(granules, local_path, provider, threads)
+    except AttributeError as err:
+        print(err)
+        print("You must call earthaccess.login() before you can download data")
+        return None
+    
     return results
 
 
