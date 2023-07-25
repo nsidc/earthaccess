@@ -21,19 +21,19 @@ from .results import DataGranule
 from .search import DataCollections
 
 
-def _open_files(files, granuales, fs):
+def _open_files(files, granules, fs):
     def multi_thread_open(data) -> Any:
-        url, granuale = data
-        return EarthAccessFile(fs.open(url), granuale)
+        url, granule = data
+        return EarthAccessFile(fs.open(url), granule)
 
-    fileset = pqdm(zip(files, granuales), multi_thread_open, n_jobs=8)
+    fileset = pqdm(zip(files, granules), multi_thread_open, n_jobs=8)
     return fileset
 
 
-def make_instance(cls, granuale, _reduce):
+def make_instance(cls, granule, _reduce):
     if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
         # On AWS but not using a S3File. Reopen the file in this case for direct S3 access.
-        return EarthAccessFile(earthaccess.open([granuale])[0], granuale)
+        return EarthAccessFile(earthaccess.open([granule])[0], granule)
     else:
         func = _reduce[0]
         args = _reduce[1]
@@ -41,9 +41,9 @@ def make_instance(cls, granuale, _reduce):
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
-    def __init__(self, f, granuale):
+    def __init__(self, f, granule):
         self.f = f
-        self.granuale = granuale
+        self.granule = granule
     
     def __getattr__(self, method):
         return getattr(self.f, method)
@@ -51,7 +51,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     def __reduce__(self):
         return make_instance, (
             type(self.f),
-            self.granuale,
+            self.granule,
             self.f.__reduce__(),
         )
 
