@@ -568,12 +568,12 @@ class Store(object):
         return results
 
     def _open_urls_https(
-        self, urls: List[str] = [], granuales=[], n_jobs: int = 8
+        self, urls: List[str] = [], granules=[], n_jobs: int = 8
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
         if https_fs is not None:
             try:
-                fileset = _open_files(urls, granuales, https_fs)
+                fileset = _open_files(urls, granules, https_fs)
             except Exception:
                 print(
                     "An exception occurred while trying to access remote files via HTTPS: "
