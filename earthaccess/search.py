@@ -681,3 +681,23 @@ class DataGranules(GranuleQuery):
         """
         super().downloadable(downloadable)
         return self
+
+    def doi(self, doi: str) -> Type[GranuleQuery]:
+        """Searh data granules by DOI
+
+        ???+ Tip
+            Not all datasets have an associated DOI, internally if a DOI is found
+            earthaccess will grab the concept_id for the query to CMR.
+
+        Parameters:
+            doi (String): DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
+        """
+        collection = CollectionQuery().doi(doi).get()
+        if len(collection) > 0:
+            concept_id = collection[0].concept_id()
+            self.params["concept_id"] = concept_id
+        else:
+            print(
+                f"earthaccess couldn't find any associated collections with the DOI: {doi}"
+            )
+        return self

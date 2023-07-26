@@ -94,12 +94,11 @@ If we are not sure or we don't know how to search for a particular dataset, we c
 ```python
 
 results = earthaccess.search_data(
-    short_name='ATL06',
-    version="005",
+    short_name='SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205',
     cloud_hosted=True,
     bounding_box=(-10, 20, 10, 50),
-    temporal=("2020-02", "2020-03"),
-    count=100
+    temporal=("1999-02", "2019-03"),
+    count=10
 )
 
 
@@ -140,7 +139,9 @@ This method works best if you are in the same Amazon Web Services (AWS) region a
 ```python
 import xarray as xr
 
-ds = xr.open_mfdataset(earthaccess.open(results))
+files = earthaccess.open(results)
+
+ds = xr.open_mfdataset(files)
 
 ```
 
