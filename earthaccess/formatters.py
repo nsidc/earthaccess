@@ -23,7 +23,7 @@ def _repr_granule_html(granule: Any) -> str:
     css_inline = f"""<div id="{uuid4()}" style="height: 0px; display: none">
             {''.join([f"<style>{style}</style>" for style in css_styles])}
             </div>"""
-    style = "max-height: 140px;"
+    style = "max-height: 120px;"
     dataviz_img = "".join(
         [
             f'<a href="{link}"><img style="{style}" src="{link}" alt="Data Preview"/></a>'
@@ -47,7 +47,7 @@ def _repr_granule_html(granule: Any) -> str:
           <div class="col-6">
             <p><b>Data</b>: {data_links}<p/>
             <p><b>Size</b>: {granule_size} MB</p>
-            <p><b>Spatial</b>: <span>{granule["umm"]["SpatialExtent"]}</span></p>
+            <p><b>Cloud Hosted</b>: <span>{granule.cloud_hosted}</span></p>
           </div>
           <div class="col-2 offset-sm-3 pull-right">
             {dataviz_img}

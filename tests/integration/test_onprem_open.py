@@ -38,14 +38,6 @@ daacs_list = [
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
-        "granules_count": 100,
-        "granules_sample_size": 2,
-        "granules_max_size_mb": 100,
-    },
-    {
         "short_name": "ORNLDAAC",
         "collections_count": 100,
         "collections_sample_size": 2,
