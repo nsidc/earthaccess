@@ -37,6 +37,9 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
             self.f.__reduce__(),
         )
 
+    def __repr__(self) -> str:
+        return str(self.f)
+
 
 def _open_files(
     data_links: List[str],
