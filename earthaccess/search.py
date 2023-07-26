@@ -692,7 +692,7 @@ class DataGranules(GranuleQuery):
         Parameters:
             doi (String): DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
         """
-        collection = CollectionQuery().doi(doi).get()
+        collection = DataCollections().doi(doi).get()
         if len(collection) > 0:
             concept_id = collection[0].concept_id()
             self.params["concept_id"] = concept_id
