@@ -12,12 +12,16 @@
     <img src="https://img.shields.io/pypi/v/earthaccess?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
 
+<a href="https://anaconda.org/conda-forge/earthaccess" target="_blank">
+    <img src="https://img.shields.io/conda/vn/conda-forge/earthaccess.svg" alt="Conda Versions">
+</a>
+
 <a href="https://pypi.org/project/earthaccess/" target="_blank">
     <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
 <a href='https://earthdata.readthedocs.io/en/latest/?badge=latest'>
-    <img src='https://readthedocs.org/projects/earthaccess/badge/?version=latest' alt='Documentation Status' />
+    <img src='https://readthedocs.org/projects/earthdata/badge/?version=latest' alt='Documentation Status' />
 </a>
 
 </p>
@@ -94,12 +98,11 @@ If we are not sure or we don't know how to search for a particular dataset, we c
 ```python
 
 results = earthaccess.search_data(
-    short_name='ATL06',
-    version="005",
+    short_name='SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205',
     cloud_hosted=True,
     bounding_box=(-10, 20, 10, 50),
-    temporal=("2020-02", "2020-03"),
-    count=100
+    temporal=("1999-02", "2019-03"),
+    count=10
 )
 
 
@@ -140,7 +143,9 @@ This method works best if you are in the same Amazon Web Services (AWS) region a
 ```python
 import xarray as xr
 
-ds = xr.open_mfdataset(earthaccess.open(results))
+files = earthaccess.open(results)
+
+ds = xr.open_mfdataset(files)
 
 ```
 

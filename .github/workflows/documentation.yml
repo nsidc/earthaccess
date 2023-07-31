@@ -46,6 +46,9 @@ jobs:
         run: poetry install
       - name: Build docs
         run: poetry run bash scripts/build-docs.sh
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
 
       - name: Deploy
         if: |

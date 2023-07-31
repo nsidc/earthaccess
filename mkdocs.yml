@@ -45,7 +45,8 @@ plugins:
 nav:
   - OVERVIEW: 'index.md'
   - TUTORIALS:
-      - 'Introducing NASA earthaccess': 'tutorials/demo.ipynb'
+      - 'Querying CMR using earthaccess': 'tutorials/queries.ipynb'
+      - 'Accesing files with fsspec': 'tutorials/file-access.ipynb'
       - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
   - HOW-TO:
       - 'Authenticate with Earthdata Login': 'tutorials/authenticate.md'

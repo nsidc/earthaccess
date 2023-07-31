@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+* bug fixes:
+    * granule's size() returned zero
+    * Added exception handling for fsspec sessions, thanks to @jrbourbeau
+* CI changes:
+    * integration tests are now only run when we push to main (after a merge)
+    * unit tests run for any branch and opened PR
+
 ## [v0.5.2] 2023-04-21
 * bug fixes:
     * Fixing #230 by removing Benedict as the dict handler, thanks to @psarka!

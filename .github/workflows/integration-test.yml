@@ -1,15 +1,14 @@
-name: Unit Tests
+name: Integration Tests
 
 on:
   push:
+    branches:
+      - main
     paths:
       - earthaccess/**
       - tests/**
-  pull_request:
-    paths:
-      - earthaccess/**
-      - tests/**
-    types: [opened, synchronize]
+      - docs/**
+      - binder/**
 
 jobs:
   test:
@@ -46,6 +45,11 @@ jobs:
       - name: Install Dependencies
         run: poetry install
       - name: Test
-        run: poetry run bash scripts/test.sh
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+          EARTHACCESS_TEST_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EARTHACCESS_TEST_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+        run: poetry run bash scripts/integration-test.sh
       - name: Upload coverage
         uses: codecov/codecov-action@v1
