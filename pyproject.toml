@@ -6,7 +6,7 @@ description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
 maintainers = [
     "Luis Lopez <betolin@gmail.com>",
-    "Joseph H. Kennedy <jhkennedy@alaska.edu>"
+    "Joseph H. Kennedy <jhkennedy@alaska.edu>",
     "Matt Fisher <mfisher87@gmail.com>"
 ]
 license = "MIT"
