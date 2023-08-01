@@ -69,6 +69,7 @@ xarray = ">=2023.01"
 matplotlib = ">=3.3"
 h5netcdf = ">=0.11"
 dask = ">=2022.1"
+pyproj = ">=3.5.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
