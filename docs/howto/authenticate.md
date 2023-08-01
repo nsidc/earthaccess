@@ -1,6 +1,8 @@
 ## Authenticate with Earthdata Login
 
-earthaccess can use environment variables, `.netrc` file or interactive input from a user to login with NASA EDL.
+The first step to use NASA Earthdata is to create an account with Earthdata Login, please follow the instructions at [NASA EDL](https://urs.earthdata.nasa.gov/)
+
+Once registered, earthaccess can use environment variables, a `.netrc` file or interactive input from a user to login with NASA EDL.
 
 If a strategy is not especified, env vars will be used first, then netrc and finally user's input.
 
