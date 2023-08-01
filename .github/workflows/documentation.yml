@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
       - documentation
     paths:
       - earthaccess/**
@@ -52,8 +51,8 @@ jobs:
 
       - name: Deploy
         if: |
-          github.event_name != 'push'
-          && github.ref == 'refs/heads/main'
+          github.event_name == 'push'
+          && (github.ref == 'refs/heads/main' || github.ref == 'ref/heads/documentation')
           && github.repository == 'nsidc/earthaccess'
         uses: peaceiris/actions-gh-pages@v3
         with:

@@ -41,20 +41,29 @@ plugins:
             show_source: false
   - mkdocs-jupyter:
       execute: True
+      ignore:
+      - "tutorials/dask.ipynb"
+      - "**/.ipynb_checkpoints/*"
 
 nav:
-  - OVERVIEW: 'index.md'
-  - TUTORIALS:
-      - 'Querying CMR using earthaccess': 'tutorials/queries.ipynb'
-      - 'Accesing files with fsspec': 'tutorials/file-access.ipynb'
-      - 'Search and access restricted datasets': 'tutorials/restricted-datasets.ipynb'
+  - OVERVIEW:
+      - 'Readme': 'index.md'
+      - 'Getting started': 'tutorials/getting-started.ipynb'
+      - 'Resources' : 'resources.md'
   - HOW-TO:
-      - 'Authenticate with Earthdata Login': 'tutorials/authenticate.md'
-      - 'Search data collections using filters': 'tutorials/search-collections.md'
-      - 'Search for granules within a collection using filters': 'tutorials/search-granules.md'
-      - 'Determine if a collection is on-prem or in the cloud': 'tutorials/storage-location.md'
-      - 'Download data from on-prem location': 'tutorials/onprem.md'
-      - 'Direct S3 access - Open/stream files in the cloud': 'tutorials/cloud.md'
+      - 'Authenticate with Earthdata Login': 'howto/authenticate.md'
+      - 'Search NASA datasets using filters': 'howto/search-collections.md'
+      - 'Search for data using filters': 'howto/search-granules.md'
+      - 'Determine if a dataset is available in the cloud': 'howto/storage-location.md'
+      - 'Using authenticated sessions to access data': 'howto/edl.ipynb'
+      - 'Download data from on-prem location': 'howto/onprem.md'
+      - 'Direct S3 access - Open/stream files in the cloud': 'howto/cloud.md'
+  - TUTORIALS:
+      - 'Accesing remote NASA data with fsspec': 'tutorials/file-access.ipynb'
+      - 'Search and access of restricted datasets': 'tutorials/restricted-datasets.ipynb'
+      - 'Reproducing NASA sea level rise infographic': 'tutorials/SSL.ipynb'
+      - 'Accessing and visualizing EMIT data with a few lines of code': 'tutorials/emit-earthaccess.ipynb'
+      # - 'Distributing workloads with Dask clusters': 'tutorials/dask.ipynb'
   - USER REFERENCE:
       - API:
           - 'Search and Access': 'user-reference/api/api.md'
