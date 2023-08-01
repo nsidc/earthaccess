@@ -5,7 +5,9 @@ homepage = "https://github.com/nsidc/earthaccess"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
 maintainers = [
-    "Luis Lopez <betolin@gmail.com>"
+    "Luis Lopez <betolin@gmail.com>",
+    "Joseph H. Kennedy <jhkennedy@alaska.edu>"
+    "Matt Fisher <mfisher87@gmail.com>"
 ]
 license = "MIT"
 readme = "README.md"
@@ -67,8 +69,6 @@ xarray = ">=2023.01"
 matplotlib = ">=3.3"
 h5netcdf = ">=0.11"
 dask = ">=2022.1"
-hvplot = ">=0.8"
-holoviews = ">=1.15"
 
 [build-system]
 requires = ["poetry>=0.12"]
