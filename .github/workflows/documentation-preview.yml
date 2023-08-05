@@ -1,0 +1,175 @@
+# This workflow is based on quarto-web' documentation preview workflow:
+#     https://github.com/quarto-dev/quarto-web/blob/a1436dcb74e2e3036990e5bda1bad8460a8aed0d/.github/workflows/preview.yml
+name: Documentation preview for pull request
+
+ 
+permissions:
+  # For PR comments when previews are deployed:
+  pull-requests: write
+
+
+on:
+  # This workflow can be automatically triggered for "local" (non-fork) PRs.
+  # WARNING: Because a fork can contain untrusted code, `pull_request` events
+  # do not allow access to secrets! `pull_request_target` allows access to
+  # secrets, but not to the untrusted code changes. This is the reason for the
+  # `issue_comment` trigger.
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+    paths:
+      - earthaccess/**
+      - tests/**
+      - docs/**
+      - notebooks/**
+      - .github/workflows/documentation.yml
+
+  # This workflow will automatically trigger to write a comment to new docs PRs
+  # from forks. All settings should match `pull_request` event, except `types`:
+  #     https://github.com/peter-evans/create-or-update-comment
+  # The downside is we end up with duplicated workflows.
+  pull_request_target:
+    types: [opened]
+    branches: [main]
+    paths:
+      - earthaccess/**
+      - tests/**
+      - docs/**
+      - notebooks/**
+      - .github/workflows/documentation.yml
+
+  # This workflow can be manually triggered by an authorized user's
+  # `/deploy-docs-preview` command in a comment.
+  issue_comment:
+    types: [created]
+
+
+jobs:
+
+  detect-pr-from-fork-and-prompt-for-preview-command:
+    name: Detect PRs from forks and prompt reviewer to trigger manual preview
+    # NOTE: Our "fork-check" logic checks if the source repo equals target
+    # repo. Using `github.event.pull_request.head.repo.fork != true` causes
+    # this workflow to fail in forks that open PRs against themselves (e.g. to
+    # test CI configuration!)
+    if: |
+      github.event_name == 'pull_request_target'
+      && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prompt reviewer to trigger preview
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: >
+            :wave: :tada: Thank you for requesting a documentation change!
+
+
+            A user with "member", "owner", or "collaborator" role can trigger a
+            preview deployment of these changes by creating a comment that
+            starts with `/deploy-docs-preview`.
+
+
+  deploy-documentation-preview:
+    name: Build documentation and deploy to Netlify preview URL
+    runs-on: ubuntu-latest
+    # Deploy if:
+    # - event is a PR that's _not_ from a fork, OR
+    # - event is a `/deploy-docs-preview` command from an authorized user
+    if: |
+      (
+        github.event_name == 'pull_request'
+        && github.event.pull_request.head.repo.full_name == github.repository
+      )
+      ||
+      (
+        github.event_name == 'issue_comment'
+        && github.event.issue.pull_request
+        && startsWith(github.event.comment.body, '/deploy-docs-preview')
+        &&
+        (
+          github.event.comment.author_association == 'MEMBER'
+          || github.event.comment.author_association == 'OWNER'
+          || github.event.comment.author_association == 'COLLABORATOR'
+        )
+      )
+    steps:
+      - name: Add "working" reaction to command comment
+        if: github.event_name == 'issue_comment'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: eyes
+
+      # WARNING: WET floor - this is identical to documentation.yml. Try a
+      # local composite action?
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.5.1
+          virtualenvs-create: true
+          virtualenvs-in-project: false
+          virtualenvs-path: .venv
+          installer-parallel: true
+
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Ensure cache is healthy
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction
+
+      - name: Build docs
+        run: poetry run bash scripts/build-docs.sh
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+      # WARNING: End of WET floor
+
+      # NOTE: See CONTRIBUTING.md for details on why we deploy previews to
+      # Netlify instead of GitHub!
+      - name: Deploy PR preview to Netlify
+        uses: nwtgck/actions-netlify@v2
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        with:
+          publish-dir: ./site
+          production-deploy: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: >
+            Deploy from ${{ github.event.repository.full_name }} GHA:
+            PR ${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}
+          alias: ${{ github.event.repository.name}}-pr-${{ github.event.pull_request.number }}-preview
+          enable-commit-comment: false
+        timeout-minutes: 1
+
+      - name: Add "failed" reaction to command comment
+        if: failure() && github.event_name == 'issue_comment'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: -1
+
+      - name: Add "finished" reaction to command comment
+        if: github.event_name == 'issue_comment'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: rocket

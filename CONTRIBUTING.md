@@ -79,6 +79,30 @@ scripts/format.sh
 5. You may merge the Pull Request in once you have the sign-off of another developers, or if you
    do not have permission to do that, you may request the reviewer to merge it for you.
 
+
+### Pull Request previews
+
+When a PR includes a docs change, a preview can be automatically deployed to Netlify.
+For non-fork PRs, this will "just work," but for fork PRs, an authorized user must first
+check the PR for dangerous changes, then post a comment in the PR starting with
+`/deploy-docs-preview` to trigger the deployment. Review the workflow configuration to
+understand why.
+
+Configuration is done following [this
+guide](https://mfisher87.github.io/posts/website-repo-pr-preview/) using an individual's
+GitHub account (TODO: Whose?). If something goes wrong and this person can't be
+contacted to resolve the preview setup, simply have someone else re-do the Netlify site
+setup and re-populate the repo secrets with their credentials instead.
+
+NOTE: The guide linked above describes a set up for GitHub Pages deployments using
+GitHub Actions, as opposed to a `gh-pages` branch like this repository uses. There is an
+out-of-the-box action for the latter, but it has well-known security concerns around
+forks: a fork could cause untrusted code to be deployed into our repository's GitHub
+Pages branch. Deploying to Netlify for previews enables forks to push their code to
+Netlify instead of our repository. ([Read more about this security concern
+here](https://github.com/rossjrw/pr-preview-action/pull/6)).
+
+
 ---
 
 ## Code of Conduct

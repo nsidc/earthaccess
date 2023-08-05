@@ -11,25 +11,20 @@ on:
       - docs/**
       - notebooks/**
       - .github/workflows/documentation.yml
-  pull_request:
-    paths:
-      - earthaccess/**
-      - tests/**
-      - docs/**
-      - notebooks/**
-      - .github/workflows/documentation.yml
-    types: [opened, synchronize]
+
 
 jobs:
-  documentation:
+  deploy-documentation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         id: setup-python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1
         with:
@@ -38,18 +33,22 @@ jobs:
           virtualenvs-in-project: false
           virtualenvs-path: .venv
           installer-parallel: true
+
       - name: Set up cache
         uses: actions/cache@v1
         id: cache
         with:
           path: .venv
           key: venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
       - name: Ensure cache is healthy
         if: steps.cache.outputs.cache-hit == 'true'
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
+
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: poetry install --no-interaction
+
       - name: Build docs
         run: poetry run bash scripts/build-docs.sh
         env:
