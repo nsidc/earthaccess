@@ -20,6 +20,7 @@ import earthaccess
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
+from .auth import Auth
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
@@ -33,8 +34,8 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     def __reduce__(self) -> Any:
         return make_instance, (
             type(self.f),
-            self.f,
-            earthaccess.__store__,
+            self.granule,
+            earthaccess.__auth__,
             self.f.__reduce__(),
         )
 
@@ -63,12 +64,19 @@ def _open_files(
     return fileset
 
 
-def make_instance(cls: Any, granule: DataGranule, store, _reduce: Any) -> EarthAccessFile:
-    if store.running_in_aws and cls is not s3fs.S3File:
+def make_instance(
+    cls: Any, granule: DataGranule, auth: Auth, _reduce: Any
+) -> EarthAccessFile:
+    # Attempt to re-authenticate
+    if not earthaccess.__auth__.authenticated:
+        earthaccess.__auth__ = auth
+        earthaccess.login()
+
+    if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
         # On AWS but not using a S3File. Reopen the file in this case for direct S3 access.
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
-        return EarthAccessFile(earthaccess.open([granule], store=store)[0], granule)
+        return EarthAccessFile(earthaccess.open([granule])[0], granule)
     else:
         func = _reduce[0]
         args = _reduce[1]
