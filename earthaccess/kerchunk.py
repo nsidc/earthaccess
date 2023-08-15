@@ -25,6 +25,7 @@ def get_chunk_metadata(
     fs: fsspec.AbstractFileSystem | s3fs.S3FileSystem,
 ) -> list[dict]:
     from kerchunk.hdf import SingleHdf5ToZarr
+
     metadata = []
     access = "direct" if isinstance(fs, s3fs.S3FileSystem) else "indirect"
     for url in granuale.data_links(access=access):
@@ -42,7 +43,6 @@ def consolidate_metadata(
     kerchunk_options: dict | None = None,
     access: str = "direct",
 ) -> str:
-
     try:
         from kerchunk.combine import MultiZarrToZarr
     except ImportError as e:
