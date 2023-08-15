@@ -6,16 +6,15 @@ from copy import deepcopy
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
+import earthaccess
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
-
-import earthaccess
 
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule

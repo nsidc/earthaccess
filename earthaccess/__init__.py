@@ -15,9 +15,9 @@ from .api import (
     search_datasets,
 )
 from .auth import Auth
+from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
 from .store import Store
-from .kerchunk import consolidate_metadata
 
 __all__ = [
     "login",
