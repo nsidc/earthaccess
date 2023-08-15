@@ -60,7 +60,8 @@ def consolidate_metadata(
     chunks = sum(chunks, start=[])
 
     # Write combined metadata file
-    mzz = MultiZarrToZarr(chunks, **kerchunk_options)
+    mzz = MultiZarrToZarr(chunks, **(kerchunk_options or {}))
+    outfile = fsspec.utils.stringify_path(outfile)
     mzz.translate(outfile, storage_options=storage_options or {})
 
     return outfile
