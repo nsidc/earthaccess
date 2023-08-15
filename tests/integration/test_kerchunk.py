@@ -17,6 +17,7 @@ assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
 logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
 logger.info(f"earthaccess version: {earthaccess.__version__}")
 
+
 @pytest.fixture(scope="module")
 def granuales():
     granuales = earthaccess.search_data(
@@ -25,6 +26,7 @@ def granuales():
         cloud_hosted=True,
     )
     return granuales
+
 
 @pytest.mark.parametrize("protocol", ["", "file://"])
 def test_consolidate_metadata_outfile(tmp_path, granuales, protocol):
@@ -40,12 +42,11 @@ def test_consolidate_metadata_outfile(tmp_path, granuales, protocol):
     assert result == outfile
 
 
-
 def test_consolidate_metadata(tmp_path, granuales):
     xr = pytest.importorskip("xarray")
     # Open directly with `earthaccess.open`
     expected = xr.open_mfdataset(earthaccess.open(granuales))
-    
+
     # Open with kerchunk consolidated metadata file
     metadata_file = earthaccess.consolidate_metadata(
         granuales,
@@ -65,7 +66,7 @@ def test_consolidate_metadata(tmp_path, granuales):
                 "fo": metadata_file,
                 "remote_protocol": "https",
                 "remote_options": fs.storage_options,
-            }
+            },
         },
     )
 
