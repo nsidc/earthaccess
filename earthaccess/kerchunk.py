@@ -7,15 +7,6 @@ import fsspec
 import s3fs
 
 try:
-    from kerchunk.combine import MultiZarrToZarr
-    from kerchunk.hdf import SingleHdf5ToZarr
-except ImportError as e:
-    raise ImportError(
-        "`earthaccess.consolidate_metadata` requires `kerchunk` to be be installed"
-    ) from e
-
-
-try:
     from dask import compute, delayed
 except ImportError:
     # Dask isn't installed, so let's just define a couple of
@@ -33,10 +24,10 @@ def get_chunk_metadata(
     granuale: earthaccess.results.DataGranule,
     fs: fsspec.AbstractFileSystem | s3fs.S3FileSystem,
 ) -> list[dict]:
+    from kerchunk.hdf import SingleHdf5ToZarr
     metadata = []
     access = "direct" if isinstance(fs, s3fs.S3FileSystem) else "indirect"
     for url in granuale.data_links(access=access):
-        print(f"{url = }")
         with fs.open(url) as inf:
             h5chunks = SingleHdf5ToZarr(inf, url)
             m = h5chunks.translate()
@@ -51,6 +42,14 @@ def consolidate_metadata(
     kerchunk_options: dict | None = None,
     access: str = "direct",
 ) -> str:
+
+    try:
+        from kerchunk.combine import MultiZarrToZarr
+    except ImportError as e:
+        raise ImportError(
+            "`earthaccess.consolidate_metadata` requires `kerchunk` to be be installed"
+        ) from e
+
     if access == "direct":
         fs = earthaccess.get_s3fs_session(provider=granuales[0]["meta"]["provider-id"])
     else:
