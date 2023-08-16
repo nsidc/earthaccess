@@ -1,26 +1,11 @@
 from __future__ import annotations
 
-from typing import Any
-
 import earthaccess
 import fsspec
 import s3fs
 
-try:
-    from dask import compute, delayed
-except ImportError:
-    # Dask isn't installed, so let's just define a couple of
-    # small API-compatible noops
 
-    def delayed(func: Any) -> Any:
-        return func
-
-    def compute(*args: Any, **kwargs: Any) -> Any:
-        return args
-
-
-@delayed
-def get_chunk_metadata(
+def _get_chunk_metadata(
     granuale: earthaccess.results.DataGranule,
     fs: fsspec.AbstractFileSystem | s3fs.S3FileSystem,
 ) -> list[dict]:
@@ -44,10 +29,11 @@ def consolidate_metadata(
     access: str = "direct",
 ) -> str:
     try:
+        import dask
         from kerchunk.combine import MultiZarrToZarr
     except ImportError as e:
         raise ImportError(
-            "`earthaccess.consolidate_metadata` requires `kerchunk` to be be installed"
+            "`earthaccess.consolidate_metadata` requires `dask` and `kerchunk` to be be installed"
         ) from e
 
     if access == "direct":
@@ -56,7 +42,8 @@ def consolidate_metadata(
         fs = earthaccess.get_fsspec_https_session()
 
     # Write out metadata file for each granuale
-    chunks = compute(*[get_chunk_metadata(g, fs) for g in granuales])
+    get_chunk_metadata = dask.delayed(_get_chunk_metadata)
+    chunks = dask.compute(*[get_chunk_metadata(g, fs) for g in granuales])
     chunks = sum(chunks, start=[])
 
     # Write combined metadata file

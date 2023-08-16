@@ -7,6 +7,7 @@ import pytest
 from fsspec.core import strip_protocol
 
 pytest.importorskip("kerchunk")
+pytest.importorskip("dask")
 
 logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
