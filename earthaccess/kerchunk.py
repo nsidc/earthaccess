@@ -23,11 +23,11 @@ def _get_chunk_metadata(
 
 def consolidate_metadata(
     granuales: list[earthaccess.results.DataGranule],
-    outfile: str,
-    storage_options: dict | None = None,
     kerchunk_options: dict | None = None,
     access: str = "direct",
-) -> str:
+    outfile: str | None = None,
+    storage_options: dict | None = None,
+) -> str | dict:
     try:
         import dask
         from kerchunk.combine import MultiZarrToZarr
@@ -41,14 +41,16 @@ def consolidate_metadata(
     else:
         fs = earthaccess.get_fsspec_https_session()
 
-    # Write out metadata file for each granuale
+    # Get metadata for each granuale
     get_chunk_metadata = dask.delayed(_get_chunk_metadata)
     chunks = dask.compute(*[get_chunk_metadata(g, fs) for g in granuales])
     chunks = sum(chunks, start=[])
 
-    # Write combined metadata file
+    # Get combined metadata object
     mzz = MultiZarrToZarr(chunks, **(kerchunk_options or {}))
-    outfile = fsspec.utils.stringify_path(outfile)
-    mzz.translate(outfile, storage_options=storage_options or {})
-
-    return outfile
+    if outfile is not None:
+        output = fsspec.utils.stringify_path(outfile)
+        mzz.translate(outfile, storage_options=storage_options or {})
+        return output
+    else:
+        return mzz.translate()

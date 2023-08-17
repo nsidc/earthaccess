@@ -1,12 +1,10 @@
-import logging
 import os
-import unittest
 
 import earthaccess
 import pytest
 from fsspec.core import strip_protocol
 
-pytest.importorskip("kerchunk")
+kerchunk = pytest.importorskip("kerchunk")
 pytest.importorskip("dask")
 
 logger = logging.getLogger(__name__)
@@ -43,17 +41,29 @@ def test_consolidate_metadata_outfile(tmp_path, granuales, protocol):
     assert result == outfile
 
 
-def test_consolidate_metadata(tmp_path, granuales):
+def test_consolidate_metadata_memory(tmp_path, granuales):
+    result = earthaccess.consolidate_metadata(
+        granuales,
+        access="indirect",
+        kerchunk_options={"concat_dims": "Time"},
+    )
+    assert isinstance(result, dict)
+    assert "refs" in result
+
+
+@pytest.mark.parametrize("output", ["file", "memory"])
+def test_consolidate_metadata(tmp_path, granuales, output):
     xr = pytest.importorskip("xarray")
     # Open directly with `earthaccess.open`
     expected = xr.open_mfdataset(earthaccess.open(granuales))
 
     # Open with kerchunk consolidated metadata file
-    metadata_file = earthaccess.consolidate_metadata(
-        granuales,
-        outfile=tmp_path / "metadata.json",
-        access="indirect",
-        kerchunk_options={"concat_dims": "Time"},
+    if output == "file":
+        kwargs = {"outfile": tmp_path / "metadata.json"}
+    else:
+        kwargs = {}
+    metadata = earthaccess.consolidate_metadata(
+        granuales, access="indirect", kerchunk_options={"concat_dims": "Time"}, **kwargs
     )
 
     fs = earthaccess.get_fsspec_https_session()
@@ -64,7 +74,7 @@ def test_consolidate_metadata(tmp_path, granuales):
         backend_kwargs={
             "consolidated": False,
             "storage_options": {
-                "fo": metadata_file,
+                "fo": metadata,
                 "remote_protocol": "https",
                 "remote_options": fs.storage_options,
             },
