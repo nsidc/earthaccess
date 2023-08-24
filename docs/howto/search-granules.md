@@ -1,4 +1,4 @@
-TEST
+TEST2
 
 Import earthaccess library and search for granules within a data set using spatial and temporal filters. You need to know the short name of the data set which can be found on the data set landing page.
 
