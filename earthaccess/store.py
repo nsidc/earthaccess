@@ -121,7 +121,7 @@ class Store(object):
 
     def _own_s3_credentials(self, links: List[Dict[str, Any]]) -> Union[str, None]:
         for link in links:
-            if link["URL"].contains("/s3credentials"):
+            if "/s3credentials" in link["URL"]:
                 return link["URL"]
         return None
 
