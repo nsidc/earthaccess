@@ -138,7 +138,10 @@ class Auth(object):
         return False
 
     def get_s3_credentials(
-        self, daac: Optional[str] = "", provider: Optional[str] = ""
+        self,
+        daac: Optional[str] = None,
+        provider: Optional[str] = None,
+        endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider, the
         easier way is to use the DAAC short name. provider is optional if we know it.
@@ -146,6 +149,7 @@ class Auth(object):
         Parameters:
             provider: A valid cloud provider, each DAAC has a provider code for their cloud distributions
             daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
+            endpoint: getting the credentials directly from the S3Credentials URL
 
         Rreturns:
             A Python dictionary with the temporary AWS S3 credentials
@@ -153,7 +157,12 @@ class Auth(object):
         """
         if self.authenticated:
             session = SessionWithHeaderRedirection(self.username, self.password)
-            auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
+            if endpoint is None:
+                auth_url = self._get_cloud_auth_url(
+                    daac_shortname=daac, provider=provider
+                )
+            else:
+                auth_url = endpoint
             if auth_url.startswith("https://"):
                 cumulus_resp = session.get(auth_url, timeout=15, allow_redirects=True)
                 auth_resp = session.get(

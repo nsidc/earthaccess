@@ -6,7 +6,7 @@ from copy import deepcopy
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
 import fsspec
@@ -119,6 +119,12 @@ class Store(object):
             return True
         return False
 
+    def _own_s3_credentials(self, links: List[Dict[str, Any]]) -> Union[str, None]:
+        for link in links:
+            if link["URL"].contains("/s3credentials"):
+                return link["URL"]
+        return None
+
     def _am_i_in_aws(self) -> bool:
         session = self.auth.get_session()
         try:
@@ -172,22 +178,27 @@ class Store(object):
         daac: Optional[str] = None,
         concept_id: Optional[str] = None,
         provider: Optional[str] = None,
+        endpoint: Optional[str] = None,
     ) -> s3fs.S3FileSystem:
         """
         Returns a s3fs instance for a given cloud provider / DAAC
 
         Parameters:
             daac: any of the DAACs e.g. NSIDC, PODAAC
+            provider: a data provider if we know them, e.g PODAAC -> POCLOUD
+            endpoint: pass the URL for the credentials directly
         Returns:
             a s3fs file instance
         """
         if self.auth is not None:
-            if not any([concept_id, daac, provider]):
+            if not any([concept_id, daac, provider, endpoint]):
                 raise ValueError(
-                    "At least one of the concept_id, daac, or provider "
+                    "At least one of the concept_id, daac, provider or endpoint"
                     "parameters must be specified. "
                 )
-            if concept_id is not None:
+            if endpoint is not None:
+                s3_credentials = self.auth.get_s3_credentials(endpoint=endpoint)
+            elif concept_id is not None:
                 provider = self._derive_concept_provider(concept_id)
                 s3_credentials = self.auth.get_s3_credentials(provider=provider)
             elif daac is not None:
@@ -300,7 +311,14 @@ class Store(object):
             if granules[0].cloud_hosted:
                 access_method = "direct"
                 provider = granules[0]["meta"]["provider-id"]
-                s3_fs = self.get_s3fs_session(provider=provider)
+                # if the data has its own S3 credentials endpoint we'll use it
+                endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
+                if endpoint is not None:
+                    print(f"using endpoint: {endpoint}")
+                    s3_fs = self.get_s3fs_session(endpoint=endpoint)
+                else:
+                    print(f"using provider: {provider}")
+                    s3_fs = self.get_s3fs_session(provider=provider)
             else:
                 access_method = "on_prem"
                 s3_fs = None
@@ -503,6 +521,7 @@ class Store(object):
         data_links: List = []
         downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
+        endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
         access = "direc" if (cloud_hosted and self.running_in_aws) else "external"
         data_links = list(
@@ -517,8 +536,14 @@ class Store(object):
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
         if access == "direct":
-            print(f"Accessing cloud dataset using provider: {provider}")
-            s3_fs = self.get_s3fs_session(provider)
+            if endpoint is not None:
+                print(
+                    f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}"
+                )
+                s3_fs = self.get_s3fs_session(endpoint=endpoint)
+            else:
+                print(f"Accessing cloud dataset using provider: {provider}")
+                s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
