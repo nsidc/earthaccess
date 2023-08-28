@@ -241,6 +241,12 @@ class DataGranule(CustomDict):
         granule_html_repr = _repr_granule_html(self)
         return granule_html_repr
 
+    def get_s3_credentials_endpoint(self) -> Union[str, None]:
+        for link in self["umm"]["RelatedUrls"]:
+            if "/s3credentials" in link["URL"]:
+                return link["URL"]
+        return None
+
     def size(self) -> float:
         """
         Returns:
