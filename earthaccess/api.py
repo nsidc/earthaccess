@@ -104,7 +104,10 @@ def search_data(
         )
         ```
     """
-    query = DataGranules().parameters(**kwargs)
+    if earthaccess.__auth__.authenticated:
+        query = DataGranules(earthaccess.__auth__).parameters(**kwargs)
+    else:
+        query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
     print(f"Granules found: {granules_found}")
     if count > 0:
