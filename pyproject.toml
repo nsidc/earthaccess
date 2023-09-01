@@ -7,7 +7,7 @@ authors = ["earthaccess contributors"]
 maintainers = [
     "Luis Lopez <betolin@gmail.com>",
     "Joseph H. Kennedy <jhkennedy@alaska.edu>",
-    "James Bourbeau <emailhere@example.com>",
+    "James Bourbeau <james@coiled.io>",
     "Matt Fisher <mfisher87@gmail.com>"
 ]
 license = "MIT"
