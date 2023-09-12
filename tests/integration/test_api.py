@@ -21,7 +21,7 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 dataset_valid_params = [
     {"data_center": "NSIDC", "cloud_hosted": True},
     {"keyword": "aerosol", "cloud_hosted": False},
-    {"daac": "PODAAC", "keyword": "ocean"},
+    {"daac": "NSIDC", "keyword": "ocean"},
 ]
 
 granules_valid_params = [
