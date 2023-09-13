@@ -197,13 +197,19 @@ def open(
 
 
 def get_s3_credentials(
-    daac: Optional[str] = None, provider: Optional[str] = None
+    daac: Optional[str] = None,
+    provider: Optional[str] = None,
+    results: Optional[list[earthaccess.results.DataGranule]] = None,
 ) -> Dict[str, Any]:
-    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets
+    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets, we can
+    use the daac name, the provider or a list of results from earthaccess.search_data()
+    if we use results earthaccess will use the metadata on the response to get the credentials,
+    this is useful for missions that do not use the same endpoint as their DAACs e.g. SWOT
 
     Parameters:
-        daac: a DAAC short_name like NSIDC or PODAAC etc
-        provider: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        daac (String): a DAAC short_name like NSIDC or PODAAC etc
+        provider (String: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        results (list[earthaccess.results.DataGranule]): List of results from search_data()
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
     """
@@ -211,6 +217,9 @@ def get_s3_credentials(
         daac = daac.upper()
     if provider is not None:
         provider = provider.upper()
+    if results is not None:
+        endpoint = results[0].get_s3_credentials_endpoint()
+        return earthaccess.__auth__.get_s3_credentials(endpoint=endpoint)
     return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 
