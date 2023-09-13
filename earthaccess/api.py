@@ -199,7 +199,7 @@ def open(
 def get_s3_credentials(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
-    results: Optional[list[earthaccess.results.DataGranule]] = None,
+    results: Optional[List[earthaccess.results.DataGranule]] = None,
 ) -> Dict[str, Any]:
     """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets, we can
     use the daac name, the provider or a list of results from earthaccess.search_data()
