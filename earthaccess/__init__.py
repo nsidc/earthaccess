@@ -1,3 +1,4 @@
+import threading
 from importlib.metadata import version
 from typing import Any
 
@@ -36,7 +37,30 @@ __all__ = [
     "Store",
 ]
 
-__auth__ = Auth()
-__store__: Any = None
-
 __version__ = version("earthaccess")
+
+_auth = Auth()
+_store = None
+_lock = threading.Lock()
+
+
+def __getattr__(name):
+    global _auth, _store
+
+    if name == "__auth__" or name == "__store__":
+        with _lock:
+            if not _auth.authenticated:
+                for strategy in ["environment", "netrc"]:
+                    try:
+                        _auth.login(strategy=strategy)
+                    except Exception:
+                        continue
+                    else:
+                        if not _auth.authenticated:
+                            continue
+                        else:
+                            _store = Store(_auth)
+                            break
+            return _auth if name == "__auth__" else _store
+    else:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
