@@ -8,7 +8,7 @@ from itertools import chain
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
 from uuid import uuid4
-from pickle import loads
+from pickle import loads, dumps
 
 import fsspec
 import requests
