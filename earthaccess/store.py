@@ -73,7 +73,7 @@ def make_instance(
         earthaccess.__auth__ = auth
         earthaccess.login()
 
-    if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
+    if (earthaccess.__store__.running_in_aws and cls is not s3fs.S3File) or (not earthaccess.__store__.running_in_aws and cls is s3fs.S3File):
         # On AWS but not using a S3File. Reopen the file in this case for direct S3 access.
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
