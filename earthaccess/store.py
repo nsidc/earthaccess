@@ -8,6 +8,7 @@ from itertools import chain
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
 from uuid import uuid4
+from pickle import loads
 
 import fsspec
 import requests
@@ -36,7 +37,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
             type(self.f),
             self.granule,
             earthaccess.__auth__,
-            self.f.__reduce__(),
+            dumps(self.f),
         )
 
     def __repr__(self) -> str:
@@ -65,7 +66,7 @@ def _open_files(
 
 
 def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, _reduce: Any
+    cls: Any, granule: DataGranule, auth: Auth, data: Any
 ) -> EarthAccessFile:
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
@@ -78,9 +79,7 @@ def make_instance(
         #       guaranteed to be the right one.
         return EarthAccessFile(earthaccess.open([granule])[0], granule)
     else:
-        func = _reduce[0]
-        args = _reduce[1]
-        return func(*args)
+        return EarthAccessFile(loads(data), granule)
 
 
 class Store(object):
