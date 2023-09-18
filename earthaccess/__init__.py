@@ -44,7 +44,7 @@ _store = None
 _lock = threading.Lock()
 
 
-def __getattr__(name):
+def __getattr__(name):  # type: ignore
     global _auth, _store
 
     if name == "__auth__" or name == "__store__":
