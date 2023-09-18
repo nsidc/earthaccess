@@ -54,7 +54,10 @@ def search_datasets(
             "Warning: a valid set of parameters is needed to search for datasets on CMR"
         )
         return []
-    query = DataCollections().parameters(**kwargs)
+    if earthaccess.__auth__.authenticated:
+        query = DataCollections(auth=earthaccess.__auth__).parameters(**kwargs)
+    else:
+        query = DataCollections().parameters(**kwargs)
     datasets_found = query.hits()
     print(f"Datasets found: {datasets_found}")
     if count > 0:
@@ -100,7 +103,10 @@ def search_data(
         )
         ```
     """
-    query = DataGranules().parameters(**kwargs)
+    if earthaccess.__auth__.authenticated:
+        query = DataGranules(earthaccess.__auth__).parameters(**kwargs)
+    else:
+        query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
     print(f"Granules found: {granules_found}")
     if count > 0:
@@ -191,13 +197,19 @@ def open(
 
 
 def get_s3_credentials(
-    daac: Optional[str] = None, provider: Optional[str] = None
+    daac: Optional[str] = None,
+    provider: Optional[str] = None,
+    results: Optional[List[earthaccess.results.DataGranule]] = None,
 ) -> Dict[str, Any]:
-    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets
+    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets, we can
+    use the daac name, the provider or a list of results from earthaccess.search_data()
+    if we use results earthaccess will use the metadata on the response to get the credentials,
+    this is useful for missions that do not use the same endpoint as their DAACs e.g. SWOT
 
     Parameters:
-        daac: a DAAC short_name like NSIDC or PODAAC etc
-        provider: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        daac (String): a DAAC short_name like NSIDC or PODAAC etc
+        provider (String: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        results (list[earthaccess.results.DataGranule]): List of results from search_data()
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
     """
@@ -205,6 +217,9 @@ def get_s3_credentials(
         daac = daac.upper()
     if provider is not None:
         provider = provider.upper()
+    if results is not None:
+        endpoint = results[0].get_s3_credentials_endpoint()
+        return earthaccess.__auth__.get_s3_credentials(endpoint=endpoint)
     return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 
@@ -284,13 +299,25 @@ def get_requests_https_session() -> requests.Session:
 
 
 def get_s3fs_session(
-    daac: Optional[str] = None, provider: Optional[str] = None
+    daac: Optional[str] = None,
+    provider: Optional[str] = None,
+    results: Optional[earthaccess.results.DataGranule] = None,
 ) -> s3fs.S3FileSystem:
     """Returns a fsspec s3fs file session for direct access when we are in us-west-2
+
+    Parameters:
+        daac (String): Any DAAC short name e.g. NSIDC, GES_DISC
+        provider (String): Each DAAC can have a cloud provider, if the DAAC is specified, there is no need to use provider
+        results (list[class earthaccess.results.DataGranule]): A list of results from search_data(), earthaccess will use the metadata form CMR to obtain the S3 Endpoint
 
     Returns:
         class s3fs.S3FileSystem: an authenticated s3fs session valid for 1 hour
     """
+    if results is not None:
+        endpoint = results[0].get_s3_credentials_endpoint()
+        if endpoint is not None:
+            session = earthaccess.__store__.get_s3fs_session(endpoint=endpoint)
+            return session
     session = earthaccess.__store__.get_s3fs_session(daac=daac, provider=provider)
     return session
 
