@@ -6,21 +6,21 @@ from copy import deepcopy
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
+from pickle import dumps, loads
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
+import earthaccess
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 
-import earthaccess
-
+from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
-from .auth import Auth
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
@@ -36,7 +36,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
             type(self.f),
             self.granule,
             earthaccess.__auth__,
-            self.f.__reduce__(),
+            dumps(self.f),
         )
 
     def __repr__(self) -> str:
@@ -65,22 +65,23 @@ def _open_files(
 
 
 def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, _reduce: Any
+    cls: Any, granule: DataGranule, auth: Auth, data: Any
 ) -> EarthAccessFile:
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
         earthaccess.__auth__ = auth
         earthaccess.login()
 
-    if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
-        # On AWS but not using a S3File. Reopen the file in this case for direct S3 access.
+    # When sending EarthAccessFiles between processes, it's possible that
+    # we will need to switch between s3 <--> https protocols.
+    if (earthaccess.__store__.running_in_aws and cls is not s3fs.S3File) or (
+        not earthaccess.__store__.running_in_aws and cls is s3fs.S3File
+    ):
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
         return EarthAccessFile(earthaccess.open([granule])[0], granule)
     else:
-        func = _reduce[0]
-        args = _reduce[1]
-        return func(*args)
+        return EarthAccessFile(loads(data), granule)
 
 
 class Store(object):
