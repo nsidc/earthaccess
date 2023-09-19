@@ -8,7 +8,7 @@ title: "earthaccess"
 # doi: ""
 abstract: "Python Library for NASA Earthdata APIs"
 contact:
-  - name: "The earthaccess community" 
+  - name: "The earthaccess community"
     website: "https://github.com/nsidc/earthaccess/discussions"
   - name: "NSIDC"
     email: "nsidc@nsidc.org"
@@ -24,12 +24,12 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/nsidc/earthaccess"
 
-version: "0.5.3"
-date-released: "2023-08-01"
+version: "0.5.4"
+date-released: "2023-09-19"
 
 authors:
 - family-names: "Barrett"
-  given-names: "Andy"
+  given-names: "Andrew"
   orcid: "https://orcid.org/0000-0003-4394-5445"
   website: "https://github.com/andypbarrett"
 - family-names: "Bourbeau"
@@ -48,10 +48,16 @@ authors:
   given-names: "Julia"
   orcid: "https://orcid.org/0000-0003-1682-3872"
   website: "https://github.com/jules32"
+- family-names: "Scheick"
+  given-names: "Jessica"
+  orcid: "https://orcid.org/0000-0002-3421-4459"
+  website: "https://github.com/JessicaS11"
 - family-names: "Steiker"
   given-names: "Amy"
   orcid: "https://orcid.org/0000-0002-3039-0260"
   website: "https://github.com/asteiker"
+
+
 
 references:
 - type: "grant"
