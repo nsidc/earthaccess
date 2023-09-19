@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+
+## [v0.5.4] 2023-09-19
+* bug fixes:
+    * earthaccess.search_datasets() and earthaccess.search_data() can find restricted datasets #296
+    * distributed serialization fixed for EarthAccessFile #301 and #276
+* new features:
+    * earthaccess.get_s3fs_session() can use the results to find the right set of S3 credentials
+
+## [v0.5.3] 2023-08-01
 * bug fixes:
     * granule's size() returned zero
     * Added exception handling for fsspec sessions, thanks to @jrbourbeau
