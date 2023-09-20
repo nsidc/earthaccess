@@ -24,8 +24,8 @@
     <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
-<a href='https://earthdata.readthedocs.io/en/latest/?badge=latest'>
-    <img src='https://readthedocs.org/projects/earthdata/badge/?version=latest' alt='Documentation Status' />
+<a href='https://earthaccess.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/earthaccess/badge/?version=latest' alt='Documentation Status' />
 </a>
 
 </p>
