@@ -24,7 +24,7 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/nsidc/earthaccess"
 
-version: "0.6.0"
+version: "0.6.1"
 date-released: "2023-09-20"
 
 authors:
