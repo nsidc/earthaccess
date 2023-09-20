@@ -79,7 +79,7 @@ build-backend = "poetry.masonry.api"
 
 
 [tool.bumpversion]
-current_version = "0.5.3"
+current_version = "0.6.0"
 commit = false
 tag = false
 

@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [v0.5.4] 2023-09-19
+## [v0.6.0] 2023-09-20
 * bug fixes:
     * earthaccess.search_datasets() and earthaccess.search_data() can find restricted datasets #296
     * distributed serialization fixed for EarthAccessFile #301 and #276
