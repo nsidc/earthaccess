@@ -89,6 +89,11 @@ search   = '^version = "{current_version}"$'
 replace  = 'version = "{new_version}"'
 
 [[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search   = "^## Unreleased$"
+replace  = "## [v{new_version}] {now:%Y-%m-%d}"
+
+[[tool.bumpversion.files]]
 filename = "CITATION.cff"
 search   = 'version: "{current_version}"'
 replace  = 'version: "{new_version}"'
