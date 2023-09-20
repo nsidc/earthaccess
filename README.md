@@ -4,6 +4,10 @@
 
 <p align="center">
 
+<a href="https://zenodo.org/badge/latestdoi/399867529" target="_blank">
+    <img src="https://zenodo.org/badge/399867529.svg" alt="DOI" />
+</a>
+
 <a href="https://twitter.com/allison_horst" target="_blank">
     <img src="https://img.shields.io/badge/Art%20By-Allison%20Horst-blue" alt="Art Designer: Allison Horst">
 </a>
