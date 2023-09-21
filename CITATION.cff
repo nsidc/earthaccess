@@ -4,8 +4,7 @@ message: |
   Authors are listed in alphabetical order.
 
 title: "earthaccess"
-# TODO:
-# doi: ""
+doi: "https://doi.org/10.5281/zenodo.8365009"
 abstract: "Python Library for NASA Earthdata APIs"
 contact:
   - name: "The earthaccess community"
@@ -24,7 +23,7 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/nsidc/earthaccess"
 
-version: "0.6.0"
+version: "0.6.1"
 date-released: "2023-09-20"
 
 authors:
