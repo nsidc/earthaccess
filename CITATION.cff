@@ -4,8 +4,7 @@ message: |
   Authors are listed in alphabetical order.
 
 title: "earthaccess"
-# TODO:
-# doi: ""
+doi: "https://doi.org/10.5281/zenodo.8365009"
 abstract: "Python Library for NASA Earthdata APIs"
 contact:
   - name: "The earthaccess community"
