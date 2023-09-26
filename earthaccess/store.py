@@ -533,7 +533,7 @@ class Store(object):
         provider = granules[0]["meta"]["provider-id"]
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
-        access = "direc" if (cloud_hosted and self.running_in_aws) else "external"
+        access = "direct" if (cloud_hosted and self.running_in_aws) else "external"
         data_links = list(
             # we are not in region
             chain.from_iterable(
