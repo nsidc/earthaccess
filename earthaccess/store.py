@@ -426,7 +426,7 @@ class Store(object):
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
                 return None
-            fileset = self._open_urls_https(data_links, granules, 8)
+            fileset = self._open_urls_https(data_links, granules, threads)
             return fileset
 
     def get(
