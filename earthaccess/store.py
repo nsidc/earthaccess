@@ -65,30 +65,6 @@ def _open_files(
                     "earthaccess will only open the first data link, "
                     "try filtering the links before opening them."
                 )
-        # if "s3" in str(type(fs)).lower() and size is not None:
-        #     # populate dircache
-        #     #   {'Key': 'oss-scratch-space/jrbourbeau/arraylakef7947862d0a794abb85c0c4544fcf931acfbc21d5b02fec075fea05cfa3184ac',
-        #     #     'LastModified': datetime.datetime(2023, 9, 7, 1, 44, 9, tzinfo=tzutc()),
-        #     #     'ETag': '"4c2dd9323fd2bfca326e0032926a87e6"',
-        #     #     'Size': 298161,
-        #     #     'StorageClass': 'STANDARD',
-        #     #     'type': 'file',
-        #     #     'size': 298161,
-        #     #     'name': 'oss-scratch-space/jrbourbeau/arraylakef7947862d0a794abb85c0c4544fcf931acfbc21d5b02fec075fea05cfa3184ac'}
-        #     for link in data_links:
-        #         name = fs._strip_protocol(link)
-        #         bucket, _ = os.path.split(name)
-        #         if bucket not in fs.dircache:
-        #             fs.dircache[bucket] = []
-        #         file_info = {
-        #             "name": name,
-        #             "Key": name,
-        #             "Size": size,
-        #             "size": size,
-        #             "StorageClass": "STANDARD",
-        #             "type": "file",
-        #         }
-        #         fs.dircache[bucket].append(file_info)
         return EarthAccessFile(fs.open(urls, size=size), granule)
 
     fileset = pqdm(zip(data_links, granules, sizes), multi_thread_open, n_jobs=threads)
