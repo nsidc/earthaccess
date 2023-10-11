@@ -181,7 +181,7 @@ def download(
 def open(
     granules: Union[List[str], List[earthaccess.results.DataGranule]],
     provider: Optional[str] = None,
-    sizes=None,
+    sizes: Optional[List[int]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of fsspec file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.

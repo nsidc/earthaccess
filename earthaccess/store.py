@@ -51,10 +51,13 @@ def _open_files(
     granules: Union[List[str], List[DataGranule]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
-    sizes=None,
+    sizes: Optional[List[int]] = None,
 ) -> List[fsspec.AbstractFileSystem]:
+    file_sizes: Union[List[int], List[None]]
     if sizes is None:
-        sizes = [None] * len(data_links)
+        file_sizes = [None] * len(data_links)
+    else:
+        file_sizes = sizes
 
     def multi_thread_open(data: tuple) -> EarthAccessFile:
         urls, granule, size = data
@@ -67,7 +70,9 @@ def _open_files(
                 )
         return EarthAccessFile(fs.open(urls, size=size), granule)
 
-    fileset = pqdm(zip(data_links, granules, sizes), multi_thread_open, n_jobs=threads)
+    fileset = pqdm(
+        zip(data_links, granules, file_sizes), multi_thread_open, n_jobs=threads
+    )
     return fileset
 
 
@@ -281,7 +286,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-        sizes=None,
+        sizes: Optional[List[int]] = None,
     ) -> Union[List[Any], None]:
         """Returns a list of fsspec file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -301,7 +306,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-        sizes=None,
+        sizes: Optional[List[int]] = None,
     ) -> Union[List[Any], None]:
         """Returns a list of fsspec file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -319,7 +324,7 @@ class Store(object):
         granules: List[DataGranule],
         provider: Optional[str] = None,
         threads: Optional[int] = 8,
-        sizes=None,
+        sizes: Optional[List[int]] = None,
     ) -> Union[List[Any], None]:
         fileset: List = []
         data_links: List = []
@@ -393,7 +398,7 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
         threads: Optional[int] = 8,
-        sizes=None,
+        sizes: Optional[List[int]] = None,
     ) -> Union[List[Any], None]:
         fileset: List = []
         data_links: List = []
@@ -661,7 +666,7 @@ class Store(object):
         urls: List[str],
         granules: Union[List[str], List[DataGranule]],
         threads: Optional[int] = 8,
-        sizes=None,
+        sizes: Optional[List[int]] = None,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
         if https_fs is not None:
