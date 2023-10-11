@@ -426,7 +426,7 @@ class Store(object):
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
                 return None
-            fileset = self._open_urls_https(data_links, granules, 8)
+            fileset = self._open_urls_https(data_links, granules, threads)
             return fileset
 
     def get(
@@ -533,7 +533,7 @@ class Store(object):
         provider = granules[0]["meta"]["provider-id"]
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
-        access = "direc" if (cloud_hosted and self.running_in_aws) else "external"
+        access = "direct" if (cloud_hosted and self.running_in_aws) else "external"
         data_links = list(
             # we are not in region
             chain.from_iterable(

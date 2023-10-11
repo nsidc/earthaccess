@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+* bug fixes:
+    * Fix spelling mistake in `access` variable assignment (`direc` -> `direct`)
+      in `earthaccess.store._get_granules`.
+    * Pass `threads` arg to `_open_urls_https` in
+      `earthaccess.store._open_urls`, replacing the hard-coded value of 8.
 
 ## [v0.6.0] 2023-09-20
 * bug fixes:
