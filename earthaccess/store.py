@@ -453,6 +453,12 @@ class Store(object):
         Returns:
             List of downloaded files
         """
+        if local_path is None:
+            local_path = os.path.join(
+                ".",
+                "data",
+                f"{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}",
+            )
         if len(granules):
             files = self._get(granules, local_path, provider, threads)
             return files
@@ -464,7 +470,7 @@ class Store(object):
     def _get(
         self,
         granules: Union[List[DataGranule], List[str]],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -492,7 +498,7 @@ class Store(object):
     def _get_urls(
         self,
         granules: List[str],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -523,7 +529,7 @@ class Store(object):
     def _get_granules(
         self,
         granules: List[DataGranule],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -599,7 +605,7 @@ class Store(object):
         return local_path
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Optional[str] = None, threads: int = 8
+        self, urls: List[str], directory: str, threads: int = 8
     ) -> List[Any]:
         """
         downloads a list of URLS into the data directory.
@@ -616,14 +622,10 @@ class Store(object):
                 "We need to be logged into NASA EDL in order to download data granules"
             )
             return []
-        if directory is None:
-            directory_prefix = f"./data/{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}"
-        else:
-            directory_prefix = directory
-        if not os.path.exists(directory_prefix):
-            os.makedirs(directory_prefix)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-        arguments = [(url, directory_prefix) for url in urls]
+        arguments = [(url, directory) for url in urls]
         results = pqdm(
             arguments,
             self._download_file,

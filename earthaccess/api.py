@@ -6,10 +6,10 @@ import s3fs
 from fsspec import AbstractFileSystem
 
 from .auth import Auth
+from .results import DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .utils import _validation as validate
-from .results import DataGranule
 
 
 def search_datasets(
@@ -152,7 +152,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
 def download(
     granules: Union[DataGranule, List[DataGranule], List[str]],
-    local_path: Optional[str],
+    local_path: Union[str, None],
     provider: Optional[str] = None,
     threads: int = 8,
 ) -> List[str]:
