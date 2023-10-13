@@ -13,6 +13,7 @@ from .api import (
     open,
     search_data,
     search_datasets,
+    auth_environ,
 )
 from .auth import Auth
 from .search import DataCollections, DataGranules
@@ -34,6 +35,7 @@ __all__ = [
     "DataCollections",
     "Auth",
     "Store",
+    "auth_environ",
 ]
 
 __auth__ = Auth()
