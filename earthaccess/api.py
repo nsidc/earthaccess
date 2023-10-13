@@ -331,8 +331,11 @@ def get_edl_token() -> str:
     token = earthaccess.__auth__.token
     return token
 
+
 def auth_environ() -> Dict[str, str]:
     auth = earthaccess.__auth__
     if not auth.authenticated:
-        raise RuntimeError("`auth_environ()` requires you to first authenticate with `earthaccess.login()`")
+        raise RuntimeError(
+            "`auth_environ()` requires you to first authenticate with `earthaccess.login()`"
+        )
     return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}

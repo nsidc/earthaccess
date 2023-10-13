@@ -2,6 +2,7 @@ from importlib.metadata import version
 from typing import Any
 
 from .api import (
+    auth_environ,
     collection_query,
     download,
     get_fsspec_https_session,
@@ -13,7 +14,6 @@ from .api import (
     open,
     search_data,
     search_datasets,
-    auth_environ,
 )
 from .auth import Auth
 from .search import DataCollections, DataGranules
