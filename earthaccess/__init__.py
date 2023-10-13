@@ -1,6 +1,7 @@
 import threading
 from importlib.metadata import version
 from typing import Any
+import logging
 
 from .api import (
     collection_query,
@@ -18,6 +19,8 @@ from .api import (
 from .auth import Auth
 from .search import DataCollections, DataGranules
 from .store import Store
+
+logger = logging.getLogger(__name__)
 
 __all__ = [
     "login",
@@ -59,13 +62,15 @@ def __getattr__(name):  # type: ignore
                 for strategy in ["environment", "netrc"]:
                     try:
                         _auth.login(strategy=strategy)
-                    except Exception:
+                    except Exception as e:
+                        logger.debug(f"An error occurred during automatic authentication with {strategy=}: {str(e)}")
                         continue
                     else:
                         if not _auth.authenticated:
                             continue
                         else:
                             _store = Store(_auth)
+                            logger.debug(f"Automatic authentication with {strategy=} was successful")
                             break
             return _auth if name == "__auth__" else _store
     else:
