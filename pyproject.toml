@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "earthaccess"
-version = "0.5.3"
+version = "0.6.1"
 homepage = "https://github.com/nsidc/earthaccess"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
 maintainers = [
     "Luis Lopez <betolin@gmail.com>",
     "Joseph H. Kennedy <jhkennedy@alaska.edu>",
+    "James Bourbeau <james@coiled.io>",
     "Matt Fisher <mfisher87@gmail.com>"
 ]
 license = "MIT"
@@ -70,7 +71,34 @@ matplotlib = ">=3.3"
 h5netcdf = ">=0.11"
 dask = ">=2022.1"
 pyproj = ">=3.5.0"
+bump-my-version = ">=0.10.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+
+[tool.bumpversion]
+current_version = "0.6.1"
+commit = false
+tag = false
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search   = '^version = "{current_version}"$'
+replace  = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search   = "^## Unreleased$"
+replace  = "## [v{new_version}] {now:%Y-%m-%d}"
+
+[[tool.bumpversion.files]]
+filename = "CITATION.cff"
+search   = 'version: "{current_version}"'
+replace  = 'version: "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "CITATION.cff"
+search   = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
+replace  = 'date-released: "{now:%Y-%m-%d}"'

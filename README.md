@@ -4,6 +4,10 @@
 
 <p align="center">
 
+<a href="https://zenodo.org/badge/latestdoi/399867529" target="_blank">
+    <img src="https://zenodo.org/badge/399867529.svg" alt="DOI" />
+</a>
+
 <a href="https://twitter.com/allison_horst" target="_blank">
     <img src="https://img.shields.io/badge/Art%20By-Allison%20Horst-blue" alt="Art Designer: Allison Horst">
 </a>
@@ -20,8 +24,8 @@
     <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
-<a href='https://earthdata.readthedocs.io/en/latest/?badge=latest'>
-    <img src='https://readthedocs.org/projects/earthdata/badge/?version=latest' alt='Documentation Status' />
+<a href='https://earthaccess.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/earthaccess/badge/?version=latest' alt='Documentation Status' />
 </a>
 
 </p>
