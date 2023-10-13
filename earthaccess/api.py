@@ -6,6 +6,7 @@ import s3fs
 from fsspec import AbstractFileSystem
 
 from .auth import Auth
+from .results import DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .utils import _validation as validate
@@ -150,8 +151,8 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
 
 def download(
-    granules: Union[List[earthaccess.results.DataGranule], List[str]],
-    local_path: Optional[str],
+    granules: Union[DataGranule, List[DataGranule], List[str]],
+    local_path: Union[str, None],
     provider: Optional[str] = None,
     threads: int = 8,
 ) -> List[str]:
@@ -161,7 +162,7 @@ def download(
        * If we run it outside AWS (us-west-2 region) and the dataset is cloud hostes we'll use HTTP links
 
     Parameters:
-        granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
+        granules: a granule, list of granules, or a list of granule links (HTTP)
         local_path: local directory to store the remote data granules
         provider: if we download a list of URLs we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
@@ -169,6 +170,8 @@ def download(
     Returns:
         List of downloaded files
     """
+    if isinstance(granules, DataGranule):
+        granules = [granules]
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
