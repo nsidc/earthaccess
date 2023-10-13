@@ -453,6 +453,12 @@ class Store(object):
         Returns:
             List of downloaded files
         """
+        if local_path is None:
+            local_path = os.path.join(
+                ".",
+                "data",
+                f"{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}",
+            )
         if len(granules):
             files = self._get(granules, local_path, provider, threads)
             return files
@@ -464,7 +470,7 @@ class Store(object):
     def _get(
         self,
         granules: Union[List[DataGranule], List[str]],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -492,7 +498,7 @@ class Store(object):
     def _get_urls(
         self,
         granules: List[str],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -509,22 +515,21 @@ class Store(object):
             s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
             for file in data_links:
-                file_name = file.split("/")[-1]
                 s3_fs.get(file, local_path)
-                print(f"Retrieved: {file} to {local_path}")
+                file_name = os.path.join(local_path, os.path.basename(file))
+                print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
 
         else:
             # if we are not in AWS
             return self._download_onprem_granules(data_links, local_path, threads)
-        return None
 
     @_get.register
     def _get_granules(
         self,
         granules: List[DataGranule],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -557,14 +562,13 @@ class Store(object):
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
-                file_name = file.split("/")[-1]
-                print(f"Retrieved: {file} to {local_path}")
+                file_name = os.path.join(local_path, os.path.basename(file))
+                print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
         else:
             # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
             return self._download_onprem_granules(data_links, local_path, threads)
-        return None
 
     def _download_file(self, url: str, directory: str) -> str:
         """
@@ -598,10 +602,10 @@ class Store(object):
                 raise Exception
         else:
             print(f"File {local_filename} already downloaded")
-        return local_filename
+        return local_path
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Optional[str] = None, threads: int = 8
+        self, urls: List[str], directory: str, threads: int = 8
     ) -> List[Any]:
         """
         downloads a list of URLS into the data directory.
@@ -618,14 +622,10 @@ class Store(object):
                 "We need to be logged into NASA EDL in order to download data granules"
             )
             return []
-        if directory is None:
-            directory_prefix = f"./data/{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}"
-        else:
-            directory_prefix = directory
-        if not os.path.exists(directory_prefix):
-            os.makedirs(directory_prefix)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-        arguments = [(url, directory_prefix) for url in urls]
+        arguments = [(url, directory) for url in urls]
         results = pqdm(
             arguments,
             self._download_file,
