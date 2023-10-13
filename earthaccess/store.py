@@ -509,16 +509,15 @@ class Store(object):
             s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
             for file in data_links:
-                file_name = file.split("/")[-1]
                 s3_fs.get(file, local_path)
-                print(f"Retrieved: {file} to {local_path}")
+                file_name = os.path.join(local_path, os.path.basename(file))
+                print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
 
         else:
             # if we are not in AWS
             return self._download_onprem_granules(data_links, local_path, threads)
-        return None
 
     @_get.register
     def _get_granules(
@@ -557,14 +556,13 @@ class Store(object):
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
-                file_name = file.split("/")[-1]
-                print(f"Retrieved: {file} to {local_path}")
+                file_name = os.path.join(local_path, os.path.basename(file))
+                print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
         else:
             # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
             return self._download_onprem_granules(data_links, local_path, threads)
-        return None
 
     def _download_file(self, url: str, directory: str) -> str:
         """
@@ -598,7 +596,7 @@ class Store(object):
                 raise Exception
         else:
             print(f"File {local_filename} already downloaded")
-        return local_filename
+        return local_path
 
     def _download_onprem_granules(
         self, urls: List[str], directory: Optional[str] = None, threads: int = 8
