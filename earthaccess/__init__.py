@@ -2,6 +2,7 @@ from importlib.metadata import version
 from typing import Any
 
 from .api import (
+    auth_environ,
     collection_query,
     download,
     get_fsspec_https_session,
@@ -34,6 +35,7 @@ __all__ = [
     "DataCollections",
     "Auth",
     "Store",
+    "auth_environ",
 ]
 
 __auth__ = Auth()

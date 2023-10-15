@@ -80,3 +80,17 @@ def test_earthaccess_api_can_download_granules(tmp_path, selection):
     files = earthaccess.download(result, str(tmp_path))
     assertions.assertIsInstance(files, list)
     assert all(os.path.exists(f) for f in files)
+
+
+def test_auth_environ():
+    environ = earthaccess.auth_environ()
+    assert environ == {
+        "EARTHDATA_USERNAME": os.environ["EARTHDATA_USERNAME"],
+        "EARTHDATA_PASSWORD": os.environ["EARTHDATA_PASSWORD"],
+    }
+
+
+def test_auth_environ_raises(monkeypatch):
+    monkeypatch.setattr(earthaccess.__auth__, "authenticated", False)
+    with pytest.raises(RuntimeError, match="authenticate"):
+        earthaccess.auth_environ()
