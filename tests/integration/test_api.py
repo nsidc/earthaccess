@@ -91,8 +91,9 @@ def test_auth_environ():
 
 
 def test_auth_environ_raises(monkeypatch):
-    # Temporarily ensure `earthaccess.__auth__` always returns a
-    # new, unauthenticated `earthaccess.Auth`` instance
+    # Ensure `earthaccess.__auth__` always returns a new,
+    # unauthenticated `earthaccess.Auth` instance, bypassing
+    # automatic auth behavior
     monkeypatch.setattr(earthaccess, "__auth__", earthaccess.Auth())
 
     # Ensure `earthaccess.auth_environ()` raises an informative error
