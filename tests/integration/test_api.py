@@ -91,6 +91,16 @@ def test_auth_environ():
 
 
 def test_auth_environ_raises(monkeypatch):
+    # Temporarily remove any existing authentication and make it so
+    # future attempts at authentication don't work
     monkeypatch.setattr(earthaccess.__auth__, "authenticated", False)
+
+    def bad_login(*args, **kwargs):
+        raise RuntimeError("Can't login")
+
+    monkeypatch.setattr(earthaccess.Auth, "login", bad_login)
+
+    # Ensure `earthaccess.auth_environ()` raises an informative error
+    # when not authenticated
     with pytest.raises(RuntimeError, match="authenticate"):
         earthaccess.auth_environ()
