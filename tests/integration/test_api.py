@@ -91,6 +91,12 @@ def test_auth_environ():
 
 
 def test_auth_environ_raises(monkeypatch):
-    monkeypatch.setattr(earthaccess.__auth__, "authenticated", False)
+    # Ensure `earthaccess.__auth__` always returns a new,
+    # unauthenticated `earthaccess.Auth` instance, bypassing
+    # automatic auth behavior
+    monkeypatch.setattr(earthaccess, "__auth__", earthaccess.Auth())
+
+    # Ensure `earthaccess.auth_environ()` raises an informative error
+    # when not authenticated
     with pytest.raises(RuntimeError, match="authenticate"):
         earthaccess.auth_environ()
