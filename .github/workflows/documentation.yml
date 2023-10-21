@@ -21,7 +21,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  documentation:
+  build-documentation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -55,13 +55,22 @@ jobs:
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
-
-      - name: Deploy
-        if: |
-          github.event_name == 'push'
-          && (github.ref == 'refs/heads/main' || github.ref == 'ref/heads/documentation')
-          && github.repository == 'nsidc/earthaccess'
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          path: ./site
+
+  deploy-documentation:
+    if: |
+      github.event_name == 'push'
+      && (github.ref == 'refs/heads/main' || github.ref == 'ref/heads/documentation')
+      && github.repository == 'nsidc/earthaccess'
+    runs-on: ubuntu-latest
+    needs: documentation
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
