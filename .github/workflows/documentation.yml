@@ -11,14 +11,8 @@ on:
       - docs/**
       - notebooks/**
       - .github/workflows/documentation.yml
-  pull_request:
-    paths:
-      - earthaccess/**
-      - tests/**
-      - docs/**
-      - notebooks/**
-      - .github/workflows/documentation.yml
-    types: [opened, synchronize]
+      - "*.md"
+      - "*.txt"
 
 jobs:
   documentation:
@@ -57,10 +51,7 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
 
       - name: Deploy
-        if: |
-          github.event_name == 'push'
-          && (github.ref == 'refs/heads/main' || github.ref == 'ref/heads/documentation')
-          && github.repository == 'nsidc/earthaccess'
+        if: "github.ref_name == 'main' || github.ref_name == 'documentation'"
         uses: peaceiris/actions-gh-pages@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
