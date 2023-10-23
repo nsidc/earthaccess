@@ -1,7 +1,6 @@
 # package imports
 import logging
 import os
-import shutil
 import unittest
 
 import earthaccess
@@ -21,7 +20,7 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 dataset_valid_params = [
     {"data_center": "NSIDC", "cloud_hosted": True},
     {"keyword": "aerosol", "cloud_hosted": False},
-    {"daac": "PODAAC", "keyword": "ocean"},
+    {"daac": "NSIDC", "keyword": "ocean"},
 ]
 
 granules_valid_params = [
@@ -69,16 +68,35 @@ def test_granules_search_returns_valid_results(kwargs):
     assertions.assertTrue(len(results) <= 10)
 
 
-def test_earthaccess_api_can_download_granules():
+@pytest.mark.parametrize("selection", [0, slice(None)])
+def test_earthaccess_api_can_download_granules(tmp_path, selection):
     results = earthaccess.search_data(
         count=2,
         short_name="ATL08",
         cloud_hosted=True,
         bounding_box=(-92.86, 16.26, -91.58, 16.97),
     )
-    local_path = "./tests/integration/data/ATL08"
-    assertions.assertIsInstance(results, list)
-    assertions.assertTrue(len(results) <= 2)
-    files = earthaccess.download(results, local_path=local_path)
+    result = results[selection]
+    files = earthaccess.download(result, str(tmp_path))
     assertions.assertIsInstance(files, list)
-    shutil.rmtree(local_path)
+    assert all(os.path.exists(f) for f in files)
+
+
+def test_auth_environ():
+    environ = earthaccess.auth_environ()
+    assert environ == {
+        "EARTHDATA_USERNAME": os.environ["EARTHDATA_USERNAME"],
+        "EARTHDATA_PASSWORD": os.environ["EARTHDATA_PASSWORD"],
+    }
+
+
+def test_auth_environ_raises(monkeypatch):
+    # Ensure `earthaccess.__auth__` always returns a new,
+    # unauthenticated `earthaccess.Auth` instance, bypassing
+    # automatic auth behavior
+    monkeypatch.setattr(earthaccess, "__auth__", earthaccess.Auth())
+
+    # Ensure `earthaccess.auth_environ()` raises an informative error
+    # when not authenticated
+    with pytest.raises(RuntimeError, match="authenticate"):
+        earthaccess.auth_environ()

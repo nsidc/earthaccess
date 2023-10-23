@@ -55,6 +55,20 @@ class TestStoreSessions(unittest.TestCase):
     def test_store_can_create_s3_fsspec_session(self):
         from earthaccess.daac import DAACS
 
+        custom_endpoints = [
+            "https://archive.swot.podaac.earthdata.nasa.gov/s3credentials",
+            "https://api.giovanni.earthdata.nasa.gov/s3credentials",
+            "https://data.laadsdaac.earthdatacloud.nasa.gov/s3credentials",
+        ]
+
+        for endpoint in custom_endpoints:
+            responses.add(
+                responses.GET,
+                endpoint,
+                json={},
+                status=200,
+            )
+
         for daac in DAACS:
             if "s3-credentials" in daac:
                 responses.add(
@@ -78,6 +92,10 @@ class TestStoreSessions(unittest.TestCase):
         self.assertTrue(isinstance(store.auth, Auth))
         for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC", "ASF"]:
             s3_fs = store.get_s3fs_session(daac=daac)
+            self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
+
+        for endpoint in custom_endpoints:
+            s3_fs = store.get_s3fs_session(endpoint=endpoint)
             self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
 
         for provider in [

@@ -4,6 +4,10 @@
 
 <p align="center">
 
+<a href="https://zenodo.org/badge/latestdoi/399867529" target="_blank">
+    <img src="https://zenodo.org/badge/399867529.svg" alt="DOI" />
+</a>
+
 <a href="https://twitter.com/allison_horst" target="_blank">
     <img src="https://img.shields.io/badge/Art%20By-Allison%20Horst-blue" alt="Art Designer: Allison Horst">
 </a>
@@ -20,8 +24,8 @@
     <img src="https://img.shields.io/pypi/pyversions/earthaccess.svg" alt="Python Versions">
 </a>
 
-<a href='https://earthdata.readthedocs.io/en/latest/?badge=latest'>
-    <img src='https://readthedocs.org/projects/earthdata/badge/?version=latest' alt='Documentation Status' />
+<a href='https://earthaccess.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/earthaccess/badge/?version=latest' alt='Documentation Status' />
 </a>
 
 </p>
@@ -66,21 +70,23 @@ The only requirement to use this library is to open a free account with NASA [ED
 
 ### **Authentication**
 
-Once you have an EDL account, you can authenticate using one of the following three methods:
+By default, `earthaccess` with automatically look for your EDL account credentials in two locations:
 
-1. Using a `.netrc` file
-    * Can use *earthaccess* to read your EDL credentials (username and password) from a `.netrc` file
-2. Reading your EDL credentials from environment variables
-    * if available you can use environment variables **EARTHDATA_USERNAME** and **EARTHDATA_PASSWORD**
-3. Interactively entering your EDL credentials
-    * You can be prompted for these credentials and save them to a `.netrc` file
+1. A `~/.netrc` file
+2. `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables
+
+If neither of these options are configured, you can authenticate by calling the `earthaccess.login()` method
+and manually entering your EDL account credentials.
 
 ```python
 import earthaccess
 
-auth = earthaccess.login()
-
+earthaccess.login()
 ```
+
+Note you can pass `persist=True` to `earthaccess.login()` to have the EDL account credentials you enter
+automatically saved to a `~/.netrc` file for future use. 
+
 
 Once you are authenticated with NASA EDL you can:
 

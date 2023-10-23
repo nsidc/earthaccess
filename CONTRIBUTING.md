@@ -68,16 +68,44 @@ scripts/format.sh
 - you must update the documentation
 - you must run the above scripts to format and line
 
-## Pull Request Process
+## Pull Request process
 
 1. Ensure you include test coverage for all changes
-2. Ensure your code is formatted properly via the command above
-3. Update the documentation and the README.md with details of changes to the interface, this includes new environment
-   variables, function names, decorators, etc..
-4. Increase the version numbers in any examples files and the README.md to the new version that this
-   Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
-5. You may merge the Pull Request in once you have the sign-off of another developers, or if you
-   do not have permission to do that, you may request the reviewer to merge it for you.
+2. Ensure your code is formatted properly following this document
+3. Update the documentation and the README.md with details of changes to the interface,
+   this includes new environment variables, function names, decorators, etc.
+3. Update `CHANGELOG.md` with details about your change in a section titled
+   `Unreleased`. If one does not exist, please create one. 
+4. You may merge the Pull Request in once you have the sign-off of another developers,
+   or if you do not have permission to do that, you may request the reviewer to merge it
+   for you.
+
+## Release process
+
+> :memo: The versioning scheme we use is [SemVer](http://semver.org/). Note that until
+> we agree we're ready for v1.0.0, we will not increment major version.
+
+0. Ensure all desired features are merged to `main` branch and `CHANGELOG` is updated.
+1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
+   increase the minor version (`1.2.3` to `1.3.0`):
+   ```
+   bumpversion bump minor
+   ```
+2. Push a tag on the new commit containing the version number, prefixed with `v`, e.g.
+   `v1.3.0`.
+3. [Create a new GitHub Release](https://github.com/nsidc/earthaccess/releases/new). We
+   hand-curate our release notes to be valuable to humans. Please do not auto-generate
+   release notes and aim for consistency with the GitHub Release descriptions from other
+   releases.
+
+> :gear: After the GitHub release is published, multiple automations will trigger:
+>
+> - Zenodo will create a new DOI.
+> - GitHub Actions will publish a PyPI release.
+
+> :memo: `earthaccess` is published to conda-forge through the
+> [earthdata-feedstock](https://github.com/conda-forge/earthdata-feedstock), as this
+> project was renamed early in its life. The conda package is named `earthaccess`.
 
 ---
 

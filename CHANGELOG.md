@@ -1,6 +1,20 @@
 # Changelog
 
-## Unreleased
+## [unreleased]
+* bug fixes:
+    * Fix spelling mistake in `access` variable assignment (`direc` -> `direct`)
+      in `earthaccess.store._get_granules`.
+    * Pass `threads` arg to `_open_urls_https` in
+      `earthaccess.store._open_urls`, replacing the hard-coded value of 8.
+
+## [v0.6.0] 2023-09-20
+* bug fixes:
+    * earthaccess.search_datasets() and earthaccess.search_data() can find restricted datasets #296
+    * distributed serialization fixed for EarthAccessFile #301 and #276
+* new features:
+    * earthaccess.get_s3fs_session() can use the results to find the right set of S3 credentials
+
+## [v0.5.3] 2023-08-01
 * bug fixes:
     * granule's size() returned zero
     * Added exception handling for fsspec sessions, thanks to @jrbourbeau

@@ -6,6 +6,7 @@ from copy import deepcopy
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
+from pickle import dumps, loads
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
@@ -16,6 +17,7 @@ import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 
+from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -32,8 +34,9 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     def __reduce__(self) -> Any:
         return make_instance, (
             type(self.f),
-            self.f,
-            self.f.__reduce__(),
+            self.granule,
+            earthaccess.__auth__,
+            dumps(self.f),
         )
 
     def __repr__(self) -> str:
@@ -61,16 +64,24 @@ def _open_files(
     return fileset
 
 
-def make_instance(cls: Any, granule: DataGranule, _reduce: Any) -> EarthAccessFile:
-    if earthaccess.__store__.running_in_aws and cls is not s3fs.S3File:
-        # On AWS but not using a S3File. Reopen the file in this case for direct S3 access.
+def make_instance(
+    cls: Any, granule: DataGranule, auth: Auth, data: Any
+) -> EarthAccessFile:
+    # Attempt to re-authenticate
+    if not earthaccess.__auth__.authenticated:
+        earthaccess.__auth__ = auth
+        earthaccess.login()
+
+    # When sending EarthAccessFiles between processes, it's possible that
+    # we will need to switch between s3 <--> https protocols.
+    if (earthaccess.__store__.running_in_aws and cls is not s3fs.S3File) or (
+        not earthaccess.__store__.running_in_aws and cls is s3fs.S3File
+    ):
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
         return EarthAccessFile(earthaccess.open([granule])[0], granule)
     else:
-        func = _reduce[0]
-        args = _reduce[1]
-        return func(*args)
+        return EarthAccessFile(loads(data), granule)
 
 
 class Store(object):
@@ -117,6 +128,12 @@ class Store(object):
         if len(collection) > 0 and "s3-links" in collection[0]["meta"]:
             return True
         return False
+
+    def _own_s3_credentials(self, links: List[Dict[str, Any]]) -> Union[str, None]:
+        for link in links:
+            if "/s3credentials" in link["URL"]:
+                return link["URL"]
+        return None
 
     def _am_i_in_aws(self) -> bool:
         session = self.auth.get_session()
@@ -171,22 +188,27 @@ class Store(object):
         daac: Optional[str] = None,
         concept_id: Optional[str] = None,
         provider: Optional[str] = None,
+        endpoint: Optional[str] = None,
     ) -> s3fs.S3FileSystem:
         """
         Returns a s3fs instance for a given cloud provider / DAAC
 
         Parameters:
             daac: any of the DAACs e.g. NSIDC, PODAAC
+            provider: a data provider if we know them, e.g PODAAC -> POCLOUD
+            endpoint: pass the URL for the credentials directly
         Returns:
             a s3fs file instance
         """
         if self.auth is not None:
-            if not any([concept_id, daac, provider]):
+            if not any([concept_id, daac, provider, endpoint]):
                 raise ValueError(
-                    "At least one of the concept_id, daac, or provider "
+                    "At least one of the concept_id, daac, provider or endpoint"
                     "parameters must be specified. "
                 )
-            if concept_id is not None:
+            if endpoint is not None:
+                s3_credentials = self.auth.get_s3_credentials(endpoint=endpoint)
+            elif concept_id is not None:
                 provider = self._derive_concept_provider(concept_id)
                 s3_credentials = self.auth.get_s3_credentials(provider=provider)
             elif daac is not None:
@@ -299,7 +321,14 @@ class Store(object):
             if granules[0].cloud_hosted:
                 access_method = "direct"
                 provider = granules[0]["meta"]["provider-id"]
-                s3_fs = self.get_s3fs_session(provider=provider)
+                # if the data has its own S3 credentials endpoint we'll use it
+                endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
+                if endpoint is not None:
+                    print(f"using endpoint: {endpoint}")
+                    s3_fs = self.get_s3fs_session(endpoint=endpoint)
+                else:
+                    print(f"using provider: {provider}")
+                    s3_fs = self.get_s3fs_session(provider=provider)
             else:
                 access_method = "on_prem"
                 s3_fs = None
@@ -397,7 +426,7 @@ class Store(object):
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
                 return None
-            fileset = self._open_urls_https(data_links, granules, 8)
+            fileset = self._open_urls_https(data_links, granules, threads)
             return fileset
 
     def get(
@@ -424,6 +453,12 @@ class Store(object):
         Returns:
             List of downloaded files
         """
+        if local_path is None:
+            local_path = os.path.join(
+                ".",
+                "data",
+                f"{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}",
+            )
         if len(granules):
             files = self._get(granules, local_path, provider, threads)
             return files
@@ -435,7 +470,7 @@ class Store(object):
     def _get(
         self,
         granules: Union[List[DataGranule], List[str]],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -463,7 +498,7 @@ class Store(object):
     def _get_urls(
         self,
         granules: List[str],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
@@ -480,30 +515,30 @@ class Store(object):
             s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
             for file in data_links:
-                file_name = file.split("/")[-1]
                 s3_fs.get(file, local_path)
-                print(f"Retrieved: {file} to {local_path}")
+                file_name = os.path.join(local_path, os.path.basename(file))
+                print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
 
         else:
             # if we are not in AWS
             return self._download_onprem_granules(data_links, local_path, threads)
-        return None
 
     @_get.register
     def _get_granules(
         self,
         granules: List[DataGranule],
-        local_path: Optional[str] = None,
+        local_path: str,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> Union[None, List[str]]:
         data_links: List = []
         downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
+        endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
-        access = "direc" if (cloud_hosted and self.running_in_aws) else "external"
+        access = "direct" if (cloud_hosted and self.running_in_aws) else "external"
         data_links = list(
             # we are not in region
             chain.from_iterable(
@@ -516,19 +551,24 @@ class Store(object):
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
         if access == "direct":
-            print(f"Accessing cloud dataset using provider: {provider}")
-            s3_fs = self.get_s3fs_session(provider)
+            if endpoint is not None:
+                print(
+                    f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}"
+                )
+                s3_fs = self.get_s3fs_session(endpoint=endpoint)
+            else:
+                print(f"Accessing cloud dataset using provider: {provider}")
+                s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
-                file_name = file.split("/")[-1]
-                print(f"Retrieved: {file} to {local_path}")
+                file_name = os.path.join(local_path, os.path.basename(file))
+                print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
         else:
             # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
             return self._download_onprem_granules(data_links, local_path, threads)
-        return None
 
     def _download_file(self, url: str, directory: str) -> str:
         """
@@ -562,10 +602,10 @@ class Store(object):
                 raise Exception
         else:
             print(f"File {local_filename} already downloaded")
-        return local_filename
+        return local_path
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Optional[str] = None, threads: int = 8
+        self, urls: List[str], directory: str, threads: int = 8
     ) -> List[Any]:
         """
         downloads a list of URLS into the data directory.
@@ -582,14 +622,10 @@ class Store(object):
                 "We need to be logged into NASA EDL in order to download data granules"
             )
             return []
-        if directory is None:
-            directory_prefix = f"./data/{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}"
-        else:
-            directory_prefix = directory
-        if not os.path.exists(directory_prefix):
-            os.makedirs(directory_prefix)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-        arguments = [(url, directory_prefix) for url in urls]
+        arguments = [(url, directory) for url in urls]
         results = pqdm(
             arguments,
             self._download_file,

@@ -1,0 +1,73 @@
+cff-version: 1.2.0
+message: |
+  Please cite this software using these metadata.
+  Authors are listed in alphabetical order.
+
+title: "earthaccess"
+doi: "https://doi.org/10.5281/zenodo.8365009"
+abstract: "Python Library for NASA Earthdata APIs"
+contact:
+  - name: "The earthaccess community"
+    website: "https://github.com/nsidc/earthaccess/discussions"
+  - name: "NSIDC"
+    email: "nsidc@nsidc.org"
+type: "software"
+license: ["MIT"]
+keywords:
+  - "data"
+  - "Remote sensing"
+  - "Cloud computing"
+  - "authentication"
+  - "Earthdata Login"
+
+url: "https://earthaccess.readthedocs.io"
+repository-code: "https://github.com/nsidc/earthaccess"
+
+version: "0.6.1"
+date-released: "2023-09-20"
+
+authors:
+- family-names: "Barrett"
+  given-names: "Andrew"
+  orcid: "https://orcid.org/0000-0003-4394-5445"
+  website: "https://github.com/andypbarrett"
+- family-names: "Battisto"
+  given-names: "Chris"
+  orcid: "https://orcid.org//0000-0002-9608-3634"
+  website: "https://github.com/battistowx"
+- family-names: "Bourbeau"
+  given-names: "James"
+  orcid: "https://orcid.org/0000-0003-2164-7789"
+  website: "https://github.com/jrbourbeau"
+- family-names: "Fisher"
+  given-names: "Matt"
+  orcid: "https://orcid.org/0000-0003-3260-5445"
+  website: "https://mfisher87.github.io/"
+- family-names: "Kennedy"
+  given-names: "Joseph"
+  orcid: "https://orcid.org/0000-0002-9348-693X"
+  website: "https://github.com/jhkennedy"
+- family-names: "Lopez"
+  given-names: "Luis"
+  orcid: "https://orcid.org/0000-0003-4896-3263"
+  website: "https://github.com/betolink"
+- family-names: "Lowndes"
+  given-names: "Julia"
+  orcid: "https://orcid.org/0000-0003-1682-3872"
+  website: "https://github.com/jules32"
+- family-names: "Scheick"
+  given-names: "Jessica"
+  orcid: "https://orcid.org/0000-0002-3421-4459"
+  website: "https://github.com/JessicaS11"
+- family-names: "Steiker"
+  given-names: "Amy"
+  orcid: "https://orcid.org/0000-0002-3039-0260"
+  website: "https://github.com/asteiker"
+
+
+
+references:
+- type: "grant"
+  institution:
+    name: "National Aeronautics and Space Administration"
+  number: "20-TWSC20-2-0003"

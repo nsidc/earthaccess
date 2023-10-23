@@ -1,4 +1,5 @@
 import getpass
+import logging
 import os
 from netrc import NetrcParseError
 from pathlib import Path
@@ -9,6 +10,8 @@ import requests  # type: ignore
 from tinynetrc import Netrc
 
 from .daac import DAACS
+
+logger = logging.getLogger(__name__)
 
 
 class SessionWithHeaderRedirection(requests.Session):
@@ -76,7 +79,7 @@ class Auth(object):
             an instance of Auth.
         """
         if self.authenticated:
-            print("We are already authenticated with NASA EDL")
+            logger.debug("We are already authenticated with NASA EDL")
             return self
         if strategy == "interactive":
             self._interactive(persist)
@@ -98,7 +101,7 @@ class Auth(object):
             if resp_tokens.ok:
                 self.token = resp_tokens.json()
                 self.tokens = [self.token]
-                print(
+                logger.debug(
                     f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 return True
@@ -111,7 +114,7 @@ class Auth(object):
             if resp_tokens.ok:
                 self.token = resp_tokens.json()
                 self.tokens.extend(self.token)
-                print(
+                logger.debug(
                     f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 return True
@@ -127,7 +130,7 @@ class Auth(object):
                 if resp_tokens.ok:
                     self.token = resp_tokens.json()
                     self.tokens[0] = self.token
-                    print(
+                    logger.debug(
                         f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                     )
                     return True
@@ -138,7 +141,10 @@ class Auth(object):
         return False
 
     def get_s3_credentials(
-        self, daac: Optional[str] = "", provider: Optional[str] = ""
+        self,
+        daac: Optional[str] = None,
+        provider: Optional[str] = None,
+        endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider, the
         easier way is to use the DAAC short name. provider is optional if we know it.
@@ -146,6 +152,7 @@ class Auth(object):
         Parameters:
             provider: A valid cloud provider, each DAAC has a provider code for their cloud distributions
             daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
+            endpoint: getting the credentials directly from the S3Credentials URL
 
         Rreturns:
             A Python dictionary with the temporary AWS S3 credentials
@@ -153,7 +160,12 @@ class Auth(object):
         """
         if self.authenticated:
             session = SessionWithHeaderRedirection(self.username, self.password)
-            auth_url = self._get_cloud_auth_url(daac_shortname=daac, provider=provider)
+            if endpoint is None:
+                auth_url = self._get_cloud_auth_url(
+                    daac_shortname=daac, provider=provider
+                )
+            else:
+                auth_url = endpoint
             if auth_url.startswith("https://"):
                 cumulus_resp = session.get(auth_url, timeout=15, allow_redirects=True)
                 auth_resp = session.get(
@@ -221,7 +233,7 @@ class Auth(object):
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
         authenticated = self._get_credentials(username, password)
         if authenticated:
-            print("Using user provided credentials for EDL")
+            logger.debug("Using user provided credentials for EDL")
             if presist_credentials:
                 print("Persisting credentials to .netrc")
                 self._persist_user_credentials(username, password)
@@ -231,11 +243,11 @@ class Auth(object):
         try:
             my_netrc = Netrc()
         except FileNotFoundError as err:
-            print(f"No .netrc found in {os.path.expanduser('~')}")
-            raise err
+            raise FileNotFoundError(
+                f"No .netrc found in {os.path.expanduser('~')}"
+            ) from err
         except NetrcParseError as err:
-            print("Unable to parse .netrc")
-            raise err
+            raise NetrcParseError("Unable to parse .netrc") from err
         if my_netrc["urs.earthdata.nasa.gov"] is not None:
             username = my_netrc["urs.earthdata.nasa.gov"]["login"]
             password = my_netrc["urs.earthdata.nasa.gov"]["password"]
@@ -243,7 +255,7 @@ class Auth(object):
             return False
         authenticated = self._get_credentials(username, password)
         if authenticated:
-            print("Using .netrc file for EDL")
+            logger.debug("Using .netrc file for EDL")
         return authenticated
 
     def _environment(self) -> bool:
@@ -251,9 +263,9 @@ class Auth(object):
         password = os.getenv("EARTHDATA_PASSWORD")
         authenticated = self._get_credentials(username, password)
         if authenticated:
-            print("Using environment variables for EDL")
+            logger.debug("Using environment variables for EDL")
         else:
-            print(
+            logger.debug(
                 "EARTHDATA_USERNAME and EARTHDATA_PASSWORD are not set in the current environment, try "
                 "setting them or use a different strategy (netrc, interactive)"
             )
@@ -270,7 +282,7 @@ class Auth(object):
                     f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
                 )
                 return False
-            print("You're now authenticated with NASA Earthdata Login")
+            logger.debug("You're now authenticated with NASA Earthdata Login")
             self.username = username
             self.password = password
 
@@ -279,13 +291,13 @@ class Auth(object):
 
             if len(self.tokens) == 0:
                 self.refresh_tokens()
-                print(
+                logger.debug(
                     f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
                 )
                 self.token = self.tokens[0]
             elif len(self.tokens) > 0:
                 self.token = self.tokens[0]
-                print(
+                logger.debug(
                     f"Using token with expiration date: {self.token['expiration_date']}"
                 )
             profile = self.get_user_profile()
