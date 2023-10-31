@@ -1,11 +1,20 @@
 # Changelog
 
-## [unreleased]
-* bug fixes:
+## [v0.7.0] 2023-10-31
+* Bug Fixes:
     * Fix spelling mistake in `access` variable assignment (`direc` -> `direct`)
       in `earthaccess.store._get_granules`.
     * Pass `threads` arg to `_open_urls_https` in
       `earthaccess.store._open_urls`, replacing the hard-coded value of 8.
+    * Return S3 data links by default when in region.
+* Enhancements:
+    * `earthaccess.download` now accepts a single granule as input in addition to a list of granules.
+    * `earthaccess.download` now returns fully qualified local file paths.
+* New Features:
+    * Earthaccess will now automatically search for Earthdata authentication. ``earthaccess.login()`` 
+      still works as before, but is no longer required if you have a ``~/.netrc`` file for have set 
+      ``EARTHDATA_USERNAME`` and ``EARTHDATA_PASSWORD`` environment variables.
+    * Add `earthaccess.auth_environ()` utility for getting Earthdata authentication environment variables.
 
 ## [v0.6.0] 2023-09-20
 * bug fixes:
