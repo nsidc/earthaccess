@@ -89,7 +89,7 @@ scripts/format.sh
 1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
    increase the minor version (`1.2.3` to `1.3.0`):
    ```
-   bumpversion bump minor
+   bump-my-version bump minor
    ```
 2. Push a tag on the new commit containing the version number, prefixed with `v`, e.g.
    `v1.3.0`.
