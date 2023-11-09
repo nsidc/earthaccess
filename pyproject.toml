@@ -78,6 +78,10 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 
+[tool.pytest]
+filterwarnings = ["error::UserWarning"]
+
+
 [tool.bumpversion]
 current_version = "0.7.0"
 commit = false
