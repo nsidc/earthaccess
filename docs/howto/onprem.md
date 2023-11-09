@@ -1,4 +1,4 @@
-# Download data for on-prem datasets 
+# Download data for on-prem datasets
 
 Import the `earthaccess` library, search for granules in an on-prem dataset and download to a local computer.
 The Sea Ice Concentrations from Nimbus-7 SMMR and DMSP SSM/I-SSMIS Passive Microwave Data, Version 2, dataset is used.
