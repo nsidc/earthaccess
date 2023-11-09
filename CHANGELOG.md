@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.7.1] 2023-11-08
+* Bug Fixes:
+    * Treat granules without `RelatedUrls` as not cloud-hosted.
+
 ## [v0.7.0] 2023-10-31
 * Bug Fixes:
     * Fix spelling mistake in `access` variable assignment (`direc` -> `direct`)
