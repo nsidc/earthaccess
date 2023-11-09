@@ -491,6 +491,10 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
+        """Check if a granule record in CMR advertises "direct access"."""
+        if "RelatedUrls" not in granule["umm"]:
+            return False
+
         direct_def = "GET DATA VIA DIRECT ACCESS"
         for link in granule["umm"]["RelatedUrls"]:
             if "protected" in link["URL"] or link["Type"] == direct_def:
