@@ -82,6 +82,17 @@ build-backend = "poetry.masonry.api"
 filterwarnings = ["error::UserWarning"]
 
 
+[tool.mypy]
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "tests.*",
+]
+ignore_errors = true
+
+
 [tool.bumpversion]
 current_version = "0.7.0"
 commit = false
