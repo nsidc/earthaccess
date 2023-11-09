@@ -15,8 +15,8 @@
     * `earthaccess.download` now accepts a single granule as input in addition to a list of granules.
     * `earthaccess.download` now returns fully qualified local file paths.
 * New Features:
-    * Earthaccess will now automatically search for Earthdata authentication. ``earthaccess.login()`` 
-      still works as before, but is no longer required if you have a ``~/.netrc`` file for have set 
+    * Earthaccess will now automatically search for Earthdata authentication. ``earthaccess.login()``
+      still works as before, but is no longer required if you have a ``~/.netrc`` file for have set
       ``EARTHDATA_USERNAME`` and ``EARTHDATA_PASSWORD`` environment variables.
     * Add `earthaccess.auth_environ()` utility for getting Earthdata authentication environment variables.
 
