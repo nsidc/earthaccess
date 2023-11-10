@@ -69,13 +69,18 @@ def test_granules_search_returns_valid_results(kwargs):
 
 
 @pytest.mark.parametrize("selection", [0, slice(None)])
-def test_earthaccess_api_can_download_granules(tmp_path, selection):
+@pytest.mark.parametrize("use_url", [True, False])
+def test_download(tmp_path, selection, use_url):
     results = earthaccess.search_data(
         count=2,
         short_name="ATL08",
         cloud_hosted=True,
         bounding_box=(-92.86, 16.26, -91.58, 16.97),
     )
+    if use_url:
+        # Download via file URL instead of granule
+        results = [r.data_links(access="indirect") for r in results]
+        results = sum(results, start=[])  # flatten to a list of strings
     result = results[selection]
     files = earthaccess.download(result, str(tmp_path))
     assertions.assertIsInstance(files, list)
