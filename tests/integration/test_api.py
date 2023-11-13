@@ -78,7 +78,7 @@ def test_download(tmp_path, selection, use_url):
         bounding_box=(-92.86, 16.26, -91.58, 16.97),
     )
     if use_url:
-        # Download via file URL instead of granule
+        # Download via file URL string instead of DataGranule object
         results = [r.data_links(access="indirect") for r in results]
         results = sum(results, start=[])  # flatten to a list of strings
     result = results[selection]
