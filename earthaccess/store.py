@@ -6,7 +6,7 @@ from functools import lru_cache
 from itertools import chain
 from pathlib import Path
 from pickle import dumps, loads
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from uuid import uuid4
 
 import earthaccess
@@ -97,7 +97,7 @@ class Store(object):
         if auth.authenticated is True:
             self.auth = auth
             self._s3_credentials: Dict[
-                tuple, tuple[datetime.datetime, Dict[str, str]]
+                Tuple, Tuple[datetime.datetime, Dict[str, str]]
             ] = {}
             oauth_profile = "https://urs.earthdata.nasa.gov/profile"
             # sets the initial URS cookie
