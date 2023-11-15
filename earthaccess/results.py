@@ -207,7 +207,16 @@ class DataGranule(CustomDict):
         self.cloud_hosted = cloud_hosted
         # TODO: maybe add area, start date and all that as an instance value
         self["size"] = self.size()
-        self.uuid = str(uuid.uuid4())
+        if "ConceptId" in self["umm"]["CollectionReference"]:
+            self["dataset-id"] = self["umm"]["CollectionReference"]["ConceptId"]
+        elif "ShortName" in self["umm"]["CollectionReference"]:
+            self["dataset-id"] = self["umm"]["CollectionReference"]["ShortName"]
+        elif "EntryTitle" in self["umm"]["CollectionReference"]:
+            self["dataset-id"] = self["umm"]["CollectionReference"]["EntryTitle"]
+        else:
+            self["dataset-id"] = self["meta"]["provider-id"] + self["meta"]["native-id"][0:4]
+
+
         self.render_dict: Any
         if fields is None:
             self.render_dict = self

@@ -5,6 +5,8 @@ import requests
 import s3fs
 from fsspec import AbstractFileSystem
 
+from .widgets import SearchWidget
+
 from .auth import Auth
 from .results import DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
@@ -333,6 +335,11 @@ def get_edl_token() -> str:
     """
     token = earthaccess.__auth__.token
     return token
+
+
+def search_widget(projection: str = "global", map: Any = None) -> Any:
+    sw = SearchWidget(projection=projection, map=map)
+    return sw
 
 
 def auth_environ() -> Dict[str, str]:

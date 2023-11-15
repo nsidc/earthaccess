@@ -38,6 +38,8 @@ s3fs = ">=2021.11, <2024"
 fsspec = ">=2022.1"
 tinynetrc = "^1.3.1"
 multimethod = ">=1.8"
+geopandas = {version = ">=0.13.2", extras = ["shapely", "matplotlib", "ipyleaflet", "ipywidgets"]}
+shapely = ">=2.0.2,<3.0.0"
 
 
 [tool.poetry.dev-dependencies]

@@ -1,6 +1,7 @@
 import datetime as dt
 from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type
+from uuid import uuid4
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
@@ -404,12 +405,7 @@ class DataGranules(GranuleQuery):
         if not isinstance(cloud_hosted, bool):
             raise TypeError("cloud_hosted must be of type bool")
 
-        if "short_name" in self.params:
-            provider = find_provider_by_shortname(
-                self.params["short_name"], cloud_hosted
-            )
-            if provider is not None:
-                self.params["provider"] = provider
+        self.params["cloud_hosted"] = cloud_hosted 
         return self
 
     def granule_name(self, granule_name: str) -> Type[CollectionQuery]:
@@ -527,6 +523,7 @@ class DataGranules(GranuleQuery):
         results: List = []
         page = 1
         headers: Dict[str, str] = {}
+
         while len(results) < limit:
             params = {"page_size": page_size}
             # TODO: should be in a logger
@@ -556,7 +553,8 @@ class DataGranules(GranuleQuery):
                     else:
                         cloud = False
                     latest = list(
-                        DataGranule(granule, cloud_hosted=cloud)
+                        DataGranule(granule,
+                                    cloud_hosted=cloud)
                         for granule in response.json()["items"]
                     )
                 else:

@@ -1,7 +1,6 @@
 import logging
 import threading
 from importlib.metadata import version
-from typing import Any
 
 from .api import (
     auth_environ,
@@ -16,6 +15,7 @@ from .api import (
     open,
     search_data,
     search_datasets,
+    search_widget
 )
 from .auth import Auth
 from .search import DataCollections, DataGranules
@@ -39,6 +39,7 @@ __all__ = [
     "DataCollections",
     "Auth",
     "Store",
+    "search_widget",
     "auth_environ",
 ]
 
