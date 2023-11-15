@@ -12,6 +12,12 @@ from .store import Store
 from .utils import _validation as validate
 
 
+def _normalize_location(location: Union[str, None]) -> Union[str, None]:
+    if location is not None:
+        location = location.upper()
+    return location
+
+
 def search_datasets(
     count: int = -1, **kwargs: Any
 ) -> List[earthaccess.results.DataCollection]:
@@ -170,6 +176,7 @@ def download(
     Returns:
         List of downloaded files
     """
+    provider = _normalize_location(provider)
     if isinstance(granules, DataGranule):
         granules = [granules]
     try:
@@ -194,6 +201,7 @@ def open(
     Returns:
         a list of s3fs "file pointers" to s3 files.
     """
+    provider = _normalize_location(provider)
     results = earthaccess.__store__.open(granules=granules, provider=provider)
     return results
 
@@ -215,10 +223,8 @@ def get_s3_credentials(
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
     """
-    if daac is not None:
-        daac = daac.upper()
-    if provider is not None:
-        provider = provider.upper()
+    daac = _normalize_location(daac)
+    provider = _normalize_location(provider)
     if results is not None:
         endpoint = results[0].get_s3_credentials_endpoint()
         return earthaccess.__auth__.get_s3_credentials(endpoint=endpoint)
@@ -315,6 +321,8 @@ def get_s3fs_session(
     Returns:
         class s3fs.S3FileSystem: an authenticated s3fs session valid for 1 hour
     """
+    daac = _normalize_location(daac)
+    provider = _normalize_location(provider)
     if results is not None:
         endpoint = results[0].get_s3_credentials_endpoint()
         if endpoint is not None:
