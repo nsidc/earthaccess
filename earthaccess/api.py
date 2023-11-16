@@ -13,6 +13,13 @@ from .utils import _validation as validate
 
 
 def _normalize_location(location: Union[str, None]) -> Union[str, None]:
+    """Handle user-provided `daac` and `provider` values
+
+    These values must have a capital letter as the first character
+    followed by capital letters, numbers, or an underscore. Here we
+    uppercase all strings to handle the case when users provide
+    lowercase values (e.g. "pocloud" instead of "POCLOUD").
+    """
     if location is not None:
         location = location.upper()
     return location
