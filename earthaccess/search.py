@@ -318,7 +318,7 @@ class DataGranules(GranuleQuery):
 
         self._debug = False
 
-    def hits(self):
+    def hits(self) -> int:
         """
         Returns the number of hits the current query will return. This is done by
         making a lightweight query to CMR and inspecting the returned headers.
