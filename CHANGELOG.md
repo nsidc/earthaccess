@@ -1,5 +1,8 @@
 # Changelog
 
+## [unreleased]
+* Fix zero granules being reported for restricted datasets
+
 ## [v0.7.1] 2023-11-08
 * Bug Fixes:
     * Treat granules without `RelatedUrls` as not cloud-hosted.
