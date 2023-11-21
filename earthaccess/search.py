@@ -318,6 +318,25 @@ class DataGranules(GranuleQuery):
 
         self._debug = False
 
+    def hits(self):
+        """
+        Returns the number of hits the current query will return. This is done by
+        making a lightweight query to CMR and inspecting the returned headers.
+
+        :returns: number of results reported by CMR
+        """
+
+        url = self._build_url()
+
+        response = self.session.get(url, headers=self.headers, params={'page_size': 0})
+
+        try:
+            response.raise_for_status()
+        except exceptions.HTTPError as ex:
+            raise RuntimeError(ex.response.text)
+
+        return int(response.headers["CMR-Hits"])
+
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
         of the method, and the value should either be the value or a tuple of values.
