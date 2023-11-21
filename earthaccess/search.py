@@ -58,7 +58,7 @@ class DataCollections(CollectionQuery):
 
 
         Returns:
-            number of results reproted by CMR
+            number of results reported by CMR
         """
         return super().hits()
 
