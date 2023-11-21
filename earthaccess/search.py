@@ -328,7 +328,7 @@ class DataGranules(GranuleQuery):
 
         url = self._build_url()
 
-        response = self.session.get(url, headers=self.headers, params={'page_size': 0})
+        response = self.session.get(url, headers=self.headers, params={"page_size": 0})
 
         try:
             response.raise_for_status()
