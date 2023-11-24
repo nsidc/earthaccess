@@ -59,7 +59,7 @@ class DataCollections(CollectionQuery):
 
 
         Returns:
-            number of results reproted by CMR
+            number of results reported by CMR
         """
         return super().hits()
 
@@ -319,6 +319,25 @@ class DataGranules(GranuleQuery):
 
         self._debug = False
 
+    def hits(self) -> int:
+        """
+        Returns the number of hits the current query will return. This is done by
+        making a lightweight query to CMR and inspecting the returned headers.
+
+        :returns: number of results reported by CMR
+        """
+
+        url = self._build_url()
+
+        response = self.session.get(url, headers=self.headers, params={"page_size": 0})
+
+        try:
+            response.raise_for_status()
+        except exceptions.HTTPError as ex:
+            raise RuntimeError(ex.response.text)
+
+        return int(response.headers["CMR-Hits"])
+
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
         of the method, and the value should either be the value or a tuple of values.
@@ -487,6 +506,10 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
+        """Check if a granule record in CMR advertises "direct access"."""
+        if "RelatedUrls" not in granule["umm"]:
+            return False
+
         direct_def = "GET DATA VIA DIRECT ACCESS"
         for link in granule["umm"]["RelatedUrls"]:
             if "protected" in link["URL"] or link["Type"] == direct_def:

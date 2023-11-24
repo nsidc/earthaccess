@@ -1,12 +1,17 @@
+ci:
+  autoupdate_schedule: "monthly"  # Like dependabot
+  autoupdate_commit_msg: "chore: update pre-commit hooks"
+  autofix_prs: false  # Comment "pre-commit.ci autofix" on a PR to trigger
+
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
-    hooks:
-    -   id: check-yaml
-    -   id: trailing-whitespace
-    -   id: check-toml
-    -   id: check-json
--   repo: https://github.com/psf/black
-    rev: 20.8b1
-    hooks:
-    -   id: black
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.3.0
+  hooks:
+    - id: check-yaml
+    - id: trailing-whitespace
+    - id: check-toml
+    - id: check-json
+- repo: https://github.com/psf/black
+  rev: 23.10.1
+  hooks:
+    - id: black

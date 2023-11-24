@@ -1,5 +1,12 @@
 # Changelog
 
+## [unreleased]
+* Fix zero granules being reported for restricted datasets
+
+## [v0.7.1] 2023-11-08
+* Bug Fixes:
+    * Treat granules without `RelatedUrls` as not cloud-hosted.
+
 ## [v0.7.0] 2023-10-31
 * Bug Fixes:
     * Fix spelling mistake in `access` variable assignment (`direc` -> `direct`)
@@ -11,8 +18,8 @@
     * `earthaccess.download` now accepts a single granule as input in addition to a list of granules.
     * `earthaccess.download` now returns fully qualified local file paths.
 * New Features:
-    * Earthaccess will now automatically search for Earthdata authentication. ``earthaccess.login()`` 
-      still works as before, but is no longer required if you have a ``~/.netrc`` file for have set 
+    * Earthaccess will now automatically search for Earthdata authentication. ``earthaccess.login()``
+      still works as before, but is no longer required if you have a ``~/.netrc`` file for have set
       ``EARTHDATA_USERNAME`` and ``EARTHDATA_PASSWORD`` environment variables.
     * Add `earthaccess.auth_environ()` utility for getting Earthdata authentication environment variables.
 

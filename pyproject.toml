@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthaccess"
-version = "0.7.0"
+version = "0.7.1"
 homepage = "https://github.com/nsidc/earthaccess"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
@@ -80,8 +80,23 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 
+[tool.pytest]
+filterwarnings = ["error::UserWarning"]
+
+
+[tool.mypy]
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "tests.*",
+]
+ignore_errors = true
+
+
 [tool.bumpversion]
-current_version = "0.7.0"
+current_version = "0.7.1"
 commit = false
 tag = false
 
