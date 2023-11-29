@@ -2,20 +2,28 @@ name: "Issue Manager"
 
 on:
   schedule:
-  - cron: "0 0 * * *"
+    - cron: "0 0 * * *"
+  issue_comment:
+    types:
+      - "created"
+  issues:
+    types:
+      - "labeled"
+  pull_request_target:
+    types:
+      - "labeled"
 
 jobs:
   issue-manager:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
     steps:
-    - uses: tiangolo/issue-manager@master
+    - uses: "tiangolo/issue-manager@0.4.0"
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: "${{ secrets.GITHUB_TOKEN }}"
         config: >
             {
-              "answered": {
-                "users": ["betolink"],
+              "feedback requested": {
                 "delay": 864000,
-                "message": "Assuming the original issue was solved, it will be automatically closed now. But feel free to add more comments or create new issues."
+                "message": "Closing after 10 days of waiting for feedback. If you feel this was in error, please re-open, `@` a maintainer, or create new issues."
               }
             }

@@ -58,7 +58,7 @@ class DataCollections(CollectionQuery):
 
 
         Returns:
-            number of results reproted by CMR
+            number of results reported by CMR
         """
         return super().hits()
 
@@ -317,6 +317,25 @@ class DataGranules(GranuleQuery):
             self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
+
+    def hits(self) -> int:
+        """
+        Returns the number of hits the current query will return. This is done by
+        making a lightweight query to CMR and inspecting the returned headers.
+
+        :returns: number of results reported by CMR
+        """
+
+        url = self._build_url()
+
+        response = self.session.get(url, headers=self.headers, params={"page_size": 0})
+
+        try:
+            response.raise_for_status()
+        except exceptions.HTTPError as ex:
+            raise RuntimeError(ex.response.text)
+
+        return int(response.headers["CMR-Hits"])
 
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
