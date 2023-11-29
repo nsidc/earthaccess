@@ -217,6 +217,7 @@ class Store(object):
         except KeyError:
             need_new_creds = True
         else:
+            # If cached credentials are expired, invalidate the cache
             delta = datetime.datetime.now() - dt_init
             if round(delta.seconds / 60, 2) > 55:
                 need_new_creds = True
