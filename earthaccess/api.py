@@ -19,6 +19,8 @@ def _normalize_location(location: Union[str, None]) -> Union[str, None]:
     followed by capital letters, numbers, or an underscore. Here we
     uppercase all strings to handle the case when users provide
     lowercase values (e.g. "pocloud" instead of "POCLOUD").
+
+    https://wiki.earthdata.nasa.gov/display/ED/CMR+Data+Partner+User+Guide?src=contextnavpagetreemode
     """
     if location is not None:
         location = location.upper()
