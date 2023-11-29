@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Type, Union, cast
+from typing import Any, Dict, List, Optional, Type, Union
 
 import earthaccess
 import requests
@@ -170,8 +170,10 @@ def download(
     Returns:
         List of downloaded files
     """
-    if isinstance(granules, (DataGranule, str)):
-        granules = cast(Union[List[DataGranule], List[str]], [granules])
+    if isinstance(granules, DataGranule):
+        granules = [granules]
+    elif isinstance(granules, str):
+        granules = [granules]
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
