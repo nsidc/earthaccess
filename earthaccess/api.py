@@ -166,7 +166,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
 
 def download(
-    granules: Union[DataGranule, List[DataGranule], List[str]],
+    granules: Union[DataGranule, List[DataGranule], str, List[str]],
     local_path: Union[str, None],
     provider: Optional[str] = None,
     threads: int = 8,
@@ -177,7 +177,7 @@ def download(
        * If we run it outside AWS (us-west-2 region) and the dataset is cloud hostes we'll use HTTP links
 
     Parameters:
-        granules: a granule, list of granules, or a list of granule links (HTTP)
+        granules: a granule, list of granules, a granule link (HTTP), or a list of granule links (HTTP)
         local_path: local directory to store the remote data granules
         provider: if we download a list of URLs we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
@@ -187,6 +187,8 @@ def download(
     """
     provider = _normalize_location(provider)
     if isinstance(granules, DataGranule):
+        granules = [granules]
+    elif isinstance(granules, str):
         granules = [granules]
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
