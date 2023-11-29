@@ -209,8 +209,15 @@ class Store(object):
                 "parameters must be specified. "
             )
 
+        if concept_id is not None:
+            provider = self._derive_concept_provider(concept_id)
+
         # Get existing S3 credentials if we already have them
-        location = (concept_id, daac, provider, endpoint)
+        location = (
+            daac,
+            provider,
+            endpoint,
+        )  # Identifier for where to get S3 credentials from
         need_new_creds = False
         try:
             dt_init, creds = self._s3_credentials[location]
@@ -228,9 +235,6 @@ class Store(object):
             now = datetime.datetime.now()
             if endpoint is not None:
                 creds = self.auth.get_s3_credentials(endpoint=endpoint)
-            elif concept_id is not None:
-                provider = self._derive_concept_provider(concept_id)
-                creds = self.auth.get_s3_credentials(provider=provider)
             elif daac is not None:
                 creds = self.auth.get_s3_credentials(daac=daac)
             elif provider is not None:
