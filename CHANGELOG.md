@@ -1,7 +1,12 @@
 # Changelog
 
-## [unreleased]
-* Fix zero granules being reported for restricted datasets
+## Unreleased
+* Bug fixes:
+    * Fix zero granules being reported for restricted datasets.
+* Enhancements:
+    * earthaccess will `raise` errors instead of `print`ing them in more cases.
+    * `daac` and `provider` parameters are now normalized to uppercase, since lowercase
+      characters are never valid.
 
 ## [v0.7.1] 2023-11-08
 * Bug Fixes:
