@@ -110,18 +110,9 @@ CLOUD_PROVIDERS = [
 
 # Some testing urls behind EDL
 DAAC_TEST_URLS = [
-    (
-        "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/"
-        "JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/"
-    ),
-    (
-        "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/"
-        "ATL03/005/2018/10/14/dummy.nc"
-    ),
-    (
-        "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/"
-        "ATL06_20181014045341_02380102_005_01.iso.xml"
-    ),
+    ("https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/" "JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/"),
+    ("https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/" "ATL03/005/2018/10/14/dummy.nc"),
+    ("https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/" "ATL06_20181014045341_02380102_005_01.iso.xml"),
     ("https://hydro1.gesdisc.eosdis.nasa.gov/data/GLDAS/GLDAS_NOAH10_M.2.0/1948/"),
     (
         "https://e4ftl01.cr.usgs.gov//DP114/MOTA/MCD43A3.006/2000.02.24/"
@@ -131,9 +122,7 @@ DAAC_TEST_URLS = [
 ]
 
 
-def find_provider(
-    daac_short_name: Optional[str] = None, cloud_hosted: Optional[bool] = None
-) -> Union[str, None]:
+def find_provider(daac_short_name: Optional[str] = None, cloud_hosted: Optional[bool] = None) -> Union[str, None]:
     for daac in DAACS:
         if daac_short_name == daac["short-name"]:
             if cloud_hosted:
@@ -150,9 +139,7 @@ def find_provider(
 
 def find_provider_by_shortname(short_name: str, cloud_hosted: bool) -> Union[str, None]:
     base_url = "https://cmr.earthdata.nasa.gov/search/collections.umm_json?"
-    providers = requests.get(
-        f"{base_url}&cloud_hosted={cloud_hosted}&short_name={short_name}"
-    ).json()
+    providers = requests.get(f"{base_url}&cloud_hosted={cloud_hosted}&short_name={short_name}").json()
     if int(providers["hits"]) > 0:
         return providers["items"][0]["meta"]["provider-id"]
     else:

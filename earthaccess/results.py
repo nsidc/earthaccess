@@ -28,17 +28,9 @@ class CustomDict(dict):
             self.render_dict = self._filter_fields_(fields)
 
     def _filter_fields_(self, fields: List[str]) -> Dict[str, Any]:
-        filtered_dict = {
-            "umm": dict(
-                (field, self["umm"][field]) for field in fields if field in self["umm"]
-            )
-        }
+        filtered_dict = {"umm": dict((field, self["umm"][field]) for field in fields if field in self["umm"])}
         basic_dict = {
-            "meta": dict(
-                (field, self["meta"][field])
-                for field in self._basic_meta_fields_
-                if field in self["meta"]
-            )
+            "meta": dict((field, self["meta"][field]) for field in self._basic_meta_fields_ if field in self["meta"])
         }
         basic_dict.update(filtered_dict)
         return basic_dict
@@ -121,11 +113,7 @@ class DataCollection(CustomDict):
             If available, it returns the collection data type, i.e. HDF5, CSV etc
         """
         if "ArchiveAndDistributionInformation" in self["umm"]:
-            return str(
-                self["umm"]["ArchiveAndDistributionInformation"][
-                    "FileDistributionInformation"
-                ]
-            )
+            return str(self["umm"]["ArchiveAndDistributionInformation"]["FileDistributionInformation"])
         return ""
 
     def version(self) -> str:
@@ -174,9 +162,7 @@ class DataCollection(CustomDict):
         return {}
 
     def __repr__(self) -> str:
-        return json.dumps(
-            self.render_dict, sort_keys=False, indent=2, separators=(",", ": ")
-        )
+        return json.dumps(self.render_dict, sort_keys=False, indent=2, separators=(",", ": "))
 
 
 class DataGranule(CustomDict):
@@ -228,9 +214,7 @@ class DataGranule(CustomDict):
         Temporal coverage: {self['umm']['TemporalExtent']}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
-        """.strip().replace(
-            "  ", ""
-        )
+        """.strip().replace("  ", "")
         return rep_str
 
     def _repr_html_(self) -> str:
@@ -280,15 +264,11 @@ class DataGranule(CustomDict):
         for link in links:
             if link.startswith("s3"):
                 s3_links.append(link)
-            elif link.startswith("https://") and (
-                "cumulus" in link or "protected" in link
-            ):
+            elif link.startswith("https://") and ("cumulus" in link or "protected" in link):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(
-        self, access: Optional[str] = None, in_region: bool = False
-    ) -> List[str]:
+    def data_links(self, access: Optional[str] = None, in_region: bool = False) -> List[str]:
         """Returns the data links form a granule
 
         Parameters:

@@ -10,12 +10,13 @@ from pickle import dumps, loads
 from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
-import earthaccess
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
+
+import earthaccess
 
 from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
@@ -64,9 +65,7 @@ def _open_files(
     return fileset
 
 
-def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, data: Any
-) -> EarthAccessFile:
+def make_instance(cls: Any, granule: DataGranule, auth: Auth, data: Any) -> EarthAccessFile:
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
         earthaccess.__auth__ = auth
@@ -139,18 +138,14 @@ class Store(object):
         session = self.auth.get_session()
         try:
             # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-            resp = session.get(
-                "http://169.254.169.254/latest/meta-data/public-ipv4", timeout=1
-            )
+            resp = session.get("http://169.254.169.254/latest/meta-data/public-ipv4", timeout=1)
         except Exception:
             return False
         if resp.status_code == 200:
             return True
         return False
 
-    def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = False
-    ) -> None:
+    def set_requests_session(self, url: str, method: str = "get", bearer_token: bool = False) -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
         Mainly used to get the authentication cookies from different DAACs and URS
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
@@ -170,9 +165,7 @@ class Store(object):
 
         if resp.status_code in [400, 401, 403]:
             new_session = requests.Session()
-            resp_req = new_session.request(
-                method, url, allow_redirects=True, cookies=self._requests_cookies
-            )
+            resp_req = new_session.request(method, url, allow_redirects=True, cookies=self._requests_cookies)
             if resp_req.status_code in [400, 401, 403]:
                 resp.raise_for_status()
             else:
@@ -203,8 +196,7 @@ class Store(object):
         if self.auth is not None:
             if not any([concept_id, daac, provider, endpoint]):
                 raise ValueError(
-                    "At least one of the concept_id, daac, provider or endpoint"
-                    "parameters must be specified. "
+                    "At least one of the concept_id, daac, provider or endpoint" "parameters must be specified. "
                 )
             if endpoint is not None:
                 s3_credentials = self.auth.get_s3_credentials(endpoint=endpoint)
@@ -219,9 +211,7 @@ class Store(object):
             delta_minutes = now - self.initial_ts
             # TODO: test this mocking the time or use https://github.com/dbader/schedule
             # if we exceed 1 hour
-            if (
-                self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59
-            ) and s3_credentials is not None:
+            if (self.s3_fs is None or round(delta_minutes.seconds / 60, 2) > 59) and s3_credentials is not None:
                 self.s3_fs = s3fs.S3FileSystem(
                     key=s3_credentials["accessKeyId"],
                     secret=s3_credentials["secretAccessKey"],
@@ -230,9 +220,7 @@ class Store(object):
                 self.initial_ts = datetime.datetime.now()
             return deepcopy(self.s3_fs)
         else:
-            raise ValueError(
-                "A valid Earthdata login instance is required to retrieve S3 credentials"
-            )
+            raise ValueError("A valid Earthdata login instance is required to retrieve S3 credentials")
 
     @lru_cache
     def get_fsspec_session(self) -> fsspec.AbstractFileSystem:
@@ -310,9 +298,7 @@ class Store(object):
         print(f"Opening {len(granules)} granules, approx size: {total_size} GB")
 
         if self.auth is None:
-            raise ValueError(
-                "A valid Earthdata login instance is required to retrieve credentials"
-            )
+            raise ValueError("A valid Earthdata login instance is required to retrieve credentials")
 
         if self.running_in_aws:
             if granules[0].cloud_hosted:
@@ -330,11 +316,7 @@ class Store(object):
                 access_method = "on_prem"
                 s3_fs = None
 
-            data_links = list(
-                chain.from_iterable(
-                    granule.data_links(access=access_method) for granule in granules
-                )
-            )
+            data_links = list(chain.from_iterable(granule.data_links(access=access_method) for granule in granules))
 
             if s3_fs is not None:
                 try:
@@ -355,11 +337,7 @@ class Store(object):
             return fileset
         else:
             access_method = "on_prem"
-            data_links = list(
-                chain.from_iterable(
-                    granule.data_links(access=access_method) for granule in granules
-                )
-            )
+            data_links = list(chain.from_iterable(granule.data_links(access=access_method) for granule in granules))
             fileset = self._open_urls_https(data_links, granules, threads=threads)
             return fileset
 
@@ -373,20 +351,14 @@ class Store(object):
         fileset: List = []
         data_links: List = []
 
-        if isinstance(granules[0], str) and (
-            granules[0].startswith("s3") or granules[0].startswith("http")
-        ):
+        if isinstance(granules[0], str) and (granules[0].startswith("s3") or granules[0].startswith("http")):
             # TODO: method to derive the DAAC from url?
             provider = provider
             data_links = granules
         else:
-            raise ValueError(
-                f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
-            )
+            raise ValueError(f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL")
         if self.auth is None:
-            raise ValueError(
-                "A valid Earthdata login instance is required to retrieve S3 credentials"
-            )
+            raise ValueError("A valid Earthdata login instance is required to retrieve S3 credentials")
 
         if self.running_in_aws and granules[0].startswith("s3"):
             if provider is not None:
@@ -414,9 +386,7 @@ class Store(object):
                 )
         else:
             if granules[0].startswith("s3"):
-                raise ValueError(
-                    "We cannot open S3 links when we are not in-region, try using HTTPS links"
-                )
+                raise ValueError("We cannot open S3 links when we are not in-region, try using HTTPS links")
             fileset = self._open_urls_https(data_links, granules, threads)
             return fileset
 
@@ -530,19 +500,14 @@ class Store(object):
         data_links = list(
             # we are not in region
             chain.from_iterable(
-                granule.data_links(access=access, in_region=self.running_in_aws)
-                for granule in granules
+                granule.data_links(access=access, in_region=self.running_in_aws) for granule in granules
             )
         )
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
-        print(
-            f" Getting {len(granules)} granules, approx download size: {total_size} GB"
-        )
+        print(f" Getting {len(granules)} granules, approx download size: {total_size} GB")
         if access == "direct":
             if endpoint is not None:
-                print(
-                    f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}"
-                )
+                print(f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}")
                 s3_fs = self.get_s3fs_session(endpoint=endpoint)
             else:
                 print(f"Accessing cloud dataset using provider: {provider}")
@@ -592,9 +557,7 @@ class Store(object):
             print(f"File {local_filename} already downloaded")
         return local_path
 
-    def _download_onprem_granules(
-        self, urls: List[str], directory: str, threads: int = 8
-    ) -> List[Any]:
+    def _download_onprem_granules(self, urls: List[str], directory: str, threads: int = 8) -> List[Any]:
         """
         downloads a list of URLS into the data directory.
         :param urls: list of granule URLs from an on-prem collection
@@ -605,9 +568,7 @@ class Store(object):
         if urls is None:
             raise ValueError("The granules didn't provide a valid GET DATA link")
         if self.auth is None:
-            raise ValueError(
-                "We need to be logged into NASA EDL in order to download data granules"
-            )
+            raise ValueError("We need to be logged into NASA EDL in order to download data granules")
         if not os.path.exists(directory):
             os.makedirs(directory)
 

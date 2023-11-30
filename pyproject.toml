@@ -97,23 +97,11 @@ line-length = 120
 src = ["earthaccess", "tests"]
 exclude = ["mypy-stubs", "stubs", "typeshed"]
 
-[tool.ruff.format]
-indent-style = "space"
-quote-style = "single"
-
 [tool.ruff.lint]
 extend-select = ["I"]
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
 [tool.ruff.lint.isort]
 combine-as-imports = true
-# unsupported isort arguments:
-# --multi-line=3
-# --trailing-comma
-# --force-grid-wrap=0
-# --line-width 88
 
 
 [tool.bumpversion]

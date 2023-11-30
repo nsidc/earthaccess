@@ -127,17 +127,12 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
             logger.warning(f"PODAAC DRIVE is not supported at the moment: {data_links}")
             continue
         local_path = f"./tests/integration/data/{concept_id}"
-        granules_to_download, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
-        )
+        granules_to_download, total_size_cmr = get_sample_granules(granules, granules_sample_size, granules_max_size)
         if len(granules_to_download) == 0:
-            logger.debug(
-                f"Skipping {concept_id}, granule size exceeds configured max size"
-            )
+            logger.debug(f"Skipping {concept_id}, granule size exceeds configured max size")
             continue
         logger.info(
-            f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}"
+            f"Testing {concept_id}, granules in collection: {total_granules}, " f"download size(MB): {total_size_cmr}"
         )
         # We are testing this method
         downloaded_results = store.get(granules_to_download, local_path=local_path)
@@ -148,9 +143,7 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
         path = Path(local_path)
         assertions.assertTrue(path.is_dir())
         # test that we downloaded the mb reported by CMR
-        total_mb_downloaded = round(
-            (sum(file.stat().st_size for file in path.rglob("*")) / 1024**2), 2
-        )
+        total_mb_downloaded = round((sum(file.stat().st_size for file in path.rglob("*")) / 1024**2), 2)
         # clean the directory
         shutil.rmtree(path)
 

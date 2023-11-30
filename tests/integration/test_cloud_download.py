@@ -123,17 +123,12 @@ def test_earthaccess_can_download_cloud_collection_granules(daac):
         assert type(granules) is list and len(granules) > 0
         assert isinstance(granules[0], earthaccess.results.DataGranule)
         local_path = f"./tests/integration/data/{concept_id}"
-        granules_to_download, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
-        )
+        granules_to_download, total_size_cmr = get_sample_granules(granules, granules_sample_size, granules_max_size)
         if len(granules_to_download) == 0:
-            logger.warning(
-                f"Skipping {concept_id}, granule size exceeds configured max size"
-            )
+            logger.warning(f"Skipping {concept_id}, granule size exceeds configured max size")
             continue
         logger.info(
-            f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}"
+            f"Testing {concept_id}, granules in collection: {total_granules}, " f"download size(MB): {total_size_cmr}"
         )
         # We are testing this method
         try:
@@ -144,9 +139,7 @@ def test_earthaccess_can_download_cloud_collection_granules(daac):
         path = Path(local_path)
         assert path.is_dir()
         # test that we downloaded the mb reported by CMR
-        total_mb_downloaded = round(
-            (sum(file.stat().st_size for file in path.rglob("*")) / 1024**2)
-        )
+        total_mb_downloaded = round((sum(file.stat().st_size for file in path.rglob("*")) / 1024**2))
         # clean the directory
         shutil.rmtree(path)
         # test that we could download the data

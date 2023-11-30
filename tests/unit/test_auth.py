@@ -47,9 +47,7 @@ class TestCreateAuth(unittest.TestCase):
     @responses.activate
     @mock.patch("getpass.getpass")
     @mock.patch("builtins.input")
-    def test_auth_can_create_proper_credentials(
-        self, user_input, user_password
-    ) -> bool:
+    def test_auth_can_create_proper_credentials(self, user_input, user_password) -> bool:
         user_input.return_value = "user"
         user_password.return_value = "password"
         json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
