@@ -20,8 +20,8 @@ jobs:
 
       - name: Ruff linting check
         run: |
-          ruff check --output-format=github earthaccess tests
+          ruff check --output-format=github .
 
       - name: Ruff format check
         run: |
-          ruff format --diff earthaccess tests
+          ruff format --diff .

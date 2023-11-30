@@ -4,4 +4,4 @@ set -e
 set -x
 
 mypy earthaccess --disallow-untyped-defs
-ruff check earthaccess tests
+ruff check .
