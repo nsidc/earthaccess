@@ -27,7 +27,9 @@ def activate_netrc():
     password = os.environ["EARTHDATA_PASSWORD"]
 
     with open(NETRC_PATH, "w") as f:
-        f.write(f"machine urs.earthdata.nasa.gov login {username} password {password}\n")
+        f.write(
+            f"machine urs.earthdata.nasa.gov login {username} password {password}\n"
+        )
         os.chmod(NETRC_PATH, 0o600)
 
 
@@ -90,7 +92,9 @@ def test_auth_can_fetch_s3_credentials():
                 assertions.assertIsInstance(credentials, dict)
                 assertions.assertTrue("accessKeyId" in credentials)
             except Exception as e:
-                print(f"An error occured while trying to fetch S3 credentials for {daac['short-name']}: {e}")
+                print(
+                    f"An error occured while trying to fetch S3 credentials for {daac['short-name']}: {e}"
+                )
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
@@ -99,7 +103,10 @@ def test_get_s3_credentials_lowercase_location(location):
     earthaccess.login(strategy="environment")
     creds = earthaccess.get_s3_credentials(**location)
     assert creds
-    assert all(creds[key] for key in ["accessKeyId", "secretAccessKey", "sessionToken", "expiration"])
+    assert all(
+        creds[key]
+        for key in ["accessKeyId", "secretAccessKey", "sessionToken", "expiration"]
+    )
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))

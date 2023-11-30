@@ -119,7 +119,9 @@ DAAC_TEST_URLS = [
 ]
 
 
-def find_provider(daac_short_name: Optional[str] = None, cloud_hosted: Optional[bool] = None) -> Union[str, None]:
+def find_provider(
+    daac_short_name: Optional[str] = None, cloud_hosted: Optional[bool] = None
+) -> Union[str, None]:
     for daac in DAACS:
         if daac_short_name == daac["short-name"]:
             if cloud_hosted:
@@ -136,7 +138,9 @@ def find_provider(daac_short_name: Optional[str] = None, cloud_hosted: Optional[
 
 def find_provider_by_shortname(short_name: str, cloud_hosted: bool) -> Union[str, None]:
     base_url = "https://cmr.earthdata.nasa.gov/search/collections.umm_json?"
-    providers = requests.get(f"{base_url}&cloud_hosted={cloud_hosted}&short_name={short_name}").json()
+    providers = requests.get(
+        f"{base_url}&cloud_hosted={cloud_hosted}&short_name={short_name}"
+    ).json()
     if int(providers["hits"]) > 0:
         return providers["items"][0]["meta"]["provider-id"]
     else:

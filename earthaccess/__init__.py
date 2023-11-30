@@ -64,14 +64,18 @@ def __getattr__(name):  # type: ignore
                     try:
                         _auth.login(strategy=strategy)
                     except Exception as e:
-                        logger.debug(f"An error occurred during automatic authentication with {strategy=}: {str(e)}")
+                        logger.debug(
+                            f"An error occurred during automatic authentication with {strategy=}: {str(e)}"
+                        )
                         continue
                     else:
                         if not _auth.authenticated:
                             continue
                         else:
                             _store = Store(_auth)
-                            logger.debug(f"Automatic authentication with {strategy=} was successful")
+                            logger.debug(
+                                f"Automatic authentication with {strategy=} was successful"
+                            )
                             break
             return _auth if name == "__auth__" else _store
     else:

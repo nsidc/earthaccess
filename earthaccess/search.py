@@ -243,7 +243,10 @@ class DataCollections(CollectionQuery):
             if self._format == "json":
                 latest = response.json()["feed"]["entry"]
             elif self._format == "umm_json":
-                latest = list(DataCollection(collection, self._fields) for collection in response.json()["items"])
+                latest = list(
+                    DataCollection(collection, self._fields)
+                    for collection in response.json()["items"]
+                )
             else:
                 latest = [response.text]
 
@@ -255,7 +258,9 @@ class DataCollections(CollectionQuery):
 
         return results
 
-    def temporal(self, date_from: str, date_to: str, exclude_boundary: bool = False) -> Type[CollectionQuery]:
+    def temporal(
+        self, date_from: str, date_to: str, exclude_boundary: bool = False
+    ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
         or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls.
         to this method before calling execute().
@@ -419,7 +424,9 @@ class DataGranules(GranuleQuery):
             raise TypeError("cloud_hosted must be of type bool")
 
         if "short_name" in self.params:
-            provider = find_provider_by_shortname(self.params["short_name"], cloud_hosted)
+            provider = find_provider_by_shortname(
+                self.params["short_name"], cloud_hosted
+            )
             if provider is not None:
                 self.params["provider"] = provider
         return self
@@ -478,7 +485,9 @@ class DataGranules(GranuleQuery):
         super().platform(platform)
         return self
 
-    def cloud_cover(self, min_cover: int = 0, max_cover: int = 100) -> Type[GranuleQuery]:
+    def cloud_cover(
+        self, min_cover: int = 0, max_cover: int = 100
+    ) -> Type[GranuleQuery]:
         """Filter by the percentage of cloud cover present in the granule.
 
         Parameters:
@@ -560,14 +569,19 @@ class DataGranules(GranuleQuery):
                 json_response = response.json()["items"]
                 if len(json_response) > 0:
                     if "CMR-Search-After" in response.headers:
-                        headers["CMR-Search-After"] = response.headers["CMR-Search-After"]
+                        headers["CMR-Search-After"] = response.headers[
+                            "CMR-Search-After"
+                        ]
                     else:
                         headers = {}
                     if self._is_cloud_hosted(json_response[0]):
                         cloud = True
                     else:
                         cloud = False
-                    latest = list(DataGranule(granule, cloud_hosted=cloud) for granule in response.json()["items"])
+                    latest = list(
+                        DataGranule(granule, cloud_hosted=cloud)
+                        for granule in response.json()["items"]
+                    )
                 else:
                     latest = []
             else:
@@ -666,7 +680,9 @@ class DataGranules(GranuleQuery):
             upper_right_lon: upper right longitude of the box
             upper_right_lat: upper right latitude of the box
         """
-        super().bounding_box(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)
+        super().bounding_box(
+            lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat
+        )
         return self
 
     def line(self, coordinates: List[Tuple[str, str]]) -> Type[GranuleQuery]:
@@ -704,5 +720,7 @@ class DataGranules(GranuleQuery):
             concept_id = collection[0].concept_id()
             self.params["concept_id"] = concept_id
         else:
-            print(f"earthaccess couldn't find any associated collections with the DOI: {doi}")
+            print(
+                f"earthaccess couldn't find any associated collections with the DOI: {doi}"
+            )
         return self

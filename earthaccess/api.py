@@ -28,7 +28,9 @@ def _normalize_location(location: Union[str, None]) -> Union[str, None]:
     return location
 
 
-def search_datasets(count: int = -1, **kwargs: Any) -> List[earthaccess.results.DataCollection]:
+def search_datasets(
+    count: int = -1, **kwargs: Any
+) -> List[earthaccess.results.DataCollection]:
     """Search datasets using NASA's CMR
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -64,7 +66,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[earthaccess.results.
         ```
     """
     if not validate.valid_dataset_parameters(**kwargs):
-        print("Warning: a valid set of parameters is needed to search for datasets on CMR")
+        print(
+            "Warning: a valid set of parameters is needed to search for datasets on CMR"
+        )
         return []
     if earthaccess.__auth__.authenticated:
         query = DataCollections(auth=earthaccess.__auth__).parameters(**kwargs)
@@ -77,7 +81,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[earthaccess.results.
     return query.get_all()
 
 
-def search_data(count: int = -1, **kwargs: Any) -> List[earthaccess.results.DataGranule]:
+def search_data(
+    count: int = -1, **kwargs: Any
+) -> List[earthaccess.results.DataGranule]:
     """Search dataset granules using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -352,5 +358,7 @@ def get_edl_token() -> str:
 def auth_environ() -> Dict[str, str]:
     auth = earthaccess.__auth__
     if not auth.authenticated:
-        raise RuntimeError("`auth_environ()` requires you to first authenticate with `earthaccess.login()`")
+        raise RuntimeError(
+            "`auth_environ()` requires you to first authenticate with `earthaccess.login()`"
+        )
     return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}

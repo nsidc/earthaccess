@@ -133,12 +133,17 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         if not supported_collection(data_links):
             logger.warning(f"PODAAC DRIVE is not supported at the moment: {data_links}")
             continue
-        granules_to_open, total_size_cmr = get_sample_granules(granules, granules_sample_size, granules_max_size)
+        granules_to_open, total_size_cmr = get_sample_granules(
+            granules, granules_sample_size, granules_max_size
+        )
         if len(granules_to_open) == 0:
-            logger.debug(f"Skipping {concept_id}, granule size exceeds configured max size")
+            logger.debug(
+                f"Skipping {concept_id}, granule size exceeds configured max size"
+            )
             continue
         logger.info(
-            f"Testing {concept_id}, granules in collection: {total_granules}, " f"download size(MB): {total_size_cmr}"
+            f"Testing {concept_id}, granules in collection: {total_granules}, "
+            f"download size(MB): {total_size_cmr}"
         )
 
         # We are testing this method

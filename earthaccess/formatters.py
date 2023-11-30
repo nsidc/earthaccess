@@ -8,7 +8,10 @@ STATIC_FILES = ["css/iso_bootstrap4.0.0min.css", "css/styles.css"]
 
 def _load_static_files() -> List[str]:
     """Load styles"""
-    return [pkg_resources.resource_string("earthaccess", fname).decode("utf8") for fname in STATIC_FILES]
+    return [
+        pkg_resources.resource_string("earthaccess", fname).decode("utf8")
+        for fname in STATIC_FILES
+    ]
 
 
 def _repr_collection_html() -> str:
