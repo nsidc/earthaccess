@@ -52,4 +52,4 @@ jobs:
           EARTHACCESS_TEST_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: poetry run bash scripts/integration-test.sh
       - name: Upload coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
