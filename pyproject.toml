@@ -43,10 +43,6 @@ multimethod = ">=1.8"
 [tool.poetry.dev-dependencies]
 python-magic = ">=0.4"
 mypy = ">=0.812"
-black = ">=21.11b0"
-isort = ">=5"
-autoflake = ">=1.3"
-flake8 = ">=3.7"
 jupyterlab = ">=3"
 pre-commit = ">=2.4"
 pytest = ">=6.0"
@@ -73,6 +69,9 @@ dask = ">=2022.1"
 pyproj = ">=3.5.0"
 bump-my-version = ">=0.10.0"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.6"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
@@ -91,6 +90,30 @@ module = [
   "tests.*",
 ]
 ignore_errors = true
+
+
+[tool.ruff]
+line-length = 120
+src = ["earthaccess", "tests"]
+exclude = ["mypy-stubs", "stubs", "typeshed"]
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "single"
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+# unsupported isort arguments:
+# --multi-line=3
+# --trailing-comma
+# --force-grid-wrap=0
+# --line-width 88
 
 
 [tool.bumpversion]
