@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [v0.8.0] 2023-11-29
 * Bug fixes:
     * Fix zero granules being reported for restricted datasets.
 * Enhancements:

@@ -23,8 +23,8 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/nsidc/earthaccess"
 
-version: "0.7.1"
-date-released: "2023-11-08"
+version: "0.8.0"
+date-released: "2023-11-29"
 
 authors:
 - family-names: "Barrett"
