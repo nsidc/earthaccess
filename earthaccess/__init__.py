@@ -1,7 +1,6 @@
 import logging
 import threading
 from importlib.metadata import version
-from typing import Any
 
 from .api import (
     auth_environ,

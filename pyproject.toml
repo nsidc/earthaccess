@@ -43,10 +43,6 @@ multimethod = ">=1.8"
 [tool.poetry.dev-dependencies]
 python-magic = ">=0.4"
 mypy = ">=0.812"
-black = ">=21.11b0"
-isort = ">=5"
-autoflake = ">=1.3"
-flake8 = ">=3.7"
 jupyterlab = ">=3"
 pre-commit = ">=2.4"
 pytest = ">=6.0"
@@ -61,6 +57,7 @@ mkdocs-jupyter = ">=0.19.0"
 pymdown-extensions = ">=9.2"
 pygments = ">=2.11.1"
 responses = ">=0.14"
+ruff = "^0.1.6"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
 ipywidgets = ">=7.7.0"
@@ -72,6 +69,7 @@ h5netcdf = ">=0.11"
 dask = ">=2022.1"
 pyproj = ">=3.5.0"
 bump-my-version = ">=0.10.0"
+
 
 [build-system]
 requires = ["poetry>=0.12"]
@@ -91,6 +89,18 @@ module = [
   "tests.*",
 ]
 ignore_errors = true
+
+
+[tool.ruff]
+line-length = 88
+src = ["earthaccess", "tests"]
+exclude = ["mypy-stubs", "stubs", "typeshed"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
 
 
 [tool.bumpversion]

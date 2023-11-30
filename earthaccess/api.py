@@ -1,9 +1,10 @@
 from typing import Any, Dict, List, Optional, Type, Union
 
-import earthaccess
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
+
+import earthaccess
 
 from .auth import Auth
 from .results import DataGranule

@@ -120,7 +120,7 @@ def test_earthaccess_can_download_cloud_collection_granules(daac):
         granule_query = DataGranules().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
-        assert type(granules) is list and len(granules) > 0
+        assert isinstance(granules, list) and len(granules) > 0
         assert isinstance(granules[0], earthaccess.results.DataGranule)
         local_path = f"./tests/integration/data/{concept_id}"
         granules_to_download, total_size_cmr = get_sample_granules(
