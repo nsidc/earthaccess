@@ -40,6 +40,7 @@ __all__ = [
     "Auth",
     "Store",
     "auth_environ",
+    "consolidate_metadata",
 ]
 
 __version__ = version("earthaccess")

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import earthaccess
 import fsspec
 import s3fs
+
+import earthaccess
 
 
 def _get_chunk_metadata(
@@ -30,6 +31,7 @@ def consolidate_metadata(
 ) -> str | dict:
     try:
         import dask
+
         from kerchunk.combine import MultiZarrToZarr
     except ImportError as e:
         raise ImportError(
