@@ -17,6 +17,7 @@ from .api import (
     search_datasets,
 )
 from .auth import Auth
+from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
 from .store import Store
 
@@ -39,6 +40,7 @@ __all__ = [
     "Auth",
     "Store",
     "auth_environ",
+    "consolidate_metadata",
 ]
 
 __version__ = version("earthaccess")
