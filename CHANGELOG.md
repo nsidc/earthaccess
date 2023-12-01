@@ -1,6 +1,6 @@
 # Changelog
 
-## [v0.8.1] 2023-12-01
+## Unreleased
 * New Features:
     * Add `kerchunk` metadata consolidation utility.
 * Enhancements:
