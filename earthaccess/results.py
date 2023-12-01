@@ -228,9 +228,7 @@ class DataGranule(CustomDict):
         Temporal coverage: {self['umm']['TemporalExtent']}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
-        """.strip().replace(
-            "  ", ""
-        )
+        """.strip().replace("  ", "")
         return rep_str
 
     def _repr_html_(self) -> str:
@@ -301,7 +299,7 @@ class DataGranule(CustomDict):
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
         if in_region:
             # we are in us-west-2
-            if self.cloud_hosted and access is None:
+            if self.cloud_hosted and access in (None, "direct"):
                 # this is a cloud collection and we didn't specify the access type
                 # default to S3 links
                 if len(s3_links) == 0 and len(https_links) > 0:
@@ -325,7 +323,6 @@ class DataGranule(CustomDict):
             else:
                 # we are not in us-west-2, even cloud collections have HTTPS links
                 return https_links
-        return https_links
 
     def dataviz_links(self) -> List[str]:
         """

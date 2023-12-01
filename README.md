@@ -85,7 +85,7 @@ earthaccess.login()
 ```
 
 Note you can pass `persist=True` to `earthaccess.login()` to have the EDL account credentials you enter
-automatically saved to a `~/.netrc` file for future use. 
+automatically saved to a `~/.netrc` file for future use.
 
 
 Once you are authenticated with NASA EDL you can:

@@ -6,6 +6,7 @@ import unittest
 
 import earthaccess
 import pytest
+import s3fs
 
 logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
@@ -94,3 +95,24 @@ def test_auth_can_fetch_s3_credentials():
                 print(
                     f"An error occured while trying to fetch S3 credentials for {daac['short-name']}: {e}"
                 )
+
+
+@pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
+def test_get_s3_credentials_lowercase_location(location):
+    activate_environment()
+    earthaccess.login(strategy="environment")
+    creds = earthaccess.get_s3_credentials(**location)
+    assert creds
+    assert all(
+        creds[key]
+        for key in ["accessKeyId", "secretAccessKey", "sessionToken", "expiration"]
+    )
+
+
+@pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
+def test_get_s3fs_session_lowercase_location(location):
+    activate_environment()
+    earthaccess.login(strategy="environment")
+    fs = earthaccess.get_s3fs_session(**location)
+    assert isinstance(fs, s3fs.S3FileSystem)
+    assert all(fs.storage_options[key] for key in ["key", "secret", "token"])

@@ -9,7 +9,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 ## Development environment
 
 
-`earthaccess` is a Python library that uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda. 
+`earthaccess` is a Python library that uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda.
 
 ### Using Conda
 
@@ -75,7 +75,7 @@ scripts/format.sh
 3. Update the documentation and the README.md with details of changes to the interface,
    this includes new environment variables, function names, decorators, etc.
 3. Update `CHANGELOG.md` with details about your change in a section titled
-   `Unreleased`. If one does not exist, please create one. 
+   `Unreleased`. If one does not exist, please create one.
 4. You may merge the Pull Request in once you have the sign-off of another developers,
    or if you do not have permission to do that, you may request the reviewer to merge it
    for you.
@@ -89,7 +89,7 @@ scripts/format.sh
 1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
    increase the minor version (`1.2.3` to `1.3.0`):
    ```
-   bumpversion bump minor
+   bump-my-version bump minor
    ```
 2. Push a tag on the new commit containing the version number, prefixed with `v`, e.g.
    `v1.3.0`.

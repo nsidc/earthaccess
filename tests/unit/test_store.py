@@ -5,6 +5,7 @@ import unittest
 import fsspec
 import pytest
 import responses
+import s3fs
 from earthaccess import Auth, Store
 
 
@@ -60,12 +61,22 @@ class TestStoreSessions(unittest.TestCase):
             "https://api.giovanni.earthdata.nasa.gov/s3credentials",
             "https://data.laadsdaac.earthdatacloud.nasa.gov/s3credentials",
         ]
+        mock_creds = {
+            "accessKeyId": "sure",
+            "secretAccessKey": "correct",
+            "sessionToken": "whynot",
+        }
+        expected_storage_options = {
+            "key": mock_creds["accessKeyId"],
+            "secret": mock_creds["secretAccessKey"],
+            "token": mock_creds["sessionToken"],
+        }
 
         for endpoint in custom_endpoints:
             responses.add(
                 responses.GET,
                 endpoint,
-                json={},
+                json=mock_creds,
                 status=200,
             )
 
@@ -74,17 +85,13 @@ class TestStoreSessions(unittest.TestCase):
                 responses.add(
                     responses.GET,
                     daac["s3-credentials"],
-                    json={
-                        "accessKeyId": "sure",
-                        "secretAccessKey": "correct",
-                        "sessionToken": "whynot",
-                    },
+                    json=mock_creds,
                     status=200,
                 )
         responses.add(
             responses.GET,
             "https://urs.earthdata.nasa.gov/profile",
-            json={},
+            json=mock_creds,
             status=200,
         )
 
@@ -92,22 +99,25 @@ class TestStoreSessions(unittest.TestCase):
         self.assertTrue(isinstance(store.auth, Auth))
         for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC", "ASF"]:
             s3_fs = store.get_s3fs_session(daac=daac)
-            self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
+            assert isinstance(s3_fs, s3fs.S3FileSystem)
+            assert s3_fs.storage_options == expected_storage_options
 
         for endpoint in custom_endpoints:
             s3_fs = store.get_s3fs_session(endpoint=endpoint)
-            self.assertEqual(type(s3_fs), type(fsspec.filesystem("s3")))
+            assert isinstance(s3_fs, s3fs.S3FileSystem)
+            assert s3_fs.storage_options == expected_storage_options
 
         for provider in [
             "NSIDC_CPRD",
             "POCLOUD",
             "LPCLOUD",
-            "ORNLCLOUD",
+            "ORNL_CLOUD",
             "GES_DISC",
             "ASF",
         ]:
             s3_fs = store.get_s3fs_session(provider=provider)
-            assert isinstance(s3_fs, fsspec.AbstractFileSystem)
+            assert isinstance(s3_fs, s3fs.S3FileSystem)
+            assert s3_fs.storage_options == expected_storage_options
 
         # Ensure informative error is raised
         with pytest.raises(ValueError, match="parameters must be specified"):

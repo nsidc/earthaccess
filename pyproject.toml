@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthaccess"
-version = "0.6.1"
+version = "0.8.0"
 homepage = "https://github.com/nsidc/earthaccess"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
@@ -47,10 +47,6 @@ kerchunk = ["kerchunk", "dask"]
 [tool.poetry.dev-dependencies]
 python-magic = ">=0.4"
 mypy = ">=0.812"
-black = ">=21.11b0"
-isort = ">=5"
-autoflake = ">=1.3"
-flake8 = ">=3.7"
 jupyterlab = ">=3"
 pre-commit = ">=2.4"
 pytest = ">=6.0"
@@ -65,6 +61,7 @@ mkdocs-jupyter = ">=0.19.0"
 pymdown-extensions = ">=9.2"
 pygments = ">=2.11.1"
 responses = ">=0.14"
+ruff = "^0.1.6"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
 ipywidgets = ">=7.7.0"
@@ -77,13 +74,41 @@ dask = ">=2022.1"
 pyproj = ">=3.5.0"
 bump-my-version = ">=0.10.0"
 
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 
+[tool.pytest]
+filterwarnings = ["error::UserWarning"]
+
+
+[tool.mypy]
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "tests.*",
+]
+ignore_errors = true
+
+
+[tool.ruff]
+line-length = 88
+src = ["earthaccess", "tests"]
+exclude = ["mypy-stubs", "stubs", "typeshed"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+
 [tool.bumpversion]
-current_version = "0.6.1"
+current_version = "0.8.0"
 commit = false
 tag = false
 
