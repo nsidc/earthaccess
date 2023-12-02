@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.8.1] 2023-12-01
+* New Features:
+    * Add `kerchunk` metadata consolidation utility.
+* Enhancements:
+    * Handle S3 credential expiration more gracefully.
+* Maintenanece:
+    * Use dependabot to update Github Actions.
+    * Consolidate dependabot updates.
+    * Switch to `ruff` for formatting.
+
 ## [v0.8.0] 2023-11-29
 * Bug fixes:
     * Fix zero granules being reported for restricted datasets.
