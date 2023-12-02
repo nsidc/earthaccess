@@ -15,7 +15,8 @@ from .api import (
     open,
     search_data,
     search_datasets,
-    search_widget
+    explore,
+    load_geometry
 )
 from .auth import Auth
 from .kerchunk import consolidate_metadata
@@ -40,7 +41,8 @@ __all__ = [
     "DataCollections",
     "Auth",
     "Store",
-    "search_widget",
+    "explore",
+    "load_geometry",
     "auth_environ",
     "consolidate_metadata",
 ]

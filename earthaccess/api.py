@@ -1,5 +1,12 @@
 from typing import Any, Dict, List, Optional, Type, Union
 
+import geopandas
+import json
+
+from shapely.geometry.polygon import orient
+from shapely.geometry import Polygon
+
+import earthaccess
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
@@ -356,9 +363,37 @@ def get_edl_token() -> str:
     return token
 
 
-def search_widget(projection: str = "global", map: Any = None) -> Any:
+def explore(results: List[DataGranule], projection: str = "global", map: Any = None, roi: dict[str, Any]= {}) -> Any:
     sw = SearchWidget(projection=projection, map=map)
-    return sw
+    return sw.explore(results, roi)
+
+def load_geometry(filepath: str ="") -> Dict[str, Any]:
+    def _orient_polygon(coords) -> List[tuple[float, float]]:
+        polygon = orient(Polygon(coords))
+        return list(polygon.exterior.coords)
+        
+    def _extract_geometry_info(geometry: Dict[str, Any]) -> Dict[str, Any]:
+        feature =  geometry["features"][0]["geometry"]
+        geometry_type = feature["type"]
+        coordinates = feature["coordinates"]
+
+        if geometry_type in ['Polygon']:
+            coords = _orient_polygon(coordinates[0])
+            coordinates = [(c[0], c[1]) for c in coords]
+            return {"polygon": coordinates}
+        elif geometry_type in ['Point']:
+            return {"point": coordinates}
+        elif geometry_type in ['LineString']:
+            return {"line": coordinates}
+        else:
+            print("Unsupported geometry type:", geometry_type)
+            return {}
+
+    original_gdf = geopandas.read_file(filepath)
+    simplified_json = json.loads(original_gdf.simplify(0.01).to_json())
+
+    geom = _extract_geometry_info(simplified_json)
+    return geom
 
 
 def auth_environ() -> Dict[str, str]:

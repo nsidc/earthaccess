@@ -98,7 +98,7 @@ class SearchWidget:
             )
         )
         self.m.layout.height = '600px'
- 
+
         self.m.add(self.dc)
 
         return None
@@ -176,7 +176,7 @@ class SearchWidget:
         self.m.add(self.current_geometry)
 
         
-    def _get_shapely_object(self, result: DataGranule) -> Union[shapely.Geometry, None]:
+    def _get_shapely_object(self, result: DataGranule) -> Union[shapely.geometry.base.BaseGeometry, None]:
         shape = None
         try:
             geo = result['umm']['SpatialExtent']['HorizontalSpatialDomain']['Geometry']
@@ -211,6 +211,9 @@ class SearchWidget:
 
         return [center_x, center_y]
 
+    def close_html(self, event, **kwargs):
+        print(event)
+
     def update_html(self, feature, **kwargs):
         native_id = feature["properties"]["native-id"]
         start = feature["properties"]["_beginning_date_time"]
@@ -225,6 +228,7 @@ class SearchWidget:
             browse = preview
         else:
             browse = ""
+
 
         self.html.value = """
             <h4>{}</h4>
@@ -242,7 +246,9 @@ class SearchWidget:
         self.m.add(self.overview)
 
 
-    def explore(self, results: List[DataGranule]) -> Any:
+
+
+    def explore(self, results: List[DataGranule], roi: dict[str, Any] = {}) -> Any:
         gdf = self.to_geopandas(results)
         dataset_ids = list(gdf["dataset-id"].unique())
         colors = [matplotlib.colors.to_hex(c) for c in plt.cm.tab10.colors]
@@ -265,8 +271,40 @@ class SearchWidget:
                         hover_style={"fillColor": "red", "fillOpacity": 0.6},
                         name=f"{p} [Count: {total_granules:,} | Size: {total_size} GB]",
                     )
-            g.on_hover(self.update_html)
+            g.on_click(self.update_html)
             self.active_layers.append(g)
             self.m.add(g)
+
+        geo_json= {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {"type": "Polygon",
+                           "coordinates": [[[c[0], c[1]] for c in roi["polygon"]]] }
+            }]
+        }
+
+        roi_layer = ipyleaflet.GeoJSON(
+                name="ROI",
+                data=geo_json,
+                style={
+                    "color": "red",
+                    "opacity": 0.9,
+                    "fillOpacity": 0.1
+                })
+
+        self.active_layers.append(roi_layer)
+        self.m.add(roi_layer)
+        self.m.add(ipyleaflet.SearchControl(
+          position="topleft",
+          url='https://nominatim.openstreetmap.org/search?format=json&q={s}',
+          zoom=8,
+          marker=None
+        ))
+
+    
+        self.m._send({"redraw"})
 
         return self.m
