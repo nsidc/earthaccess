@@ -11,7 +11,9 @@ repos:
     - id: trailing-whitespace
     - id: check-toml
     - id: check-json
-- repo: https://github.com/psf/black
-  rev: 23.10.1
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.1.6
   hooks:
-    - id: black
+    - id: ruff
+      args: ["--fix", "--exit-non-zero-on-fix"]
+    - id: ruff-format

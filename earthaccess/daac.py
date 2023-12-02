@@ -110,23 +110,11 @@ CLOUD_PROVIDERS = [
 
 # Some testing urls behind EDL
 DAAC_TEST_URLS = [
-    (
-        "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/"
-        "JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/"
-    ),
-    (
-        "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/"
-        "ATL03/005/2018/10/14/dummy.nc"
-    ),
-    (
-        "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/"
-        "ATL06_20181014045341_02380102_005_01.iso.xml"
-    ),
-    ("https://hydro1.gesdisc.eosdis.nasa.gov/data/GLDAS/GLDAS_NOAH10_M.2.0/1948/"),
-    (
-        "https://e4ftl01.cr.usgs.gov//DP114/MOTA/MCD43A3.006/2000.02.24/"
-        "MCD43A3.A2000055.h15v07.006.2016101151720.hdf.xml"
-    ),
+    "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/",
+    "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL03/005/2018/10/14/dummy.nc",
+    "https://n5eil01u.ecs.nsidc.org/DP7/ATLAS/ATL06.005/2018.10.14/ATL06_20181014045341_02380102_005_01.iso.xml",
+    "https://hydro1.gesdisc.eosdis.nasa.gov/data/GLDAS/GLDAS_NOAH10_M.2.0/1948/",
+    "https://e4ftl01.cr.usgs.gov//DP114/MOTA/MCD43A3.006/2000.02.24/MCD43A3.A2000055.h15v07.006.2016101151720.hdf.xml",
     "https://daac.ornl.gov/daacdata/npp/grassland/NPP_BCN/data/bcn_cli.txt",
 ]
 

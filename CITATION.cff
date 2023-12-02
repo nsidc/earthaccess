@@ -23,8 +23,8 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/nsidc/earthaccess"
 
-version: "0.7.1"
-date-released: "2023-11-08"
+version: "0.8.1"
+date-released: "2023-12-01"
 
 authors:
 - family-names: "Barrett"
@@ -43,6 +43,10 @@ authors:
   given-names: "Matt"
   orcid: "https://orcid.org/0000-0003-3260-5445"
   website: "https://mfisher87.github.io/"
+- family-names: "Kaufman"
+  given-names: "Daniel"
+  orcid: "https://orcid.org/0000-0002-1487-7298"
+  website: "https://github.com/danielfromearth"
 - family-names: "Kennedy"
   given-names: "Joseph"
   orcid: "https://orcid.org/0000-0002-9348-693X"

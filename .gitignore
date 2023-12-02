@@ -18,6 +18,7 @@ build/
 *.egg-info/
 docs/tutorials/data
 tests/integration/data
+.ruff_cache
 
 # OS X
 .DS_Store
