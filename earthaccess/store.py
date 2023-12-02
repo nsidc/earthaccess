@@ -140,8 +140,10 @@ class Store(object):
         session = self.auth.get_session()
         try:
             # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-            resp = session.get(
-                "http://169.254.169.254/latest/meta-data/public-ipv4", timeout=1
+            resp = session.put(
+                "http://169.254.169.254/latest/api/token",
+                headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+                timeout=1,
             )
         except Exception:
             return False
