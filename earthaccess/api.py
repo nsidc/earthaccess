@@ -361,7 +361,7 @@ def explore(
     results: List[DataGranule],
     projection: str = "global",
     map: Any = None,
-    roi: dict[str, Any] = {},
+    roi: Dict[str, Any] = {},
 ) -> Any:
     sw = SearchWidget(projection=projection, map=map)
     return sw.explore(results, roi)
