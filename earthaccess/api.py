@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union, Tuple
 
 import requests
 import s3fs
@@ -377,7 +377,7 @@ def load_geometry(filepath: str = "") -> Dict[str, Any]:
             "`earthaccess.load_geometry` requires `geopandas` to be be installed"
         )
 
-    def _orient_polygon(coords: List[tuple[float, float]]) -> List[tuple[float, float]]:
+    def _orient_polygon(coords: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
         polygon = orient(Polygon(coords))
         return list(polygon.exterior.coords)
 
