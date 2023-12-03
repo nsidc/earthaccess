@@ -229,7 +229,7 @@ class SearchWidget:
 
 
 
-    def explore(self, results: List[DataGranule], roi: dict[str, Any] = {}) -> Any:
+    def explore(self, results: List[DataGranule], roi: Dict[str, Any]) -> ipyleaflet.Map:
         gdf = self.to_geopandas(results)
         dataset_ids = list(gdf["dataset-id"].unique())
         # matplotlib tb10 
