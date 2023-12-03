@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, Optional, Type, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import requests
 import s3fs
