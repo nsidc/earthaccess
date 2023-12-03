@@ -238,7 +238,7 @@ class DataCollections(CollectionQuery):
             try:
                 response.raise_for_status()
             except exceptions.HTTPError as ex:
-                raise RuntimeError(ex.response.text)
+                raise RuntimeError(ex.response.text) # type: ignore
 
             if self._format == "json":
                 latest = response.json()["feed"]["entry"]
@@ -333,7 +333,7 @@ class DataGranules(GranuleQuery):
         try:
             response.raise_for_status()
         except exceptions.HTTPError as ex:
-            raise RuntimeError(ex.response.text)
+            raise RuntimeError(ex.response.text) # type: ignore
 
         return int(response.headers["CMR-Hits"])
 
@@ -557,7 +557,7 @@ class DataGranules(GranuleQuery):
             try:
                 response.raise_for_status()
             except exceptions.HTTPError as ex:
-                raise RuntimeError(ex.response.text)
+                raise RuntimeError(ex.response.text) # type: ignore
 
             if self._format == "json":
                 latest = response.json()["feed"]["entry"]
