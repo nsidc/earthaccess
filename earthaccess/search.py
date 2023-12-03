@@ -1,14 +1,13 @@
 import datetime as dt
 from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type
-from uuid import uuid4
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
 from .auth import Auth
-from .daac import find_provider, find_provider_by_shortname
+from .daac import find_provider
 from .results import DataCollection, DataGranule
 
 

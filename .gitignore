@@ -24,3 +24,7 @@ tests/integration/data
 .DS_Store
 
 notebooks/data/
+*.h5
+*.nc
+*.hdf
+poetry.lock

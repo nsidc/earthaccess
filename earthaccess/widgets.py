@@ -1,29 +1,23 @@
-from typing import List, Any, Tuple, Union, Dict
-import geopandas
-import pandas
-
 import re
+from typing import Any, Dict, List, Tuple, Union
 
-from shapely import geometry
-from shapely.geometry.polygon import orient
-from shapely.geometry import Polygon
-import shapely
-
-import matplotlib.pyplot as plt
-import matplotlib
-
-from .results import DataGranule
-
+import geopandas
 import ipyleaflet
 import ipywidgets
+import pandas
+import shapely
+
+from .results import DataGranule
 
 
 class SearchWidget:
 
+
     def __init__(self, params: Dict[str, Any]  = {}, projection: str="global", map: Any = None):
+
         self.current_geometry = None
-        self.active_layers = []
-        self.roi = []
+        self.active_layers: Any = []
+        self.roi: Any = []
         self.overview = None
         self.map = map
         self.default_fields = ["size",
@@ -119,7 +113,7 @@ class SearchWidget:
         results_df = results_df.drop(columns=[col for col in results_df.columns if col not in fields])
 
         # results_df["_related_urls"] = results_df["_related_urls"].apply( lambda r: [l["URL"] for l in r._related_urls if l["Type"] == "GET DATA"])
-        results_df["_related_urls"] = results_df["_related_urls"].apply( lambda r: [l for l in r if l["Type"] in ["GET DATA", "GET DATA VIA DIRECT ACCESS", "GET RELATED VISUALIZATION"]])
+        results_df["_related_urls"] = results_df["_related_urls"].apply( lambda links: [link for link in links if link["Type"] in ["GET DATA", "GET DATA VIA DIRECT ACCESS", "GET RELATED VISUALIZATION"]])
 
         # Create shapely polygons for result
         geometries = [self._get_shapely_object(results[index]) for index in results_df.index.to_list()]
@@ -129,11 +123,11 @@ class SearchWidget:
 
 
        
-    def _orient_polygon(self, coords) -> List[Tuple[int, int]]:
-        polygon = orient(Polygon(coords))
+    def _orient_polygon(self, coords: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
+        polygon = shapely.geometry.polygon.orient(shapely.geometry.Polygon(coords))
         return list(polygon.exterior.coords)
         
-    def _extract_geometry_info(self, geometry) -> Any:
+    def _extract_geometry_info(self, geometry: Dict[str, Any]) -> Any:
         geometry_type = geometry['type']
         coordinates = geometry['coordinates']
 
@@ -152,9 +146,9 @@ class SearchWidget:
             return None
     
         
-    def _handle_draw(self, target, action, geo_json):
-        for l in self.active_layers:
-            self.m.remove_layer(l)
+    def _handle_draw(self, target: Dict[str, Any], action: Dict[str, Any], geo_json: Dict[str, Any]) -> None:
+        for layer in self.active_layers:
+            self.m.remove_layer(layer)
 
         self.active_layers = []
             
@@ -187,11 +181,11 @@ class SearchWidget:
                 bbox_coords = (bounding_rectangle['WestBoundingCoordinate'],bounding_rectangle['SouthBoundingCoordinate'],
                             bounding_rectangle['EastBoundingCoordinate'],bounding_rectangle['NorthBoundingCoordinate'])
                 # Create shapely geometry from bbox
-                shape = geometry.box(*bbox_coords, ccw=True)
+                shape = shapely.geometry.box(*bbox_coords, ccw=True)
             elif 'GPolygons' in keys:
                 points = geo['GPolygons'][0]['Boundary']['Points']
                 # Create shapely geometry from polygons
-                shape = geometry.Polygon([[p['Longitude'],p['Latitude']] for p in points])
+                shape = shapely.geometry.Polygon([[p['Longitude'],p['Latitude']] for p in points])
             else:
                  raise ValueError('Provided result does not contain bounding boxes/polygons or is incompatible.')
 
@@ -201,33 +195,20 @@ class SearchWidget:
 
         return shape
 
-    def display(self):
+    def display(self) -> ipyleaflet.Map:
         return self.m
 
-    def _calculate_bbox_center(self, bbox):
-    # Calculate the center coordinates
-        center_x = (bbox[0] + bbox[2]) / 2
-        center_y = (bbox[1] + bbox[3]) / 2
-
-        return [center_x, center_y]
-
-    def close_html(self, event, **kwargs):
-        print(event)
-
-    def update_html(self, feature, **kwargs):
+    def update_html(self, feature: Dict[str, Any], **kwargs: Any) -> None:
         native_id = feature["properties"]["native-id"]
         start = feature["properties"]["_beginning_date_time"]
         end = feature["properties"]["_ending_date_time"]
-        date_range = f"Start: {start} <> End: {end}"
         size = feature["properties"]["size"]
         url = [f"<a href={link['URL']}>link</a>" for link in feature["properties"]["_related_urls"] if link["Type"] == "GET DATA" and link["URL"].startswith("https")]
         preview = [f"<img src={link['URL']} width='200px'/>" for link in feature["properties"]["_related_urls"] if link["Type"] == "GET RELATED VISUALIZATION" and link["URL"].startswith("https")]
         if len(preview)>1:
             browse = "".join(preview[0:2])
-        elif len(preview) == 1:
-            browse = preview
         else:
-            browse = ""
+            browse = "".join(preview)
 
 
         self.html.value = """
@@ -251,8 +232,18 @@ class SearchWidget:
     def explore(self, results: List[DataGranule], roi: dict[str, Any] = {}) -> Any:
         gdf = self.to_geopandas(results)
         dataset_ids = list(gdf["dataset-id"].unique())
-        colors = [matplotlib.colors.to_hex(c) for c in plt.cm.tab10.colors]
-
+        # matplotlib tb10 
+        colors = [
+            '#1f77b4',
+            '#ff7f0e',
+            '#2ca02c',
+            '#d62728',
+            '#9467bd',
+            '#8c564b',
+            '#e377c2',
+            '#7f7f7f',
+            '#bcbd22',
+            '#17becf']
 
         for p, c in zip(dataset_ids, colors):
             df = gdf.loc[gdf['dataset-id'] == p]

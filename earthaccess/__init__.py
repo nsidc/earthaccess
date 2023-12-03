@@ -6,22 +6,23 @@ from .api import (
     auth_environ,
     collection_query,
     download,
+    explore,
     get_fsspec_https_session,
     get_requests_https_session,
     get_s3_credentials,
     get_s3fs_session,
     granule_query,
+    load_geometry,
     login,
     open,
     search_data,
     search_datasets,
-    explore,
-    load_geometry
 )
 from .auth import Auth
 from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
 from .store import Store
+from .widgets import SearchWidget
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,7 @@ __all__ = [
     "DataCollections",
     "Auth",
     "Store",
+    "SearchWidget",
     "explore",
     "load_geometry",
     "auth_environ",

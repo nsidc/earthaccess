@@ -1,12 +1,6 @@
+import json
 from typing import Any, Dict, List, Optional, Type, Union
 
-import geopandas
-import json
-
-from shapely.geometry.polygon import orient
-from shapely.geometry import Polygon
-
-import earthaccess
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
@@ -368,7 +362,16 @@ def explore(results: List[DataGranule], projection: str = "global", map: Any = N
     return sw.explore(results, roi)
 
 def load_geometry(filepath: str ="") -> Dict[str, Any]:
-    def _orient_polygon(coords) -> List[tuple[float, float]]:
+    try:
+        import geopandas
+        from shapely.geometry import Polygon
+        from shapely.geometry.polygon import orient
+    except ImportError:
+        raise ImportError(
+            "`earthaccess.load_geometry` requires `geopandas` to be be installed"
+        )
+        
+    def _orient_polygon(coords: List[tuple[float, float]]) -> List[tuple[float, float]]:
         polygon = orient(Polygon(coords))
         return list(polygon.exterior.coords)
         
