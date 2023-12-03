@@ -214,8 +214,9 @@ class DataGranule(CustomDict):
         elif "EntryTitle" in self["umm"]["CollectionReference"]:
             self["dataset-id"] = self["umm"]["CollectionReference"]["EntryTitle"]
         else:
-            self["dataset-id"] = self["meta"]["provider-id"] + self["meta"]["native-id"][0:4]
-
+            self["dataset-id"] = (
+                self["meta"]["provider-id"] + self["meta"]["native-id"][0:4]
+            )
 
         self.render_dict: Any
         if fields is None:

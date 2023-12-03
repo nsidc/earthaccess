@@ -238,7 +238,7 @@ class DataCollections(CollectionQuery):
             try:
                 response.raise_for_status()
             except exceptions.HTTPError as ex:
-                raise RuntimeError(ex.response.text) # type: ignore
+                raise RuntimeError(ex.response.text)  # type: ignore
 
             if self._format == "json":
                 latest = response.json()["feed"]["entry"]
@@ -333,7 +333,7 @@ class DataGranules(GranuleQuery):
         try:
             response.raise_for_status()
         except exceptions.HTTPError as ex:
-            raise RuntimeError(ex.response.text) # type: ignore
+            raise RuntimeError(ex.response.text)  # type: ignore
 
         return int(response.headers["CMR-Hits"])
 
@@ -423,7 +423,7 @@ class DataGranules(GranuleQuery):
         if not isinstance(cloud_hosted, bool):
             raise TypeError("cloud_hosted must be of type bool")
 
-        self.params["cloud_hosted"] = cloud_hosted 
+        self.params["cloud_hosted"] = cloud_hosted
         return self
 
     def granule_name(self, granule_name: str) -> Type[CollectionQuery]:
@@ -557,7 +557,7 @@ class DataGranules(GranuleQuery):
             try:
                 response.raise_for_status()
             except exceptions.HTTPError as ex:
-                raise RuntimeError(ex.response.text) # type: ignore
+                raise RuntimeError(ex.response.text)  # type: ignore
 
             if self._format == "json":
                 latest = response.json()["feed"]["entry"]
@@ -575,8 +575,7 @@ class DataGranules(GranuleQuery):
                     else:
                         cloud = False
                     latest = list(
-                        DataGranule(granule,
-                                    cloud_hosted=cloud)
+                        DataGranule(granule, cloud_hosted=cloud)
                         for granule in response.json()["items"]
                     )
                 else:

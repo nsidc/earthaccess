@@ -357,11 +357,17 @@ def get_edl_token() -> str:
     return token
 
 
-def explore(results: List[DataGranule], projection: str = "global", map: Any = None, roi: dict[str, Any]= {}) -> Any:
+def explore(
+    results: List[DataGranule],
+    projection: str = "global",
+    map: Any = None,
+    roi: dict[str, Any] = {},
+) -> Any:
     sw = SearchWidget(projection=projection, map=map)
     return sw.explore(results, roi)
 
-def load_geometry(filepath: str ="") -> Dict[str, Any]:
+
+def load_geometry(filepath: str = "") -> Dict[str, Any]:
     try:
         import geopandas
         from shapely.geometry import Polygon
@@ -370,23 +376,23 @@ def load_geometry(filepath: str ="") -> Dict[str, Any]:
         raise ImportError(
             "`earthaccess.load_geometry` requires `geopandas` to be be installed"
         )
-        
+
     def _orient_polygon(coords: List[tuple[float, float]]) -> List[tuple[float, float]]:
         polygon = orient(Polygon(coords))
         return list(polygon.exterior.coords)
-        
+
     def _extract_geometry_info(geometry: Dict[str, Any]) -> Dict[str, Any]:
-        feature =  geometry["features"][0]["geometry"]
+        feature = geometry["features"][0]["geometry"]
         geometry_type = feature["type"]
         coordinates = feature["coordinates"]
 
-        if geometry_type in ['Polygon']:
+        if geometry_type in ["Polygon"]:
             coords = _orient_polygon(coordinates[0])
             coordinates = [(c[0], c[1]) for c in coords]
             return {"polygon": coordinates}
-        elif geometry_type in ['Point']:
+        elif geometry_type in ["Point"]:
             return {"point": coordinates}
-        elif geometry_type in ['LineString']:
+        elif geometry_type in ["LineString"]:
             return {"line": coordinates}
         else:
             print("Unsupported geometry type:", geometry_type)
