@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Bug fixes:
+    * Follow Amazon EC2 IMDSv2 requirements to set `running-in-aws`
+
 ## [v0.8.1] 2023-12-01
 * New Features:
     * Add `kerchunk` metadata consolidation utility.

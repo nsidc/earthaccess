@@ -6,7 +6,7 @@ from functools import lru_cache
 from itertools import chain
 from pathlib import Path
 from pickle import dumps, loads
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
 
 import fsspec
@@ -44,23 +44,15 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
 
 
 def _open_files(
-    data_links: List[str],
-    granules: Union[List[str], List[DataGranule]],
+    url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
 ) -> List[fsspec.AbstractFileSystem]:
     def multi_thread_open(data: tuple) -> EarthAccessFile:
         urls, granule = data
-        if not isinstance(granule, str):
-            if len(granule.data_links()) > 1:
-                print(
-                    "Warning: This collection contains more than one file per granule. "
-                    "earthaccess will only open the first data link, "
-                    "try filtering the links before opening them."
-                )
         return EarthAccessFile(fs.open(urls), granule)
 
-    fileset = pqdm(zip(data_links, granules), multi_thread_open, n_jobs=threads)
+    fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads)
     return fileset
 
 
@@ -82,6 +74,17 @@ def make_instance(
         return EarthAccessFile(earthaccess.open([granule])[0], granule)
     else:
         return EarthAccessFile(loads(data), granule)
+
+
+def _get_url_granule_mapping(
+    granules: List[DataGranule], access: str
+) -> Mapping[str, DataGranule]:
+    """Construct a mapping between file urls and granules"""
+    url_mapping = {}
+    for granule in granules:
+        for url in granule.data_links(access=access):
+            url_mapping[url] = granule
+    return url_mapping
 
 
 class Store(object):
@@ -140,8 +143,10 @@ class Store(object):
         session = self.auth.get_session()
         try:
             # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-            resp = session.get(
-                "http://169.254.169.254/latest/meta-data/public-ipv4", timeout=1
+            resp = session.put(
+                "http://169.254.169.254/latest/api/token",
+                headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+                timeout=1,
             )
         except Exception:
             return False
@@ -320,7 +325,6 @@ class Store(object):
         threads: Optional[int] = 8,
     ) -> List[Any]:
         fileset: List = []
-        data_links: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
         print(f"Opening {len(granules)} granules, approx size: {total_size} GB")
 
@@ -331,7 +335,7 @@ class Store(object):
 
         if self.running_in_aws:
             if granules[0].cloud_hosted:
-                access_method = "direct"
+                access = "direct"
                 provider = granules[0]["meta"]["provider-id"]
                 # if the data has its own S3 credentials endpoint we'll use it
                 endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
@@ -342,20 +346,14 @@ class Store(object):
                     print(f"using provider: {provider}")
                     s3_fs = self.get_s3fs_session(provider=provider)
             else:
-                access_method = "on_prem"
+                access = "on_prem"
                 s3_fs = None
 
-            data_links = list(
-                chain.from_iterable(
-                    granule.data_links(access=access_method) for granule in granules
-                )
-            )
-
+            url_mapping = _get_url_granule_mapping(granules, access)
             if s3_fs is not None:
                 try:
                     fileset = _open_files(
-                        data_links=data_links,
-                        granules=granules,
+                        url_mapping,
                         fs=s3_fs,
                         threads=threads,
                     )
@@ -366,16 +364,11 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     ) from e
             else:
-                fileset = self._open_urls_https(data_links, granules, threads=threads)
+                fileset = self._open_urls_https(url_mapping, threads=threads)
             return fileset
         else:
-            access_method = "on_prem"
-            data_links = list(
-                chain.from_iterable(
-                    granule.data_links(access=access_method) for granule in granules
-                )
-            )
-            fileset = self._open_urls_https(data_links, granules, threads=threads)
+            url_mapping = _get_url_granule_mapping(granules, access="on_prem")
+            fileset = self._open_urls_https(url_mapping, threads=threads)
             return fileset
 
     @_open.register
@@ -386,14 +379,12 @@ class Store(object):
         threads: Optional[int] = 8,
     ) -> List[Any]:
         fileset: List = []
-        data_links: List = []
 
         if isinstance(granules[0], str) and (
             granules[0].startswith("s3") or granules[0].startswith("http")
         ):
             # TODO: method to derive the DAAC from url?
             provider = provider
-            data_links = granules
         else:
             raise ValueError(
                 f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
@@ -403,14 +394,14 @@ class Store(object):
                 "A valid Earthdata login instance is required to retrieve S3 credentials"
             )
 
+        url_mapping: Mapping[str, None] = {url: None for url in granules}
         if self.running_in_aws and granules[0].startswith("s3"):
             if provider is not None:
                 s3_fs = self.get_s3fs_session(provider=provider)
                 if s3_fs is not None:
                     try:
                         fileset = _open_files(
-                            data_links=data_links,
-                            granules=granules,
+                            url_mapping,
                             fs=s3_fs,
                             threads=threads,
                         )
@@ -432,7 +423,7 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(data_links, granules, threads)
+            fileset = self._open_urls_https(url_mapping, threads)
             return fileset
 
     def get(
@@ -637,14 +628,13 @@ class Store(object):
 
     def _open_urls_https(
         self,
-        urls: List[str],
-        granules: Union[List[str], List[DataGranule]],
+        url_mapping: Mapping[str, Union[DataGranule, None]],
         threads: Optional[int] = 8,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
         if https_fs is not None:
             try:
-                fileset = _open_files(urls, granules, https_fs, threads)
+                fileset = _open_files(url_mapping, https_fs, threads)
             except Exception:
                 print(
                     "An exception occurred while trying to access remote files via HTTPS: "
