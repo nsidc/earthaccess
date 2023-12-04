@@ -141,11 +141,13 @@ class Store(object):
         try:
             # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
             resp = session.get(
-                "http://169.254.169.254/latest/meta-data/public-ipv4", timeout=1
+                "http://169.254.169.254/latest/meta-data/placement/region", timeout=1
             )
         except Exception:
             return False
-        if resp.status_code == 200:
+
+        if resp.status_code == 200 and b"us-west-2" == resp.content:
+            # On AWS in region us-west-2
             return True
         return False
 
