@@ -6,7 +6,7 @@ from functools import lru_cache
 from itertools import chain
 from pathlib import Path
 from pickle import dumps, loads
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
 
 import fsspec
@@ -44,7 +44,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
 
 
 def _open_files(
-    url_mapping: dict[str, Union[DataGranule, None]],
+    url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
 ) -> List[fsspec.AbstractFileSystem]:
@@ -78,7 +78,7 @@ def make_instance(
 
 def _get_url_granule_mapping(
     granules: List[DataGranule], access: str
-) -> Dict[str, DataGranule]:
+) -> Mapping[str, DataGranule]:
     """Construct a mapping between file urls and granules"""
     url_mapping = {}
     for granule in granules:
@@ -392,7 +392,7 @@ class Store(object):
                 "A valid Earthdata login instance is required to retrieve S3 credentials"
             )
 
-        url_mapping = {url: None for url in granules}
+        url_mapping: Mapping[str, None] = {url: None for url in granules}
         if self.running_in_aws and granules[0].startswith("s3"):
             if provider is not None:
                 s3_fs = self.get_s3fs_session(provider=provider)
@@ -626,7 +626,7 @@ class Store(object):
 
     def _open_urls_https(
         self,
-        url_mapping: Dict[str, Union[DataGranule, None]],
+        url_mapping: Mapping[str, Union[DataGranule, None]],
         threads: Optional[int] = 8,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
