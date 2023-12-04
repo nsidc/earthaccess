@@ -157,3 +157,13 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
                 logger.info(f"File type:  {magic.from_buffer(file.read(2048))}")
             else:
                 logger.warning(f"File could not be open: {file}")
+
+
+def test_multi_file_granule():
+    # Ensure granules that contain multiple files are handled correctly
+    granules = earthaccess.search_data(short_name="HLSL30", count=1)
+    assert len(granules) == 1
+    urls = granules[0].data_links()
+    assert len(urls) > 1
+    files = earthaccess.open(granules)
+    assert set(urls) == set(f.path for f in files)
