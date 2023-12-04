@@ -74,8 +74,8 @@ def make_instance(
 
     # When sending EarthAccessFiles between processes, it's possible that
     # we will need to switch between s3 <--> https protocols.
-    if (earthaccess.__store__.running_in_aws and cls is not s3fs.S3File) or (
-        not earthaccess.__store__.running_in_aws and cls is s3fs.S3File
+    if (earthaccess.__store__.in_region and cls is not s3fs.S3File) or (
+        not earthaccess.__store__.in_region and cls is s3fs.S3File
     ):
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
@@ -112,7 +112,7 @@ class Store(object):
         else:
             print("Warning: the current session is not authenticated with NASA")
             self.auth = None
-        self.running_in_aws = self._am_i_in_aws()
+        self.in_region = self._running_in_us_west_2()
 
     def _derive_concept_provider(self, concept_id: Optional[str] = None) -> str:
         if concept_id is not None:
@@ -136,7 +136,7 @@ class Store(object):
                 return link["URL"]
         return None
 
-    def _am_i_in_aws(self) -> bool:
+    def _running_in_us_west_2(self) -> bool:
         session = self.auth.get_session()
         try:
             # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
@@ -331,7 +331,7 @@ class Store(object):
                 "A valid Earthdata login instance is required to retrieve credentials"
             )
 
-        if self.running_in_aws:
+        if self.in_region:
             if granules[0].cloud_hosted:
                 access_method = "direct"
                 provider = granules[0]["meta"]["provider-id"]
@@ -405,7 +405,7 @@ class Store(object):
                 "A valid Earthdata login instance is required to retrieve S3 credentials"
             )
 
-        if self.running_in_aws and granules[0].startswith("s3"):
+        if self.in_region and granules[0].startswith("s3"):
             if provider is not None:
                 s3_fs = self.get_s3fs_session(provider=provider)
                 if s3_fs is not None:
@@ -510,12 +510,12 @@ class Store(object):
     ) -> List[str]:
         data_links = granules
         downloaded_files: List = []
-        if provider is None and self.running_in_aws and "cumulus" in data_links[0]:
+        if provider is None and self.in_region and "cumulus" in data_links[0]:
             raise ValueError(
                 "earthaccess can't yet guess the provider for cloud collections, "
                 "we need to use one from earthaccess.list_cloud_providers()"
             )
-        if self.running_in_aws and data_links[0].startswith("s3"):
+        if self.in_region and data_links[0].startswith("s3"):
             print(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3fs_session(provider=provider)
             # TODO: make this parallel or concurrent
@@ -543,11 +543,11 @@ class Store(object):
         provider = granules[0]["meta"]["provider-id"]
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
-        access = "direct" if (cloud_hosted and self.running_in_aws) else "external"
+        access = "direct" if (cloud_hosted and self.in_region) else "external"
         data_links = list(
             # we are not in region
             chain.from_iterable(
-                granule.data_links(access=access, in_region=self.running_in_aws)
+                granule.data_links(access=access, in_region=self.in_region)
                 for granule in granules
             )
         )
