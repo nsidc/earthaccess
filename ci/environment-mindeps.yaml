@@ -16,3 +16,7 @@ dependencies:
   - responses
   - pytest
   - pytest-cov
+  - mypy
+  - types-requests
+  - types-setuptools
+  - ruff
