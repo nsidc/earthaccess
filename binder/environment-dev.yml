@@ -1,15 +1,15 @@
 name: earthaccess-dev
 channels:
-- conda-forge
+  - conda-forge
 dependencies:
-# This environment bootstraps poetry, the actual dev environment
-# is installed and managed with poetry
-- python=3.9
-- jupyterlab=3
-- xarray>=0.19
-- ipyleaflet>=0.13
-- h5netcdf>=0.11
-- cartopy
-- pip
-- pip:
-  - poetry
+  # This environment bootstraps poetry, the actual dev environment
+  # is installed and managed with poetry
+  - python=3.9
+  - jupyterlab=3
+  - xarray>=0.19
+  - ipyleaflet>=0.13
+  - h5netcdf>=0.11
+  - cartopy
+  - pip
+  - pip:
+      - poetry
