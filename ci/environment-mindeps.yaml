@@ -15,3 +15,4 @@ dependencies:
   # test dependencies
   - responses
   - pytest
+  - pytest-cov
