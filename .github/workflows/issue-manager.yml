@@ -17,10 +17,10 @@ jobs:
   issue-manager:
     runs-on: "ubuntu-latest"
     steps:
-    - uses: "tiangolo/issue-manager@0.4.0"
-      with:
-        token: "${{ secrets.GITHUB_TOKEN }}"
-        config: >
+      - uses: "tiangolo/issue-manager@0.4.0"
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          config: >
             {
               "feedback requested": {
                 "delay": 864000,
