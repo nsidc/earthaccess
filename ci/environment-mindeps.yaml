@@ -13,9 +13,5 @@ dependencies:
   - multimethod=1.8
   - python-dateutil=2.8.2
   # test dependencies
-  - pre-commit
+  - responses
   - pytest
-  - pytest-cov
-  - pytest-rerunfailures
-  - pytest-timeout
-  - pytest-xdist
