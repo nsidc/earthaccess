@@ -36,7 +36,14 @@ jobs:
           activate-environment: test-environment
           auto-activate-base: false
 
+      - name: Install
+        run: python -m pip install --no-deps -e .
+
+      - name: mamba list
+        run: mamba list
+
       - name: Test
-        run: poetry run bash scripts/test.sh
+        run: bash scripts/test.sh
+
       - name: Upload coverage
         uses: codecov/codecov-action@v1
