@@ -1,3 +1,7 @@
+# NOTE: Minimum dependencies are defined in `pyproject.toml`.
+# This file is only used for testing purposes.
+# When making changes to minimum dependencies, make sure both this file
+# and `pyproject.toml` are consistent with each other.
 name: test-environment
 channels:
   - conda-forge
