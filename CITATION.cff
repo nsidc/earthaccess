@@ -12,7 +12,10 @@ contact:
   - name: "NSIDC"
     email: "nsidc@nsidc.org"
 type: "software"
-license: ["MIT"]
+# NOTE: The CFF spec says `license` can be a list, but Zenodo is currently not
+#       accepting lists for this key:
+#       https://github.com/zenodo/zenodo/issues/2515
+license: "MIT"
 keywords:
   - "data"
   - "Remote sensing"
