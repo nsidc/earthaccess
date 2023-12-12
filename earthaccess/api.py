@@ -372,6 +372,9 @@ def load_geometry(filepath: str = "") -> Dict[str, Any]:
         import geopandas
         from shapely.geometry import Polygon
         from shapely.geometry.polygon import orient
+        import fiona
+        fiona.drvsupport.supported_drivers['kml'] = 'rw' # enable KML support which is disabled by default
+        fiona.drvsupport.supported_drivers['KML'] = 'rw' # enable KML support which is disabled by default
     except ImportError:
         raise ImportError(
             "`earthaccess.load_geometry` requires `geopandas` to be be installed"

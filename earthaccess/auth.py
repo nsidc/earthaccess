@@ -56,6 +56,7 @@ class Auth(object):
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
+        self.has_netrc = False
         self.tokens: List = []
         self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
         self.EDL_GET_PROFILE = "https://urs.earthdata.nasa.gov/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
@@ -210,13 +211,17 @@ class Auth(object):
         Returns:
             class Session instance with Auth and bearer token headers
         """
+        # session = SessionWithHeaderRedirection(None, None)
         session = requests.Session()
+        session.trust_env = True
+
         if bearer_token and self.authenticated:
             # This will avoid the use of the netrc after we are logged in
-            session.trust_env = False
-            session.headers.update(
-                {"Authorization": f'Bearer {self.token["access_token"]}'}
-            )
+            if not self.has_netrc:
+                # session = SessionWithHeaderRedirection(self.username, self.password)
+                session.headers.update(
+                    {"Authorization": f'Bearer {self.token["access_token"]}'}
+                )
         return session
 
     def get_user_profile(self) -> Dict[str, Any]:
@@ -251,6 +256,7 @@ class Auth(object):
         if my_netrc["urs.earthdata.nasa.gov"] is not None:
             username = my_netrc["urs.earthdata.nasa.gov"]["login"]
             password = my_netrc["urs.earthdata.nasa.gov"]["password"]
+            self.has_netrc = True
         else:
             return False
         authenticated = self._get_credentials(username, password)

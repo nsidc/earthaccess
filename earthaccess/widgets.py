@@ -9,6 +9,8 @@ import shapely
 
 from .results import DataGranule
 
+# geopandas.options.io_engine = "pyogrio"
+
 
 class SearchWidget:
     def __init__(
@@ -217,7 +219,6 @@ class SearchWidget:
                 )
 
         except Exception as e:
-            print(e)
             pass
 
         return shape
