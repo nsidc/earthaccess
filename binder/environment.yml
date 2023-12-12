@@ -1,20 +1,20 @@
 name: earthaccess
 channels:
-- conda-forge
+  - conda-forge
 dependencies:
-- python=3.9
-- xarray>=0.19
-- dask>=2022.1
-- rioxarray>=0.3
-- matplotlib-base>=3.3
-- cartopy>=0.18.0
-- ipyleaflet>=0.15
-- netcdf4>=1.5
-- h5netcdf>=0.11
-- h5py>=3.2
-- geopandas>=0.9
-- zarr>=2.9.5
-- jupyterlab>=3
-- hvplot
-- holoviews
-- panel
+  - python=3.9
+  - xarray>=0.19
+  - dask>=2022.1
+  - rioxarray>=0.3
+  - matplotlib-base>=3.3
+  - cartopy>=0.18.0
+  - ipyleaflet>=0.15
+  - netcdf4>=1.5
+  - h5netcdf>=0.11
+  - h5py>=3.2
+  - geopandas>=0.9
+  - zarr>=2.9.5
+  - jupyterlab>=3
+  - hvplot
+  - holoviews
+  - panel

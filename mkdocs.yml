@@ -3,7 +3,7 @@ site_description: Client library for NASA Earthdata APIs
 site_url: https://github.com/nsidc/earthaccess
 
 theme:
-  name: 'material'
+  name: "material"
   logo: earth.png
   favicon: earth.png
   palette:
@@ -19,7 +19,7 @@ theme:
 
 repo_name: nsidc/earthaccess
 repo_url: https://github.com/nsidc/earthaccess
-edit_uri: ''
+edit_uri: ""
 
 extra_css:
   - css/styles.css
@@ -42,45 +42,45 @@ plugins:
   - mkdocs-jupyter:
       execute: True
       ignore:
-      - "tutorials/dask.ipynb"
-      - "**/.ipynb_checkpoints/*"
+        - "tutorials/dask.ipynb"
+        - "**/.ipynb_checkpoints/*"
 
 nav:
   - OVERVIEW:
-      - 'Readme': 'index.md'
-      - 'Getting started': 'tutorials/getting-started.ipynb'
-      - 'Resources' : 'resources.md'
+      - "Readme": "index.md"
+      - "Getting started": "tutorials/getting-started.ipynb"
+      - "Resources": "resources.md"
   - HOW-TO:
-      - 'Authenticate with Earthdata Login': 'howto/authenticate.md'
-      - 'Search NASA datasets using filters': 'howto/search-collections.md'
-      - 'Search for data using filters': 'howto/search-granules.md'
-      - 'Determine if a dataset is available in the cloud': 'howto/storage-location.md'
-      - 'Using authenticated sessions to access data': 'howto/edl.ipynb'
-      - 'Download data from on-prem location': 'howto/onprem.md'
-      - 'Direct S3 access - Open/stream files in the cloud': 'howto/cloud.md'
+      - "Authenticate with Earthdata Login": "howto/authenticate.md"
+      - "Search NASA datasets using filters": "howto/search-collections.md"
+      - "Search for data using filters": "howto/search-granules.md"
+      - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
+      - "Using authenticated sessions to access data": "howto/edl.ipynb"
+      - "Download data from on-prem location": "howto/onprem.md"
+      - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
   - TUTORIALS:
-      - 'Accesing remote NASA data with fsspec': 'tutorials/file-access.ipynb'
-      - 'Search and access of restricted datasets': 'tutorials/restricted-datasets.ipynb'
-      - 'Reproducing NASA sea level rise infographic': 'tutorials/SSL.ipynb'
-      - 'Accessing and visualizing EMIT data with a few lines of code': 'tutorials/emit-earthaccess.ipynb'
+      - "Accesing remote NASA data with fsspec": "tutorials/file-access.ipynb"
+      - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
+      - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb"
+      - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
       # - 'Distributing workloads with Dask clusters': 'tutorials/dask.ipynb'
   - USER REFERENCE:
       - API:
-          - 'Search and Access': 'user-reference/api/api.md'
+          - "Search and Access": "user-reference/api/api.md"
       - Modules:
-        - Collections:
-            - 'Collection Queries': 'user-reference/collections/collections-query.md'
-            - 'Collection Results': 'user-reference/collections/collections.md'
-        - Granules:
-            - 'Granule Queries': 'user-reference/granules/granules-query.md'
-            - 'Granule Results': 'user-reference/granules/granules.md'
-        - Store:
-            - 'Store': 'user-reference/store/store.md'
-        - Auth:
-            - 'Auth': 'user-reference/auth/auth.md'
+          - Collections:
+              - "Collection Queries": "user-reference/collections/collections-query.md"
+              - "Collection Results": "user-reference/collections/collections.md"
+          - Granules:
+              - "Granule Queries": "user-reference/granules/granules-query.md"
+              - "Granule Results": "user-reference/granules/granules.md"
+          - Store:
+              - "Store": "user-reference/store/store.md"
+          - Auth:
+              - "Auth": "user-reference/auth/auth.md"
       - Glossary:
-          - 'NASA Glossary': 'user-reference/glossary/nasa-glossary.md'
-          - 'Cloud Computing Terminology': 'user-reference/glossary/cloud-glossary.md'
+          - "NASA Glossary": "user-reference/glossary/nasa-glossary.md"
+          - "Cloud Computing Terminology": "user-reference/glossary/cloud-glossary.md"
 
 markdown_extensions:
   - admonition

@@ -1,0 +1,49 @@
+name: Test minimum dependencies
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# When this workflow is queued, automatically cancel any previous running
+# or pending jobs from the same branch
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+# Required shell entrypoint to have properly activated conda environments
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.1.1
+      - name: Setup Conda Environment
+        uses: conda-incubator/setup-miniconda@v2.2.0
+        with:
+          miniforge-variant: Mambaforge
+          miniforge-version: latest
+          use-mamba: true
+          channel-priority: strict
+          environment-file: ci/environment-mindeps.yaml
+          activate-environment: test-environment
+          auto-activate-base: false
+
+      - name: Install
+        run: python -m pip install --no-deps -e .
+
+      - name: mamba list
+        run: mamba list
+
+      - name: Test
+        run: bash scripts/test.sh
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1

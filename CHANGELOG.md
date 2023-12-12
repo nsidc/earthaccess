@@ -1,9 +1,16 @@
 # Changelog
 
-## Unreleased
-
+## [v0.8.2] 2023-12-06
 * Bug fixes:
-    * Follow Amazon EC2 IMDSv2 requirements to set `running-in-aws`
+    * Enable AWS check with IMDSv2
+    * Add region to running in AWS check
+    * Handle opening multi-file granules
+* Maintenance:
+    * Add CI tests with minimum supported versions
+    * Update poetry lockfile
+    * Add `python-dateutil` as a direct dependency
+    * Remove binder PR comments
+    * Add YAML formatting (prettier)
 
 ## [v0.8.1] 2023-12-01
 * New Features:
