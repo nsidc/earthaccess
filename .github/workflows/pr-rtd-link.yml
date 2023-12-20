@@ -1,0 +1,21 @@
+# The ReadTheDocs preview link is "hidden" within the GitHub "Checks"
+# interface. For users who don't know this, finding the preview link may be
+# very difficult or frustrating. This workflow makes the link more
+# findable by updating PR descriptions to include it.
+name: "Add ReadTheDocs preview link to PR descriptions"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+
+permissions:
+  pull-requests: "write"
+
+jobs:
+  autolink-rtd-previews:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "readthedocs/actions/preview@v1"
+        with:
+          project-slug: "earthaccess"
