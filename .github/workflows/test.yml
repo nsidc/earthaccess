@@ -14,9 +14,9 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Get full python version
@@ -29,7 +29,7 @@ jobs:
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: cache
         with:
           path: .venv
@@ -42,4 +42,4 @@ jobs:
       - name: Test
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
