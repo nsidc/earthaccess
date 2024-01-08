@@ -553,10 +553,14 @@ def auth_environ() -> Dict[str, str]:
     return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}
 
 
-def in_us_west_2() -> bool:
+def in_us_west_2() -> str:
     """Returns true if the user is in AWS region us-west-2
 
     Returns:
-        bool: boolean indicating if the user is in AWS region us-west-2
+        str: string indicating if the user is in AWS region us-west-2
     """
-    return earthaccess.__store__._running_in_us_west_2()
+    if earthaccess.__store__._running_in_us_west_2() is True:
+        msg = "You are running in AWS region 'us-west-2'"
+    else: 
+        msg = "You are not running in AWS region 'us-west-2'"
+    return msg
