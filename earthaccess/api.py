@@ -551,3 +551,12 @@ def auth_environ() -> Dict[str, str]:
             "`auth_environ()` requires you to first authenticate with `earthaccess.login()`"
         )
     return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}
+
+
+def in_us_west_2() -> bool:
+    """Returns true if the user is in AWS region us-west-2
+
+    Returns:
+        bool: boolean indicating if the user is in AWS region us-west-2
+    """
+    return earthaccess.__store__._running_in_us_west_2()
