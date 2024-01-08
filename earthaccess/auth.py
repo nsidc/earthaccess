@@ -95,9 +95,9 @@ class Auth(object):
         self.token: Optional[Mapping[str, str]] = None
         self._set_earthdata_system(PROD)
 
-    def __str__(self) -> str:
-        print_str = "Authentication Info\n" + "----------\n"
-        for k, v in self.auth_info:
+    def __repr__(self) -> str:
+        print_str = "Authentication Info\n" + "-------------------\n"
+        for k, v in self.auth_info.items():
             print_str += str("{}: {}\n".format(k, v))
 
         return print_str
@@ -114,11 +114,6 @@ class Auth(object):
             "authenticated?": self.authenticated,
             "tokens": self.tokens,
         }
-
-        #modify this to get the region check if in s3
-        # add a separate in uswest2 access point to api?
-        if "Region" in self.s3_bucket():
-            summary_dict["cloud-info"] = self.s3_bucket()
 
         return summary_dict
 
