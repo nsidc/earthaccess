@@ -561,6 +561,6 @@ def in_us_west_2() -> str:
     """
     if earthaccess.__store__._running_in_us_west_2() is True:
         msg = "You are running in AWS region 'us-west-2'"
-    else: 
+    else:
         msg = "You are not running in AWS region 'us-west-2'"
     return msg
