@@ -208,7 +208,7 @@ class Auth(object):
                 print(f"Credentials for the cloud provider {daac} are not available")
                 return {}
         else:
-            print("We need to auhtenticate with EDL first")
+            print("We need to authenticate with EDL first")
             return {}
 
     def get_session(self, bearer_token: bool = True) -> requests.Session:
