@@ -4,9 +4,10 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
+from cmr import CMR_OPS, CMR_UAT, CMR_SIT
 from requests import exceptions, session
 
-from .auth import Auth
+from .auth import Auth, Maturity
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
@@ -33,7 +34,7 @@ class DataCollections(CollectionQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Optional[Auth] = None, cmr_and_edl_maturity: Optional[Maturity] = None, *args: Any, **kwargs: Any) -> None:
         """Builds an instance of DataCollections to query CMR
 
         Parameters:
@@ -42,6 +43,19 @@ class DataCollections(CollectionQuery):
         """
         super().__init__(*args, **kwargs)
         self.session = session()
+        if auth is not None:
+            cmr_and_edl_maturity = auth.cmr_and_edl_maturity
+
+        if (cmr_and_edl_maturity is None) or (cmr_and_edl_maturity == Maturity.PROD):
+            self.mode(CMR_OPS)
+        elif cmr_and_edl_maturity == Maturity.UAT:
+            self.mode(CMR_UAT)
+        elif cmr_and_edl_maturity == Maturity.SIT:
+            self.mode(CMR_SIT)
+
+        print(f"[in DataCollections] CMR and EDL maturity: {cmr_and_edl_maturity}")
+        print(f"[in DataCollections] cmr_and_edl_maturity == Maturity.PROD -----> {cmr_and_edl_maturity == Maturity.PROD}")
+
         if auth is not None and auth.authenticated:
             # To search we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -311,10 +325,23 @@ class DataGranules(GranuleQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Any = None, cmr_and_edl_maturity: Optional[Maturity] = None, *args: Any, **kwargs: Any) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
         self.session = session()
+        if auth is not None:
+            cmr_and_edl_maturity = auth.cmr_and_edl_maturity
+
+        if (cmr_and_edl_maturity is None) or (cmr_and_edl_maturity == Maturity.PROD):
+            self.mode(CMR_OPS)
+        elif cmr_and_edl_maturity == Maturity.UAT:
+            self.mode(CMR_UAT)
+        elif cmr_and_edl_maturity == Maturity.SIT:
+            self.mode(CMR_SIT)
+
+        print(f"[in DataGranules] CMR and EDL maturity: {cmr_and_edl_maturity}")
+        print(f"[in DataGranules] cmr_and_edl_maturity == Maturity.PROD -----> {cmr_and_edl_maturity == Maturity.PROD}")
+
         if auth is not None and auth.authenticated:
             # To search we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)

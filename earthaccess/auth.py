@@ -63,15 +63,12 @@ class Auth(object):
     """
 
     def __init__(self) -> None:
-        # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
         self.tokens: List = []
-        self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
-        self.EDL_GET_PROFILE = "https://urs.earthdata.nasa.gov/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
-        self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
-        self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
+        self._set_cmr_and_edl_maturity(Maturity.PROD)
 
-    def login(self, strategy: str = "netrc", persist: bool = False) -> Any:
+    def login(self, strategy: str = "netrc", persist: bool = False,
+              cmr_and_edl_maturity: Optional[Maturity] = None) -> Any:
         """Authenticate with Earthdata login
 
         Parameters:
@@ -84,10 +81,11 @@ class Auth(object):
 
                     "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist (Boolean): will persist credentials in a .netrc file
+            cmr_and_edl_maturity (Maturity): the CMR endpoint to log in to Earthdata, defaults to PROD
         Returns:
             an instance of Auth.
         """
-        if self.authenticated:
+        if self.authenticated and (cmr_and_edl_maturity == self.cmr_and_edl_maturity):
             logger.debug("We are already authenticated with NASA EDL")
             return self
         if strategy == "interactive":
@@ -96,7 +94,23 @@ class Auth(object):
             self._netrc()
         if strategy == "environment":
             self._environment()
+
+        if cmr_and_edl_maturity is not None:
+            self._set_cmr_and_edl_maturity(cmr_and_edl_maturity)
+
         return self
+
+    def _set_cmr_and_edl_maturity(self, cmr_and_edl_maturity: Maturity) -> None:
+        self.cmr_and_edl_maturity = cmr_and_edl_maturity
+
+        # Maybe all these predefined URLs should be in a constants.py file
+        self.EDL_GET_TOKENS_URL = f"https://{self.cmr_and_edl_maturity.value}/api/users/tokens"
+        self.EDL_GET_PROFILE = f"https://{self.cmr_and_edl_maturity.value}/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
+        self.EDL_GENERATE_TOKENS_URL = f"https://{self.cmr_and_edl_maturity.value}/api/users/token"
+        self.EDL_REVOKE_TOKEN = f"https://{self.cmr_and_edl_maturity.value}/api/users/revoke_token"
+
+        self._eula_url = f"https://{self.cmr_and_edl_maturity.value}/users/earthaccess/unaccepted_eulas"
+        self._apps_url = f"https://{self.cmr_and_edl_maturity.value}/application_search"
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens
@@ -168,7 +182,7 @@ class Auth(object):
 
         """
         if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password)
+            session = SessionWithHeaderRedirection(self.username, self.password, self.cmr_and_edl_maturity)
             if endpoint is None:
                 auth_url = self._get_cloud_auth_url(
                     daac_shortname=daac, provider=provider
@@ -193,10 +207,8 @@ class Auth(object):
                         print(
                             f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
                         )
-                        eula_url = "https://urs.earthdata.nasa.gov/users/earthaccess/unaccepted_eulas"
-                        apps_url = "https://urs.earthdata.nasa.gov/application_search"
                         print(
-                            f"Consider accepting the EULAs available at {eula_url} and applications at {apps_url}"
+                            f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
                         )
                         return {}
 
@@ -257,9 +269,9 @@ class Auth(object):
             ) from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
-        if my_netrc["urs.earthdata.nasa.gov"] is not None:
-            username = my_netrc["urs.earthdata.nasa.gov"]["login"]
-            password = my_netrc["urs.earthdata.nasa.gov"]["password"]
+        if my_netrc[self.cmr_and_edl_maturity.value] is not None:
+            username = my_netrc[self.cmr_and_edl_maturity.value]["login"]
+            password = my_netrc[self.cmr_and_edl_maturity.value]["password"]
         else:
             return False
         authenticated = self._get_credentials(username, password)
@@ -319,7 +331,7 @@ class Auth(object):
         return self.authenticated
 
     def _get_user_tokens(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password)
+        session = SessionWithHeaderRedirection(username, password, self.cmr_and_edl_maturity)
         auth_resp = session.get(
             self.EDL_GET_TOKENS_URL,
             headers={
@@ -330,7 +342,7 @@ class Auth(object):
         return auth_resp
 
     def _generate_user_token(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password)
+        session = SessionWithHeaderRedirection(username, password, self.cmr_and_edl_maturity)
         auth_resp = session.post(
             self.EDL_GENERATE_TOKENS_URL,
             headers={
@@ -342,7 +354,7 @@ class Auth(object):
 
     def _revoke_user_token(self, token: str) -> bool:
         if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password)
+            session = SessionWithHeaderRedirection(self.username, self.password, self.cmr_and_edl_maturity)
             auth_resp = session.post(
                 self.EDL_REVOKE_TOKEN,
                 params={"token": token},
@@ -365,7 +377,7 @@ class Auth(object):
             print(e)
             return False
         my_netrc = Netrc(str(netrc_path))
-        my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
+        my_netrc[self.cmr_and_edl_maturity.value] = {"login": username, "password": password}
         my_netrc.save()
         return True
 

@@ -103,7 +103,7 @@ class Store(object):
             self._s3_credentials: Dict[
                 Tuple, Tuple[datetime.datetime, Dict[str, str]]
             ] = {}
-            oauth_profile = "https://urs.earthdata.nasa.gov/profile"
+            oauth_profile = f"https://{auth.cmr_and_edl_maturity.value}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
             self.set_requests_session(oauth_profile)
