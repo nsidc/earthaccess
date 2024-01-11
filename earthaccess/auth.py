@@ -1,6 +1,7 @@
 import getpass
 import logging
 import os
+from enum import Enum
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -14,6 +15,14 @@ from .daac import DAACS
 logger = logging.getLogger(__name__)
 
 
+class Maturity(Enum):
+    """
+    Host URL options, for different Earthdata domains.
+    """
+    PROD = "urs.earthdata.nasa.gov"
+    UAT = "uat.urs.earthdata.nasa.gov"
+    SIT = "sit.urs.earthdata.nasa.gov"
+
 class SessionWithHeaderRedirection(requests.Session):
     """
     Requests removes auth headers if the redirect happens outside the
@@ -21,7 +30,7 @@ class SessionWithHeaderRedirection(requests.Session):
     This is taken from https://wiki.earthdata.nasa.gov/display/EL/How+To+Access+Data+With+Python
     """
 
-    AUTH_HOST = "urs.earthdata.nasa.gov"
+    AUTH_HOST = Maturity.PROD.value
 
     def __init__(
         self, username: Optional[str] = None, password: Optional[str] = None
