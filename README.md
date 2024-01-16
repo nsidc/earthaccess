@@ -99,7 +99,7 @@ Once you are authenticated with NASA EDL you can:
 ### **Searching for data**
 
 Once we have selected our dataset we can search for the data granules using *doi*, *short_name* or *concept_id*.
-If we are not sure or we don't know how to search for a particular dataset, we can start with the ["Introducing NASA earthaccess"](https://nsidc.github.io/earthaccess/tutorials/demo/#querying-for-datasets) tutorial or through the [NASA Earthdata Search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended [API documentation](https://nsidc.github.io/earthaccess/user-reference/api/api/).
+If we are not sure or we don't know how to search for a particular dataset, we can start with the ["Introducing NASA earthaccess"](https://nsidc.github.io/earthaccess/tutorials/demo/#querying-for-datasets) tutorial or through the [NASA Earthdata Search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended [API documentation](https://earthaccess.readthedocs.io/en/latest/user-reference/api/api/).
 
 ```python
 
