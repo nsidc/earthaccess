@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+* Bug fixes:
+    * fixed #439 by implementing more trusted domains in the SessionWithRedirection 
+    * fixed #438 by using an authenticated session for hits()
+* Enhancements:
+    * addressing #427 by adding parameters to collection query
+
 ## [v0.8.2] 2023-12-06
 * Bug fixes:
     * Enable AWS check with IMDSv2
@@ -167,7 +175,7 @@
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.5.2...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.8.2...HEAD
 [v0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.0
