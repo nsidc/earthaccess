@@ -60,7 +60,16 @@ class DataCollections(CollectionQuery):
         Returns:
             number of results reported by CMR
         """
-        return super().hits()
+        url = self._build_url()
+
+        response = self.session.get(url, headers=self.headers, params={"page_size": 0})
+
+        try:
+            response.raise_for_status()
+        except exceptions.HTTPError as ex:
+            raise RuntimeError(ex.response.text)
+
+        return int(response.headers["CMR-Hits"])
 
     def concept_id(self, IDs: List[str]) -> Type[CollectionQuery]:
         """Filter by concept ID (ex: C1299783579-LPDAAC_ECS or G1327299284-LPDAAC_ECS, S12345678-LPDAAC_ECS)
@@ -104,6 +113,38 @@ class DataCollections(CollectionQuery):
             raise TypeError("doi must be of type str")
 
         self.params["doi"] = doi
+        return self
+
+    def instrument(self, instrument: str) -> Type[CollectionQuery]:
+        """Searh datasets by instrument
+
+        ???+ Tip
+            Not all datasets have an associated instrument. This works
+            only at the dataset level but not the granule (data) level.
+
+        Parameters:
+            instrument (String): instrument of a datasets, e.g. instrument=GEDI
+        """
+        if not isinstance(instrument, str):
+            raise TypeError("instrument must be of type str")
+
+        self.params["instrument"] = instrument
+        return self
+
+    def project(self, project: str) -> Type[CollectionQuery]:
+        """Searh datasets by associated project
+
+        ???+ Tip
+            Not all datasets have an associated instrument. This works
+            only at the dataset level but not the granule (data) level.
+
+        Parameters:
+            project (String): associated project of a datasets, e.g. project=EMIT
+        """
+        if not isinstance(project, str):
+            raise TypeError("project must be of type str")
+
+        self.params["project"] = project
         return self
 
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:

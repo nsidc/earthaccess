@@ -228,7 +228,9 @@ class DataGranule(CustomDict):
         Temporal coverage: {self['umm']['TemporalExtent']}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
-        """.strip().replace("  ", "")
+        """.strip().replace(
+            "  ", ""
+        )
         return rep_str
 
     def _repr_html_(self) -> str:

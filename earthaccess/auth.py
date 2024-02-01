@@ -18,10 +18,13 @@ class SessionWithHeaderRedirection(requests.Session):
     """
     Requests removes auth headers if the redirect happens outside the
     original req domain.
-    This is taken from https://wiki.earthdata.nasa.gov/display/EL/How+To+Access+Data+With+Python
     """
 
-    AUTH_HOST = "urs.earthdata.nasa.gov"
+    AUTH_HOSTS: List[str] = [
+        "urs.earthdata.nasa.gov",
+        "cumulus.asf.alaska.edu",
+        "datapool.asf.alaska.edu",
+    ]
 
     def __init__(
         self, username: Optional[str] = None, password: Optional[str] = None
@@ -39,11 +42,13 @@ class SessionWithHeaderRedirection(requests.Session):
         if "Authorization" in headers:
             original_parsed = urlparse(response.request.url)
             redirect_parsed = urlparse(url)
-            if (
-                (original_parsed.hostname != redirect_parsed.hostname)
-                and redirect_parsed.hostname != self.AUTH_HOST
-                and original_parsed.hostname != self.AUTH_HOST
+            if (original_parsed.hostname != redirect_parsed.hostname) and (
+                redirect_parsed.hostname not in self.AUTH_HOSTS
+                or original_parsed.hostname not in self.AUTH_HOSTS
             ):
+                logger.debug(
+                    f"Deleting Auth Headers: {original_parsed.hostname} -> {redirect_parsed.hostname}"
+                )
                 del headers["Authorization"]
         return
 
@@ -210,7 +215,7 @@ class Auth(object):
         Returns:
             class Session instance with Auth and bearer token headers
         """
-        session = requests.Session()
+        session = SessionWithHeaderRedirection()
         if bearer_token and self.authenticated:
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
