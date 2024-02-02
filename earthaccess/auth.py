@@ -23,6 +23,7 @@ class SessionWithHeaderRedirection(requests.Session):
     AUTH_HOSTS: List[str] = [
         "urs.earthdata.nasa.gov",
         "cumulus.asf.alaska.edu",
+        "sentinel1.asf.alaska.edu",
         "datapool.asf.alaska.edu",
     ]
 
