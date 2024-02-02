@@ -137,7 +137,7 @@ class DataCollections(CollectionQuery):
         ???+ Tip
             Not all datasets have an associated project. This works
             only at the dataset level but not the granule (data) level.
-            Will bring datasets across DAACs matching the project.
+            Will return datasets across DAACs matching the project.
 
         Parameters:
             project (String): associated project of a datasets, e.g. project=EMIT
