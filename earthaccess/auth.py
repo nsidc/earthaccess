@@ -18,7 +18,7 @@ try:
     user_agent = f"earthaccess v{importlib.metadata.version('earthacess')}"
 except importlib.metadata.PackageNotFoundError:
     user_agent = "earthaccess"
-    
+
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,6 @@ class SessionWithHeaderRedirection(requests.Session):
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
-
 
         if username and password:
             self.auth = (username, password)
