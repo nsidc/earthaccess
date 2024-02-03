@@ -1,4 +1,5 @@
 import getpass
+import importlib.metadata
 import logging
 import os
 from netrc import NetrcParseError
@@ -6,13 +7,10 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
-
 import requests  # type: ignore
 from tinynetrc import Netrc
 
 from .daac import DAACS
-
-import importlib.metadata
 
 try:
     user_agent = f"earthaccess v{importlib.metadata.version('earthacess')}"
