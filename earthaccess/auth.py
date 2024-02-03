@@ -6,10 +6,19 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
+
 import requests  # type: ignore
 from tinynetrc import Netrc
 
 from .daac import DAACS
+
+import importlib.metadata
+
+try:
+    user_agent = f"earthaccess v{importlib.metadata.version('earthacess')}"
+except importlib.metadata.PackageNotFoundError:
+    user_agent = "earthaccess"
+    
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +40,9 @@ class SessionWithHeaderRedirection(requests.Session):
         self, username: Optional[str] = None, password: Optional[str] = None
     ) -> None:
         super().__init__()
+        self.headers.update({"User-Agent": user_agent})
+
+
         if username and password:
             self.auth = (username, password)
 
