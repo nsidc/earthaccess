@@ -222,7 +222,7 @@ class Store(object):
         return None
 
     def _running_in_us_west_2(self) -> bool:
-        if (botocore.session.get_session().get_config_variable('region') == 'us-west-2'):
+        if (botocore.session.get_session().get_config_variable("region") == "us-west-2"):
             return True
         else:
             return False
