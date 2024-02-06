@@ -6,7 +6,7 @@ from fsspec import AbstractFileSystem
 
 import earthaccess
 
-from .auth import Auth, Maturity
+from .auth import Auth, Env
 from .results import DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
@@ -40,7 +40,7 @@ def search_datasets(
         count (Integer): Number of records to get, -1 = all
         kwargs (Dict): arguments to CMR:
 
-            * **keyword**: case insensitive and support wild cards ? and *,
+            * **keyword**: case-insensitive and support wild cards ? and *,
 
             * **short_name**: e.g. ATL08
 
@@ -52,7 +52,7 @@ def search_datasets(
 
             * **temporal**: ("yyyy-mm-dd", "yyyy-mm-dd")
 
-            * **bounding_box**: (lower_left_lon, lower_left_lat ,
+            * **bounding_box**: (lower_left_lon, lower_left_lat,
                                upper_right_lon, upper_right_lat)
     Returns:
         an list of DataCollection results that can be used to get
@@ -72,10 +72,10 @@ def search_datasets(
         return []
     if earthaccess.__auth__.authenticated:
         query = DataCollections(auth=earthaccess.__auth__,
-                                cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity).parameters(**kwargs)
+                                earthdata_environment=earthaccess.__auth__.earthdata_environment).parameters(**kwargs)
     else:
         query = DataCollections(
-            cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity).parameters(**kwargs)
+            earthdata_environment=earthaccess.__auth__.earthdata_environment).parameters(**kwargs)
     datasets_found = query.hits()
     print(f"Datasets found: {datasets_found}")
     if count > 0:
@@ -107,7 +107,7 @@ def search_data(
 
             * **temporal**: ("yyyy-mm-dd", "yyyy-mm-dd")
 
-            * **bounding_box**: (lower_left_lon, lower_left_lat ,
+            * **bounding_box**: (lower_left_lon, lower_left_lat,
                                upper_right_lon, upper_right_lat)
     Returns:
         Granules: a list of DataGranules that can be used to access
@@ -123,10 +123,10 @@ def search_data(
     """
     if earthaccess.__auth__.authenticated:
         query = DataGranules(earthaccess.__auth__,
-                             cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity).parameters(**kwargs)
+                             earthdata_environment=earthaccess.__auth__.earthdata_environment).parameters(**kwargs)
     else:
         query = DataGranules(
-            cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity).parameters(**kwargs)
+            earthdata_environment=earthaccess.__auth__.earthdata_environment).parameters(**kwargs)
     granules_found = query.hits()
     print(f"Granules found: {granules_found}")
     if count > 0:
@@ -134,7 +134,7 @@ def search_data(
     return query.get_all()
 
 
-def login(strategy: str = "all", persist: bool = False, cmr_and_edl_maturity=Maturity.PROD) -> Auth:
+def login(strategy: str = "all", persist: bool = False, earthdata_environment=Env.PROD) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/)
 
     Parameters:
@@ -149,14 +149,14 @@ def login(strategy: str = "all", persist: bool = False, cmr_and_edl_maturity=Mat
 
                 "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
         persist (Boolean): will persist credentials in a .netrc file
-        cmr_and_edl_maturity (Maturity): the CMR endpoint to log in to Earthdata, defaults to PROD
+        earthdata_environment (Env): the CMR endpoint to log in to Earthdata, defaults to PROD
     Returns:
         an instance of Auth.
     """
     if strategy == "all":
         for strategy in ["environment", "netrc", "interactive"]:
             try:
-                earthaccess.__auth__.login(strategy=strategy, persist=persist, cmr_and_edl_maturity=cmr_and_edl_maturity)
+                earthaccess.__auth__.login(strategy=strategy, persist=persist, earthdata_environment=earthdata_environment)
             except Exception:
                 pass
 
@@ -164,7 +164,7 @@ def login(strategy: str = "all", persist: bool = False, cmr_and_edl_maturity=Mat
                 earthaccess.__store__ = Store(earthaccess.__auth__)
                 break
     else:
-        earthaccess.__auth__.login(strategy=strategy, persist=persist, cmr_and_edl_maturity=cmr_and_edl_maturity)
+        earthaccess.__auth__.login(strategy=strategy, persist=persist, earthdata_environment=earthdata_environment)
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
 
@@ -258,10 +258,10 @@ def collection_query() -> Type[CollectionQuery]:
     """
     if earthaccess.__auth__.authenticated:
         query_builder = DataCollections(earthaccess.__auth__,
-                                        cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity)
+                                        earthdata_environment=earthaccess.__auth__.earthdata_environment)
     else:
         query_builder = DataCollections(
-            cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity)
+            earthdata_environment=earthaccess.__auth__.earthdata_environment)
     return query_builder
 
 
@@ -276,9 +276,10 @@ def granule_query() -> Type[GranuleQuery]:
     """
     if earthaccess.__auth__.authenticated:
         query_builder = DataGranules(earthaccess.__auth__,
-                                     cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity)
+                                     earthdata_environment=earthaccess.__auth__.earthdata_environment)
     else:
-        query_builder = DataGranules(cmr_and_edl_maturity=earthaccess.__auth__.cmr_and_edl_maturity)
+        query_builder = DataGranules(
+            earthdata_environment=earthaccess.__auth__.earthdata_environment)
     return query_builder
 
 

@@ -7,7 +7,7 @@ from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from cmr import CMR_OPS, CMR_UAT, CMR_SIT
 from requests import exceptions, session
 
-from .auth import Auth, Maturity
+from .auth import Auth, Env
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
@@ -34,7 +34,7 @@ class DataCollections(CollectionQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Optional[Auth] = None, cmr_and_edl_maturity: Optional[Maturity] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Optional[Auth] = None, earthdata_environment: Optional[Env] = None, *args: Any, **kwargs: Any) -> None:
         """Builds an instance of DataCollections to query CMR
 
         Parameters:
@@ -44,17 +44,17 @@ class DataCollections(CollectionQuery):
         super().__init__(*args, **kwargs)
         self.session = session()
         if auth is not None:
-            cmr_and_edl_maturity = auth.cmr_and_edl_maturity
+            earthdata_environment = auth.earthdata_environment
 
-        if (cmr_and_edl_maturity is None) or (cmr_and_edl_maturity == Maturity.PROD):
+        if (earthdata_environment is None) or (earthdata_environment == Env.PROD):
             self.mode(CMR_OPS)
-        elif cmr_and_edl_maturity == Maturity.UAT:
+        elif earthdata_environment == Env.UAT:
             self.mode(CMR_UAT)
-        elif cmr_and_edl_maturity == Maturity.SIT:
+        elif earthdata_environment == Env.SIT:
             self.mode(CMR_SIT)
 
-        print(f"[in DataCollections] CMR and EDL maturity: {cmr_and_edl_maturity}")
-        print(f"[in DataCollections] cmr_and_edl_maturity == Maturity.PROD -----> {cmr_and_edl_maturity == Maturity.PROD}")
+        print(f"[in DataCollections] Earthdata environment: {earthdata_environment}")
+        print(f"[in DataCollections] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}")
 
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
@@ -325,22 +325,22 @@ class DataGranules(GranuleQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Any = None, cmr_and_edl_maturity: Optional[Maturity] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Any = None, earthdata_environment: Optional[Env] = None, *args: Any, **kwargs: Any) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
         self.session = session()
         if auth is not None:
-            cmr_and_edl_maturity = auth.cmr_and_edl_maturity
+            earthdata_environment = auth.earthdata_environment
 
-        if (cmr_and_edl_maturity is None) or (cmr_and_edl_maturity == Maturity.PROD):
+        if (earthdata_environment is None) or (earthdata_environment == Env.PROD):
             self.mode(CMR_OPS)
-        elif cmr_and_edl_maturity == Maturity.UAT:
+        elif earthdata_environment == Env.UAT:
             self.mode(CMR_UAT)
-        elif cmr_and_edl_maturity == Maturity.SIT:
+        elif earthdata_environment == Env.SIT:
             self.mode(CMR_SIT)
 
-        print(f"[in DataGranules] CMR and EDL maturity: {cmr_and_edl_maturity}")
-        print(f"[in DataGranules] cmr_and_edl_maturity == Maturity.PROD -----> {cmr_and_edl_maturity == Maturity.PROD}")
+        print(f"[in DataGranules] Earthdata environment: {earthdata_environment}")
+        print(f"[in DataGranules] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}")
 
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
