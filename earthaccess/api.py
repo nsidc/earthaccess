@@ -13,7 +13,7 @@ from .store import Store
 from .utils import _validation as validate
 
 
-def _normalize_location(location: Union[str, None]) -> Union[str, None]:
+def _normalize_location(location: Optional[str]) -> Optional[str]:
     """Handle user-provided `daac` and `provider` values
 
     These values must have a capital letter as the first character
@@ -160,7 +160,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
 def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
-    local_path: Union[str, None],
+    local_path: Optional[str],
     provider: Optional[str] = None,
     threads: int = 8,
 ) -> List[str]:
