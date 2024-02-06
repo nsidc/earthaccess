@@ -554,7 +554,7 @@ def auth_environ() -> Dict[str, str]:
 
 
 def in_us_west_2() -> str:
-    """Returns true if the user is in AWS region us-west-2
+    """Returns a message indicating if the user is in AWS region us-west-2
 
     Returns:
         str: string indicating if the user is in AWS region us-west-2
