@@ -178,7 +178,7 @@ class Auth(object):
             daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
             endpoint: getting the credentials directly from the S3Credentials URL
 
-        Rreturns:
+        Returns:
             A Python dictionary with the temporary AWS S3 credentials
 
         """
