@@ -190,7 +190,7 @@ class Store(object):
                 resp.raise_for_status()
             else:
                 self._requests_cookies.update(new_session.cookies.get_dict())
-        elif resp.status_code >= 200 and resp.status_code <= 300:
+        elif 200 <= resp.status_code <= 300:
             self._requests_cookies = self._http_session.cookies.get_dict()
         elif resp.status_code >= 500:
             resp.raise_for_status()
@@ -207,7 +207,7 @@ class Store(object):
 
         Parameters:
             daac: any of the DAACs e.g. NSIDC, PODAAC
-            provider: a data provider if we know them, e.g PODAAC -> POCLOUD
+            provider: a data provider if we know them, e.g. PODAAC -> POCLOUD
             endpoint: pass the URL for the credentials directly
         Returns:
             a s3fs file instance
@@ -272,7 +272,7 @@ class Store(object):
         token = self.auth.token["access_token"]
         client_kwargs = {
             "headers": {"Authorization": f"Bearer {token}"},
-            # This is important! if we trust the env end send a bearer token
+            # This is important!  If we trust the env end, send a bearer token
             # auth will fail!
             "trust_env": False,
         }
@@ -344,7 +344,7 @@ class Store(object):
             if granules[0].cloud_hosted:
                 access = "direct"
                 provider = granules[0]["meta"]["provider-id"]
-                # if the data has its own S3 credentials endpoint we'll use it
+                # if the data has its own S3 credentials endpoint, we'll use it
                 endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
                 if endpoint is not None:
                     print(f"using endpoint: {endpoint}")
@@ -442,17 +442,20 @@ class Store(object):
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
-           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
-           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
-             collection the method will not get any files.
-           * If we requests data granules from an on-prem collection the data will be effectively downloaded
-             to a local directory.
+           * If we run this in the cloud,
+             we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based collection,
+             the method will not get any files.
+           * If we request data granules from an on-prem collection,
+             the data will be effectively downloaded to a local directory.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
+            granules:
+                a list of granules(DataGranule) instances or a list of granule links (HTTP)
             local_path: local directory to store the remote data granules
             access: direct or on_prem, if set it will use it for the access method.
-            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+            threads: parallel number of threads to use to download the files,
+                adjust as necessary, default = 8
 
         Returns:
             List of downloaded files
@@ -467,7 +470,7 @@ class Store(object):
             files = self._get(granules, local_path, provider, threads)
             return files
         else:
-            raise ValueError("List of URLs or DataGranule isntances expected")
+            raise ValueError("List of URLs or DataGranule instances expected")
 
     @singledispatchmethod
     def _get(
@@ -479,17 +482,20 @@ class Store(object):
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
-           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
-           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
-             collection the method will not get any files.
-           * If we requests data granules from an on-prem collection the data will be effectively downloaded
-             to a local directory.
+           * If we run this in the cloud,
+             we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run it outside the us-west-2 region and the data granules are part of a cloud-based collection,
+             the method will not get any files.
+           * If we request data granules from an on-prem collection,
+             the data will be effectively downloaded to a local directory.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
+            granules:
+                a list of granules(DataGranule) instances or a list of granule links (HTTP)
             local_path: local directory to store the remote data granules
             access: direct or on_prem, if set it will use it for the access method.
-            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+            threads: parallel number of threads to use to download the files,
+                adjust as necessary, default = 8
 
         Returns:
             None
@@ -568,7 +574,8 @@ class Store(object):
                 downloaded_files.append(file_name)
             return downloaded_files
         else:
-            # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
+            # if the data is cloud-based,
+            # but we are not in AWS, it will be downloaded as if it was on prem
             return self._download_onprem_granules(data_links, local_path, threads)
 
     def _download_file(self, url: str, directory: str) -> str:

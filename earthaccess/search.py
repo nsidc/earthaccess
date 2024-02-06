@@ -16,7 +16,7 @@ class DataCollections(CollectionQuery):
     """
     ???+ Info
         The DataCollection class queries against https://cmr.earthdata.nasa.gov/search/collections.umm_json,
-        the response has to be in umm_json in order to use the result classes.
+        the response has to be in umm_json to use the result classes.
     """
 
     _fields = None
@@ -39,7 +39,7 @@ class DataCollections(CollectionQuery):
 
         Parameters:
             auth (Auth): An authenticated `Auth` instance, this is an optional parameter
-                for queries that need authentication e.g. restricted datasets
+                for queries that need authentication, e.g. restricted datasets
         """
         super().__init__(*args, **kwargs)
         self.session = session()
@@ -57,7 +57,7 @@ class DataCollections(CollectionQuery):
         print(f"[in DataCollections] cmr_and_edl_maturity == Maturity.PROD -----> {cmr_and_edl_maturity == Maturity.PROD}")
 
         if auth is not None and auth.authenticated:
-            # To search we need the new bearer tokens from NASA Earthdata
+            # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
@@ -68,7 +68,7 @@ class DataCollections(CollectionQuery):
     def hits(self) -> int:
         """Returns the number of hits the current query will return. This is done by
         making a lightweight query to CMR and inspecting the returned headers.
-        Restricted datasets will always return 0 results even if there are results.
+        Restricted datasets will always return zero results even if there are results.
 
 
         Returns:
@@ -93,7 +93,7 @@ class DataCollections(CollectionQuery):
         return self
 
     def keyword(self, text: str) -> Type[CollectionQuery]:
-        """Case insentive and wildcard (*) search through over two dozen fields in
+        """Case-insensitive and wildcard (*) search through over two dozen fields in
         a CMR collection record. This allows for searching against fields like
         summary and science keywords.
 
@@ -104,7 +104,7 @@ class DataCollections(CollectionQuery):
         return self
 
     def doi(self, doi: str) -> Type[CollectionQuery]:
-        """Searh datasets by DOI
+        """Search datasets by DOI
 
         ???+ Tip
             Not all datasets have an associated DOI, also DOI search works
@@ -192,12 +192,12 @@ class DataCollections(CollectionQuery):
         return self
 
     def provider(self, provider: str = "") -> Type[CollectionQuery]:
-        """Only match collections from a given provider, a NASA datacenter or DAAC can have 1 or more providers
-        i.e. PODAAC is a data center or DAAC, PODAAC is the default provider for on prem data, POCLOUD is
+        """Only match collections from a given provider, a NASA datacenter or DAAC can have one or more providers
+        i.e. PODAAC is a data center or DAAC, PODAAC is the default provider for on-prem data, POCLOUD is
         the PODAAC provider for their data in the cloud.
 
         Parameters:
-            provider (String): a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
+            provider (String): a provider code for any DAAC, e.g. POCLOUD, NSIDC_CPRD, etc.
         """
         self.params["provider"] = provider
         return self
@@ -279,13 +279,13 @@ class DataCollections(CollectionQuery):
         self, date_from: str, date_to: str, exclude_boundary: bool = False
     ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
-        or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls.
+        or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls
         to this method before calling execute().
 
         Parameters:
             date_from (String): earliest date of temporal range
             date_to (string): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range
+            exclude_boundary (Boolean): whether to exclude the date_from/to in the matched range
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None:
@@ -343,17 +343,17 @@ class DataGranules(GranuleQuery):
         print(f"[in DataGranules] cmr_and_edl_maturity == Maturity.PROD -----> {cmr_and_edl_maturity == Maturity.PROD}")
 
         if auth is not None and auth.authenticated:
-            # To search we need the new bearer tokens from NASA Earthdata
+            # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
 
     def hits(self) -> int:
-        """
-        Returns the number of hits the current query will return. This is done by
+        """Return the number of hits the current query will return. This is done by
         making a lightweight query to CMR and inspecting the returned headers.
 
-        :returns: number of results reported by CMR
+        Returns:
+            number of results reported by CMR
         """
 
         url = self._build_url()
@@ -406,7 +406,7 @@ class DataGranules(GranuleQuery):
         the PODAAC provider for their data in the cloud.
 
         Parameters:
-            provider (String): a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
+            provider (String): a provider code for any DAAC, e.g. POCLOUD, NSIDC_CPRD, etc.
         """
         self.params["provider"] = provider
         return self
@@ -469,7 +469,7 @@ class DataGranules(GranuleQuery):
         queries using the readable_granule_name metadata field.
 
         ???+ Tip
-            We can use wirldcards on a granule name to further refine our search
+            We can use wildcards on a granule name to further refine our search
             i.e. MODGRNLD.*.daily.*
 
         Parameters:
@@ -543,7 +543,7 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
-        """Check if a granule record in CMR advertises "direct access"."""
+        """Check if a granule record, in CMR, advertises "direct access"."""
         if "RelatedUrls" not in granule["umm"]:
             return False
 
@@ -554,10 +554,13 @@ class DataGranules(GranuleQuery):
         return False
 
     def short_name(self, short_name: str = "") -> Type[GranuleQuery]:
-        """
-        Filter by short name (aka product or collection name).
-        :param short_name: name of collection
-        :returns: Query instance
+        """Filter by short name (aka product or collection name).
+
+        Parameters:
+            short_name (str): name of a collection
+
+        Returns:
+            Query instance
         """
         super().short_name(short_name)
         return self
@@ -652,7 +655,7 @@ class DataGranules(GranuleQuery):
         Parameters:
             date_from (Date, String): earliest date of temporal range
             date_to (Date, String): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range
+            exclude_boundary (Boolean): whether to exclude the date_from/to in the matched range
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None:
@@ -742,7 +745,7 @@ class DataGranules(GranuleQuery):
         return self
 
     def doi(self, doi: str) -> Type[GranuleQuery]:
-        """Searh data granules by DOI
+        """Search data granules by DOI
 
         ???+ Tip
             Not all datasets have an associated DOI, internally if a DOI is found
