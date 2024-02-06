@@ -3,8 +3,7 @@ from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 import dateutil.parser as parser  # type: ignore
-from cmr import CollectionQuery, GranuleQuery  # type: ignore
-from cmr import CMR_OPS, CMR_UAT, CMR_SIT
+from cmr import CMR_OPS, CMR_SIT, CMR_UAT, CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
 from .auth import Auth, Env
