@@ -36,7 +36,7 @@ def search_datasets(
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
     Parameters:
-        count (Integer): Number of records to get, -1 = all
+        count: Number of records to get, -1 = all
         kwargs (Dict):
             arguments to CMR:
 
@@ -86,7 +86,7 @@ def search_data(
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
     Parameters:
-        count (Integer): Number of records to get, -1 = all
+        count: Number of records to get, -1 = all
         kwargs (Dict):
             arguments to CMR:
 
@@ -128,14 +128,14 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/)
 
     Parameters:
-        strategy (String):
+        strategy:
             authentication method.
 
             * **"all"**: (default) try all methods until one works
             * **"interactive"**: enter username and password.
             * **"netrc"**: retrieve username and password from ~/.netrc.
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
-        persist (Boolean): will persist credentials in a .netrc file
+        persist: will persist credentials in a .netrc file
 
     Returns:
         an instance of Auth.
@@ -223,9 +223,9 @@ def get_s3_credentials(
     this is useful for missions that do not use the same endpoint as their DAACs e.g. SWOT
 
     Parameters:
-        daac (String): a DAAC short_name like NSIDC or PODAAC etc
-        provider (String: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
-        results (list[earthaccess.results.DataGranule]): List of results from search_data()
+        daac: a DAAC short_name like NSIDC or PODAAC etc
+        provider: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        results: List of results from search_data()
 
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
@@ -242,7 +242,7 @@ def collection_query() -> Type[CollectionQuery]:
     """Returns a query builder instance for NASA collections (datasets)
 
     Returns:
-        class earthaccess.DataCollections: a query builder instance for data collections.
+        a query builder instance for data collections.
     """
     if earthaccess.__auth__.authenticated:
         query_builder = DataCollections(earthaccess.__auth__)
@@ -255,7 +255,7 @@ def granule_query() -> Type[GranuleQuery]:
     """Returns a query builder instance for data granules
 
     Returns:
-        class earthaccess.DataGranules: a query builder instance for data granules.
+        a query builder instance for data granules.
     """
     if earthaccess.__auth__.authenticated:
         query_builder = DataGranules(earthaccess.__auth__)
@@ -268,7 +268,7 @@ def get_fsspec_https_session() -> AbstractFileSystem:
     """Returns a fsspec session that can be used to access datafiles across many different DAACs
 
     Returns:
-        class AbstractFileSystem: an fsspec instance able to access data across DAACs
+        an fsspec instance able to access data across DAACs
 
     Examples:
         ```python
@@ -291,7 +291,7 @@ def get_requests_https_session() -> requests.Session:
     require authentication with NASA EDL.
 
     Returns:
-        class requests.Session: an authenticated requests Session instance.
+        an authenticated requests Session instance.
 
     Examples:
         ```python
@@ -316,12 +316,12 @@ def get_s3fs_session(
     """Returns a fsspec s3fs file session for direct access when we are in us-west-2
 
     Parameters:
-        daac (String): Any DAAC short name e.g. NSIDC, GES_DISC
-        provider (String): Each DAAC can have a cloud provider, if the DAAC is specified, there is no need to use provider
-        results (list[class earthaccess.results.DataGranule]): A list of results from search_data(), earthaccess will use the metadata form CMR to obtain the S3 Endpoint
+        daac: Any DAAC short name e.g. NSIDC, GES_DISC
+        provider: Each DAAC can have a cloud provider, if the DAAC is specified, there is no need to use provider
+        results: A list of results from search_data(), earthaccess will use the metadata form CMR to obtain the S3 Endpoint
 
     Returns:
-        class s3fs.S3FileSystem: an authenticated s3fs session valid for 1 hour
+        an authenticated s3fs session valid for 1 hour
     """
     daac = _normalize_location(daac)
     provider = _normalize_location(provider)
@@ -338,7 +338,7 @@ def get_edl_token() -> str:
     """Returns the current token used for EDL
 
     Returns:
-        str: EDL token
+        EDL token
     """
     token = earthaccess.__auth__.token
     return token
