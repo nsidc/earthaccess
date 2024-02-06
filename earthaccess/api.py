@@ -50,14 +50,19 @@ def search_datasets(
 
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
 
-            * **temporal**: ("yyyy-mm-dd", "yyyy-mm-dd")
+            * **temporal**: a tuple representing temporal bounds in the form
+              ("yyyy-mm-dd", "yyyy-mm-dd")
 
-            * **bounding_box**: (lower_left_lon, lower_left_lat ,
-                               upper_right_lon, upper_right_lat)
+            * **bounding_box**: a tuple representing spatial bounds in the form
+              (lower_left_lon, lower_left_lat , upper_right_lon, upper_right_lat)
+
     Returns:
-        an list of DataCollection results that can be used to get
+
+        a list of DataCollection results that can be used to get
         information such as concept_id, doi, etc. about a dataset.
+
     Examples:
+
         ```python
         datasets = earthaccess.search_datasets(
             keyword="sea surface anomaly",
@@ -103,14 +108,19 @@ def search_data(
 
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
 
-            * **temporal**: ("yyyy-mm-dd", "yyyy-mm-dd")
+            * **temporal**: a tuple representing temporal bounds in the form
+              ("yyyy-mm-dd", "yyyy-mm-dd")
 
-            * **bounding_box**: (lower_left_lon, lower_left_lat ,
-                               upper_right_lon, upper_right_lat)
+            * **bounding_box**: a tuple representing spatial bounds in the form
+              (lower_left_lon, lower_left_lat , upper_right_lon, upper_right_lat)
+
     Returns:
+
         Granules: a list of DataGranules that can be used to access
-          the granule files by using `download()` or `open()`.
+        the granule files by using `download()` or `open()`.
+
     Examples:
+
         ```python
         datasets = earthaccess.search_data(
             doi="10.5067/SLREF-CDRV2",
