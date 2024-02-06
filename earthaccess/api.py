@@ -566,4 +566,4 @@ def in_us_west_2() -> str:
                     "Your instance is not running inside the"
                     " AWS us-west-2 region."
                     " You will not be able to directly access NASA Earthdata S3 buckets."
-                    )
+                )
