@@ -562,6 +562,8 @@ def in_us_west_2() -> str:
     if earthaccess.__store__._running_in_us_west_2() is True:
         return "You are running in AWS region 'us-west-2'"
     else:
-        raise ValueError("Your instance is not running inside the"
-                             " AWS us-west-2 region."
-                             " You will not be able to directly access NASA Earthdata S3 buckets.")
+        raise ValueError(
+                    "Your instance is not running inside the"
+                    " AWS us-west-2 region."
+                    " You will not be able to directly access NASA Earthdata S3 buckets."
+                    )
