@@ -31,38 +31,30 @@ def _normalize_location(location: Union[str, None]) -> Union[str, None]:
 def search_datasets(
     count: int = -1, **kwargs: Any
 ) -> List[earthaccess.results.DataCollection]:
-    """Search datasets using NASA's CMR
+    """Search datasets using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
     Parameters:
-
         count (Integer): Number of records to get, -1 = all
-        kwargs (Dict): arguments to CMR:
+        kwargs (Dict):
+            arguments to CMR:
 
             * **keyword**: case insensitive and support wild cards ? and *,
-
             * **short_name**: e.g. ATL08
-
             * **doi**: DOI for a dataset
-
             * **daac**: e.g. NSIDC or PODAAC
-
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
-
             * **temporal**: a tuple representing temporal bounds in the form
-              ("yyyy-mm-dd", "yyyy-mm-dd")
-
+              `("yyyy-mm-dd", "yyyy-mm-dd")`
             * **bounding_box**: a tuple representing spatial bounds in the form
-              (lower_left_lon, lower_left_lat , upper_right_lon, upper_right_lat)
+              `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
     Returns:
-
-        a list of DataCollection results that can be used to get
-        information such as concept_id, doi, etc. about a dataset.
+        a list of DataCollection results that can be used to get information about a
+            dataset, e.g. concept_id, doi, etc.
 
     Examples:
-
         ```python
         datasets = earthaccess.search_datasets(
             keyword="sea surface anomaly",
@@ -94,33 +86,25 @@ def search_data(
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
     Parameters:
-
         count (Integer): Number of records to get, -1 = all
-        kwargs (Dict): arguments to CMR:
+        kwargs (Dict):
+            arguments to CMR:
 
             * **short_name**: dataset short name e.g. ATL08
-
             * **version**: dataset version
-
             * **doi**: DOI for a dataset
-
             * **daac**: e.g. NSIDC or PODAAC
-
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
-
             * **temporal**: a tuple representing temporal bounds in the form
-              ("yyyy-mm-dd", "yyyy-mm-dd")
-
+              `("yyyy-mm-dd", "yyyy-mm-dd")`
             * **bounding_box**: a tuple representing spatial bounds in the form
-              (lower_left_lon, lower_left_lat , upper_right_lon, upper_right_lat)
+              `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
     Returns:
-
-        Granules: a list of DataGranules that can be used to access
-        the granule files by using `download()` or `open()`.
+        a list of DataGranules that can be used to access the granule files by using
+            `download()` or `open()`.
 
     Examples:
-
         ```python
         datasets = earthaccess.search_data(
             doi="10.5067/SLREF-CDRV2",
@@ -144,17 +128,15 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/)
 
     Parameters:
+        strategy (String):
+            authentication method.
 
-        strategy (String): authentication method.
-
-                "all": (default) try all methods until one works
-
-                "interactive": enter username and password.
-
-                "netrc": retrieve username and password from ~/.netrc.
-
-                "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
+            * **"all"**: (default) try all methods until one works
+            * **"interactive"**: enter username and password.
+            * **"netrc"**: retrieve username and password from ~/.netrc.
+            * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist (Boolean): will persist credentials in a .netrc file
+
     Returns:
         an instance of Auth.
     """
@@ -218,8 +200,10 @@ def open(
     hosted on S3 or HTTPS by third party libraries like xarray.
 
     Parameters:
-        granules: a list of granule instances **or** list of URLs, e.g. s3://some-granule,
-        if a list of URLs is passed we need to specify the data provider e.g. POCLOUD, NSIDC_CPRD etc.
+        granules: a list of granule instances **or** list of URLs, e.g.
+            `s3://some-granule`, if a list of URLs is passed we need to specify the data
+            provider e.g. POCLOUD, NSIDC_CPRD etc.
+
     Returns:
         a list of s3fs "file pointers" to s3 files.
     """
@@ -242,6 +226,7 @@ def get_s3_credentials(
         daac (String): a DAAC short_name like NSIDC or PODAAC etc
         provider (String: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
         results (list[earthaccess.results.DataGranule]): List of results from search_data()
+
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
     """
@@ -256,8 +241,6 @@ def get_s3_credentials(
 def collection_query() -> Type[CollectionQuery]:
     """Returns a query builder instance for NASA collections (datasets)
 
-    Parameters:
-        cloud_hosted (Boolean): initializes the query builder for cloud hosted collections.
     Returns:
         class earthaccess.DataCollections: a query builder instance for data collections.
     """
@@ -271,9 +254,6 @@ def collection_query() -> Type[CollectionQuery]:
 def granule_query() -> Type[GranuleQuery]:
     """Returns a query builder instance for data granules
 
-    Parameters:
-        cloud_hosted (Boolean): initializes the query builder for a particular DOI
-        if we have it.
     Returns:
         class earthaccess.DataGranules: a query builder instance for data granules.
     """
@@ -359,7 +339,6 @@ def get_edl_token() -> str:
 
     Returns:
         str: EDL token
-
     """
     token = earthaccess.__auth__.token
     return token
