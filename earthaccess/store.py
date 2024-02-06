@@ -225,9 +225,7 @@ class Store(object):
         if (boto3.client('s3').meta.region_name == 'us-west-2'):
             return True
         else:
-            raise ValueError('Your instance is not running inside the'
-                             ' AWS us-west-2 region.'
-                             ' You will not be able to directly access NASA Earthdata S3 buckets')
+            return False
 
     def set_requests_session(
         self, url: str, method: str = "get", bearer_token: bool = True
