@@ -9,6 +9,7 @@ from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
 
+import boto3
 import fsspec
 import requests
 import s3fs
@@ -221,26 +222,12 @@ class Store(object):
         return None
 
     def _running_in_us_west_2(self) -> bool:
-        session = self.auth.get_session()
-        try:
-            # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-            token_ = session.put(
-                "http://169.254.169.254/latest/api/token",
-                headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
-                timeout=1,
-            )
-            resp = session.get(
-                "http://169.254.169.254/latest/meta-data/placement/region",
-                timeout=1,
-                headers={"X-aws-ec2-metadata-token": token_.text},
-            )
-        except Exception:
-            return False
-
-        if resp.status_code == 200 and b"us-west-2" == resp.content:
-            # On AWS, in region us-west-2
+        if (boto3.client('s3').meta.region_name == 'us-west-2'):
             return True
-        return False
+        else:
+            raise ValueError('Your instance is not running inside the'
+                             ' AWS us-west-2 region.'
+                             ' You will not be able to directly access NASA Earthdata S3 buckets')
 
     def set_requests_session(
         self, url: str, method: str = "get", bearer_token: bool = True

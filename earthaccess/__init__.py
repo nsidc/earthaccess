@@ -18,12 +18,9 @@ from .api import (
     open,
     search_data,
     search_datasets,
-<<<<<<< HEAD
     search_services,
     status,
     in_us_west_2,
-=======
->>>>>>> run linter
 )
 from .auth import Auth
 from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
@@ -46,13 +43,9 @@ __all__ = [
     "get_fsspec_https_session",
     "get_s3fs_session",
     "get_s3_credentials",
-<<<<<<< HEAD
     "get_s3_filesystem",
     "get_edl_token",
     "granule_query",
-=======
-    "get_edl_token" "granule_query",
->>>>>>> run linter
     "collection_query",
     "open",
     "download",
