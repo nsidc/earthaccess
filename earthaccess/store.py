@@ -9,7 +9,7 @@ from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
 
-import boto3
+import botocore.session
 import fsspec
 import requests
 import s3fs
@@ -222,7 +222,7 @@ class Store(object):
         return None
 
     def _running_in_us_west_2(self) -> bool:
-        if (boto3.client('s3').meta.region_name == 'us-west-2'):
+        if (botocore.session.get_session().get_config_variable('region') == 'us-west-2'):
             return True
         else:
             return False
