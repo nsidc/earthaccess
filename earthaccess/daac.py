@@ -128,7 +128,7 @@ def find_provider(
                 if len(daac["cloud-providers"]) > 0:
                     return daac["cloud-providers"][0]
                 else:
-                    # We found the DAAC but it does not have cloud data
+                    # We found the DAAC, but it does not have cloud data
                     return daac["on-prem-providers"][0]
             else:
                 # return on prem provider code

@@ -20,21 +20,21 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 
 @pytest.fixture(scope="module")
-def granuales():
-    granuales = earthaccess.search_data(
+def granules():
+    granules = earthaccess.search_data(
         count=2,
         short_name="SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205",
         cloud_hosted=True,
     )
-    return granuales
+    return granules
 
 
 @pytest.mark.parametrize("protocol", ["", "file://"])
-def test_consolidate_metadata_outfile(tmp_path, granuales, protocol):
+def test_consolidate_metadata_outfile(tmp_path, granules, protocol):
     outfile = f"{protocol}{tmp_path / 'metadata.json'}"
     assert not os.path.exists(outfile)
     result = earthaccess.consolidate_metadata(
-        granuales,
+        granules,
         outfile=outfile,
         access="indirect",
         kerchunk_options={"concat_dims": "Time"},
@@ -43,9 +43,9 @@ def test_consolidate_metadata_outfile(tmp_path, granuales, protocol):
     assert result == outfile
 
 
-def test_consolidate_metadata_memory(tmp_path, granuales):
+def test_consolidate_metadata_memory(tmp_path, granules):
     result = earthaccess.consolidate_metadata(
-        granuales,
+        granules,
         access="indirect",
         kerchunk_options={"concat_dims": "Time"},
     )
@@ -54,10 +54,10 @@ def test_consolidate_metadata_memory(tmp_path, granuales):
 
 
 @pytest.mark.parametrize("output", ["file", "memory"])
-def test_consolidate_metadata(tmp_path, granuales, output):
+def test_consolidate_metadata(tmp_path, granules, output):
     xr = pytest.importorskip("xarray")
     # Open directly with `earthaccess.open`
-    expected = xr.open_mfdataset(earthaccess.open(granuales))
+    expected = xr.open_mfdataset(earthaccess.open(granules))
 
     # Open with kerchunk consolidated metadata file
     if output == "file":
@@ -65,7 +65,7 @@ def test_consolidate_metadata(tmp_path, granuales, output):
     else:
         kwargs = {}
     metadata = earthaccess.consolidate_metadata(
-        granuales, access="indirect", kerchunk_options={"concat_dims": "Time"}, **kwargs
+        granules, access="indirect", kerchunk_options={"concat_dims": "Time"}, **kwargs
     )
 
     fs = earthaccess.get_fsspec_https_session()

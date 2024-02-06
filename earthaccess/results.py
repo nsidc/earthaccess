@@ -81,7 +81,7 @@ class DataCollection(CustomDict):
         """Summary containing short_name, concept-id, file-type, and cloud-info if the dataset is cloud hosted.
 
         Returns:
-            Returns a sumary of the collection metadata
+            Returns a summary of the collection metadata
         """
         # we can print only the concept-id
 
@@ -111,7 +111,7 @@ class DataCollection(CustomDict):
     def concept_id(self) -> str:
         """
         Returns:
-          Retrurns a collection's `concept_id`, this id is the most relevant search field on granule queries.
+          Returns a collection's `concept_id`, this id is the most relevant search field on granule queries.
         """
         return self["meta"]["concept-id"]
 
@@ -290,7 +290,7 @@ class DataGranule(CustomDict):
         """Returns the data links form a granule
 
         Parameters:
-            access: direct or external, direct means in-region access for cloud hosted collections.
+            access: direct or external, direct means in-region access for cloud-hosted collections.
             in_region: if we are running in us-west-2, meant for the store class, default is False
         Returns:
             the data link for the requested access type
@@ -300,7 +300,7 @@ class DataGranule(CustomDict):
         if in_region:
             # we are in us-west-2
             if self.cloud_hosted and access in (None, "direct"):
-                # this is a cloud collection and we didn't specify the access type
+                # this is a cloud collection, and we didn't specify the access type
                 # default to S3 links
                 if len(s3_links) == 0 and len(https_links) > 0:
                     # This is guessing the S3 links for some cloud collections that for
@@ -310,14 +310,14 @@ class DataGranule(CustomDict):
                     # we have the s3 links so we return those
                     return s3_links
             else:
-                # Even though we are in us-west-2 the user wants the HTTPS links
+                # Even though we are in us-west-2, the user wants the HTTPS links
                 # used in region they are S3 signed links from TEA
                 # https://github.com/asfadmin/thin-egress-app
                 return https_links
         else:
             # we are not in region
             if access == "direct":
-                # maybe the user wants to collect S3 links ans use them later
+                # maybe the user wants to collect S3 links and use them later
                 # from the cloud
                 return s3_links
             else:

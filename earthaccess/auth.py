@@ -170,7 +170,7 @@ class Auth(object):
         provider: Optional[str] = None,
         endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
-        """Gets AWS S3 credentials for a given NASA cloud provider, the
+        """Gets AWS S3 credentials for a given NASA cloud provider; the
         easier way is to use the DAAC short name. provider is optional if we know it.
 
         Parameters:
@@ -250,13 +250,13 @@ class Auth(object):
         else:
             return {}
 
-    def _interactive(self, presist_credentials: bool = False) -> bool:
+    def _interactive(self, persist_credentials: bool = False) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
         authenticated = self._get_credentials(username, password)
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
-            if presist_credentials:
+            if persist_credentials:
                 print("Persisting credentials to .netrc")
                 self._persist_user_credentials(username, password)
         return authenticated

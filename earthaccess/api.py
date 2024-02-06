@@ -185,7 +185,7 @@ def download(
     Parameters:
         granules: a granule, list of granules, a granule link (HTTP), or a list of granule links (HTTP)
         local_path: local directory to store the remote data granules
-        provider: if we download a list of URLs we need to specify the provider.
+        provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
 
     Returns:
@@ -235,7 +235,7 @@ def get_s3_credentials(
 
     Parameters:
         daac (String): a DAAC short_name like NSIDC or PODAAC etc
-        provider (String: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        provider (String): if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
         results (list[earthaccess.results.DataGranule]): List of results from search_data()
     Returns:
         a dictionary with S3 credentials for the DAAC or provider
@@ -252,7 +252,7 @@ def collection_query() -> Type[CollectionQuery]:
     """Returns a query builder instance for NASA collections (datasets)
 
     Parameters:
-        cloud_hosted (Boolean): initializes the query builder for cloud hosted collections.
+        cloud_hosted (Boolean): initializes the query builder for cloud-hosted collections.
     Returns:
         class earthaccess.DataCollections: a query builder instance for data collections.
     """
