@@ -1,4 +1,5 @@
 # package imports
+import datetime as dt
 import pytest
 from earthaccess.search import DataGranules
 
@@ -6,6 +7,7 @@ valid_single_dates = [
     ("2001-12-12", "2001-12-21", "2001-12-12T00:00:00Z,2001-12-21T00:00:00Z"),
     ("2021-02-01", "", "2021-02-01T00:00:00Z,"),
     ("1999-02-01 06:00", "2009-01-01", "1999-02-01T06:00:00Z,2009-01-01T00:00:00Z"),
+    (dt.datetime(2021, 2, 1), dt.datetime(2021, 2, 2), "2021-02-01T00:00:00Z,2021-02-02T00:00:00Z")
 ]
 
 invalid_single_dates = [
