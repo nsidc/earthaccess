@@ -1,7 +1,6 @@
+import importlib.resources
 from typing import Any, List
 from uuid import uuid4
-
-import importlib.resources
 
 STATIC_FILES = ["css/iso_bootstrap4.0.0min.css", "css/styles.css"]
 
