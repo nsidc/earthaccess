@@ -79,7 +79,7 @@ def make_instance(
 def _get_url_granule_mapping(
     granules: List[DataGranule], access: str
 ) -> Mapping[str, DataGranule]:
-    """Construct a mapping between file urls and granules"""
+    """Construct a mapping between file urls and granules."""
     url_mapping = {}
     for granule in granules:
         for url in granule.data_links(access=access):
@@ -88,15 +88,13 @@ def _get_url_granule_mapping(
 
 
 class Store(object):
-    """
-    Store class to access granules on-prem or in the cloud.
-    """
+    """Store class to access granules on-prem or in the cloud."""
 
     def __init__(self, auth: Any, pre_authorize: bool = False) -> None:
-        """Store is the class to access data
+        """Store is the class to access data.
 
         Parameters:
-            auth (Auth): Required, Auth instance to download and access data.
+            auth: Auth instance to download and access data.
         """
         if auth.authenticated is True:
             self.auth = auth
@@ -169,9 +167,9 @@ class Store(object):
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
 
         Parameters:
-            url (String): used to test the credentials and populate the class auth cookies
-            method (String): HTTP method to test. default: "GET"
-            bearer_token (Boolean): if true will be used for authenticated queries on CMR
+            url: used to test the credentials and populate the class auth cookies
+            method: HTTP method to test. default: "GET"
+            bearer_token: if true will be used for authenticated queries on CMR
 
         Returns:
             fsspec HTTPFileSystem (aiohttp client session)
@@ -202,13 +200,13 @@ class Store(object):
         provider: Optional[str] = None,
         endpoint: Optional[str] = None,
     ) -> s3fs.S3FileSystem:
-        """
-        Returns a s3fs instance for a given cloud provider / DAAC
+        """Returns a s3fs instance for a given cloud provider / DAAC.
 
         Parameters:
             daac: any of the DAACs e.g. NSIDC, PODAAC
-            provider: a data provider if we know them, e.g PODAAC -> POCLOUD
+            provider: a data provider if we know them, e.g. PODAAC -> POCLOUD
             endpoint: pass the URL for the credentials directly
+
         Returns:
             a s3fs file instance
         """
@@ -284,7 +282,7 @@ class Store(object):
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
 
         Parameters:
-            bearer_token (Boolean): if true will be used for authenticated queries on CMR
+            bearer_token: if true will be used for authenticated queries on CMR
 
         Returns:
             requests Session
@@ -300,7 +298,9 @@ class Store(object):
         hosted on S3 or HTTPS by third party libraries like xarray.
 
         Parameters:
-            granules (List): a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+            granules: a list of granules(DataGranule) instances or list of URLs,
+                e.g. s3://some-granule
+
         Returns:
             a list of s3fs "file pointers" to s3 files.
         """
@@ -318,7 +318,8 @@ class Store(object):
         hosted on S3 or HTTPS by third party libraries like xarray.
 
         Parameters:
-            granules (List): a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+            granules: a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+
         Returns:
             a list of s3fs "file pointers" to s3 files.
         """
@@ -442,17 +443,19 @@ class Store(object):
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
-           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run this in the cloud,
+             we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda).
            * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
-             collection the method will not get any files.
-           * If we requests data granules from an on-prem collection the data will be effectively downloaded
-             to a local directory.
+             collection, the method will not get any files.
+           * If we request data granules from an on-prem collection,
+             the data will be effectively downloaded to a local directory.
 
         Parameters:
             granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
             local_path: local directory to store the remote data granules
             access: direct or on_prem, if set it will use it for the access method.
-            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+            threads: parallel number of threads to use to download the files;
+                adjust as necessary, default = 8
 
         Returns:
             List of downloaded files
@@ -479,11 +482,12 @@ class Store(object):
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
-           * If we run this in the cloud we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda)
+           * If we run this in the cloud,
+             we are moving data from S3 to a cloud compute instance (EC2, AWS Lambda).
            * If we run it outside the us-west-2 region and the data granules are part of a cloud-based
-             collection the method will not get any files.
-           * If we requests data granules from an on-prem collection the data will be effectively downloaded
-             to a local directory.
+             collection, the method will not get any files.
+           * If we request data granules from an on-prem collection,
+             the data will be effectively downloaded to a local directory.
 
         Parameters:
             granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
@@ -568,15 +572,19 @@ class Store(object):
                 downloaded_files.append(file_name)
             return downloaded_files
         else:
-            # if the data is cloud based bu we are not in AWS it will be downloaded as if it was on prem
+            # if the data are cloud-based, but we are not in AWS,
+            # it will be downloaded as if it was on prem
             return self._download_onprem_granules(data_links, local_path, threads)
 
     def _download_file(self, url: str, directory: str) -> str:
-        """
-        download a single file from an on-prem location, a DAAC data center.
-        :param url: the granule url
-        :param directory: local directory
-        :returns: local filepath or an exception
+        """Download a single file from an on-prem location, a DAAC data center.
+
+        Parameters:
+            url: the granule url
+            directory: local directory
+
+        Returns:
+            a local filepath or an exception
         """
         # If the get data link is an Opendap location
         if "opendap" in url and url.endswith(".html"):
@@ -595,7 +603,7 @@ class Store(object):
                     r.raise_for_status()
                     with open(local_path, "wb") as f:
                         # This is to cap memory usage for large files at 1MB per write to disk per thread
-                        # https://docs.python-requests.org/en/master/user/quickstart/#raw-response-content
+                        # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                         shutil.copyfileobj(r.raw, f, length=1024 * 1024)
             except Exception:
                 print(f"Error while downloading the file {local_filename}")
@@ -608,12 +616,16 @@ class Store(object):
     def _download_onprem_granules(
         self, urls: List[str], directory: str, threads: int = 8
     ) -> List[Any]:
-        """
-        downloads a list of URLS into the data directory.
-        :param urls: list of granule URLs from an on-prem collection
-        :param directory: local directory to store the files
-        :param threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
-        :returns: None
+        """Downloads a list of URLS into the data directory.
+
+        Parameters:
+            urls: list of granule URLs from an on-prem collection
+            directory: local directory to store the downloaded files
+            threads: parallel number of threads to use to download the files;
+                adjust as necessary, default = 8
+
+        Returns:
+            a list of local filepaths to which the files were downloaded
         """
         if urls is None:
             raise ValueError("The granules didn't provide a valid GET DATA link")
