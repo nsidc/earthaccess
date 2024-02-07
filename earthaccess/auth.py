@@ -65,15 +65,16 @@ class Auth(object):
 
         Parameters:
             strategy:
-                authentication method.
+                The authentication method.
 
-                * **"interactive"**: enter username and password.
-                * **"netrc"**: (default) retrieve username and password from ~/.netrc.
-                * **"environment"**: retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
-            persist: will persist credentials in a .netrc file
+                * **"interactive"**: Enter a username and password.
+                * **"netrc"**: (default) Retrieve a username and password from ~/.netrc.
+                * **"environment"**:
+                    Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
+            persist: Will persist credentials in a `.netrc` file.
 
         Returns:
-            an instance of Auth.
+            An instance of Auth.
         """
         if self.authenticated:
             logger.debug("We are already authenticated with NASA EDL")
@@ -143,16 +144,16 @@ class Auth(object):
         provider: Optional[str] = None,
         endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
-        """Gets AWS S3 credentials for a given NASA cloud provider. The
-        easier way is to use the DAAC short name. provider is optional if we know it.
+        """Gets AWS S3 credentials for a given NASA cloud provider.
+        The easier way is to use the DAAC short name; provider is optional if we know it.
 
         Parameters:
-            daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
+            daac: The name of a NASA DAAC, e.g. NSIDC or PODAAC.
             provider: A valid cloud provider. Each DAAC has a provider code for their cloud distributions.
-            endpoint: getting the credentials directly from the S3Credentials URL
+            endpoint: Getting the credentials directly from the S3Credentials URL.
 
         Returns:
-            A Python dictionary with the temporary AWS S3 credentials
+            A Python dictionary with the temporary AWS S3 credentials.
         """
         if self.authenticated:
             session = SessionWithHeaderRedirection(self.username, self.password)

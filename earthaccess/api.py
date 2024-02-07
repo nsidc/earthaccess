@@ -129,7 +129,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
 
     Parameters:
         strategy:
-            authentication method.
+            An authentication method.
 
             * **"all"**: (default) try all methods until one works
             * **"interactive"**: enter username and password.
@@ -138,7 +138,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
         persist: will persist credentials in a .netrc file
 
     Returns:
-        an instance of Auth.
+        An instance of Auth.
     """
     if strategy == "all":
         for strategy in ["environment", "netrc", "interactive"]:
@@ -166,8 +166,9 @@ def download(
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
-       * If we run this in the cloud, we will be using S3 to move data to `local_path`
-       * If we run it outside AWS (us-west-2 region) and the dataset is cloud hostes we'll use HTTP links
+       * If we run this in the cloud, we will be using S3 to move data to `local_path`.
+       * If we run it outside AWS (us-west-2 region) and the dataset is cloud hosted,
+            we'll use HTTP links.
 
     Parameters:
         granules: a granule, list of granules, a granule link (HTTP), or a list of granule links (HTTP)
@@ -319,7 +320,8 @@ def get_s3fs_session(
         daac: Any DAAC short name e.g. NSIDC, GES_DISC
         provider: Each DAAC can have a cloud provider.
             If the DAAC is specified, there is no need to use provider.
-        results: A list of results from search_data(), earthaccess will use the metadata form CMR to obtain the S3 Endpoint
+        results: A list of results from search_data().
+            `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
 
     Returns:
         an authenticated s3fs session valid for 1 hour

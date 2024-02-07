@@ -273,7 +273,7 @@ class DataCollections(CollectionQuery):
         self, date_from: str, date_to: str, exclude_boundary: bool = False
     ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
-        or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls.
+        or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls
         to this method before calling execute().
 
         Parameters:
@@ -382,12 +382,14 @@ class DataGranules(GranuleQuery):
         return self
 
     def provider(self, provider: str = "") -> Type[CollectionQuery]:
-        """Only match collections from a given provider, a NASA datacenter or DAAC can have 1 or more providers
-        i.e. PODAAC is a data center or DAAC, PODAAC is the default provider for on prem data, POCLOUD is
+        """Only match collections from a given provider.
+        A NASA datacenter or DAAC can have one or more providers.
+        For example, PODAAC is a data center or DAAC,
+        PODAAC is the default provider for on-prem data, and POCLOUD is
         the PODAAC provider for their data in the cloud.
 
         Parameters:
-            provider: a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
+            provider: a provider code for any DAAC, e.g. POCLOUD, NSIDC_CPRD, etc.
         """
         self.params["provider"] = provider
         return self
@@ -452,8 +454,8 @@ class DataGranules(GranuleQuery):
         queries using the readable_granule_name metadata field.
 
         ???+ Tip
-            We can use wirldcards on a granule name to further refine our search
-            i.e. MODGRNLD.*.daily.*
+            We can use wildcards on a granule name to further refine our search,
+            e.g. MODGRNLD.*.daily.*
 
         Parameters:
             granule_name: granule name (accepts wildcards)

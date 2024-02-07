@@ -284,11 +284,11 @@ class DataGranule(CustomDict):
     def data_links(
         self, access: Optional[str] = None, in_region: bool = False
     ) -> List[str]:
-        """Returns the data links form a granule
+        """Returns the data links from a granule.
 
         Parameters:
             access: direct or external.
-                direct means in-region access for cloud-hosted collections.
+                Direct means in-region access for cloud-hosted collections.
             in_region: True if we are running in us-west-2.
                 It is meant for the store class.
 

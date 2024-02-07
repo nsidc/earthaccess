@@ -106,7 +106,7 @@ class Store(object):
             self._requests_cookies: Dict[str, Any] = {}
             self.set_requests_session(oauth_profile)
             if pre_authorize:
-                # collect cookies from other daacs
+                # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
                     self.set_requests_session(url)
 
@@ -348,7 +348,7 @@ class Store(object):
             if granules[0].cloud_hosted:
                 access = "direct"
                 provider = granules[0]["meta"]["provider-id"]
-                # if the data has its own S3 credentials endpoint we'll use it
+                # if the data has its own S3 credentials endpoint, we will use it
                 endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
                 if endpoint is not None:
                     print(f"using endpoint: {endpoint}")
@@ -473,7 +473,7 @@ class Store(object):
             files = self._get(granules, local_path, provider, threads)
             return files
         else:
-            raise ValueError("List of URLs or DataGranule isntances expected")
+            raise ValueError("List of URLs or DataGranule instances expected")
 
     @singledispatchmethod
     def _get(
