@@ -8,9 +8,7 @@ STATIC_FILES = ["css/iso_bootstrap4.0.0min.css", "css/styles.css"]
 def _load_static_files() -> List[str]:
     """Load styles"""
     return [
-        (
-            importlib.resources.files("earthaccess") / fname
-        ).read_text("utf8")
+        (importlib.resources.files("earthaccess") / fname).read_text("utf8")
         for fname in STATIC_FILES
     ]
 
