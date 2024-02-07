@@ -44,9 +44,7 @@ class CustomDict(dict):
         return basic_dict
 
     def _filter_related_links(self, filter: str) -> List[str]:
-        """
-        Filter RelatedUrls from the UMM fields on CMR
-        """
+        """Filter RelatedUrls from the UMM fields on CMR."""
         matched_links: List = []
         if "RelatedUrls" in self["umm"]:
             for link in self["umm"]["RelatedUrls"]:
@@ -101,7 +99,7 @@ class DataCollection(CustomDict):
             umm_field: Valid UMM item, i.e. `TemporalExtent`
 
         Returns:
-            Returns the value of a given field inside the UMM (Unified Metadata Model)
+            The value of a given field inside the UMM (Unified Metadata Model).
         """
         if umm_field in self["umm"]:
             return self["umm"][umm_field]
@@ -290,12 +288,12 @@ class DataGranule(CustomDict):
 
         Parameters:
             access: direct or external.
-              direct means in-region access for cloud-hosted collections.
+                direct means in-region access for cloud-hosted collections.
             in_region: True if we are running in us-west-2.
-              It is meant for the store class.
+                It is meant for the store class.
 
         Returns:
-            The data link for the requested access type.
+            The data links for the requested access type.
         """
         https_links = self._filter_related_links("GET DATA")
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
