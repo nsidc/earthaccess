@@ -201,7 +201,7 @@ def open(
 
     Parameters:
         granules: a list of granule instances **or** list of URLs, e.g.
-            `s3://some-granule`, if a list of URLs is passed we need to specify the data
+            `s3://some-granule`, if a list of URLs is passed, we need to specify the data
             provider e.g. POCLOUD, NSIDC_CPRD etc.
 
     Returns:

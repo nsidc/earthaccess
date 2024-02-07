@@ -15,7 +15,7 @@ class DataCollections(CollectionQuery):
     """
     ???+ Info
         The DataCollection class queries against https://cmr.earthdata.nasa.gov/search/collections.umm_json,
-        the response has to be in umm_json in order to use the result classes.
+        the response has to be in umm_json to use the result classes.
     """
 
     _fields = None
@@ -37,13 +37,13 @@ class DataCollections(CollectionQuery):
         """Builds an instance of DataCollections to query CMR
 
         Parameters:
-            auth (Auth): An authenticated `Auth` instance, this is an optional parameter
-                for queries that need authentication e.g. restricted datasets
+            auth: An authenticated `Auth` instance. This is an optional parameter
+                for queries that need authentication, e.g. restricted datasets.
         """
         super().__init__(*args, **kwargs)
         self.session = session()
         if auth is not None and auth.authenticated:
-            # To search we need the new bearer tokens from NASA Earthdata
+            # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
@@ -54,16 +54,17 @@ class DataCollections(CollectionQuery):
     def hits(self) -> int:
         """Returns the number of hits the current query will return. This is done by
         making a lightweight query to CMR and inspecting the returned headers.
-        Restricted datasets will always return 0 results even if there are results.
+        Restricted datasets will always return zero results even if there are results.
 
 
         Returns:
-            number of results reported by CMR
+            The number of results reported by CMR.
         """
         return super().hits()
 
     def concept_id(self, IDs: List[str]) -> Type[CollectionQuery]:
-        """Filter by concept ID (ex: C1299783579-LPDAAC_ECS or G1327299284-LPDAAC_ECS, S12345678-LPDAAC_ECS)
+        """Filter by concept ID.
+        For example: C1299783579-LPDAAC_ECS or G1327299284-LPDAAC_ECS, S12345678-LPDAAC_ECS
 
         Collections, granules, tools, services are uniquely identified with this ID.
         >
@@ -73,24 +74,24 @@ class DataCollections(CollectionQuery):
         * If providing a service's concept ID here, it will uniquely identify those services.
 
         Parameters:
-            IDs (String, List): ID(s) to search by. Can be provided as a string or list of strings.
+            IDs: ID(s) to search by. Can be provided as a string or list of strings.
         """
         super().concept_id(IDs)
         return self
 
     def keyword(self, text: str) -> Type[CollectionQuery]:
-        """Case insentive and wildcard (*) search through over two dozen fields in
+        """Case-insensitive and wildcard (*) search through over two dozen fields in
         a CMR collection record. This allows for searching against fields like
         summary and science keywords.
 
         Parameters:
-            text (String): text to search for
+            text: text to search for
         """
         super().keyword(text)
         return self
 
     def doi(self, doi: str) -> Type[CollectionQuery]:
-        """Searh datasets by DOI
+        """Search datasets by DOI.
 
         ???+ Tip
             Not all datasets have an associated DOI, also DOI search works
@@ -98,7 +99,7 @@ class DataCollections(CollectionQuery):
             We need to search by DOI, grab the concept_id and then get the data.
 
         Parameters:
-            doi (String): DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
+            doi: DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
         """
         if not isinstance(doi, str):
             raise TypeError("doi must be of type str")
@@ -137,13 +138,14 @@ class DataCollections(CollectionQuery):
         return self
 
     def print_help(self, method: str = "fields") -> None:
-        """Prints the help information for a given method"""
+        """Prints the help information for a given method."""
         print("Class components: \n")
         print([method for method in dir(self) if method.startswith("_") is False])
         help(getattr(self, method))
 
     def fields(self, fields: Optional[List[str]] = None) -> Type[CollectionQuery]:
-        """Masks the response by only showing the fields included in this list
+        """Masks the response by only showing the fields included in this list.
+
         Parameters:
             fields (List): list of fields to show, these fields come from the UMM model e.g. Abstract, Title
         """
@@ -152,6 +154,7 @@ class DataCollections(CollectionQuery):
 
     def debug(self, debug: bool = True) -> Type[CollectionQuery]:
         """If True, prints the actual query to CMR, notice that the pagination happens in the headers.
+
         Parameters:
             debug (Boolean): Print CMR query.
         """
@@ -166,7 +169,7 @@ class DataCollections(CollectionQuery):
             Restricted collections will not be matched using this parameter
 
         Parameters:
-            cloud_hosted (Boolean): True to require granules only be online
+            cloud_hosted: True to require granules only be online
         """
         if not isinstance(cloud_hosted, bool):
             raise TypeError("cloud_hosted must be of type bool")
@@ -178,27 +181,31 @@ class DataCollections(CollectionQuery):
         return self
 
     def provider(self, provider: str = "") -> Type[CollectionQuery]:
-        """Only match collections from a given provider, a NASA datacenter or DAAC can have 1 or more providers
-        i.e. PODAAC is a data center or DAAC, PODAAC is the default provider for on prem data, POCLOUD is
-        the PODAAC provider for their data in the cloud.
+        """Only match collections from a given provider.
+
+        A NASA datacenter or DAAC can have one or more providers.
+        E.g., PODAAC is a data center or DAAC; PODAAC is the default provider for on-premises data,
+        POCLOUD is the PODAAC provider for their data in the cloud.
 
         Parameters:
-            provider (String): a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
+            provider: a provider code for any DAAC, e.g. POCLOUD, NSIDC_CPRD, etc.
         """
         self.params["provider"] = provider
         return self
 
     def data_center(self, data_center_name: str = "") -> Type[CollectionQuery]:
-        """An alias name for `daac()`
+        """An alias name for `daac()`.
+
         Parameters:
-            data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            data_center_name: DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
         """
         return self.daac(data_center_name)
 
     def daac(self, daac_short_name: str = "") -> Type[CollectionQuery]:
-        """Only match collections for a given DAAC, by default the on-prem collections for the DAAC
+        """Only match collections for a given DAAC, by default the on-prem collections for the DAAC.
+
         Parameters:
-            daac_short_name (String): a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
         """
         if "cloud_hosted" in self.params:
             cloud_hosted = self.params["cloud_hosted"]
@@ -218,7 +225,8 @@ class DataCollections(CollectionQuery):
             they can be potentially millions of them.
 
         Parameters:
-            limit (Integer): The number of results to return
+            limit: The number of results to return
+
         Returns:
             query results as a list of `DataCollection` instances.
         """
@@ -269,9 +277,9 @@ class DataCollections(CollectionQuery):
         to this method before calling execute().
 
         Parameters:
-            date_from (String): earliest date of temporal range
-            date_to (string): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range
+            date_from: earliest date of temporal range
+            date_to: latest date of temporal range
+            exclude_boundary: whether to exclude the date_from/to in the matched range
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None:
@@ -291,8 +299,7 @@ class DataCollections(CollectionQuery):
 
 
 class DataGranules(GranuleQuery):
-    """
-    A Granule oriented client for NASA CMR
+    """A Granule oriented client for NASA CMR.
 
     API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html
     """
@@ -316,17 +323,17 @@ class DataGranules(GranuleQuery):
         super().__init__(*args, **kwargs)
         self.session = session()
         if auth is not None and auth.authenticated:
-            # To search we need the new bearer tokens from NASA Earthdata
+            # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
 
     def hits(self) -> int:
-        """
-        Returns the number of hits the current query will return. This is done by
-        making a lightweight query to CMR and inspecting the returned headers.
+        """Returns the number of hits the current query will return.
+        This is done by making a lightweight query to CMR and inspecting the returned headers.
 
-        :returns: number of results reported by CMR
+        Returns:
+            The number of results reported by CMR.
         """
 
         url = self._build_url()
@@ -353,6 +360,7 @@ class DataGranules(GranuleQuery):
                                                temporal=("2015-01","2015-02"),
                                                point=(42.5, -101.25))
             ```
+
         Returns:
             Query instance
         """
@@ -379,22 +387,24 @@ class DataGranules(GranuleQuery):
         the PODAAC provider for their data in the cloud.
 
         Parameters:
-            provider (String): a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
+            provider: a provider code for any DAAC. e.g. POCLOUD, NSIDC_CPRD, etc.
         """
         self.params["provider"] = provider
         return self
 
     def data_center(self, data_center_name: str = "") -> Type[CollectionQuery]:
-        """An alias name for `daac()`
+        """An alias name for `daac()`.
+
         Parameters:
             data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
         """
         return self.daac(data_center_name)
 
     def daac(self, daac_short_name: str = "") -> Type[CollectionQuery]:
-        """Only match collections for a given DAAC, by default the on-prem collections for the DAAC
+        """Only match collections for a given DAAC. Default to on-prem collections for the DAAC.
+
         Parameters:
-            daac_short_name (String): a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
         """
         if "cloud_hosted" in self.params:
             cloud_hosted = self.params["cloud_hosted"]
@@ -446,7 +456,7 @@ class DataGranules(GranuleQuery):
             i.e. MODGRNLD.*.daily.*
 
         Parameters:
-            granule_name (String): granule name (accepts wildcards)
+            granule_name: granule name (accepts wildcards)
         """
         if not isinstance(granule_name, str):
             raise TypeError("granule_name must be of type string")
@@ -477,7 +487,7 @@ class DataGranules(GranuleQuery):
         """Filter by the instrument associated with the granule.
 
         Parameters:
-            instrument (str): name of the instrument
+            instrument: name of the instrument
         """
         super().instrument(instrument)
         return self
@@ -497,8 +507,8 @@ class DataGranules(GranuleQuery):
         """Filter by the percentage of cloud cover present in the granule.
 
         Parameters:
-            min_cover (int): minimum percentage of cloud cover
-            max_cover (int): maximum percentage of cloud cover
+            min_cover: minimum percentage of cloud cover
+            max_cover: maximum percentage of cloud cover
         """
         super().cloud_cover(min_cover, max_cover)
         return self
@@ -527,10 +537,13 @@ class DataGranules(GranuleQuery):
         return False
 
     def short_name(self, short_name: str = "") -> Type[GranuleQuery]:
-        """
-        Filter by short name (aka product or collection name).
-        :param short_name: name of collection
-        :returns: Query instance
+        """Filter by short name (aka product or collection name).
+
+        Parameters:
+            short_name: name of a collection
+
+        Returns:
+            Query instance
         """
         super().short_name(short_name)
         return self
@@ -545,7 +558,8 @@ class DataGranules(GranuleQuery):
             they can be potentially millions of them.
 
         Parameters:
-            limit (Integer): The number of results to return
+            limit: The number of results to return
+
         Returns:
             query results as a list of `DataCollection` instances.
         """
@@ -606,8 +620,9 @@ class DataGranules(GranuleQuery):
 
     def debug(self, debug: bool = True) -> Type[GranuleQuery]:
         """If True, prints the actual query to CMR, notice that the pagination happens in the headers.
+
         Parameters:
-            debug (Boolean): Print CMR query.
+            debug: Print CMR query.
         """
         self._debug = True
         return self
@@ -623,9 +638,9 @@ class DataGranules(GranuleQuery):
         ranges can be provided by successive calls to this method before calling execute().
 
         Parameters:
-            date_from (Date, String): earliest date of temporal range
-            date_to (Date, String): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range
+            date_from: earliest date of temporal range
+            date_to: latest date of temporal range
+            exclude_boundary: whether to exclude the date_from/to in the matched range
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None:
@@ -668,7 +683,7 @@ class DataGranules(GranuleQuery):
         collection filtering parameter such as short_name or entry_title.
 
         Parameters:
-            coordinates (List): list of (lon, lat) tuples
+            coordinates: list of (lon, lat) tuples
         """
         super().polygon(coordinates)
         return self
@@ -699,7 +714,7 @@ class DataGranules(GranuleQuery):
         with a collection filtering parameter such as short_name or entry_title.
 
         Parameters:
-            coordinates (List): a list of (lon, lat) tuples
+            coordinates: a list of (lon, lat) tuples
         """
         super().line(coordinates)
         return self
@@ -715,14 +730,14 @@ class DataGranules(GranuleQuery):
         return self
 
     def doi(self, doi: str) -> Type[GranuleQuery]:
-        """Searh data granules by DOI
+        """Search data granules by DOI
 
         ???+ Tip
             Not all datasets have an associated DOI, internally if a DOI is found
             earthaccess will grab the concept_id for the query to CMR.
 
         Parameters:
-            doi (String): DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
+            doi: DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
         """
         collection = DataCollections().doi(doi).get()
         if len(collection) > 0:
