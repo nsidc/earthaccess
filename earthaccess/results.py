@@ -310,12 +310,12 @@ class DataGranule(CustomDict):
                     # we have the s3 links so we return those
                     return s3_links
             else:
-                # Even though we are in us-west-2, the user wants the HTTPS links
-                # used in region they are S3 signed links from TEA
-                # https://github.com/asfadmin/thin-egress-app
+                # Even though we are in us-west-2, the user wants the HTTPS links used in-region.
+                # They are S3 signed links from TEA.
+                # <https://github.com/asfadmin/thin-egress-app>
                 return https_links
         else:
-            # we are not in region
+            # we are not in-region
             if access == "direct":
                 # maybe the user wants to collect S3 links and use them later
                 # from the cloud

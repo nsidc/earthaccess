@@ -155,7 +155,7 @@ class Store(object):
             return False
 
         if resp.status_code == 200 and b"us-west-2" == resp.content:
-            # On AWS in region us-west-2
+            # On AWS, in region us-west-2
             return True
         return False
 
@@ -163,13 +163,14 @@ class Store(object):
         self, url: str, method: str = "get", bearer_token: bool = False
     ) -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
-        Mainly used to get the authentication cookies from different DAACs and URS
-        This HTTPS session can be used to download granules if we want to use a direct, lower level API
+        Mainly used to get the authentication cookies from different DAACs and URS.
+        This HTTPS session can be used to download granules if we want to use a direct,
+        lower level API.
 
         Parameters:
             url: used to test the credentials and populate the class auth cookies
-            method: HTTP method to test. default: "GET"
-            bearer_token: if true will be used for authenticated queries on CMR
+            method: HTTP method to test, default: "GET"
+            bearer_token: if true, will be used for authenticated queries on CMR
 
         Returns:
             fsspec HTTPFileSystem (aiohttp client session)
@@ -203,7 +204,7 @@ class Store(object):
         """Returns a s3fs instance for a given cloud provider / DAAC.
 
         Parameters:
-            daac: any of the DAACs e.g. NSIDC, PODAAC
+            daac: any of the DAACs, e.g. NSIDC, PODAAC
             provider: a data provider if we know them, e.g. PODAAC -> POCLOUD
             endpoint: pass the URL for the credentials directly
 
@@ -262,7 +263,8 @@ class Store(object):
     @lru_cache
     def get_fsspec_session(self) -> fsspec.AbstractFileSystem:
         """Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
-        This HTTPS session can be used to download granules if we want to use a direct, lower level API
+        This HTTPS session can be used to download granules if we want to use a direct,
+        lower level API.
 
         Returns:
             fsspec HTTPFileSystem (aiohttp client session)
@@ -279,7 +281,8 @@ class Store(object):
 
     def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
-        This HTTPS session can be used to download granules if we want to use a direct, lower level API
+        This HTTPS session can be used to download granules if we want to use a direct,
+        lower level API.
 
         Parameters:
             bearer_token: if true, will be used for authenticated queries on CMR
@@ -303,7 +306,7 @@ class Store(object):
             provider: an option
 
         Returns:
-            a list of s3fs "file pointers" to s3 files.
+            A list of s3fs "file pointers" to s3 files.
         """
         if len(granules):
             return self._open(granules, provider)
@@ -324,7 +327,7 @@ class Store(object):
             provider: an option
 
         Returns:
-            a list of s3fs "file pointers" to s3 files.
+            A list of s3fs "file pointers" to s3 files.
         """
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -454,11 +457,10 @@ class Store(object):
              the data will be effectively downloaded to a local directory.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
-            local_path: local directory to store the remote data granules
-            access: direct or on_prem, if set it will use it for the access method.
-            threads: parallel number of threads to use to download the files;
-                adjust as necessary, default = 8
+            granules: A list of granules(DataGranule) instances or a list of granule links (HTTP).
+            local_path: Local directory to store the remote data granules.
+            threads: Parallel number of threads to use to download the files;
+                adjust as necessary, default = 8.
 
         Returns:
             List of downloaded files
@@ -493,10 +495,10 @@ class Store(object):
              the data will be effectively downloaded to a local directory.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or a list of granule links (HTTP)
-            local_path: local directory to store the remote data granules
-            access: direct or on_prem, if set it will use it for the access method.
-            threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+            granules: A list of granules (DataGranule) instances or a list of granule links (HTTP).
+            local_path: Local directory to store the remote data granules
+            threads: Parallel number of threads to use to download the files;
+                adjust as necessary, default = 8.
 
         Returns:
             None
@@ -548,7 +550,7 @@ class Store(object):
         cloud_hosted = granules[0].cloud_hosted
         access = "direct" if (cloud_hosted and self.in_region) else "external"
         data_links = list(
-            # we are not in region
+            # we are not in-region
             chain.from_iterable(
                 granule.data_links(access=access, in_region=self.in_region)
                 for granule in granules
@@ -587,7 +589,7 @@ class Store(object):
             directory: local directory
 
         Returns:
-            a local filepath or an exception
+            A local filepath or an exception.
         """
         # If the get data link is an Opendap location
         if "opendap" in url and url.endswith(".html"):
@@ -628,7 +630,7 @@ class Store(object):
                 adjust as necessary, default = 8
 
         Returns:
-            a list of local filepaths to which the files were downloaded
+            A list of local filepaths to which the files were downloaded.
         """
         if urls is None:
             raise ValueError("The granules didn't provide a valid GET DATA link")

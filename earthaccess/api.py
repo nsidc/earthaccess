@@ -40,7 +40,7 @@ def search_datasets(
         kwargs (Dict):
             arguments to CMR:
 
-            * **keyword**: case-insensitive and support wildcards ? and *,
+            * **keyword**: case-insensitive and supports wildcards ? and *
             * **short_name**: e.g. ATL08
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
@@ -51,7 +51,7 @@ def search_datasets(
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
     Returns:
-        a list of DataCollection results that can be used to get information about a
+        A list of DataCollection results that can be used to get information about a
             dataset, e.g. concept_id, doi, etc.
 
     Examples:
@@ -90,7 +90,7 @@ def search_data(
         kwargs (Dict):
             arguments to CMR:
 
-            * **short_name**: dataset short name e.g. ATL08
+            * **short_name**: dataset short name, e.g. ATL08
             * **version**: dataset version
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
@@ -173,7 +173,7 @@ def download(
     Parameters:
         granules: a granule, list of granules, a granule link (HTTP), or a list of granule links (HTTP)
         local_path: local directory to store the remote data granules
-        provider: if we download a list of URLs we need to specify the provider.
+        provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
 
     Returns:
@@ -269,7 +269,7 @@ def get_fsspec_https_session() -> AbstractFileSystem:
     """Returns a fsspec session that can be used to access datafiles across many different DAACs.
 
     Returns:
-        an fsspec instance able to access data across DAACs
+        An fsspec instance able to access data across DAACs.
 
     Examples:
         ```python
@@ -280,7 +280,6 @@ def get_fsspec_https_session() -> AbstractFileSystem:
         with fs.open(DAAC_GRANULE) as f:
             f.read(10)
         ```
-
     """
     session = earthaccess.__store__.get_fsspec_session()
     return session
@@ -288,11 +287,11 @@ def get_fsspec_https_session() -> AbstractFileSystem:
 
 def get_requests_https_session() -> requests.Session:
     """Returns a requests Session instance with an authorized bearer token.
-    This is useful to make requests to restricted URLs like data granules or services that
+    This is useful for making requests to restricted URLs, such as data granules or services that
     require authentication with NASA EDL.
 
     Returns:
-        an authenticated requests Session instance.
+        An authenticated requests Session instance.
 
     Examples:
         ```python
@@ -324,7 +323,7 @@ def get_s3fs_session(
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
 
     Returns:
-        an authenticated s3fs session valid for 1 hour
+        An authenticated s3fs session valid for 1 hour.
     """
     daac = _normalize_location(daac)
     provider = _normalize_location(provider)

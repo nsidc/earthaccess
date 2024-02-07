@@ -428,15 +428,16 @@ class DataGranules(GranuleQuery):
         return self
 
     def cloud_hosted(self, cloud_hosted: bool = True) -> Type[CollectionQuery]:
-        """Only match granules that are hosted in the cloud. This is valid for public
-        collections and if we are using the short_name parameter. Concept-Id is unambiguous.
+        """Only match granules that are hosted in the cloud.
+        This is valid for public collections and when using the short_name parameter.
+        Concept-Id is unambiguous.
 
         ???+ Tip
-            Cloud hosted collections can be public or restricted.
-            Restricted collections will not be matched using this parameter
+            Cloud-hosted collections can be public or restricted.
+            Restricted collections will not be matched using this parameter.
 
         Parameters:
-            cloud_hosted (Boolean): True to require granules only be online
+            cloud_hosted: True to require granules only be online
         """
         if not isinstance(cloud_hosted, bool):
             raise TypeError("cloud_hosted must be of type bool")
@@ -455,7 +456,7 @@ class DataGranules(GranuleQuery):
 
         ???+ Tip
             We can use wildcards on a granule name to further refine our search,
-            e.g. MODGRNLD.*.daily.*
+            e.g. `MODGRNLD.*.daily.*`.
 
         Parameters:
             granule_name: granule name (accepts wildcards)
