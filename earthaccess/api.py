@@ -14,7 +14,7 @@ from .utils import _validation as validate
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
-    """Handle user-provided `daac` and `provider` values
+    """Handle user-provided `daac` and `provider` values.
 
     These values must have a capital letter as the first character
     followed by capital letters, numbers, or an underscore. Here we
@@ -40,7 +40,7 @@ def search_datasets(
         kwargs (Dict):
             arguments to CMR:
 
-            * **keyword**: case insensitive and support wild cards ? and *,
+            * **keyword**: case-insensitive and support wildcards ? and *,
             * **short_name**: e.g. ATL08
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
@@ -125,7 +125,7 @@ def search_data(
 
 
 def login(strategy: str = "all", persist: bool = False) -> Auth:
-    """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/)
+    """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
         strategy:
@@ -202,7 +202,7 @@ def open(
     Parameters:
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
-        provider: e.g. POCLOUD, NSIDC_CPRD etc.
+        provider: e.g. POCLOUD, NSIDC_CPRD, etc.
 
     Returns:
         a list of s3fs "file pointers" to s3 files.
@@ -217,14 +217,14 @@ def get_s3_credentials(
     provider: Optional[str] = None,
     results: Optional[List[earthaccess.results.DataGranule]] = None,
 ) -> Dict[str, Any]:
-    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets, we can
-    use the daac name, the provider or a list of results from earthaccess.search_data()
-    if we use results earthaccess will use the metadata on the response to get the credentials,
-    this is useful for missions that do not use the same endpoint as their DAACs e.g. SWOT
+    """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets. We can
+    use the daac name, the provider, or a list of results from earthaccess.search_data().
+    If we use results, earthaccess will use the metadata on the response to get the credentials,
+    which is useful for missions that do not use the same endpoint as their DAACs, e.g. SWOT.
 
     Parameters:
-        daac: a DAAC short_name like NSIDC or PODAAC etc
-        provider: if we know the provider for the DAAC e.g. POCLOUD, LPCLOUD etc.
+        daac: a DAAC short_name like NSIDC or PODAAC, etc.
+        provider: if we know the provider for the DAAC, e.g. POCLOUD, LPCLOUD etc.
         results: List of results from search_data()
 
     Returns:
@@ -239,7 +239,7 @@ def get_s3_credentials(
 
 
 def collection_query() -> Type[CollectionQuery]:
-    """Returns a query builder instance for NASA collections (datasets)
+    """Returns a query builder instance for NASA collections (datasets).
 
     Returns:
         a query builder instance for data collections.
@@ -265,7 +265,7 @@ def granule_query() -> Type[GranuleQuery]:
 
 
 def get_fsspec_https_session() -> AbstractFileSystem:
-    """Returns a fsspec session that can be used to access datafiles across many different DAACs
+    """Returns a fsspec session that can be used to access datafiles across many different DAACs.
 
     Returns:
         an fsspec instance able to access data across DAACs
@@ -286,8 +286,8 @@ def get_fsspec_https_session() -> AbstractFileSystem:
 
 
 def get_requests_https_session() -> requests.Session:
-    """Returns a requests Session instance with an authorized bearer token
-    this is useful to make requests to restricted URLs like data granules or services that
+    """Returns a requests Session instance with an authorized bearer token.
+    This is useful to make requests to restricted URLs like data granules or services that
     require authentication with NASA EDL.
 
     Returns:
@@ -313,11 +313,12 @@ def get_s3fs_session(
     provider: Optional[str] = None,
     results: Optional[earthaccess.results.DataGranule] = None,
 ) -> s3fs.S3FileSystem:
-    """Returns a fsspec s3fs file session for direct access when we are in us-west-2
+    """Returns a fsspec s3fs file session for direct access when we are in us-west-2.
 
     Parameters:
         daac: Any DAAC short name e.g. NSIDC, GES_DISC
-        provider: Each DAAC can have a cloud provider, if the DAAC is specified, there is no need to use provider
+        provider: Each DAAC can have a cloud provider.
+            If the DAAC is specified, there is no need to use provider.
         results: A list of results from search_data(), earthaccess will use the metadata form CMR to obtain the S3 Endpoint
 
     Returns:
@@ -335,7 +336,7 @@ def get_s3fs_session(
 
 
 def get_edl_token() -> str:
-    """Returns the current token used for EDL
+    """Returns the current token used for EDL.
 
     Returns:
         EDL token

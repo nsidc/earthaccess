@@ -64,13 +64,12 @@ class Auth(object):
         """Authenticate with Earthdata login.
 
         Parameters:
-            strategy: authentication method.
+            strategy:
+                authentication method.
 
-                    "interactive": enter username and password.
-
-                    "netrc": (default) retrieve username and password from ~/.netrc.
-
-                    "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
+                * **"interactive"**: enter username and password.
+                * **"netrc"**: (default) retrieve username and password from ~/.netrc.
+                * **"environment"**: retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: will persist credentials in a .netrc file
 
         Returns:
@@ -89,7 +88,6 @@ class Auth(object):
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
-
         Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
         This method renews the tokens to make sure we can query the collections allowed to our EDL user.
         """
@@ -149,13 +147,12 @@ class Auth(object):
         easier way is to use the DAAC short name. provider is optional if we know it.
 
         Parameters:
-            provider: A valid cloud provider, each DAAC has a provider code for their cloud distributions
             daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
+            provider: A valid cloud provider. Each DAAC has a provider code for their cloud distributions.
             endpoint: getting the credentials directly from the S3Credentials URL
 
         Returns:
             A Python dictionary with the temporary AWS S3 credentials
-
         """
         if self.authenticated:
             session = SessionWithHeaderRedirection(self.username, self.password)
@@ -205,7 +202,7 @@ class Auth(object):
         """Returns a new request session instance.
 
         Parameters:
-            bearer_token: boolean, include bearer token
+            bearer_token: whether to include bearer token
 
         Returns:
             class Session instance with Auth and bearer token headers
