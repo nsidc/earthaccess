@@ -159,7 +159,7 @@ class DataCollection(CustomDict):
     def get_data(self) -> List[str]:
         """
         Returns:
-            Returns the GET DATA links, usually a link to a landing page, a DAAC portal or an FTP location.
+            the GET DATA links, usually a link to a landing page, a DAAC portal, or an FTP location.
         """
         links = self._filter_related_links("GET DATA")
         return links
@@ -167,7 +167,7 @@ class DataCollection(CustomDict):
     def s3_bucket(self) -> Dict[str, Any]:
         """
         Returns:
-            Returns the S3 bucket information if the collection has it (**cloud hosted collections only**)
+            the S3 bucket information if the collection has it (**cloud hosted collections only**)
         """
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
@@ -180,9 +180,7 @@ class DataCollection(CustomDict):
 
 
 class DataGranule(CustomDict):
-    """
-    Dictionary-like object to represent a granule from CMR
-    """
+    """Dictionary-like object to represent a granule from CMR"""
 
     _basic_meta_fields_ = [
         "concept-id",
@@ -219,7 +217,7 @@ class DataGranule(CustomDict):
     def __repr__(self) -> str:
         """
         Returns:
-            returns a basic representation of a data granule
+            a basic representation of a data granule
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
@@ -234,7 +232,7 @@ class DataGranule(CustomDict):
     def _repr_html_(self) -> str:
         """
         Returns:
-            Returns a rich representation for a data granule if we are in a Jupyter notebook.
+            a rich representation for a data granule if we are in a Jupyter notebook.
         """
         granule_html_repr = _repr_granule_html(self)
         return granule_html_repr
@@ -248,7 +246,7 @@ class DataGranule(CustomDict):
     def size(self) -> float:
         """
         Returns:
-            Returns the total size for the granule in MB
+            the total size for the granule in MB
         """
         try:
             data_granule = self["umm"]["DataGranule"]
@@ -287,7 +285,7 @@ class DataGranule(CustomDict):
     def data_links(
         self, access: Optional[str] = None, in_region: bool = False
     ) -> List[str]:
-        """Returns the data links form a granule
+        """Returns the data links from a granule
 
         Parameters:
             access: direct or external, direct means in-region access for cloud-hosted collections.
@@ -327,7 +325,7 @@ class DataGranule(CustomDict):
     def dataviz_links(self) -> List[str]:
         """
         Returns:
-            Returns the data visualization links, usually the browse images.
+            the data visualization links, usually the browse images.
         """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links

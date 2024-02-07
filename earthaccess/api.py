@@ -55,7 +55,7 @@ def search_datasets(
             * **bounding_box**: (lower_left_lon, lower_left_lat,
                                upper_right_lon, upper_right_lat)
     Returns:
-        an list of DataCollection results that can be used to get
+        a list of DataCollection results that can be used to get
         information such as concept_id, doi, etc. about a dataset.
     Examples:
         ```python

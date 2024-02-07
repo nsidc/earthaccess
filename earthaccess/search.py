@@ -635,6 +635,7 @@ class DataGranules(GranuleQuery):
 
     def debug(self, debug: bool = True) -> Type[GranuleQuery]:
         """If True, prints the actual query to CMR, notice that the pagination happens in the headers.
+
         Parameters:
             debug (Boolean): Print CMR query.
         """
@@ -738,7 +739,7 @@ class DataGranules(GranuleQuery):
         method is online_only().
 
         Parameters:
-            downloadable: True to require granules be downloadable
+            downloadable (Boolean): True to require granules be downloadable
         """
         super().downloadable(downloadable)
         return self

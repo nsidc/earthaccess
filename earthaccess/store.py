@@ -301,6 +301,7 @@ class Store(object):
 
         Parameters:
             granules (List): a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+            provider (str, optional): a valid cloud provider, each DAAC has a provider code for their cloud distributions
         Returns:
             a list of s3fs "file pointers" to s3 files.
         """
@@ -454,6 +455,7 @@ class Store(object):
                 a list of granules(DataGranule) instances or a list of granule links (HTTP)
             local_path: local directory to store the remote data granules
             access: direct or on_prem, if set it will use it for the access method.
+            provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: parallel number of threads to use to download the files,
                 adjust as necessary, default = 8
 
@@ -494,6 +496,7 @@ class Store(object):
                 a list of granules(DataGranule) instances or a list of granule links (HTTP)
             local_path: local directory to store the remote data granules
             access: direct or on_prem, if set it will use it for the access method.
+            provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: parallel number of threads to use to download the files,
                 adjust as necessary, default = 8
 
