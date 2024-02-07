@@ -270,7 +270,7 @@ class Store(object):
         token = self.auth.token["access_token"]
         client_kwargs = {
             "headers": {"Authorization": f"Bearer {token}"},
-            # This is important! if we trust the env end send a bearer token
+            # This is important! If we trust the env and send a bearer token,
             # auth will fail!
             "trust_env": False,
         }
@@ -282,7 +282,7 @@ class Store(object):
         This HTTPS session can be used to download granules if we want to use a direct, lower level API
 
         Parameters:
-            bearer_token: if true will be used for authenticated queries on CMR
+            bearer_token: if true, will be used for authenticated queries on CMR
 
         Returns:
             requests Session
@@ -300,6 +300,7 @@ class Store(object):
         Parameters:
             granules: a list of granules(DataGranule) instances or list of URLs,
                 e.g. s3://some-granule
+            provider: an option
 
         Returns:
             a list of s3fs "file pointers" to s3 files.
@@ -318,7 +319,9 @@ class Store(object):
         hosted on S3 or HTTPS by third party libraries like xarray.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or list of URLs, e.g. s3://some-granule
+            granules: a list of granules(DataGranule) instances or list of URLs,
+                e.g. s3://some-granule
+            provider: an option
 
         Returns:
             a list of s3fs "file pointers" to s3 files.

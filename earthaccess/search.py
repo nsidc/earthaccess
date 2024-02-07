@@ -468,8 +468,9 @@ class DataGranules(GranuleQuery):
     def online_only(self, online_only: bool = True) -> Type[GranuleQuery]:
         """Only match granules that are listed online and not available for download.
         The opposite of this method is downloadable().
+
         Parameters:
-            online_only (Boolean): True to require granules only be online
+            online_only: True to require granules only be online
         """
         super().online_only(online_only)
         return self

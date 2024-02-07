@@ -49,9 +49,7 @@ class SessionWithHeaderRedirection(requests.Session):
 
 
 class Auth(object):
-    """
-    Authentication class for operations that require Earthdata login (EDL)
-    """
+    """Authentication class for operations that require Earthdata login (EDL)."""
 
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
@@ -63,18 +61,18 @@ class Auth(object):
         self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
 
     def login(self, strategy: str = "netrc", persist: bool = False) -> Any:
-        """Authenticate with Earthdata login
+        """Authenticate with Earthdata login.
 
         Parameters:
-
-            strategy (String): authentication method.
+            strategy: authentication method.
 
                     "interactive": enter username and password.
 
                     "netrc": (default) retrieve username and password from ~/.netrc.
 
                     "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
-            persist (Boolean): will persist credentials in a .netrc file
+            persist: will persist credentials in a .netrc file
+
         Returns:
             an instance of Auth.
         """
@@ -90,8 +88,9 @@ class Auth(object):
         return self
 
     def refresh_tokens(self) -> bool:
-        """Refresh CMR tokens
-        Tokens are used to do authenticated queries on CMR for restricted and early access datastes
+        """Refresh CMR tokens.
+
+        Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
         This method renews the tokens to make sure we can query the collections allowed to our EDL user.
         """
         if len(self.tokens) == 0:
@@ -146,7 +145,7 @@ class Auth(object):
         provider: Optional[str] = None,
         endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
-        """Gets AWS S3 credentials for a given NASA cloud provider, the
+        """Gets AWS S3 credentials for a given NASA cloud provider. The
         easier way is to use the DAAC short name. provider is optional if we know it.
 
         Parameters:
@@ -154,7 +153,7 @@ class Auth(object):
             daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
             endpoint: getting the credentials directly from the S3Credentials URL
 
-        Rreturns:
+        Returns:
             A Python dictionary with the temporary AWS S3 credentials
 
         """
@@ -199,14 +198,15 @@ class Auth(object):
                 print(f"Credentials for the cloud provider {daac} are not available")
                 return {}
         else:
-            print("We need to auhtenticate with EDL first")
+            print("We need to authenticate with EDL first")
             return {}
 
     def get_session(self, bearer_token: bool = True) -> requests.Session:
-        """Returns a new request session instance
+        """Returns a new request session instance.
 
         Parameters:
-            bearer_token (Boolean): boolean, include bearer token
+            bearer_token: boolean, include bearer token
+
         Returns:
             class Session instance with Auth and bearer token headers
         """

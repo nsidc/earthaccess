@@ -200,9 +200,9 @@ def open(
     hosted on S3 or HTTPS by third party libraries like xarray.
 
     Parameters:
-        granules: a list of granule instances **or** list of URLs, e.g.
-            `s3://some-granule`, if a list of URLs is passed, we need to specify the data
-            provider e.g. POCLOUD, NSIDC_CPRD etc.
+        granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
+            If a list of URLs is passed, we need to specify the data provider.
+        provider: e.g. POCLOUD, NSIDC_CPRD etc.
 
     Returns:
         a list of s3fs "file pointers" to s3 files.
