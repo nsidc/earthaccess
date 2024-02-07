@@ -111,7 +111,7 @@ class DataCollection(CustomDict):
         """
         Returns:
             A collection's `concept_id`.
-            This id is the most relevant search field on granule queries.
+                This id is the most relevant search field on granule queries.
         """
         return self["meta"]["concept-id"]
 
@@ -168,7 +168,7 @@ class DataCollection(CustomDict):
         """
         Returns:
             The S3 bucket information if the collection has it.
-            (**cloud hosted collections only**)
+                (**cloud hosted collections only**)
         """
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
