@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 * Bug fixes:
-    * fixed #439 by implementing more trusted domains in the SessionWithRedirection 
+    * fixed #439 by implementing more trusted domains in the SessionWithRedirection
     * fixed #438 by using an authenticated session for hits()
 * Enhancements:
     * addressing #427 by adding parameters to collection query
