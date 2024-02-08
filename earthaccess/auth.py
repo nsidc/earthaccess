@@ -49,9 +49,7 @@ class SessionWithHeaderRedirection(requests.Session):
 
 
 class Auth(object):
-    """
-    Authentication class for operations that require Earthdata login (EDL)
-    """
+    """Authentication class for operations that require Earthdata login (EDL)."""
 
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
@@ -63,20 +61,20 @@ class Auth(object):
         self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
 
     def login(self, strategy: str = "netrc", persist: bool = False) -> Any:
-        """Authenticate with Earthdata login
+        """Authenticate with Earthdata login.
 
         Parameters:
+            strategy:
+                The authentication method.
 
-            strategy (String): authentication method.
+                * **"interactive"**: Enter a username and password.
+                * **"netrc"**: (default) Retrieve a username and password from ~/.netrc.
+                * **"environment"**:
+                    Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
+            persist: Will persist credentials in a `.netrc` file.
 
-                    "interactive": enter username and password.
-
-                    "netrc": (default) retrieve username and password from ~/.netrc.
-
-                    "environment": retrieve username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
-            persist (Boolean): will persist credentials in a .netrc file
         Returns:
-            an instance of Auth.
+            An instance of Auth.
         """
         if self.authenticated:
             logger.debug("We are already authenticated with NASA EDL")
@@ -90,8 +88,8 @@ class Auth(object):
         return self
 
     def refresh_tokens(self) -> bool:
-        """Refresh CMR tokens
-        Tokens are used to do authenticated queries on CMR for restricted and early access datastes
+        """Refresh CMR tokens.
+        Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
         This method renews the tokens to make sure we can query the collections allowed to our EDL user.
         """
         if len(self.tokens) == 0:
@@ -146,17 +144,16 @@ class Auth(object):
         provider: Optional[str] = None,
         endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
-        """Gets AWS S3 credentials for a given NASA cloud provider, the
-        easier way is to use the DAAC short name. provider is optional if we know it.
+        """Gets AWS S3 credentials for a given NASA cloud provider.
+        The easier way is to use the DAAC short name; provider is optional if we know it.
 
         Parameters:
-            provider: A valid cloud provider, each DAAC has a provider code for their cloud distributions
-            daac: the name of a NASA DAAC, i.e. NSIDC or PODAAC
-            endpoint: getting the credentials directly from the S3Credentials URL
+            daac: The name of a NASA DAAC, e.g. NSIDC or PODAAC.
+            provider: A valid cloud provider. Each DAAC has a provider code for their cloud distributions.
+            endpoint: Getting the credentials directly from the S3Credentials URL.
 
-        Rreturns:
-            A Python dictionary with the temporary AWS S3 credentials
-
+        Returns:
+            A Python dictionary with the temporary AWS S3 credentials.
         """
         if self.authenticated:
             session = SessionWithHeaderRedirection(self.username, self.password)
@@ -199,14 +196,15 @@ class Auth(object):
                 print(f"Credentials for the cloud provider {daac} are not available")
                 return {}
         else:
-            print("We need to auhtenticate with EDL first")
+            print("We need to authenticate with EDL first")
             return {}
 
     def get_session(self, bearer_token: bool = True) -> requests.Session:
-        """Returns a new request session instance
+        """Returns a new request session instance.
 
         Parameters:
-            bearer_token (Boolean): boolean, include bearer token
+            bearer_token: whether to include bearer token
+
         Returns:
             class Session instance with Auth and bearer token headers
         """
@@ -228,13 +226,13 @@ class Auth(object):
         else:
             return {}
 
-    def _interactive(self, presist_credentials: bool = False) -> bool:
+    def _interactive(self, persist_credentials: bool = False) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
         authenticated = self._get_credentials(username, password)
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
-            if presist_credentials:
+            if persist_credentials:
                 print("Persisting credentials to .netrc")
                 self._persist_user_credentials(username, password)
         return authenticated
