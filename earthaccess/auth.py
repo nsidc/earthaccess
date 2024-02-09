@@ -13,7 +13,7 @@ from tinynetrc import Netrc
 from .daac import DAACS
 
 try:
-    user_agent = f"earthaccess v{earthaccess.__version__}"
+    user_agent = f"earthaccess v{importlib.metadata.version('earthaccess')}"
 except importlib.metadata.PackageNotFoundError:
     user_agent = "earthaccess"
 
