@@ -1,5 +1,5 @@
 import datetime
-import os
+from pathlib import Path
 import shutil
 import traceback
 from functools import lru_cache
@@ -466,7 +466,7 @@ class Store(object):
             List of downloaded files
         """
         if local_path is None:
-            local_path = os.path.join(
+            local_path = Path(
                 ".",
                 "data",
                 f"{datetime.datetime.today().strftime('%Y-%m-%d')}-{uuid4().hex[:6]}",
@@ -526,7 +526,7 @@ class Store(object):
             # TODO: make this parallel or concurrent
             for file in data_links:
                 s3_fs.get(file, local_path)
-                file_name = os.path.join(local_path, os.path.basename(file))
+                file_name = Path(local_path, Path(file).name)
                 print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
@@ -572,7 +572,7 @@ class Store(object):
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
-                file_name = os.path.join(local_path, os.path.basename(file))
+                file_name = Path(local_path, Path(file).name)
                 print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
@@ -597,7 +597,7 @@ class Store(object):
         local_filename = url.split("/")[-1]
         path = Path(directory) / Path(local_filename)
         local_path = str(path)
-        if not os.path.exists(local_path):
+        if not Path(local_path).exists():
             try:
                 session = self.auth.get_session()
                 with session.get(
@@ -638,8 +638,8 @@ class Store(object):
             raise ValueError(
                 "We need to be logged into NASA EDL in order to download data granules"
             )
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        if not Path(directory).exists():
+            Path(directory).mkdir(parents=True)
 
         arguments = [(url, directory) for url in urls]
         results = pqdm(
