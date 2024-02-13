@@ -2,7 +2,6 @@ import getpass
 import importlib.metadata
 import logging
 import os
-from pathlib import Path
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -258,9 +257,7 @@ class Auth(object):
         try:
             my_netrc = Netrc()
         except FileNotFoundError as err:
-            raise FileNotFoundError(
-                f"No .netrc found in {Path.home()}"
-            ) from err
+            raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
         if my_netrc["urs.earthdata.nasa.gov"] is not None:
