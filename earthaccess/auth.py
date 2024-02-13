@@ -259,7 +259,7 @@ class Auth(object):
             my_netrc = Netrc()
         except FileNotFoundError as err:
             raise FileNotFoundError(
-                f"No .netrc found in {Path('~').expanduser()}"
+                f"No .netrc found in {Path.home()}"
             ) from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
