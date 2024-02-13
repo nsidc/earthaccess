@@ -638,8 +638,7 @@ class Store(object):
             raise ValueError(
                 "We need to be logged into NASA EDL in order to download data granules"
             )
-        if not Path(directory).exists():
-            Path(directory).mkdir(parents=True)
+        Path(directory).mkdir(parents=True, exist_ok=True)
 
         arguments = [(url, directory) for url in urls]
         results = pqdm(
