@@ -1,6 +1,7 @@
 # package imports
 import logging
 import os
+from pathlib import Path
 import random
 import shutil
 import unittest
@@ -166,4 +167,4 @@ def test_multi_file_granule(tmp_path):
     urls = granules[0].data_links()
     assert len(urls) > 1
     files = earthaccess.download(granules, str(tmp_path))
-    assert set(map(os.path.basename, urls)) == set(map(os.path.basename, files))
+    assert set([Path(f).name for f in urls]) == set([Path(f).name for f in files])
