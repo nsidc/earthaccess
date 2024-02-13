@@ -572,7 +572,7 @@ class Store(object):
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, local_path)
-                file_name = Path(local_path, Path(file).name)
+                file_name = Path(local_path) / Path(file).name
                 print(f"Downloaded: {file_name}")
                 downloaded_files.append(file_name)
             return downloaded_files
