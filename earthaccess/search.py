@@ -1,6 +1,6 @@
 import datetime as dt
 from inspect import getmembers, ismethod
-from typing import Any, Dict, List, Optional, Tuple, Type
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
@@ -312,31 +312,36 @@ class DataCollections(CollectionQuery):
         return results
 
     def temporal(
-        self, date_from: str, date_to: str, exclude_boundary: bool = False
+        self,
+        date_from: Optional[Union[str, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.datetime]] = None,
+        exclude_boundary: bool = False,
     ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
         or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls
         to this method before calling execute().
 
         Parameters:
-            date_from: earliest date of temporal range
-            date_to: latest date of temporal range
-            exclude_boundary: whether to exclude the date_from/to in the matched range
+            date_from (String or Datetime object): earliest date of temporal range
+            date_to (String or Datetime object): latest date of temporal range
+            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range.
         """
         DEFAULT = dt.datetime(1979, 1, 1)
-        if date_from is not None:
+        if date_from is not None and not isinstance(date_from, dt.datetime):
             try:
-                parsed_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
+                date_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
             except Exception:
                 print("The provided start date was not recognized")
-                parsed_from = ""
-        if date_to is not None:
+                date_from = ""
+
+        if date_to is not None and not isinstance(date_to, dt.datetime):
             try:
-                parsed_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
+                date_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
             except Exception:
                 print("The provided end date was not recognized")
-                parsed_to = ""
-        super().temporal(parsed_from, parsed_to, exclude_boundary)
+                date_to = ""
+
+        super().temporal(date_from, date_to, exclude_boundary)
         return self
 
 
@@ -675,8 +680,8 @@ class DataGranules(GranuleQuery):
 
     def temporal(
         self,
-        date_from: Optional[str] = None,
-        date_to: Optional[str] = None,
+        date_from: Optional[Union[str, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Type[GranuleQuery]:
         """Filter by an open or closed date range.
@@ -689,19 +694,21 @@ class DataGranules(GranuleQuery):
             exclude_boundary: whether to exclude the date_from/to in the matched range
         """
         DEFAULT = dt.datetime(1979, 1, 1)
-        if date_from is not None:
+        if date_from is not None and not isinstance(date_from, dt.datetime):
             try:
-                parsed_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
+                date_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
             except Exception:
                 print("The provided start date was not recognized")
-                parsed_from = ""
-        if date_to is not None:
+                date_from = ""
+
+        if date_to is not None and not isinstance(date_to, dt.datetime):
             try:
-                parsed_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
+                date_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
             except Exception:
                 print("The provided end date was not recognized")
-                parsed_to = ""
-        super().temporal(parsed_from, parsed_to, exclude_boundary)
+                date_to = ""
+
+        super().temporal(date_from, date_to, exclude_boundary)
         return self
 
     def version(self, version: str = "") -> Type[GranuleQuery]:
