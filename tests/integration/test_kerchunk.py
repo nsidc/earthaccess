@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 import unittest
 
 import earthaccess
@@ -32,14 +33,14 @@ def granules():
 @pytest.mark.parametrize("protocol", ["", "file://"])
 def test_consolidate_metadata_outfile(tmp_path, granules, protocol):
     outfile = f"{protocol}{tmp_path / 'metadata.json'}"
-    assert not os.path.exists(outfile)
+    assert not Path(outfile).exists()
     result = earthaccess.consolidate_metadata(
         granules,
         outfile=outfile,
         access="indirect",
         kerchunk_options={"concat_dims": "Time"},
     )
-    assert os.path.exists(strip_protocol(outfile))
+    assert Path(strip_protocol(outfile)).exists()
     assert result == outfile
 
 
