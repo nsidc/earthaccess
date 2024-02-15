@@ -65,8 +65,6 @@ With *earthaccess* we can login, search and download data with a few lines of co
 
 The only requirement to use this library is to open a free account with NASA [EDL](https://urs.earthdata.nasa.gov).
 
-<a href="https://urs.earthdata.nasa.gov"><img src="https://auth.ops.maap-project.org/cas/images/urs-logo.png" /></a>
-
 
 ### **Authentication**
 

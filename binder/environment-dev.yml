@@ -4,12 +4,22 @@ channels:
 dependencies:
   # This environment bootstraps poetry, the actual dev environment
   # is installed and managed with poetry
-  - python=3.9
+  - python=3.10
   - jupyterlab=3
   - xarray>=0.19
   - ipyleaflet>=0.13
   - h5netcdf>=0.11
   - cartopy
+
+  - mkdocs>=1.2
+  - mkdocs-material>=7.1,<9.0
+  - markdown-include>=0.6
+  - mkdocstrings>=0.19.0
+  - mkdocstrings-python
+  - mkdocs-jupyter>=0.19.0
+  - pymdown-extensions>=9.2
+
   - pip
   - pip:
       - poetry
+      - markdown-callouts>=0.2.0
