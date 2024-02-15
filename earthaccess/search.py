@@ -33,7 +33,13 @@ class DataCollections(CollectionQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Optional[Auth] = None, earthdata_environment: Optional[Env] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        auth: Optional[Auth] = None,
+        earthdata_environment: Optional[Env] = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Builds an instance of DataCollections to query CMR
 
         Parameters:
@@ -53,7 +59,9 @@ class DataCollections(CollectionQuery):
             self.mode(CMR_SIT)
 
         print(f"[in DataCollections] Earthdata environment: {earthdata_environment}")
-        print(f"[in DataCollections] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}")
+        print(
+            f"[in DataCollections] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}"
+        )
 
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
@@ -378,7 +386,13 @@ class DataGranules(GranuleQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Any = None, earthdata_environment: Optional[Env] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        auth: Any = None,
+        earthdata_environment: Optional[Env] = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
         self.session = session()
@@ -393,7 +407,9 @@ class DataGranules(GranuleQuery):
             self.mode(CMR_SIT)
 
         print(f"[in DataGranules] Earthdata environment: {earthdata_environment}")
-        print(f"[in DataGranules] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}")
+        print(
+            f"[in DataGranules] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}"
+        )
 
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata

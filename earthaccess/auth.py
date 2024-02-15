@@ -26,9 +26,11 @@ class Env(Enum):
     """
     Host URL options, for different Earthdata domains.
     """
+
     PROD = "urs.earthdata.nasa.gov"
     UAT = "uat.urs.earthdata.nasa.gov"
     SIT = "sit.urs.earthdata.nasa.gov"
+
 
 class SessionWithHeaderRedirection(requests.Session):
     """
@@ -82,8 +84,12 @@ class Auth(object):
         self.tokens: List = []
         self._set_earthdata_environment(Env.PROD)
 
-    def login(self, strategy: str = "netrc", persist: bool = False,
-              earthdata_environment: Optional[Env] = None) -> Any:
+    def login(
+        self,
+        strategy: str = "netrc",
+        persist: bool = False,
+        earthdata_environment: Optional[Env] = None,
+    ) -> Any:
         """Authenticate with Earthdata login.
 
         Parameters:
@@ -119,13 +125,21 @@ class Auth(object):
         self.earthdata_environment = earthdata_environment
 
         # Maybe all these predefined URLs should be in a constants.py file
-        self.EDL_GET_TOKENS_URL = f"https://{self.earthdata_environment.value}/api/users/tokens"
+        self.EDL_GET_TOKENS_URL = (
+            f"https://{self.earthdata_environment.value}/api/users/tokens"
+        )
         self.EDL_GET_PROFILE = f"https://{self.earthdata_environment.value}/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
-        self.EDL_GENERATE_TOKENS_URL = f"https://{self.earthdata_environment.value}/api/users/token"
-        self.EDL_REVOKE_TOKEN = f"https://{self.earthdata_environment.value}/api/users/revoke_token"
+        self.EDL_GENERATE_TOKENS_URL = (
+            f"https://{self.earthdata_environment.value}/api/users/token"
+        )
+        self.EDL_REVOKE_TOKEN = (
+            f"https://{self.earthdata_environment.value}/api/users/revoke_token"
+        )
 
         self._eula_url = f"https://{self.earthdata_environment.value}/users/earthaccess/unaccepted_eulas"
-        self._apps_url = f"https://{self.earthdata_environment.value}/application_search"
+        self._apps_url = (
+            f"https://{self.earthdata_environment.value}/application_search"
+        )
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
@@ -196,7 +210,9 @@ class Auth(object):
             A Python dictionary with the temporary AWS S3 credentials.
         """
         if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password, self.earthdata_environment)
+            session = SessionWithHeaderRedirection(
+                self.username, self.password, self.earthdata_environment
+            )
             if endpoint is None:
                 auth_url = self._get_cloud_auth_url(
                     daac_shortname=daac, provider=provider
@@ -346,7 +362,9 @@ class Auth(object):
         return self.authenticated
 
     def _get_user_tokens(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password, self.earthdata_environment)
+        session = SessionWithHeaderRedirection(
+            username, password, self.earthdata_environment
+        )
         auth_resp = session.get(
             self.EDL_GET_TOKENS_URL,
             headers={
@@ -357,7 +375,9 @@ class Auth(object):
         return auth_resp
 
     def _generate_user_token(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password, self.earthdata_environment)
+        session = SessionWithHeaderRedirection(
+            username, password, self.earthdata_environment
+        )
         auth_resp = session.post(
             self.EDL_GENERATE_TOKENS_URL,
             headers={
@@ -369,7 +389,9 @@ class Auth(object):
 
     def _revoke_user_token(self, token: str) -> bool:
         if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password, self.earthdata_environment)
+            session = SessionWithHeaderRedirection(
+                self.username, self.password, self.earthdata_environment
+            )
             auth_resp = session.post(
                 self.EDL_REVOKE_TOKEN,
                 params={"token": token},
@@ -392,7 +414,10 @@ class Auth(object):
             print(e)
             return False
         my_netrc = Netrc(str(netrc_path))
-        my_netrc[self.earthdata_environment.value] = {"login": username, "password": password}
+        my_netrc[self.earthdata_environment.value] = {
+            "login": username,
+            "password": password,
+        }
         my_netrc.save()
         return True
 
