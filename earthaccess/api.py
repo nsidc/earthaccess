@@ -135,7 +135,7 @@ def search_data(
 
 
 def login(
-    strategy: str = "all", persist: bool = False, earthdata_environment=Env.PROD
+    strategy: str = "all", persist: bool = False, earthdata_environment: Env = Env.PROD
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
