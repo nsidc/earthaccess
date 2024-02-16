@@ -210,9 +210,7 @@ class Auth(object):
             A Python dictionary with the temporary AWS S3 credentials.
         """
         if self.authenticated:
-            session = SessionWithHeaderRedirection(
-                self.username, self.password, self.earthdata_environment
-            )
+            session = SessionWithHeaderRedirection(self.username, self.password)
             if endpoint is None:
                 auth_url = self._get_cloud_auth_url(
                     daac_shortname=daac, provider=provider
@@ -362,9 +360,7 @@ class Auth(object):
         return self.authenticated
 
     def _get_user_tokens(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(
-            username, password, self.earthdata_environment
-        )
+        session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.get(
             self.EDL_GET_TOKENS_URL,
             headers={
@@ -375,9 +371,7 @@ class Auth(object):
         return auth_resp
 
     def _generate_user_token(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(
-            username, password, self.earthdata_environment
-        )
+        session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.post(
             self.EDL_GENERATE_TOKENS_URL,
             headers={
@@ -389,9 +383,7 @@ class Auth(object):
 
     def _revoke_user_token(self, token: str) -> bool:
         if self.authenticated:
-            session = SessionWithHeaderRedirection(
-                self.username, self.password, self.earthdata_environment
-            )
+            session = SessionWithHeaderRedirection(self.username, self.password)
             auth_resp = session.post(
                 self.EDL_REVOKE_TOKEN,
                 params={"token": token},
