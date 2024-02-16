@@ -88,7 +88,7 @@ class DataCollections(CollectionQuery):
         try:
             response.raise_for_status()
         except exceptions.HTTPError as ex:
-            raise RuntimeError(ex.response.text)
+            raise RuntimeError(str(ex.response))
 
         return int(response.headers["CMR-Hits"])
 
