@@ -2,6 +2,7 @@
 import logging
 import os
 import unittest
+from pathlib import Path
 
 import earthaccess
 import pytest
@@ -84,7 +85,7 @@ def test_download(tmp_path, selection, use_url):
     result = results[selection]
     files = earthaccess.download(result, str(tmp_path))
     assertions.assertIsInstance(files, list)
-    assert all(os.path.exists(f) for f in files)
+    assert all(Path(f).exists() for f in files)
 
 
 def test_auth_environ():

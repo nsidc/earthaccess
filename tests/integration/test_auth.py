@@ -30,7 +30,7 @@ def activate_netrc():
         f.write(
             f"machine urs.earthdata.nasa.gov login {username} password {password}\n"
         )
-        os.chmod(NETRC_PATH, 0o600)
+        NETRC_PATH.chmod(0o600)
 
 
 def delete_netrc():
