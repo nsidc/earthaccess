@@ -293,9 +293,7 @@ class Auth(object):
         try:
             my_netrc = Netrc()
         except FileNotFoundError as err:
-            raise FileNotFoundError(
-                f"No .netrc found in {os.path.expanduser('~')}"
-            ) from err
+            raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
         if my_netrc[self.earthdata_environment.value] is not None:
@@ -401,7 +399,7 @@ class Auth(object):
         try:
             netrc_path = Path().home().joinpath(".netrc")
             netrc_path.touch(exist_ok=True)
-            os.chmod(netrc_path.absolute(), 0o600)
+            netrc_path.chmod(0o600)
         except Exception as e:
             print(e)
             return False
