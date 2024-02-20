@@ -30,32 +30,60 @@
 
 </p>
 
-## **Overview**
+## **Welcome to `earthaccess`**
 
-*earthaccess* is a **python library to search, download or stream NASA Earth science data** with just a few lines of code.
+`earthaccess` is a python library to **search for**, and **download** or **stream** NASA Earth science data with just a few lines of code.
 
 
 In the age of cloud computing, the power of open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
 
 During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html), the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort; it involves people from different technical backgrounds, and the data analysis to solve the pressing problems we face cannot be limited by the complexity of the underlying systems. Therefore, providing easy access to NASA Earthdata regardless of the data storage location (hosted within or outside of the cloud) is the main motivation behind this Python library.
 
-## **Installing earthaccess**
+Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
+
+
+## **Getting Started**
+
+### **Installing earthaccess**
+
+The latest release of `earthaccess` can be installed with `mamba`, `conda` or `pip`.  We recommend using `mamba` because it is faster.
 
 You will need Python 3.8 or higher installed.
 
-Install the latest release using conda
+#### Using `mamba`
+
+```bash
+mamba install -c conda-forge earthaccess
+```
+
+#### Using `conda`
 
 ```bash
 conda install -c conda-forge earthaccess
 ```
 
-Using Pip
+#### Using `pip`
 
 ```bash
 pip install earthaccess
 ```
 
-Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
+
+### Check `earthaccess` is installed
+
+This should run seamlessly (fingers-crossed).  To check `earthaccess` is correctly installed you can start a python interpreter (either python or ipython) and run the following code.
+
+```
+$ python
+Python 3.12.1 | packaged by conda-forge | (main, Dec 23 2023, 08:03:24) [GCC 12.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import earthaccess
+>>> earthaccess.__version__
+'0.8.2'
+```
+
+> Note:
+> Your `python` and `earthaccess` versions may be different.
 
 
 ## **Usage**
