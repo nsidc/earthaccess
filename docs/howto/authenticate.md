@@ -1,5 +1,7 @@
 ## Authenticate with Earthdata Login
 
+Something new!
+
 The first step to use NASA Earthdata is to create an account with Earthdata Login, please follow the instructions at [NASA EDL](https://urs.earthdata.nasa.gov/)
 
 Once registered, earthaccess can use environment variables, a `.netrc` file or interactive input from a user to login with NASA EDL.
