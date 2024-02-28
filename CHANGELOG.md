@@ -7,6 +7,7 @@
     * fixed #438 by using an authenticated session for hits()
 * Enhancements:
     * addressing #427 by adding parameters to collection query
+    * added user-agent in the request to track usage, closes #436
 
 ## [v0.8.2] 2023-12-06
 * Bug fixes:
