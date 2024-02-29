@@ -16,7 +16,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 If we have `mamba` (or conda) installed, we can use the environment file included in the binder folder, this will install all the libraries we need (including Poetry) to start developing `earthaccess`
 
 ```bash
->mamba env update -f binder/environment-dev.yml
+>mamba env update -f ci/environment-dev.yml
 >mamba activate earthaccess-dev
 >poetry install
 ```
