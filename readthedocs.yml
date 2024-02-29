@@ -12,15 +12,16 @@ build:
     python: "3.9"
   jobs:
     post_create_environment:
-      # Install poetry
-      # https://python-poetry.org/docs/#installing-manually
-      - pip install poetry
-      # Tell poetry to not use a virtual environment
-      - poetry config virtualenvs.create false
+       # Install poetry
+       # https://python-poetry.org/docs/#installing-manually
+      - python -m pip install poetry
+       # Tell poetry to not use a virtual environment
+      - python -m poetry config virtualenvs.create false
     post_install:
       # Install dependencies with 'docs' dependency group
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
-      - poetry install
+      - python -m poetry install
+      - python -m poetry env info
 
 mkdocs:
   configuration: mkdocs.yml
