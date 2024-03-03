@@ -76,6 +76,28 @@ class Auth(object):
         self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
         self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
 
+    def __repr__(self) -> str:
+        print_str = "Authentication Info\n" + "-------------------\n"
+        for k, v in self.auth_info.items():
+            print_str += str("{}: {}\n".format(k, v))
+
+        return print_str
+
+    @property
+    def auth_info(self) -> Dict:
+        """Get information about the authentication session
+
+        Returns:
+            Dict: information about the auth object
+        """
+        summary_dict: Dict[str, Any]
+        summary_dict = {
+            "authenticated?": self.authenticated,
+            "tokens": self.tokens,
+        }
+
+        return summary_dict
+
     def login(self, strategy: str = "netrc", persist: bool = False) -> Any:
         """Authenticate with Earthdata login.
 
@@ -167,6 +189,7 @@ class Auth(object):
             daac: The name of a NASA DAAC, e.g. NSIDC or PODAAC.
             provider: A valid cloud provider. Each DAAC has a provider code for their cloud distributions.
             endpoint: Getting the credentials directly from the S3Credentials URL.
+
 
         Returns:
             A Python dictionary with the temporary AWS S3 credentials.
