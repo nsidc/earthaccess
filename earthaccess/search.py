@@ -399,6 +399,7 @@ class DataGranules(GranuleQuery):
         if auth is not None:
             earthdata_environment = auth.earthdata_environment
 
+        # TODO: Move this in to a data structure, e.g. the existing Enum?
         if (earthdata_environment is None) or (earthdata_environment == Env.PROD):
             self.mode(CMR_OPS)
         elif earthdata_environment == Env.UAT:
