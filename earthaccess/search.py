@@ -1,14 +1,37 @@
-import datetime as dt
+from datetime import datetime, timezone
 from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
-import dateutil.parser as parser  # type: ignore
+import dateutil.parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
 from .auth import Auth
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
+
+
+def _normalize_datetime(raw: None | str | datetime) -> None | datetime:
+    # empty string or None is None
+    if not raw:
+        return None
+    # the cmr.*Query.temporal method only parses a subset of ISO 8601 strings, so we
+    # add flexibility, inclusive of the presence or absence of timezone information
+    try:
+        dt = dateutil.parser.parse(raw)
+    except TypeError:
+        dt = raw
+    # and then we guarantee a UTC datetime, assuming that a naive datetime
+    # object IS utc (thus IS NOT local time, because science)
+    try:
+        tz = dt.tzinfo
+    except AttributeError:
+        raise TypeError(f"Dates must be datetime or str, not {dt.__class__.__name__}.")
+    if tz:
+        dt = dt.astimezone(timezone.utc)
+    else:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 class DataCollections(CollectionQuery):
@@ -313,35 +336,23 @@ class DataCollections(CollectionQuery):
 
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.datetime]] = None,
+        date_from: Optional[Union[str, datetime]] = None,
+        date_to: Optional[Union[str, datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
-        or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls
-        to this method before calling execute().
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
 
         Parameters:
-            date_from (String or Datetime object): earliest date of temporal range
-            date_to (String or Datetime object): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range.
+            date_from: earliest date of temporal range
+            date_to: latest date of temporal range
+            exclude_boundary: whether or not to exclude the date_from/to in the matched range.
         """
-        DEFAULT = dt.datetime(1979, 1, 1)
-        if date_from is not None and not isinstance(date_from, dt.datetime):
-            try:
-                date_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided start date was not recognized")
-                date_from = ""
-
-        if date_to is not None and not isinstance(date_to, dt.datetime):
-            try:
-                date_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided end date was not recognized")
-                date_to = ""
-
-        super().temporal(date_from, date_to, exclude_boundary)
+        super().temporal(
+            _normalize_datetime(date_from),
+            _normalize_datetime(date_to),
+            exclude_boundary,
+        )
         return self
 
 
@@ -680,35 +691,23 @@ class DataGranules(GranuleQuery):
 
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.datetime]] = None,
+        date_from: Optional[Union[str, datetime]] = None,
+        date_to: Optional[Union[str, datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Type[GranuleQuery]:
-        """Filter by an open or closed date range.
-        Dates can be provided as a datetime objects or ISO 8601 formatted strings. Multiple
-        ranges can be provided by successive calls to this method before calling execute().
+        """Filter by an open or closed date range. Dates can be provided as datetime objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
 
         Parameters:
             date_from: earliest date of temporal range
             date_to: latest date of temporal range
-            exclude_boundary: whether to exclude the date_from/to in the matched range
+            exclude_boundary: whether or not to exclude the date_from/to in the matched range.
         """
-        DEFAULT = dt.datetime(1979, 1, 1)
-        if date_from is not None and not isinstance(date_from, dt.datetime):
-            try:
-                date_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided start date was not recognized")
-                date_from = ""
-
-        if date_to is not None and not isinstance(date_to, dt.datetime):
-            try:
-                date_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided end date was not recognized")
-                date_to = ""
-
-        super().temporal(date_from, date_to, exclude_boundary)
+        super().temporal(
+            _normalize_datetime(date_from),
+            _normalize_datetime(date_to),
+            exclude_boundary,
+        )
         return self
 
     def version(self, version: str = "") -> Type[GranuleQuery]:
