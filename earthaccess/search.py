@@ -29,7 +29,7 @@ def _normalize_datetime(raw: None | str | dt.date | dt.datetime) -> None | dt.da
         tz = normalized.tzinfo
     except AttributeError:
         raise TypeError(
-            f"Dates must be date, datetime or str, not {dt.__class__.__name__}."
+            f"Dates must be date, datetime or str, not {raw.__class__.__name__}."
         )
     if tz:
         normalized = normalized.astimezone(dt.timezone.utc)
