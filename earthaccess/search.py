@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+import datetime as dt
 from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
@@ -11,27 +11,31 @@ from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
 
-def _normalize_datetime(raw: None | str | datetime) -> None | datetime:
+def _normalize_datetime(raw: None | str | dt.date | dt.datetime) -> None | dt.datetime:
     # empty string or None is None
     if not raw:
         return None
     # the cmr.*Query.temporal method only parses a subset of ISO 8601 strings, so we
     # add flexibility, inclusive of the presence or absence of timezone information
-    try:
-        dt = dateutil.parser.parse(raw)
-    except TypeError:
-        dt = raw
+    if isinstance(raw, str):
+        normalized = dateutil.parser.parse(raw)
+    elif not isinstance(raw, dt.datetime):
+        normalized = dt.datetime.combine(raw, dt.time())
+    else:
+        normalized = raw
     # and then we guarantee a UTC datetime, assuming that a naive datetime
     # object IS utc (thus IS NOT local time, because science)
     try:
-        tz = dt.tzinfo
+        tz = normalized.tzinfo
     except AttributeError:
-        raise TypeError(f"Dates must be datetime or str, not {dt.__class__.__name__}.")
+        raise TypeError(
+            f"Dates must be date, datetime or str, not {dt.__class__.__name__}."
+        )
     if tz:
-        dt = dt.astimezone(timezone.utc)
+        normalized = normalized.astimezone(dt.timezone.utc)
     else:
-        dt = dt.replace(tzinfo=timezone.utc)
-    return dt
+        normalized = normalized.replace(tzinfo=dt.timezone.utc)
+    return normalized
 
 
 class DataCollections(CollectionQuery):
@@ -336,8 +340,8 @@ class DataCollections(CollectionQuery):
 
     def temporal(
         self,
-        date_from: Optional[Union[str, datetime]] = None,
-        date_to: Optional[Union[str, datetime]] = None,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
@@ -691,8 +695,8 @@ class DataGranules(GranuleQuery):
 
     def temporal(
         self,
-        date_from: Optional[Union[str, datetime]] = None,
-        date_to: Optional[Union[str, datetime]] = None,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Type[GranuleQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
