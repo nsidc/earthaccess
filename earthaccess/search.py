@@ -19,7 +19,7 @@ def _normalize_datetime(raw: None | str | dt.date | dt.datetime) -> None | dt.da
     # add flexibility, inclusive of the presence or absence of timezone information
     if isinstance(raw, str):
         normalized = dateutil.parser.parse(raw)
-    elif not isinstance(raw, dt.datetime):
+    elif isinstance(raw, dt.date) and not isinstance(raw, dt.datetime):
         normalized = dt.datetime.combine(raw, dt.time())
     else:
         normalized = raw
