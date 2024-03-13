@@ -2,6 +2,8 @@ import getpass
 import importlib.metadata
 import logging
 import os
+import platform
+import shutil
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -370,6 +372,20 @@ class Auth(object):
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
         my_netrc.save()
+        netrc_file = Path.home() / '.netrc'
+
+        # Create and write .urs_cookies file
+        urs_cookies_file = Path.home() / '.urs_cookies'
+        urs_cookies_file.write_text('')
+
+        # Create and write to .dodsrc file
+        dodsrc_file = Path.home() / '.dodsrc'
+        dodsrc_contents = f"HTTP.COOKIEJAR={urs_cookies_file}\nHTTP.NETRC={netrc_file}"
+        dodsrc_file.write_text(dodsrc_contents)
+
+        if platform.system() == "Windows":
+            shutil.copy2(dodsrc_file, Path.cwd())
+
         return True
 
     def _get_cloud_auth_url(
