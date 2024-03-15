@@ -57,6 +57,13 @@ and now we can run the local Jupyter Lab and run the scripts etc. using Poetry:
 
 ### Please format and lint as you go with the following scripts
 
+In order to run the following scripts, run the following,
+```
+pip install mypy
+mypy --install-types
+pip install ruff
+```
+
 ```bash
 scripts/lint.sh
 scripts/format.sh
