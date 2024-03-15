@@ -148,7 +148,7 @@ class TestResults(unittest.TestCase):
             self.assertEqual(len(cass), 1)
 
             assert_unique_results(collections)
-            
+
             self.is_using_search_after(cass)
 
     def test_collections_more_than_2k(self):
@@ -167,17 +167,17 @@ class TestResults(unittest.TestCase):
             self.assertEqual(len(cass), 2)
 
             assert_unique_results(collections)
-            
+
             self.is_using_search_after(cass)
 
     def is_using_search_after(self, cass):
         # Verify the page no. was not used
         first_request = True
         for request in cass.requests:
-            self.assertTrue('page_num' not in request.uri)
-                # Verify that Search After was used in all requests except first               
+            self.assertTrue("page_num" not in request.uri)
+            # Verify that Search After was used in all requests except first
             if first_request:
-                self.assertFalse('CMR-Search-After' in request.headers)
+                self.assertFalse("CMR-Search-After" in request.headers)
             else:
-                self.assertTrue('CMR-Search-After' in request.headers)
+                self.assertTrue("CMR-Search-After" in request.headers)
             first_request = False
