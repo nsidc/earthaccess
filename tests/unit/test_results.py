@@ -168,10 +168,10 @@ class TestResults(unittest.TestCase):
 
             assert_unique_results(collections)
             
-            # Verify the page no. was not used
             self.is_using_search_after(cass)
 
     def is_using_search_after(self, cass):
+        # Verify the page no. was not used
         first_request = True
         for request in cass.requests:
             self.assertTrue('page_num' not in request.uri)
