@@ -16,8 +16,15 @@ def get_results(request, limit: int = 2000) -> list:  # type: ignore
     """
     Get all results up to some limit, even if spanning multiple pages.
 
-    :limit: The number of results to return
-    :returns: query results as a list
+    ???+ Tip
+        The default page size is 2000, if the supplied value is greater then the Search-After header
+        will be used to iterate across multiple requests until either the limit has been reached
+        or there are no more results.
+    Parameters:
+        limit: The number of results to return
+
+    Returns:
+        query results as a list
     """
 
     page_size = min(limit, 2000)
