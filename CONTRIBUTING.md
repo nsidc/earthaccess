@@ -73,6 +73,10 @@ Finally, for _development dependencies only_, you must add an entry to
 
 - Create an issue to discuss the feature's scope and its fit for this package
 - run pytest to ensure your local version of code passes all unit tests
+```
+pytest tests/unit
+```
+
 - try to edit the relevant code and implement your new feature in a backwards compatible manner
 - create new tests as you go, and run the test suite as you go
 - update the documentation as you go
@@ -85,7 +89,7 @@ pip install mypy
 mypy --install-types
 pip install ruff
 ```
-
+Then run these scripts to ensure correctx format, style and convention:
 ```bash
 make format lint
 ```
@@ -95,6 +99,18 @@ make format lint
 - you must include test coverage
 - you must update the documentation
 - you must run the command above to format and lint
+
+## Code development process
+
+1. Fork and clone repository
+2. Create a new virtual environment with conda/virtualenv
+3. Activate environment and install earthaccess as editable source
+    1. `pip install -e .`
+    2. `poetry install` (note, if we use Poetry with conda we need to tell poetry to not use its own virtual environments)
+4. export EDL env variables (EARTHDATA_USER, EARTHDATA_PASSWORD)
+   `export EARTHDATA_USER=foo`
+   `export EARTHDATA_PASSWORD=bar`
+5. Get coding
 
 ## Pull Request process
 
