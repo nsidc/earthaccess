@@ -4,48 +4,49 @@ from typing import Any, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery
-# type: ignore
-from requests import get, exceptions, session
+from requests import exceptions, get, session
 
+# type: ignore
 from .auth import Auth
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
-def get_results(request, limit:int = 2000) -> list: # type: ignore
-        """ 
-        Get all results up to some limit, even if spanning multiple pages.
 
-        :limit: The number of results to return
-        :returns: query results as a list
-        """
+def get_results(request, limit: int = 2000) -> list:  # type: ignore
+    """
+    Get all results up to some limit, even if spanning multiple pages.
 
-        page_size = min(limit, 2000)
-        url = request._build_url()
+    :limit: The number of results to return
+    :returns: query results as a list
+    """
 
-        results: List = []
-        more_results = True
-        while more_results:
+    page_size = min(limit, 2000)
+    url = request._build_url()
 
-            # Only get what we need
-            page_size = min(limit - len(results), page_size)
-            response = get(url, headers = request.headers, params={'page_size': page_size})
-            if request.headers is None:
-                request.headers = {}
-            request.headers['cmr-search-after'] = response.headers['cmr-search-after']
+    results: List = []
+    more_results = True
+    while more_results:
+        # Only get what we need
+        page_size = min(limit - len(results), page_size)
+        response = get(url, headers=request.headers, params={"page_size": page_size})
+        if request.headers is None:
+            request.headers = {}
+        request.headers["cmr-search-after"] = response.headers["cmr-search-after"]
 
-            try:
-                response.raise_for_status()
-            except exceptions.HTTPError as ex:
-                raise RuntimeError(ex.response.text)
-   
-            latest = response.json()["items"]
-                
-            results.extend(latest)
-            
-            if page_size > len(response.json()["items"]) or len(results) >= limit:
-                more_results = False
+        try:
+            response.raise_for_status()
+        except exceptions.HTTPError as ex:
+            raise RuntimeError(ex.response.text)
 
-        return results
+        latest = response.json()["items"]
+
+        results.extend(latest)
+
+        if page_size > len(response.json()["items"]) or len(results) >= limit:
+            more_results = False
+
+    return results
+
 
 class DataCollections(CollectionQuery):
     """
@@ -94,7 +95,7 @@ class DataCollections(CollectionQuery):
             raise RuntimeError(ex.response.text)
 
         return int(response.headers["CMR-Hits"])
-    
+
     def get(self, limit: int = 2000) -> list:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
@@ -110,13 +111,12 @@ class DataCollections(CollectionQuery):
         Returns:
             query results as a list of `DataCollection` instances.
         """
-        
+
         response = get_results(self, limit)
-        
+
         results = list(
-                DataCollection(collection, self._fields)
-                for collection in response
-            )
+            DataCollection(collection, self._fields) for collection in response
+        )
 
         return results
 
@@ -345,8 +345,9 @@ class DataGranules(GranuleQuery):
 
     API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html
     """
+
     _format = "umm_json"
-    
+
     def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
@@ -378,7 +379,7 @@ class DataGranules(GranuleQuery):
                 raise RuntimeError(str(ex)) from ex
 
         return int(response.headers["CMR-Hits"])
-    
+
     def get(self, limit: int = 2000) -> list:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
@@ -395,16 +396,13 @@ class DataGranules(GranuleQuery):
             query results as a list of `DataGranules` instances.
         """
         response = get_results(self, limit)
-        
+
         if self._is_cloud_hosted(response[0]):
             cloud = True
         else:
             cloud = False
-        
-        results = list(
-            DataGranule(granule, cloud_hosted=cloud)
-            for granule in response
-        )
+
+        results = list(DataGranule(granule, cloud_hosted=cloud) for granule in response)
 
         return results
 
@@ -609,7 +607,7 @@ class DataGranules(GranuleQuery):
         """
         super().short_name(short_name)
         return self
-    
+
     def debug(self, debug: bool = True) -> Type[GranuleQuery]:
         """If True, prints the actual query to CMR, notice that the pagination happens in the headers.
 

@@ -79,6 +79,13 @@ Finally, for _development dependencies only_, you must add an entry to
 
 ### Please format and lint as you go
 
+In order to run the following scripts, run the following,
+```
+pip install mypy
+mypy --install-types
+pip install ruff
+```
+
 ```bash
 make format lint
 ```
