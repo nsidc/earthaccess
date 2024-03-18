@@ -379,7 +379,7 @@ class Auth(object):
 
         # Create and write to .dodsrc file
         dodsrc_file = Path.home() / ".dodsrc"
-        dodsrc_contents = f"HTTP.COOKIEJAR={urs_cookies_file}\nHTTP.NETRC={netrc_file}"
+        dodsrc_contents = f"HTTP.COOKIEJAR={urs_cookies_file}\nHTTP.NETRC={netrc_path}"
         dodsrc_file.write_text(dodsrc_contents)
 
         if platform.system() == "Windows":
