@@ -372,7 +372,6 @@ class Auth(object):
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
         my_netrc.save()
-        netrc_file = Path.home() / ".netrc"
 
         # Create and write .urs_cookies file
         urs_cookies_file = Path.home() / ".urs_cookies"
