@@ -46,8 +46,8 @@ plugins:
         - "**/.ipynb_checkpoints/*"
 
 nav:
-  - OVERVIEW:
-      - "Readme": "index.md"
+  - Getting Started:
+      - "index.md"
       - "Getting started": "tutorials/getting-started.ipynb"
       - "Resources": "resources.md"
   - HOW-TO:
