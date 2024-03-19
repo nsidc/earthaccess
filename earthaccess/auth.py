@@ -20,11 +20,15 @@ except importlib.metadata.PackageNotFoundError:
 
 
 logger = logging.getLogger(__name__)
+CLIENT_ID = "ntD0YGC_SM3Bjs-Tnxd7bg"
 
 
 class Env(Enum):
     """
     Host URL options, for different Earthdata domains.
+
+    TODO: Make the values a TypedDict / Dataclass?
+        {"edl": "urs.earthdata.nasa.gov", "cmr": "cmr.etc.gov"}
     """
 
     PROD = "urs.earthdata.nasa.gov"
@@ -128,7 +132,7 @@ class Auth(object):
         self.EDL_GET_TOKENS_URL = (
             f"https://{self.earthdata_environment.value}/api/users/tokens"
         )
-        self.EDL_GET_PROFILE = f"https://{self.earthdata_environment.value}/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
+        self.EDL_GET_PROFILE = f"https://{self.earthdata_environment.value}/api/users/<USERNAME>?client_id={CLIENT_ID}"
         self.EDL_GENERATE_TOKENS_URL = (
             f"https://{self.earthdata_environment.value}/api/users/token"
         )
