@@ -48,7 +48,7 @@ class TestCreateAuth(unittest.TestCase):
         self.assertEqual(auth.authenticated, True)
         self.assertTrue(auth.token in json_response)
 
-        # test that we are creaintg a session with the proper headers
+        # test that we are creating a session with the proper headers
         self.assertTrue("User-Agent" in headers)
         self.assertTrue("earthaccess" in headers["User-Agent"])
 
