@@ -34,10 +34,11 @@
 
 `earthaccess` is a python library to **search for**, and **download** or **stream** NASA Earth science data with just a few lines of code.
 
-
-In the age of cloud computing, the power of open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
+Open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an inclusive, efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
 
 During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html), the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort; it involves people from different technical backgrounds, and the data analysis to solve the pressing problems we face cannot be limited by the complexity of the underlying systems. Therefore, providing easy access to NASA Earthdata regardless of the data storage location (hosted within or outside of the cloud) is the main motivation behind this Python library.
+
+***earthaccess*** handles authentication with [NASA's Earthdata Login (EDL)](https://urs.earthdata.nasa.gov), search using NASA's [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html) and access through [`fsspec`](https://github.com/fsspec/filesystem_spec).
 
 Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
 
@@ -86,105 +87,50 @@ Type "help", "copyright", "credits" or "license" for more information.
 > Your `python` and `earthaccess` versions may be different.
 
 
-## **Usage**
+## **Get Data in 3 Steps**
 
-
-With *earthaccess* we can login, search and download data with a few lines of code and even more relevant, our code will work the same way if we are running it in the cloud or from our laptop. ***earthaccess*** handles authentication with [NASA's Earthdata Login (EDL)](https://urs.earthdata.nasa.gov), search using NASA's [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html) and access through [`fsspec`](https://github.com/fsspec/filesystem_spec).
+`earthaccess` allows you to search for and access data in as little as three steps.  We give a very quick example below.  These three steps allow you to get data whether you are working in the cloud or on your local laptop or workstation.  Read the [User Guide](user_guide.qmd) for more information.  If you want to quickly find how to perform some common searches and data access,
+take a look at our [How-to](how_to.qmd) guide.
 
 The only requirement to use this library is to open a free account with NASA [EDL](https://urs.earthdata.nasa.gov).
 
+### Step 1: Login
 
-### **Authentication**
+To access NASA data, you have to login using your Earth Data Login credentials.  You can register for a free Earth Data Login account [here](https://urs.earthdata.nasa.gov/).
 
-By default, `earthaccess` with automatically look for your EDL account credentials in two locations:
+By default, `earthaccess` will look for your Earth Data Login credentials in a `.netrc` file, or in environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`.  If you don't
+have either of these set up, you can login manually.  See [Authenticating](authenticate.qmd) to learn how to create a `.netrc` file or environment variables.
 
-1. A `~/.netrc` file
-2. `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables
-
-If neither of these options are configured, you can authenticate by calling the `earthaccess.login()` method
-and manually entering your EDL account credentials.
-
-```python
+```
 import earthaccess
 
 earthaccess.login()
 ```
 
-Note you can pass `persist=True` to `earthaccess.login()` to have the EDL account credentials you enter
-automatically saved to a `~/.netrc` file for future use.
+
+### Step 2: Search for data
+
+As an example, we'll search for data from the NASA ICESat-2 mission.  ATL06
 
 
-Once you are authenticated with NASA EDL you can:
-
-* Get a file from a DAAC using a `fsspec` session.
-* Request temporary S3 credentials from a particular DAAC (needed to download or stream data from an S3 bucket in the cloud).
-* Use the library to download or stream data directly from S3.
-* Regenerate CMR tokens (used for restricted datasets)
-
-
-### **Searching for data**
-
-Once we have selected our dataset we can search for the data granules using *doi*, *short_name* or *concept_id*.
-If we are not sure or we don't know how to search for a particular dataset, we can start with the ["Introducing NASA earthaccess"](https://nsidc.github.io/earthaccess/tutorials/demo/#querying-for-datasets) tutorial or through the [NASA Earthdata Search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended [API documentation](https://earthaccess.readthedocs.io/en/latest/user-reference/api/api/).
-
-```python
-
+```
 results = earthaccess.search_data(
-    short_name='SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205',
-    cloud_hosted=True,
+    short_name='ATL06'
     bounding_box=(-10, 20, 10, 50),
     temporal=("1999-02", "2019-03"),
     count=10
 )
-
-
 ```
 
-Now that we have our results we can do multiple things: We can iterate over them to get HTTP (or S3) links, we can download the files to a local folder, or we can open these files and stream their content directly to other libraries e.g. xarray.
+### Step 3. Download the files
 
-### **Accessing the data**
-
-**Option 1: Using the data links**
-
-If we already have a workflow in place for downloading our data, we can use *earthaccess* as a search-only library and get HTTP links from our query results. This could be the case if our current workflow uses a different language and we only need the links as input.
-
-```python
-
-# if the data set is cloud hosted there will be S3 links available. The access parameter accepts "direct" or "external", direct access is only possible if you are in the us-west-2 region in the cloud.
-data_links = [granule.data_links(access="direct") for granule in results]
-
-# or if the data is an on-prem dataset
-data_links = [granule.data_links(access="external") for granule in results]
+Once you have found the files you want, you can download them to your local machine.
 
 ```
-
-> Note: *earthaccess* can get S3 credentials for us, or auhenticated HTTP sessions in case we want to use them with a different library.
-
-**Option 2: Download data to a local folder**
-
-This option is practical if you have the necessary space available on disk. The *earthaccess* library will print out the approximate size of the download and its progress.
-```python
 files = earthaccess.download(results, "./local_folder")
-
 ```
 
-**Option 3: Direct S3 Access - Stream data directly to xarray**
-
-This method works best if you are in the same Amazon Web Services (AWS) region as the data (us-west-2) and you are working with gridded datasets (processing level 3 and above).
-
-```python
-import xarray as xr
-
-files = earthaccess.open(results)
-
-ds = xr.open_mfdataset(files)
-
-```
-
-And that's it! Just one line of code, and this same piece of code will also work for data that are not hosted in the cloud, i.e. located at NASA storage centers.
-
-
-> More examples coming soon!
+If you are working in the cloud and the data files are hosted in the cloud, you can stream the data directly, without having to download data.  See [Direct S3 Access]()
 
 
 ### Compatibility
