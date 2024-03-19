@@ -2,9 +2,8 @@ import json
 import uuid
 from typing import Any, Dict, List, Optional, Union
 
-from .formatters import _repr_granule_html
-
 import earthaccess
+from .formatters import _repr_granule_html
 from .services import DataService
 
 class CustomDict(dict):
@@ -174,7 +173,7 @@ class DataCollection(CustomDict):
             return self["umm"]["DirectDistributionInformation"]
         return {}
     
-    def services(self) -> List[Dict[str, Any]]:
+    def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """
         Returns:
             A list of services available for the collection.

@@ -29,7 +29,7 @@ class DataService(ServiceQuery):
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
             
-    def get(self, limit=2000) -> List:
+    def get(self, limit: int =2000) -> List:
         """Get all service reuslts up to some limit.
 
         Parameters
@@ -42,7 +42,7 @@ class DataService(ServiceQuery):
         page_size = min(limit, 2000)
         url = self._build_url()
 
-        results = []
+        results = []    # type: List[str]
         page = 1
         while len(results) < limit:
 
