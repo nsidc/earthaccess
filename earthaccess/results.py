@@ -3,8 +3,10 @@ import uuid
 from typing import Any, Dict, List, Optional, Union
 
 import earthaccess
+
 from .formatters import _repr_granule_html
 from .services import DataService
+
 
 class CustomDict(dict):
     _basic_umm_fields_: List = []
@@ -172,46 +174,47 @@ class DataCollection(CustomDict):
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
         return {}
-    
+
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """
         Returns:
             A list of services available for the collection.
         """
-        
+
         services = []
         if "associations" in self["meta"]:
             if "services" in self["meta"]["associations"]:
                 services = self["meta"]["associations"]["services"]
-        
+
         parsed = {}
-        if services:    
+        if services:
             for service in services:
                 if earthaccess.__auth__.authenticated:
-                    query = DataService(auth=earthaccess.__auth__).parameters(concept_id=service)
+                    query = DataService(auth=earthaccess.__auth__).parameters(
+                        concept_id=service
+                    )
                 else:
                     query = DataService().parameters(concept_id=service)
                 results = query.get(query.hits())
                 parsed[service] = self._parse_service_result(results)
         return parsed
-        
-    
+
     def _parse_service_result(self, service_results: List) -> List[Dict[str, Any]]:
         """Parse CMR query service search result.
 
         Parameters:
             service_result (list): List of service query results
-            
+
         Returns:
             List of relevant service data
         """
-        
+
         parsed = []
         for service_result in service_results:
             result_json = json.loads(service_result)
             result_item = {
                 "provider-id": result_json["items"][0]["meta"]["provider-id"],
-                "umm": result_json["items"][0]["umm"]
+                "umm": result_json["items"][0]["umm"],
             }
             parsed.append(result_item)
         return parsed
