@@ -2,11 +2,14 @@
 
 ## [Unreleased]
 
+## [v0.9.0] 2024-02-28
+
 * Bug fixes:
     * fixed #439 by implementing more trusted domains in the SessionWithRedirection
     * fixed #438 by using an authenticated session for hits()
 * Enhancements:
     * addressing #427 by adding parameters to collection query
+    * added user-agent in the request to track usage, closes #436
 
 ## [v0.8.2] 2023-12-06
 * Bug fixes:
@@ -175,10 +178,17 @@
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.8.2...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.9.0...HEAD
+[v0.8.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.2
+[v0.8.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.1
+[v0.8.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.0
+[v0.7.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.1
+[v0.7.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.0
+[v0.6.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.6.0
+[v0.5.3]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.3
 [v0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
-[v0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.0
+[v0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.0
 [v0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
 [v0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
 [v0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1

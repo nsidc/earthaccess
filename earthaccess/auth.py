@@ -31,7 +31,6 @@ class SessionWithHeaderRedirection(requests.Session):
         "urs.earthdata.nasa.gov",
         "cumulus.asf.alaska.edu",
         "sentinel1.asf.alaska.edu",
-        "nisar.asf.alaska.edu",
         "datapool.asf.alaska.edu",
     ]
 

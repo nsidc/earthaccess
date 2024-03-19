@@ -164,6 +164,6 @@ earthaccess is licensed under the MIT license. See [LICENSE](LICENSE.txt).
 
 <div><img src="https://raw.githubusercontent.com/nsidc/earthdata/main/docs/nsidc-logo.png" width="84px" align="left" text-align="middle"/>
 <br>
- This repository is not actively supported by NSIDC but we welcome issue submissions and pull requests in order to foster community contribution.
+ This repository is supported by a joint effort of NSIDC, NASA DAACs, and the Earth science community, and we welcome any contribution in the form of issue submissions, pull requests, or discussions. Issues labeled as https://github.com/nsidc/earthaccess/labels/good%20first%20issue are a great place to get started.
 </div>
 
