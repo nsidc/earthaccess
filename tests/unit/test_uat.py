@@ -2,12 +2,12 @@
 from unittest import mock
 
 import responses
-from earthaccess import Auth
-from earthaccess.auth import CLIENT_ID
+from earthaccess import Auth, search_data
+from earthaccess.auth import CLIENT_ID, Env
 
 
 class TestUatEnvironmentArgument:
-    @responses.activate
+    @responses.activate  # This will cause the test to check that all mocked URLs are hit.
     @mock.patch("getpass.getpass", new=mock.Mock(return_value="password"))
     @mock.patch(
         "builtins.input",
@@ -43,14 +43,24 @@ class TestUatEnvironmentArgument:
         # TODO: Can we use the top-level API? Why do other tests manually create
         # an Auth instance instead of:
         #     earthaccess.login(strategy=..., earthdata_environment=Env.UAT)
+
         auth = Auth()
-        auth.login(strategy="interactive")
 
-        # Check that mock communication was with UAT EDL
-        ...
+        # Check that we're not already authenticated.
+        session = auth.get_session()
+        headers = session.headers
+        assert not auth.authenticated
 
-        # Query CMR
-        ...
+        # Login
+        auth.login(strategy="interactive", earthdata_environment=Env.UAT)
+        assert auth.authenticated
+        assert auth.token in json_response
 
-        # Check that mock communication was with UAT CMR
-        ...
+        # test that we are creating a session with the proper headers
+        assert "User-Agent" in headers
+        assert "earthaccess" in headers["User-Agent"]
+
+        # Query CMR, and check that mock communication was with UAT CMR
+        results = search_data(session=session)
+        # Then possibly this:
+        assert len(results) == 0
