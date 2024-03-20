@@ -119,13 +119,9 @@ class DataCollections(CollectionQuery):
             query results as a list of `DataCollection` instances.
         """
 
-        response = get_results(self, limit)
-
-        results = list(
-            DataCollection(collection, self._fields) for collection in response
+        return list(
+            DataCollection(collection, self._fields) for collection in get_results(self, limit)
         )
-
-        return results
 
     def concept_id(self, IDs: List[str]) -> Type[CollectionQuery]:
         """Filter by concept ID.
