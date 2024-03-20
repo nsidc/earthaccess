@@ -404,10 +404,7 @@ class DataGranules(GranuleQuery):
         """
         response = get_results(self, limit)
 
-        if self._is_cloud_hosted(response[0]):
-            cloud = True
-        else:
-            cloud = False
+        cloud = self._is_cloud_hosted(response[0])
 
         results = list(DataGranule(granule, cloud_hosted=cloud) for granule in response)
 
