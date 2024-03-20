@@ -19,7 +19,7 @@ def assert_unique_results(results):
     get the same results back. This is a one shot test as the results are preserved
     by VCR but still useful.
     """
-    unique_concept_ids = {result["meta"]["concept-id"]) for result in results}
+    unique_concept_ids = {result["meta"]["concept-id"] for result in results}
     return len(unique_concept_ids) == len(results)
 
 
