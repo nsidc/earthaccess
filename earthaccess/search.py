@@ -120,7 +120,8 @@ class DataCollections(CollectionQuery):
         """
 
         return list(
-            DataCollection(collection, self._fields) for collection in get_results(self, limit)
+            DataCollection(collection, self._fields)
+            for collection in get_results(self, limit)
         )
 
     def concept_id(self, IDs: List[str]) -> Type[CollectionQuery]:
