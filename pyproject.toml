@@ -33,7 +33,7 @@ classifiers = [
 # `ci/environment-mindeps.yaml` conda environment. When updating minimum dependencies
 # here, make sure to also update `ci/environment-mindeps.yaml`.
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.8,<4.0"
 python-cmr = ">=0.9.0"
 pqdm = ">=0.1"
 requests = ">=2.26"
