@@ -107,9 +107,6 @@ make format lint
 3. Activate environment and install earthaccess as editable source
     1. `pip install -e .`
     2. `poetry install` (note, if we use Poetry with conda we need to tell poetry to not use its own virtual environments)
-4. export EDL env variables (EARTHDATA_USER, EARTHDATA_PASSWORD)
-   `export EARTHDATA_USER=foo`
-   `export EARTHDATA_PASSWORD=bar`
 5. Get coding
 
 ## Pull Request process
