@@ -19,12 +19,8 @@ def assert_unique_results(results):
     get the same results back. This is a one shot test as the results are preserved
     by VCR but still useful.
     """
-    concept_ids = []
-    for result in results:
-        concept_ids.append(result["meta"]["concept-id"])
-
-    unique_concept_ids = set(concept_ids)
-    return len(unique_concept_ids) == len(concept_ids)
+    unique_concept_ids = {result["meta"]["concept-id"]) for result in results}
+    return len(unique_concept_ids) == len(results)
 
 
 class TestResults(unittest.TestCase):
