@@ -406,9 +406,7 @@ class DataGranules(GranuleQuery):
 
         cloud = self._is_cloud_hosted(response[0])
 
-        results = list(DataGranule(granule, cloud_hosted=cloud) for granule in response)
-
-        return results
+        return list(DataGranule(granule, cloud_hosted=cloud) for granule in response)
 
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
