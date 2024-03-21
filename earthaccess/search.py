@@ -4,7 +4,7 @@ from typing import Any, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
 from cmr import CollectionQuery, GranuleQuery
-from requests import exceptions, get, session
+import requests
 
 # type: ignore
 from .auth import Auth
@@ -35,14 +35,14 @@ def get_results(request, limit: int = 2000) -> list:  # type: ignore
     while more_results:
         # Only get what we need
         page_size = min(limit - len(results), page_size)
-        response = get(url, headers=request.headers, params={"page_size": page_size})
+        response = requests.get(url, headers=request.headers, params={"page_size": page_size})
         if request.headers is None:
             request.headers = {}
         request.headers["cmr-search-after"] = response.headers["cmr-search-after"]
 
         try:
             response.raise_for_status()
-        except exceptions.HTTPError as ex:
+        except requests.exceptions.HTTPError as ex:
             raise RuntimeError(ex.response.text)
 
         latest = response.json()["items"]
@@ -73,7 +73,7 @@ class DataCollections(CollectionQuery):
                 for queries that need authentication, e.g. restricted datasets.
         """
         super().__init__(*args, **kwargs)
-        self.session = session()
+        self.session = requests.session()
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -98,7 +98,7 @@ class DataCollections(CollectionQuery):
 
         try:
             response.raise_for_status()
-        except exceptions.HTTPError as ex:
+        except requests.exceptions.HTTPError as ex:
             raise RuntimeError(ex.response.text)
 
         return int(response.headers["CMR-Hits"])
@@ -355,7 +355,7 @@ class DataGranules(GranuleQuery):
     def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
-        self.session = session()
+        self.session = requests.session()
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -376,7 +376,7 @@ class DataGranules(GranuleQuery):
 
         try:
             response.raise_for_status()
-        except exceptions.HTTPError as ex:
+        except requests.exceptions.HTTPError as ex:
             if ex.response is not None:
                 raise RuntimeError(ex.response.text) from ex
             else:
