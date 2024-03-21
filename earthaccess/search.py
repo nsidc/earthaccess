@@ -342,8 +342,8 @@ class DataCollections(CollectionQuery):
 
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_from: Optional[Union[str, dt.date]] = None,
+        date_to: Optional[Union[str, dt.date]] = None,
         exclude_boundary: bool = False,
     ) -> Type[CollectionQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
@@ -697,8 +697,8 @@ class DataGranules(GranuleQuery):
 
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_from: Optional[Union[str, dt.date]] = None,
+        date_to: Optional[Union[str, dt.date]] = None,
         exclude_boundary: bool = False,
     ) -> Type[GranuleQuery]:
         """Filter by an open or closed date range. Dates can be provided as datetime objects
