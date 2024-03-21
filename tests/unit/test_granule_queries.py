@@ -13,12 +13,14 @@ valid_single_dates = [
         dt.datetime(2021, 2, 2),
         "2021-02-01T00:00:00Z,2021-02-02T00:00:00Z",
     ),
+    ("1999-02-01 06:00:00Z", "2009-01-01", "1999-02-01T06:00:00Z,2009-01-01T00:00:00Z"),
 ]
 
 invalid_single_dates = [
-    ("2001-12-45", "2001-12-21", None),
-    ("2021w1", "", None),
-    ("2999-02-01", "2009-01-01", None),
+    ("2001-12-45", "2001-12-21", ValueError),
+    ("2021w1", "", ValueError),
+    ("2999-02-01", "2009-01-01", ValueError),
+    (123, "2009-01-01", TypeError),
 ]
 
 
@@ -35,14 +37,12 @@ def test_query_can_parse_single_dates(start, end, expected):
     assert granules.params["temporal"][0] == expected
 
 
-@pytest.mark.parametrize("start,end,expected", invalid_single_dates)
-def test_query_can_handle_invalid_dates(start, end, expected):
+@pytest.mark.parametrize("start,end,exception", invalid_single_dates)
+def test_query_can_handle_invalid_dates(start, end, exception):
     granules = DataGranules().short_name("MODIS")
-    try:
+    with pytest.raises(exception):
         granules = granules.temporal(start, end)
-    except Exception as e:
-        assert isinstance(e, ValueError)
-        assert "temporal" not in granules.params
+    assert "temporal" not in granules.params
 
 
 @pytest.mark.parametrize("bbox,expected", bbox_queries)
