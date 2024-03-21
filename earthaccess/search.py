@@ -11,31 +11,33 @@ from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
 
-def _normalize_datetime(raw: None | str | dt.date | dt.datetime) -> None | dt.datetime:
-    # empty string or None is None
-    if not raw:
+def _normalize_datetime(raw: Union[None, str, dt.date]) -> Union[None, dt.datetime]:
+    # the cmr.*Query.temporal method will convert None to an empty string
+    if raw is None or raw == "":
         return None
-    # the cmr.*Query.temporal method only parses a subset of ISO 8601 strings, so we
-    # add flexibility, inclusive of the presence or absence of timezone information
+    # the cmr.*Query.temporal method will convert a utc dt.datetime to the
+    # correct ISO 8601 string without additional attempts to parse
     if isinstance(raw, str):
-        normalized = dateutil.parser.parse(raw)
-    elif isinstance(raw, dt.date) and not isinstance(raw, dt.datetime):
-        normalized = dt.datetime.combine(raw, dt.time())
+        # handle string by parsing with default
+        default = dt.datetime(1, 1, 1, tzinfo=dt.timezone.utc)
+        normalized = dateutil.parser.parse(raw, default=default)
+    elif not isinstance(raw, dt.datetime):
+        # handle dt.date by converting to utc dt.datetime
+        try:
+            normalized = dt.datetime.combine(raw, dt.time(tzinfo=dt.timezone.utc))
+        except TypeError:
+            msg = f"Dates must be a date object or str, not {raw.__class__.__name__}."
+            raise TypeError(msg)
     else:
-        normalized = raw
-    # and then we guarantee a UTC datetime, assuming that a naive datetime
-    # object IS utc (thus IS NOT local time, because science)
+        # handle aware dt.datetime and naive dt.datetime by assuming utc
+        normalized = raw if raw.tzinfo else raw.replace(tzinfo=dt.timezone.utc)
+    # convert timezone aware dt.datetime to a utc dt.datetime
     try:
-        tz = normalized.tzinfo
-    except AttributeError:
-        raise TypeError(
-            f"Dates must be date, datetime or str, not {raw.__class__.__name__}."
-        )
-    if tz:
         normalized = normalized.astimezone(dt.timezone.utc)
-    else:
-        normalized = normalized.replace(tzinfo=dt.timezone.utc)
-    return normalized
+    except Exception:
+        msg = f"Provided date {raw} is not valid."
+        raise ValueError(msg) from None
+    return normalized.astimezone(dt.timezone.utc)
 
 
 class DataCollections(CollectionQuery):
