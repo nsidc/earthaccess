@@ -1,5 +1,97 @@
 {
     "MUR-JPL-L4-GLOB-v4.1": {
+        "S2004184019-POCLOUD": [
+            {
+                "provider-id": "POCLOUD",
+                "umm": {
+                    "URL": {
+                        "Description": "the main access point",
+                        "URLValue": "https://opendap.earthdata.nasa.gov/"
+                    },
+                    "Type": "OPeNDAP",
+                    "ServiceKeywords": [
+                        {
+                            "ServiceCategory": "EARTH SCIENCE SERVICES",
+                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
+                            "ServiceTerm": "DATA SUBSETTING/SUPERSETTING",
+                            "ServiceSpecificTerm": "SPATIAL SUBSETTING"
+                        },
+                        {
+                            "ServiceCategory": "EARTH SCIENCE SERVICES",
+                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
+                            "ServiceTerm": "DATA SUBSETTING/SUPERSETTING",
+                            "ServiceSpecificTerm": "TEMPORAL SUBSETTING"
+                        },
+                        {
+                            "ServiceCategory": "EARTH SCIENCE SERVICES",
+                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
+                            "ServiceTerm": "DATA SUBSETTING/SUPERSETTING",
+                            "ServiceSpecificTerm": "VARIABLE SUBSETTING"
+                        }
+                    ],
+                    "ServiceOrganizations": [
+                        {
+                            "Roles": [
+                                "DEVELOPER"
+                            ],
+                            "ShortName": "UCAR/UNIDATA",
+                            "LongName": "Unidata, University Corporation for Atmospheric Research"
+                        }
+                    ],
+                    "OperationMetadata": [
+                        {
+                            "DistributedComputingPlatform": [
+                                "WEBSERVICES"
+                            ]
+                        }
+                    ],
+                    "Description": "Earthdata OPEnDAP in the cloud",
+                    "Version": "9",
+                    "Name": "PO.DAAC Cloud OPeNDAP",
+                    "ServiceOptions": {
+                        "Subset": {
+                            "SpatialSubset": {
+                                "BoundingBox": {
+                                    "AllowMultipleValues": false
+                                }
+                            },
+                            "TemporalSubset": {
+                                "AllowMultipleValues": false
+                            },
+                            "VariableSubset": {
+                                "AllowMultipleValues": true
+                            }
+                        },
+                        "SupportedReformattings": [
+                            {
+                                "SupportedInputFormat": "NETCDF-4",
+                                "SupportedOutputFormats": [
+                                    "ASCII",
+                                    "CSV",
+                                    "NETCDF-3",
+                                    "NETCDF-4"
+                                ]
+                            },
+                            {
+                                "SupportedInputFormat": "HDF5",
+                                "SupportedOutputFormats": [
+                                    "ASCII",
+                                    "CSV",
+                                    "NETCDF-3",
+                                    "NETCDF-4"
+                                ]
+                            }
+                        ]
+                    },
+                    "MetadataSpecification": {
+                        "URL": "https://cdn.earthdata.nasa.gov/umm/service/v1.5.2",
+                        "Name": "UMM-S",
+                        "Version": "1.5.2"
+                    },
+                    "LongName": "PO.DAAC OPeNDADP In the Cloud"
+                }
+            }
+        ],
         "S2164732315-XYZ_PROV": [
             {
                 "provider-id": "XYZ_PROV",
@@ -94,98 +186,6 @@
                         "Version": "1.5.2"
                     },
                     "LongName": "SDS chained serviceHarmony OPeNDAP SubSetter (HOSS) and MaskFill for geographic collections"
-                }
-            }
-        ],
-        "S2004184019-POCLOUD": [
-            {
-                "provider-id": "POCLOUD",
-                "umm": {
-                    "URL": {
-                        "Description": "the main access point",
-                        "URLValue": "https://opendap.earthdata.nasa.gov/"
-                    },
-                    "Type": "OPeNDAP",
-                    "ServiceKeywords": [
-                        {
-                            "ServiceCategory": "EARTH SCIENCE SERVICES",
-                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
-                            "ServiceTerm": "DATA SUBSETTING/SUPERSETTING",
-                            "ServiceSpecificTerm": "SPATIAL SUBSETTING"
-                        },
-                        {
-                            "ServiceCategory": "EARTH SCIENCE SERVICES",
-                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
-                            "ServiceTerm": "DATA SUBSETTING/SUPERSETTING",
-                            "ServiceSpecificTerm": "TEMPORAL SUBSETTING"
-                        },
-                        {
-                            "ServiceCategory": "EARTH SCIENCE SERVICES",
-                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
-                            "ServiceTerm": "DATA SUBSETTING/SUPERSETTING",
-                            "ServiceSpecificTerm": "VARIABLE SUBSETTING"
-                        }
-                    ],
-                    "ServiceOrganizations": [
-                        {
-                            "Roles": [
-                                "DEVELOPER"
-                            ],
-                            "ShortName": "UCAR/UNIDATA",
-                            "LongName": "Unidata, University Corporation for Atmospheric Research"
-                        }
-                    ],
-                    "OperationMetadata": [
-                        {
-                            "DistributedComputingPlatform": [
-                                "WEBSERVICES"
-                            ]
-                        }
-                    ],
-                    "Description": "Earthdata OPEnDAP in the cloud",
-                    "Version": "9",
-                    "Name": "PO.DAAC Cloud OPeNDAP",
-                    "ServiceOptions": {
-                        "Subset": {
-                            "SpatialSubset": {
-                                "BoundingBox": {
-                                    "AllowMultipleValues": false
-                                }
-                            },
-                            "TemporalSubset": {
-                                "AllowMultipleValues": false
-                            },
-                            "VariableSubset": {
-                                "AllowMultipleValues": true
-                            }
-                        },
-                        "SupportedReformattings": [
-                            {
-                                "SupportedInputFormat": "NETCDF-4",
-                                "SupportedOutputFormats": [
-                                    "ASCII",
-                                    "CSV",
-                                    "NETCDF-3",
-                                    "NETCDF-4"
-                                ]
-                            },
-                            {
-                                "SupportedInputFormat": "HDF5",
-                                "SupportedOutputFormats": [
-                                    "ASCII",
-                                    "CSV",
-                                    "NETCDF-3",
-                                    "NETCDF-4"
-                                ]
-                            }
-                        ]
-                    },
-                    "MetadataSpecification": {
-                        "URL": "https://cdn.earthdata.nasa.gov/umm/service/v1.5.2",
-                        "Name": "UMM-S",
-                        "Version": "1.5.2"
-                    },
-                    "LongName": "PO.DAAC OPeNDADP In the Cloud"
                 }
             }
         ],
@@ -372,6 +372,99 @@
                         "Version": "1.5.2"
                     },
                     "LongName": "Harmony GDAL Adapter (HGA)"
+                }
+            }
+        ],
+        "S2839491596-XYZ_PROV": [
+            {
+                "provider-id": "XYZ_PROV",
+                "umm": {
+                    "URL": {
+                        "Description": "https://harmony.earthdata.nasa.gov",
+                        "URLValue": "This is the Harmony root endpoint."
+                    },
+                    "Type": "Harmony",
+                    "ServiceKeywords": [
+                        {
+                            "ServiceCategory": "EARTH SCIENCE SERVICES",
+                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
+                            "ServiceTerm": "DATA ACCESS/RETRIEVAL"
+                        },
+                        {
+                            "ServiceCategory": "EARTH SCIENCE SERVICES",
+                            "ServiceTopic": "DATA MANAGEMENT/DATA HANDLING",
+                            "ServiceTerm": "DATA INTEROPERABILITY",
+                            "ServiceSpecificTerm": "DATA REFORMATTING"
+                        }
+                    ],
+                    "ServiceOrganizations": [
+                        {
+                            "Roles": [
+                                "DEVELOPER",
+                                "PUBLISHER",
+                                "SERVICE PROVIDER"
+                            ],
+                            "ShortName": "NASA/GSFC/EOS/EOSDIS/EMD",
+                            "LongName": "Maintenance and Development, Earth Observing System Data and Information System, Earth Observing System,Goddard Space Flight Center, NASA"
+                        }
+                    ],
+                    "Description": "Backend NetCDF-to-Zarr service option description for Harmony data transformations. Cannot be chained with other operations from this record.",
+                    "VersionDescription": "Semantic version number for the NetCDF-to-Zarr Docker image used by Harmony in production.",
+                    "Version": "1.2.0",
+                    "Name": "Harmony NetCDF-to-Zarr Service",
+                    "ContactPersons": [
+                        {
+                            "Roles": [
+                                "DEVELOPER"
+                            ],
+                            "FirstName": "Owen",
+                            "LastName": "Littlejohns",
+                            "ContactInformation": {
+                                "ContactMechanisms": [
+                                    {
+                                        "Type": "Email",
+                                        "Value": "owen.m.littlejohns@nasa.gov"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "Roles": [
+                                "SERVICE PROVIDER"
+                            ],
+                            "FirstName": "David",
+                            "LastName": "Auty",
+                            "ContactInformation": {
+                                "ContactMechanisms": [
+                                    {
+                                        "Type": "Email",
+                                        "Value": "david.p.auty@nasa.gov"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "ServiceOptions": {
+                        "Aggregation": {
+                            "Concatenate": {
+                                "ConcatenateDefault": false
+                            }
+                        },
+                        "SupportedReformattings": [
+                            {
+                                "SupportedInputFormat": "NETCDF-4",
+                                "SupportedOutputFormats": [
+                                    "ZARR"
+                                ]
+                            }
+                        ]
+                    },
+                    "MetadataSpecification": {
+                        "URL": "https://cdn.earthdata.nasa.gov/umm/service/v1.5.2",
+                        "Name": "UMM-S",
+                        "Version": "1.5.2"
+                    },
+                    "LongName": "Harmony NetCDF-to-Zarr Service"
                 }
             }
         ]
