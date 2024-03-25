@@ -3,7 +3,6 @@ import unittest
 
 import earthaccess
 
-
 assertions = unittest.TestCase("__init__")
 
 
