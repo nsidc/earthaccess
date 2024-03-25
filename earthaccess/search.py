@@ -3,10 +3,11 @@ from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
-from cmr import CollectionQuery, GranuleQuery  # type: ignore
+import requests
+from cmr import CMR_OPS, CMR_SIT, CMR_UAT, CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
-from .auth import Auth
+from .auth import Auth, Env
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
@@ -33,7 +34,13 @@ class DataCollections(CollectionQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        auth: Optional[Auth] = None,
+        existing_session: Optional[requests.Session] = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Builds an instance of DataCollections to query CMR
 
         Parameters:
@@ -41,7 +48,19 @@ class DataCollections(CollectionQuery):
                 for queries that need authentication, e.g. restricted datasets.
         """
         super().__init__(*args, **kwargs)
-        self.session = session()
+
+        if existing_session is not None:
+            self.session = existing_session
+        else:
+            self.session = session()
+
+        if self.session.AUTH_HOSTS[0] == Env.PROD.value:
+            self.mode(CMR_OPS)
+        elif self.session.AUTH_HOSTS[0] == Env.UAT.value:
+            self.mode(CMR_UAT)
+        elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
+            self.mode(CMR_SIT)
+
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -67,7 +86,7 @@ class DataCollections(CollectionQuery):
         try:
             response.raise_for_status()
         except exceptions.HTTPError as ex:
-            raise RuntimeError(ex.response.text)
+            raise RuntimeError(str(ex.response))
 
         return int(response.headers["CMR-Hits"])
 
@@ -322,9 +341,9 @@ class DataCollections(CollectionQuery):
         to this method before calling execute().
 
         Parameters:
-            date_from (String or Datetime object): earliest date of temporal range
-            date_to (String or Datetime object): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range.
+            date_from: earliest date of temporal range
+            date_to: latest date of temporal range
+            exclude_boundary: whether to exclude the date_from/to in the matched range.
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None and not isinstance(date_from, dt.datetime):
@@ -365,10 +384,28 @@ class DataGranules(GranuleQuery):
         "umm_json",
     ]
 
-    def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        auth: Any = None,
+        # earthdata_environment: Optional[Env] = None,
+        existing_session: Optional[requests.Session] = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
-        self.session = session()
+        if existing_session is not None:
+            self.session = existing_session
+        else:
+            self.session = session()
+
+        if self.session.AUTH_HOSTS[0] == Env.PROD.value:
+            self.mode(CMR_OPS)
+        elif self.session.AUTH_HOSTS[0] == Env.UAT.value:
+            self.mode(CMR_UAT)
+        elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
+            self.mode(CMR_SIT)
+
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -577,7 +614,7 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
-        """Check if a granule record in CMR advertises "direct access"."""
+        """Check if a granule record, in CMR, advertises "direct access"."""
         if "RelatedUrls" not in granule["umm"]:
             return False
 
