@@ -28,8 +28,10 @@ def test_data_links():
 
 def test_services():
     """Test DataService get function return of service metadata results."""
-    
-    query = earthaccess.services.DataService().parameters(concept_id="S2004184019-POCLOUD")
+
+    query = earthaccess.services.DataService().parameters(
+        concept_id="S2004184019-POCLOUD"
+    )
     actual = query.get(query.hits())
     actual = json.loads(actual[0])
     with open("tests/unit/fixtures/S2004184019-POCLOUD.json") as jf:
