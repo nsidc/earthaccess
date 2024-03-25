@@ -158,7 +158,7 @@ And that's it! Just one line of code, and this same piece of code will also work
 
 ### **Accessing the services**
 
-You can also search for services associated with a dataset. This is done via the `search_datasets` function which is documented under ["Querying for datasets"](https://earthaccess.readthedocs.io/en/latest/tutorials/getting-started/#querying-for-datasets) in the documentation. The results are an enhanced Python dictionary that includes a `services` method which returns the metadata for all services associated with a collection as a Python dictionary.
+You can also search for services associated with a dataset. Services include a back-end processing workflow that transforms or processes the data in some way.  `earthaccess` facilitates the retrieval of service metadata via the `search_datasets` function which is documented under ["Querying for datasets"](https://earthaccess.readthedocs.io/en/latest/tutorials/getting-started/#querying-for-datasets). The results from the `search_datasets` method are an enhanced Python dictionary that includes a `services` method which returns the metadata for all services associated with a collection. The service results are returned as a Python dictionary.
 
 ```python
 # Search the collection
@@ -169,9 +169,8 @@ datasets = search_datasets(
 )
 
 # Parse the services results
-dataset_services = {}
 for dataset in datasets:
-    dataset_services[dataset["umm"]["ShortName"]] = dataset.services()
+    print(dataset.services())
 ```
 
 
