@@ -51,13 +51,20 @@ class SessionWithHeaderRedirection(requests.Session):
     ]
 
     def __init__(
-        self, username: Optional[str] = None, password: Optional[str] = None
+        self,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        earthdata_environment: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
 
         if username and password:
             self.auth = (username, password)
+
+        if earthdata_environment is not None:
+            self.AUTH_HOSTS.pop(0)
+            self.AUTH_HOSTS.insert(0, earthdata_environment.value)
 
     # Overrides from the library to keep headers when redirected to or from
     # the NASA auth host.
@@ -110,6 +117,9 @@ class Auth(object):
         Returns:
             An instance of Auth.
         """
+        if earthdata_environment is not None:
+            self._set_earthdata_environment(earthdata_environment)
+
         if self.authenticated and (earthdata_environment == self.earthdata_environment):
             logger.debug("We are already authenticated with NASA EDL")
             return self
@@ -119,9 +129,6 @@ class Auth(object):
             self._netrc()
         if strategy == "environment":
             self._environment()
-
-        if earthdata_environment is not None:
-            self._set_earthdata_environment(earthdata_environment)
 
         return self
 
@@ -255,7 +262,9 @@ class Auth(object):
             print("We need to authenticate with EDL first")
             return {}
 
-    def get_session(self, bearer_token: bool = True) -> requests.Session:
+    def get_session(
+        self, bearer_token: bool = True, earthdata_environment: Optional[Env] = None
+    ) -> requests.Session:
         """Returns a new request session instance.
 
         Parameters:
@@ -264,7 +273,11 @@ class Auth(object):
         Returns:
             class Session instance with Auth and bearer token headers
         """
-        session = SessionWithHeaderRedirection()
+        if earthdata_environment is not None:
+            self._set_earthdata_environment(earthdata_environment)
+        session = SessionWithHeaderRedirection(
+            earthdata_environment=earthdata_environment
+        )
         if bearer_token and self.authenticated:
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False

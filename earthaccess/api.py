@@ -84,7 +84,7 @@ def search_datasets(
 
 
 def search_data(
-    count: int = -1, **kwargs: Any
+    count: int = -1, session: Optional[requests.Session] = None, **kwargs: Any
 ) -> List[earthaccess.results.DataGranule]:
     """Search dataset granules using NASA's CMR.
 
@@ -119,14 +119,11 @@ def search_data(
         ```
     """
     if earthaccess.__auth__.authenticated:
-        query = DataGranules(
-            earthaccess.__auth__,
-            earthdata_environment=earthaccess.__auth__.earthdata_environment,
-        ).parameters(**kwargs)
+        query = DataGranules(earthaccess.__auth__, existing_session=session).parameters(
+            **kwargs
+        )
     else:
-        query = DataGranules(
-            earthdata_environment=earthaccess.__auth__.earthdata_environment
-        ).parameters(**kwargs)
+        query = DataGranules(existing_session=session).parameters(**kwargs)
     granules_found = query.hits()
     print(f"Granules found: {granules_found}")
     if count > 0:

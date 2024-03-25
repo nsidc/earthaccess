@@ -3,6 +3,7 @@ from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
+import requests
 from cmr import CMR_OPS, CMR_SIT, CMR_UAT, CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
@@ -36,7 +37,7 @@ class DataCollections(CollectionQuery):
     def __init__(
         self,
         auth: Optional[Auth] = None,
-        earthdata_environment: Optional[Env] = None,
+        existing_session: Optional[requests.Session] = None,
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -47,21 +48,18 @@ class DataCollections(CollectionQuery):
                 for queries that need authentication, e.g. restricted datasets.
         """
         super().__init__(*args, **kwargs)
-        self.session = session()
-        if auth is not None:
-            earthdata_environment = auth.earthdata_environment
 
-        if (earthdata_environment is None) or (earthdata_environment == Env.PROD):
+        if existing_session is not None:
+            self.session = existing_session
+        else:
+            self.session = session()
+
+        if self.session.AUTH_HOSTS[0] == Env.PROD.value:
             self.mode(CMR_OPS)
-        elif earthdata_environment == Env.UAT:
+        elif self.session.AUTH_HOSTS[0] == Env.UAT.value:
             self.mode(CMR_UAT)
-        elif earthdata_environment == Env.SIT:
+        elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
             self.mode(CMR_SIT)
-
-        print(f"[in DataCollections] Earthdata environment: {earthdata_environment}")
-        print(
-            f"[in DataCollections] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}"
-        )
 
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
@@ -389,28 +387,24 @@ class DataGranules(GranuleQuery):
     def __init__(
         self,
         auth: Any = None,
-        earthdata_environment: Optional[Env] = None,
+        # earthdata_environment: Optional[Env] = None,
+        existing_session: Optional[requests.Session] = None,
         *args: Any,
         **kwargs: Any,
     ) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
-        self.session = session()
-        if auth is not None:
-            earthdata_environment = auth.earthdata_environment
+        if existing_session is not None:
+            self.session = existing_session
+        else:
+            self.session = session()
 
-        # TODO: Move this in to a data structure, e.g. the existing Enum?
-        if (earthdata_environment is None) or (earthdata_environment == Env.PROD):
+        if self.session.AUTH_HOSTS[0] == Env.PROD.value:
             self.mode(CMR_OPS)
-        elif earthdata_environment == Env.UAT:
+        elif self.session.AUTH_HOSTS[0] == Env.UAT.value:
             self.mode(CMR_UAT)
-        elif earthdata_environment == Env.SIT:
+        elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
             self.mode(CMR_SIT)
-
-        print(f"[in DataGranules] Earthdata environment: {earthdata_environment}")
-        print(
-            f"[in DataGranules] earthdata_environment == Env.PROD -----> {earthdata_environment == Env.PROD}"
-        )
 
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata

@@ -13,7 +13,7 @@ class TestUatEnvironmentArgument:
         "builtins.input",
         new=mock.Mock(return_value="user"),
     )
-    def test_uat_is_requested_when_uat_selected(self) -> bool:
+    def test_uat_login_when_uat_selected(self) -> bool:
         """Test the correct env is queried based on what's selected at login-time."""
         json_response = [
             {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
@@ -38,16 +38,20 @@ class TestUatEnvironmentArgument:
             status=200,
         )
 
-        # Test
-        # Login
-        # TODO: Can we use the top-level API? Why do other tests manually create
-        # an Auth instance instead of:
-        #     earthaccess.login(strategy=..., earthdata_environment=Env.UAT)
+        # TODO: Add a mock for CMR query?  Does it need a "CMR-HITS" field in the response?
+        # responses.add(
+        #     responses.GET,
+        #     "https://cmr.uat.earthdata.nasa.gov/search/granules.umm_json?page_size=0",
+        #     json=json_response,
+        #     status=200,
+        # )
 
+        # Use Auth instance instead of the top-level (`earthaccess.`) API since this is a unit,
+        # not an integration, test
         auth = Auth()
 
         # Check that we're not already authenticated.
-        session = auth.get_session()
+        session = auth.get_session(earthdata_environment=Env.UAT)
         headers = session.headers
         assert not auth.authenticated
 
@@ -56,7 +60,7 @@ class TestUatEnvironmentArgument:
         assert auth.authenticated
         assert auth.token in json_response
 
-        # test that we are creating a session with the proper headers
+        # Test that we are creating a session with the proper headers
         assert "User-Agent" in headers
         assert "earthaccess" in headers["User-Agent"]
 
