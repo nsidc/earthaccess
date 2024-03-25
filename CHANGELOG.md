@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+* New Features:
+    * Enable the retrieval of services associated with a collection.
 
 ## [v0.9.0] 2024-02-28
 
