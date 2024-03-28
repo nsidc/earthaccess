@@ -372,18 +372,22 @@ class Auth(object):
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
         my_netrc.save()
-
-        # Create and write .urs_cookies file
-        urs_cookies_file = Path.home() / ".urs_cookies"
-        urs_cookies_file.write_text("")
+        urs_cookies_path = Path.home() / ".urs_cookies"
+        if not usr_cookies_path.exists():
+            urs_cookies_path.write_text("")
 
         # Create and write to .dodsrc file
-        dodsrc_file = Path.home() / ".dodsrc"
-        dodsrc_contents = f"HTTP.COOKIEJAR={urs_cookies_file}\nHTTP.NETRC={netrc_path}"
-        dodsrc_file.write_text(dodsrc_contents)
-
-        if platform.system() == "Windows":
-            shutil.copy2(dodsrc_file, Path.cwd())
+        dodsrc_path = Path.home() / ".dodsrc"
+        if not dodsrc_path.exists():
+            dodsrc_contents = f"HTTP.COOKIEJAR={urs_cookies_file}\nHTTP.NETRC={netrc_path}"
+            dodsrc_path.write_text(dodsrc_contents)
+       
+        
+       if platform.system() == "Windows":
+            local_dodsrc_path = Path.cwd() / dodsrc_path.name
+            if not local_dodsrc_path.exists():
+                shutil.copy2(dodsrc_path, local_dodsrc_path)
+            
 
         return True
 
