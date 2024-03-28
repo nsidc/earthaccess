@@ -379,16 +379,16 @@ class Auth(object):
         # Create and write to .dodsrc file
         dodsrc_path = Path.home() / ".dodsrc"
         if not dodsrc_path.exists():
-            dodsrc_contents = f"HTTP.COOKIEJAR={urs_cookies_path}\nHTTP.NETRC={netrc_path}"
+            dodsrc_contents = (
+                f"HTTP.COOKIEJAR={urs_cookies_path}\nHTTP.NETRC={netrc_path}"
+            )
             dodsrc_path.write_text(dodsrc_contents)
        
-        
         if platform.system() == "Windows":
             local_dodsrc_path = Path.cwd() / dodsrc_path.name
             if not local_dodsrc_path.exists():
                 shutil.copy2(dodsrc_path, local_dodsrc_path)
             
-
         return True
 
     def _get_cloud_auth_url(
