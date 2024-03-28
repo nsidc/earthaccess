@@ -388,7 +388,7 @@ class Auth(object):
             local_dodsrc_path = Path.cwd() / dodsrc_path.name
             if not local_dodsrc_path.exists():
                 shutil.copy2(dodsrc_path, local_dodsrc_path)
-                
+
         return True
 
     def _get_cloud_auth_url(
