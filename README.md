@@ -156,6 +156,24 @@ ds = xr.open_mfdataset(files)
 And that's it! Just one line of code, and this same piece of code will also work for data that are not hosted in the cloud, i.e. located at NASA storage centers.
 
 
+### **Accessing the services**
+
+You can also search for services associated with a dataset. Services include a back-end processing workflow that transforms or processes the data in some way.  `earthaccess` facilitates the retrieval of service metadata via the `search_datasets` function which is documented under ["Querying for datasets"](https://earthaccess.readthedocs.io/en/latest/tutorials/getting-started/#querying-for-datasets). The results from the `search_datasets` method are an enhanced Python dictionary that includes a `services` method which returns the metadata for all services associated with a collection. The service results are returned as a Python dictionary.
+
+```python
+# Search the collection
+datasets = search_datasets(
+    short_name="MUR-JPL-L4-GLOB-v4.1",
+    cloud_hosted=True,
+    temporal=("2024-02-27", "2024-02-29"),
+)
+
+# Parse the services results
+for dataset in datasets:
+    print(dataset.services())
+```
+
+
 > More examples coming soon!
 
 
