@@ -119,7 +119,7 @@ class TestResults(unittest.TestCase):
                 short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
             )
 
-            self.assertEqual(len(granules), 2478)
+            self.assertEqual(len(granules), 2505)
 
             # Assert that we performed a hits query and two search results queries
             self.assertEqual(len(cass), 3)
