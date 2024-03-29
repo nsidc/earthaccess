@@ -26,7 +26,7 @@ def assert_unique_results(results):
 class TestResults(unittest.TestCase):
     def test_data_links(self):
         with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205.yaml"
+            "tests/unit/fixtures/vcr_cassettes/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205.yaml", filter_headers=['authorization', 'Set-Cookie']
         ):
             granules = earthaccess.search_data(
                 short_name="SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205",
@@ -57,7 +57,7 @@ class TestResults(unittest.TestCase):
         to not fetch back more results than we ask for
         """
         with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/MOD02QKM.yaml"
+            "tests/unit/fixtures/vcr_cassettes/MOD02QKM.yaml", filter_headers=['authorization', 'Set-Cookie']
         ) as cass:
             granules = earthaccess.search_data(short_name="MOD02QKM", count=3000)
 
@@ -75,7 +75,7 @@ class TestResults(unittest.TestCase):
         in a single request
         """
         with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/MOD02QKM_2000.yaml"
+            "tests/unit/fixtures/vcr_cassettes/MOD02QKM_2000.yaml", filter_headers=['authorization', 'Set-Cookie']
         ) as cass:
             granules = earthaccess.search_data(short_name="MOD02QKM", count=2000)
 
@@ -93,7 +93,7 @@ class TestResults(unittest.TestCase):
         to not fetch back more results than we ask for
         """
         with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/TELLUS_GRAC.yaml"
+            "tests/unit/fixtures/vcr_cassettes/TELLUS_GRAC.yaml", filter_headers=['authorization', 'Set-Cookie']
         ) as cass:
             granules = earthaccess.search_data(
                 short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000
@@ -113,7 +113,7 @@ class TestResults(unittest.TestCase):
         to not fetch back more results than we ask for
         """
         with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/CYGNSS.yaml"
+            "tests/unit/fixtures/vcr_cassettes/CYGNSS.yaml", filter_headers=['authorization', 'Set-Cookie']
         ) as cass:
             granules = earthaccess.search_data(
                 short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
@@ -133,7 +133,7 @@ class TestResults(unittest.TestCase):
         to not fetch back more results than we ask for
         """
         with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/PODAAC.yaml"
+            "tests/unit/fixtures/vcr_cassettes/PODAAC.yaml", filter_headers=['authorization', 'Set-Cookie']
         ) as cass:
             query = DataCollections().daac("PODAAC").cloud_hosted(True)
             collections = query.get(20)
@@ -153,7 +153,7 @@ class TestResults(unittest.TestCase):
         invocations of a cmr granule search and
         to not fetch back more results than we ask for
         """
-        with my_vcr.use_cassette("tests/unit/fixtures/vcr_cassettes/ALL.yaml") as cass:
+        with my_vcr.use_cassette("tests/unit/fixtures/vcr_cassettes/ALL.yaml", filter_headers=['authorization', 'Set-Cookie']) as cass:
             query = DataCollections()
             collections = query.get(3000)
 
