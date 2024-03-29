@@ -7,6 +7,7 @@ Please note that we have a [code of conduct](./CODE_OF_CONDUCT.md). Please follo
 
 ## Development environment
 
+
 `earthaccess` is a Python library that uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda.
 
 ### Using Conda
@@ -73,23 +74,12 @@ Finally, for _development dependencies only_, you must add an entry to
 
 - Create an issue to discuss the feature's scope and its fit for this package
 - run pytest to ensure your local version of code passes all unit tests
-```
-pytest tests/unit
-```
-
 - try to edit the relevant code and implement your new feature in a backwards compatible manner
 - create new tests as you go, and run the test suite as you go
 - update the documentation as you go
 
 ### Please format and lint as you go
 
-In order to run the following scripts, run the following,
-```
-pip install mypy
-mypy --install-types
-pip install ruff
-```
-Then run these scripts to ensure correctx format, style and convention:
 ```bash
 make format lint
 ```
@@ -99,15 +89,6 @@ make format lint
 - you must include test coverage
 - you must update the documentation
 - you must run the command above to format and lint
-
-## Code development process
-
-1. Fork and clone repository
-2. Create a new virtual environment with conda/virtualenv
-3. Activate environment and install earthaccess as editable source
-    1. `pip install -e .`
-    2. `poetry install` (note, if we use Poetry with conda we need to tell poetry to not use its own virtual environments)
-5. Get coding
 
 ## Pull Request process
 
