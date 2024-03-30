@@ -3,6 +3,7 @@ from inspect import getmembers, ismethod
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
+import shapely
 from cmr import CollectionQuery, GranuleQuery  # type: ignore
 from requests import exceptions, session
 
@@ -731,14 +732,29 @@ class DataGranules(GranuleQuery):
         super().point(lon, lat)
         return self
 
-    def polygon(self, coordinates: List[Tuple[str, str]]) -> Type[GranuleQuery]:
+    def polygon(
+        self,
+        coordinates: Union[
+            shapely.geometry.polygon.Polygon, str, bytes, List[Tuple[str, str]]
+        ],
+    ) -> Type[GranuleQuery]:
         """Filter by granules that overlap a polygonal area. Must be used in combination with a
         collection filtering parameter such as short_name or entry_title.
 
         Parameters:
-            coordinates: list of (lon, lat) tuples
+            coordinates: a shapely geometry, WKT or WKB, or a list of (lon, lat) tuples
         """
-        super().polygon(coordinates)
+
+        if isinstance(coordinates, shapely.geometry.base.BaseGeometry):
+            geom = coordinates
+        elif isinstance(coordinates, list):
+            geom = shapely.geometry.polygon.Polygon(coordinates)
+        elif shapely.from_wkt(coordinates, on_invalid="ignore") is not None:
+            geom = shapely.from_wkt(coordinates)
+        elif shapely.from_wkb(coordinates, on_invalid="ignore") is not None:
+            geom = shapely.from_wkb(coordinates)
+
+        super().polygon(_to_cmr_poly(geom))
         return self
 
     def bounding_box(
@@ -801,3 +817,9 @@ class DataGranules(GranuleQuery):
                 f"earthaccess couldn't find any associated collections with the DOI: {doi}"
             )
         return self
+
+
+def _to_cmr_poly(geom: shapely.geometry.base.BaseGeometry) -> list:
+    if not shapely.is_ccw(geom):
+        geom = geom.reverse()
+    return list(geom.exterior.coords)
