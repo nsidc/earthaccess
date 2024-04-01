@@ -753,6 +753,8 @@ class DataGranules(GranuleQuery):
             geom = shapely.from_wkt(coordinates)
         elif shapely.from_wkb(coordinates, on_invalid="ignore") is not None:
             geom = shapely.from_wkb(coordinates)
+        else:
+            raise TypeError(f"{coordinates} is not a valid shapely polygon, WKT, WKB, or list of (lon, lat) tuples.")
 
         super().polygon(_to_cmr_poly(geom))
         return self
