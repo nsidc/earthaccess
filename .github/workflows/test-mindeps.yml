@@ -8,7 +8,7 @@ on:
 # When this workflow is queued, automatically cancel any previous running
 # or pending jobs from the same branch
 concurrency:
-  group: ${{ github.ref }}
+  group: test-mindeps-${{ github.ref }}
   cancel-in-progress: true
 
 # Required shell entrypoint to have properly activated conda environments
