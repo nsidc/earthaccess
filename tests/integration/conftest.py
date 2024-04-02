@@ -12,6 +12,7 @@ def pytest_sessionfinish(session, exitstatus):
         raise RuntimeError(
             "Failed to initialize tests. Couldn't calculate acceptable failure rate"
             " because no tests were collected."
+            " This can happen if credential envvars are not populated."
         )
 
     failure_rate = (100.0 * session.testsfailed) / session.testscollected
