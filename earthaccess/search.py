@@ -735,7 +735,7 @@ class DataGranules(GranuleQuery):
     def polygon(
         self,
         coordinates: Union[
-            shapely.geometry.polygon.Polygon, str, bytes, List[Tuple[str, str]]
+            shapely.geometry.base.BaseGeometry, str, bytes, List[Tuple[str, str]]
         ],
     ) -> Type[GranuleQuery]:
         """Filter by granules that overlap a polygonal area. Must be used in combination with a
