@@ -46,10 +46,9 @@ plugins:
         - "**/.ipynb_checkpoints/*"
 
 nav:
-  - Getting Started:
-      - "index.md"
-      - "Getting started": "tutorials/getting-started.ipynb"
-      - "Resources": "resources.md"
+  - Welcome: "index.md"
+#      - "Getting started": "tutorials/getting-started.ipynb"
+#      - "Resources": "resources.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
