@@ -67,6 +67,7 @@ pymdown-extensions = ">=9.2"
 pygments = ">=2.11.1"
 responses = ">=0.14"
 ruff = "^0.1.6"
+types-python-dateutil = ">=2.8.2"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
 ipywidgets = ">=7.7.0"
@@ -104,6 +105,7 @@ disallow_untyped_defs = false
 [[tool.mypy.overrides]]
 module = [
   "fsspec.*",
+  "dask.*",
   "kerchunk.*",
   "pqdm.*",
   "s3fs",

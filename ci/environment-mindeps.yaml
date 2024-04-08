@@ -21,7 +21,9 @@ dependencies:
   - responses
   - pytest
   - pytest-cov
+  - python-magic
   - mypy
+  - types-python-dateutil
   - types-requests
   - types-setuptools
   - ruff
