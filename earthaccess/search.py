@@ -12,7 +12,9 @@ from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
 
-def get_results(request, limit: int = 2000) -> list:  # type: ignore
+def get_results(
+    query: Union[CollectionQuery, GranuleQuery], limit: int = 2000
+) -> List[Any]:
     """
     Get all results up to some limit, even if spanning multiple pages.
 
@@ -28,19 +30,14 @@ def get_results(request, limit: int = 2000) -> list:  # type: ignore
     """
 
     page_size = min(limit, 2000)
-    url = request._build_url()
+    url = query._build_url()
 
     results: List = []
     more_results = True
+    headers = dict(query.headers or {})
     while more_results:
-        # Only get what we need
-        page_size = min(limit - len(results), page_size)
-        response = requests.get(
-            url, headers=request.headers, params={"page_size": page_size}
-        )
-        if request.headers is None:
-            request.headers = {}
-        request.headers["cmr-search-after"] = response.headers["cmr-search-after"]
+        response = requests.get(url, headers=headers, params={"page_size": page_size})
+        headers["cmr-search-after"] = response.headers.get("cmr-search-after")
 
         try:
             response.raise_for_status()
@@ -51,8 +48,7 @@ def get_results(request, limit: int = 2000) -> list:  # type: ignore
 
         results.extend(latest)
 
-        if page_size > len(response.json()["items"]) or len(results) >= limit:
-            more_results = False
+        more_results = page_size <= len(latest) and len(results) < limit
 
     return results
 
@@ -105,7 +101,7 @@ class DataCollections(CollectionQuery):
 
         return int(response.headers["CMR-Hits"])
 
-    def get(self, limit: int = 2000) -> list:
+    def get(self, limit: int = 2000) -> List[Any]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -386,7 +382,7 @@ class DataGranules(GranuleQuery):
 
         return int(response.headers["CMR-Hits"])
 
-    def get(self, limit: int = 2000) -> list:
+    def get(self, limit: int = 2000) -> List[Any]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 

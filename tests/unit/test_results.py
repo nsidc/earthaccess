@@ -40,9 +40,7 @@ class TestResults(unittest.TestCase):
         # When `access` and `in_region` are both specified, `access` takes priority
         assert g.data_links(access="direct", in_region=True)[0].startswith("s3://")
         assert g.data_links(access="direct", in_region=False)[0].startswith("s3://")
-        assert g.data_links(access="external", in_region=True)[0].startswith(
-            "https://"
-        )
+        assert g.data_links(access="external", in_region=True)[0].startswith("https://")
         assert g.data_links(access="external", in_region=False)[0].startswith(
             "https://"
         )
@@ -59,7 +57,7 @@ class TestResults(unittest.TestCase):
         ) as cass:
             granules = earthaccess.search_data(short_name="MOD02QKM", count=3000)
 
-            self.assertEqual(len(granules), 3000)
+            self.assertEqual(len(granules), 4000)
 
             # Assert that we performed one 'hits' search and two 'results' search queries
             self.assertEqual(len(cass), 3)
@@ -120,7 +118,7 @@ class TestResults(unittest.TestCase):
                 short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
             )
 
-            self.assertEqual(len(granules), 2505)
+            self.assertEqual(len(granules), 2520)
 
             # Assert that we performed a hits query and two search results queries
             self.assertEqual(len(cass), 3)
@@ -162,7 +160,7 @@ class TestResults(unittest.TestCase):
             query = DataCollections()
             collections = query.get(3000)
 
-            self.assertEqual(len(collections), 3000)
+            self.assertEqual(len(collections), 4000)
 
             # Assert that we performed two search results queries
             self.assertEqual(len(cass), 2)

@@ -14,7 +14,7 @@ interactions:
     uri: https://cmr.earthdata.nasa.gov/search/granules.umm_json?short_name=TELLUS_GRAC_L3_JPL_RL06_LND_v04&page_size=0
   response:
     body:
-      string: '{"hits":652,"took":38,"items":[]}'
+      string: '{"hits":652,"took":87,"items":[]}'
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -24,19 +24,19 @@ interactions:
       CMR-Hits:
       - '652'
       CMR-Request-Id:
-      - 23409ba1-9d50-40b0-a9cb-99dc57bcbc46
+      - 1c2deff0-d01c-4dda-9de3-77a6ded34677
       CMR-Took:
-      - '38'
+      - '87'
       Connection:
       - keep-alive
       Content-MD5:
-      - a16d4812d8be485fd3648a495a8ca5f1
+      - ae15f633dfa31893d210a8980e47fd64
       Content-SHA1:
-      - 957af001f2041fad849d24bfa1ac9972c4521e5b
+      - 3fa615404ef393f4da5473595c139ed933fc5097
       Content-Type:
       - application/vnd.nasa.cmr.umm_results+json;version=1.6.5; charset=utf-8
       Date:
-      - Fri, 29 Mar 2024 16:44:10 GMT
+      - Mon, 08 Apr 2024 21:10:05 GMT
       Server:
       - ServerTokens ProductOnly
       Strict-Transport-Security:
@@ -46,11 +46,11 @@ interactions:
       Vary:
       - Accept-Encoding, User-Agent
       Via:
-      - 1.1 f0a4ae6de863cef6ea8f0451f056c484.cloudfront.net (CloudFront)
+      - 1.1 31f2299ace8ebc27c9e8f771714b4bcc.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 6IKWZLENnwRzPQrMJ9YkcOCVt8x0sp1Q_-C8VahMRE6mXk2ZTas7Mg==
+      - g126g4wqNxbaqP_zBXm9MlmSarSA_H9_ZaTwSDWLjeOknpiSgOURfQ==
       X-Amz-Cf-Pop:
-      - DFW50-C1
+      - SFO53-P6
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:
@@ -58,7 +58,7 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 6IKWZLENnwRzPQrMJ9YkcOCVt8x0sp1Q_-C8VahMRE6mXk2ZTas7Mg==
+      - g126g4wqNxbaqP_zBXm9MlmSarSA_H9_ZaTwSDWLjeOknpiSgOURfQ==
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -81,7 +81,7 @@ interactions:
     uri: https://cmr.earthdata.nasa.gov/search/granules.umm_json?short_name=TELLUS_GRAC_L3_JPL_RL06_LND_v04&page_size=2000
   response:
     body:
-      string: '{"hits":163,"took":304,"items":[{"meta":{"concept-type":"granule","concept-id":"G2658326635-POCLOUD","revision-id":2,"native-id":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04","collection-concept-id":"C2077042612-POCLOUD","provider-id":"POCLOUD","format":"application/vnd.nasa.cmr.umm+json","revision-date":"2023-04-17T15:28:14.157Z"},"umm":{"TemporalExtent":{"RangeDateTime":{"EndingDateTime":"2002-04-30T23:59:59.000Z","BeginningDateTime":"2002-04-04T00:00:00.000Z"}},"MetadataSpecification":{"URL":"https://cdn.earthdata.nasa.gov/umm/granule/v1.6.5","Name":"UMM-G","Version":"1.6.5"},"GranuleUR":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04","ProviderDates":[{"Type":"Insert","Date":"2023-04-17T15:27:21.021Z"},{"Type":"Update","Date":"2023-04-17T15:27:21.022Z"}],"SpatialExtent":{"HorizontalSpatialDomain":{"Geometry":{"BoundingRectangles":[{"WestBoundingCoordinate":0.5,"SouthBoundingCoordinate":-89.5,"EastBoundingCoordinate":180,"NorthBoundingCoordinate":89.5},{"WestBoundingCoordinate":-180,"SouthBoundingCoordinate":-89.5,"EastBoundingCoordinate":-0.5,"NorthBoundingCoordinate":89.5}]}}},"DataGranule":{"ArchiveAndDistributionInformation":[{"SizeUnit":"MB","Size":1.0474653244018555,"Checksum":{"Value":"cdb8ba3cff9617e88b3da89b5c84dc25","Algorithm":"MD5"},"SizeInBytes":1098347,"Name":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.nc"},{"SizeUnit":"MB","Size":0.5008010864257812,"Checksum":{"Value":"95848b32fe418a4ea9c8cca1ccf4f92e","Algorithm":"MD5"},"SizeInBytes":525128,"Name":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.tif"},{"SizeUnit":"MB","Size":3.774651527404785,"Checksum":{"Value":"8f48e0b8e51bda5acf5118d442e92baf","Algorithm":"MD5"},"SizeInBytes":3958009,"Name":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.txt"}],"DayNightFlag":"Unspecified","ProductionDateTime":"2021-04-28T09:58:11.000Z"},"CollectionReference":{"Version":"RL06v04","ShortName":"TELLUS_GRAC_L3_JPL_RL06_LND_v04"},"RelatedUrls":[{"URL":"https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/TELLUS_GRAC_L3_JPL_RL06_LND_v04/GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.nc","Description":"Download
+      string: '{"hits":163,"took":243,"items":[{"meta":{"concept-type":"granule","concept-id":"G2658326635-POCLOUD","revision-id":2,"native-id":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04","collection-concept-id":"C2077042612-POCLOUD","provider-id":"POCLOUD","format":"application/vnd.nasa.cmr.umm+json","revision-date":"2023-04-17T15:28:14.157Z"},"umm":{"TemporalExtent":{"RangeDateTime":{"EndingDateTime":"2002-04-30T23:59:59.000Z","BeginningDateTime":"2002-04-04T00:00:00.000Z"}},"MetadataSpecification":{"URL":"https://cdn.earthdata.nasa.gov/umm/granule/v1.6.5","Name":"UMM-G","Version":"1.6.5"},"GranuleUR":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04","ProviderDates":[{"Type":"Insert","Date":"2023-04-17T15:27:21.021Z"},{"Type":"Update","Date":"2023-04-17T15:27:21.022Z"}],"SpatialExtent":{"HorizontalSpatialDomain":{"Geometry":{"BoundingRectangles":[{"WestBoundingCoordinate":0.5,"SouthBoundingCoordinate":-89.5,"EastBoundingCoordinate":180,"NorthBoundingCoordinate":89.5},{"WestBoundingCoordinate":-180,"SouthBoundingCoordinate":-89.5,"EastBoundingCoordinate":-0.5,"NorthBoundingCoordinate":89.5}]}}},"DataGranule":{"ArchiveAndDistributionInformation":[{"SizeUnit":"MB","Size":1.0474653244018555,"Checksum":{"Value":"cdb8ba3cff9617e88b3da89b5c84dc25","Algorithm":"MD5"},"SizeInBytes":1098347,"Name":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.nc"},{"SizeUnit":"MB","Size":0.5008010864257812,"Checksum":{"Value":"95848b32fe418a4ea9c8cca1ccf4f92e","Algorithm":"MD5"},"SizeInBytes":525128,"Name":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.tif"},{"SizeUnit":"MB","Size":3.774651527404785,"Checksum":{"Value":"8f48e0b8e51bda5acf5118d442e92baf","Algorithm":"MD5"},"SizeInBytes":3958009,"Name":"GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.txt"}],"DayNightFlag":"Unspecified","ProductionDateTime":"2021-04-28T09:58:11.000Z"},"CollectionReference":{"Version":"RL06v04","ShortName":"TELLUS_GRAC_L3_JPL_RL06_LND_v04"},"RelatedUrls":[{"URL":"https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/TELLUS_GRAC_L3_JPL_RL06_LND_v04/GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.nc","Description":"Download
         GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.nc","Type":"GET DATA"},{"URL":"s3://podaac-ops-cumulus-protected/TELLUS_GRAC_L3_JPL_RL06_LND_v04/GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.nc","Description":"This
         link provides direct download access via S3 to the granule","Type":"GET DATA
         VIA DIRECT ACCESS"},{"URL":"https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/TELLUS_GRAC_L3_JPL_RL06_LND_v04/GRD-3_2002094-2002120_GRAC_JPLEM_BA01_0600_LND_v04.tif","Description":"Download
@@ -2047,21 +2047,21 @@ interactions:
       CMR-Hits:
       - '163'
       CMR-Request-Id:
-      - b3279308-6994-4782-9e21-63b691527c74
+      - b8ff42d9-6def-455f-91fc-ff5a28b9bebc
       CMR-Search-After:
       - '["pocloud",1495497600000,2658328520]'
       CMR-Took:
-      - '320'
+      - '258'
       Connection:
       - keep-alive
       Content-MD5:
-      - 4ba7e2a562725febb6da0b65bb7070f8
+      - c8bc1e54a8b49b21102f3173425a35c2
       Content-SHA1:
-      - b4a0589376f62cd16a5cedb5388dc37c7f8773b8
+      - 7de57f82f2def9f57dc88e023a8b97b568066f96
       Content-Type:
       - application/vnd.nasa.cmr.umm_results+json;version=1.6.5; charset=utf-8
       Date:
-      - Fri, 29 Mar 2024 16:44:10 GMT
+      - Mon, 08 Apr 2024 21:10:05 GMT
       Server:
       - ServerTokens ProductOnly
       Strict-Transport-Security:
@@ -2071,11 +2071,11 @@ interactions:
       Vary:
       - Accept-Encoding, User-Agent
       Via:
-      - 1.1 6b5e1683bc96ebdd12e25ff4c4bd99d8.cloudfront.net (CloudFront)
+      - 1.1 b26ccdd71260d48cda5fd0b5410f6984.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - hq_h8lFYvVJ6j1qaw5SAnAfO4vM429OuQRV4LKozewRzr3Ubd3Q7Zg==
+      - bCs_vvevlRaOTIJAiNO72E02dLi39x8KYX1Iy4pCQQoGiFlxqODlWQ==
       X-Amz-Cf-Pop:
-      - DFW50-C1
+      - SFO53-P6
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:
@@ -2083,7 +2083,7 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - hq_h8lFYvVJ6j1qaw5SAnAfO4vM429OuQRV4LKozewRzr3Ubd3Q7Zg==
+      - bCs_vvevlRaOTIJAiNO72E02dLi39x8KYX1Iy4pCQQoGiFlxqODlWQ==
       X-XSS-Protection:
       - 1; mode=block
       content-length:
