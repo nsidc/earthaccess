@@ -3,8 +3,8 @@ from inspect import getmembers, ismethod
 from typing import Any, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
-from cmr import CollectionQuery, GranuleQuery
 import requests
+from cmr import CollectionQuery, GranuleQuery
 
 # type: ignore
 from .auth import Auth
@@ -35,7 +35,9 @@ def get_results(request, limit: int = 2000) -> list:  # type: ignore
     while more_results:
         # Only get what we need
         page_size = min(limit - len(results), page_size)
-        response = requests.get(url, headers=request.headers, params={"page_size": page_size})
+        response = requests.get(
+            url, headers=request.headers, params={"page_size": page_size}
+        )
         if request.headers is None:
             request.headers = {}
         request.headers["cmr-search-after"] = response.headers["cmr-search-after"]
