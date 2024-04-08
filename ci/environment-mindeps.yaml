@@ -25,3 +25,4 @@ dependencies:
   - types-requests
   - types-setuptools
   - ruff
+  - vcrpy
