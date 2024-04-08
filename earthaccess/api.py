@@ -1,5 +1,3 @@
-from typing import Any, Dict, List, Optional, Type, Union
-
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
@@ -7,9 +5,10 @@ from fsspec import AbstractFileSystem
 import earthaccess
 
 from .auth import Auth
-from .results import DataGranule
+from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
+from .typing_ import Any, Dict, List, Optional, Union
 from .utils import _validation as validate
 
 
@@ -28,9 +27,7 @@ def _normalize_location(location: Optional[str]) -> Optional[str]:
     return location
 
 
-def search_datasets(
-    count: int = -1, **kwargs: Any
-) -> List[earthaccess.results.DataCollection]:
+def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     """Search datasets using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -78,9 +75,7 @@ def search_datasets(
     return query.get_all()
 
 
-def search_data(
-    count: int = -1, **kwargs: Any
-) -> List[earthaccess.results.DataGranule]:
+def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     """Search dataset granules using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -194,7 +189,7 @@ def download(
 
 
 def open(
-    granules: Union[List[str], List[earthaccess.results.DataGranule]],
+    granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of fsspec file-like objects that can be used to access files
@@ -216,7 +211,7 @@ def open(
 def get_s3_credentials(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
-    results: Optional[List[earthaccess.results.DataGranule]] = None,
+    results: Optional[List[DataGranule]] = None,
 ) -> Dict[str, Any]:
     """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets. We can
     use the daac name, the provider, or a list of results from earthaccess.search_data().
@@ -239,7 +234,7 @@ def get_s3_credentials(
     return earthaccess.__auth__.get_s3_credentials(daac=daac, provider=provider)
 
 
-def collection_query() -> Type[CollectionQuery]:
+def collection_query() -> CollectionQuery:
     """Returns a query builder instance for NASA collections (datasets).
 
     Returns:
@@ -252,7 +247,7 @@ def collection_query() -> Type[CollectionQuery]:
     return query_builder
 
 
-def granule_query() -> Type[GranuleQuery]:
+def granule_query() -> GranuleQuery:
     """Returns a query builder instance for data granules
 
     Returns:
@@ -311,7 +306,7 @@ def get_requests_https_session() -> requests.Session:
 def get_s3fs_session(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
-    results: Optional[earthaccess.results.DataGranule] = None,
+    results: Optional[DataGranule] = None,
 ) -> s3fs.S3FileSystem:
     """Returns a fsspec s3fs file session for direct access when we are in us-west-2.
 

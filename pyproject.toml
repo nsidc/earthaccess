@@ -87,29 +87,43 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest]
 filterwarnings = ["error::UserWarning"]
 
-
 [tool.mypy]
-disallow_untyped_defs = false
-ignore_missing_imports = true
+mypy_path = ["earthaccess", "tests", "stubs"]
+disallow_untyped_defs = true
+# TODO: incrementally work towards strict mode (currently too many errors)
+# strict = true
+pretty = true  # Show additional context in error messages
+enable_error_code = "redundant-self"
 
 [[tool.mypy.overrides]]
 module = [
   "tests.*",
 ]
-ignore_errors = true
+disallow_untyped_defs = false
 
+[[tool.mypy.overrides]]
+module = [
+  "fsspec.*",
+  "kerchunk.*",
+  "pqdm.*",
+  "s3fs",
+  "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
+]
+ignore_missing_imports = true
+
+[tool.pyright]
+include = ["earthaccess"]
+stubPath = "./stubs"
 
 [tool.ruff]
 line-length = 88
-src = ["earthaccess", "tests"]
-exclude = ["mypy-stubs", "stubs", "typeshed"]
+src = ["earthaccess", "stubs", "tests"]
 
 [tool.ruff.lint]
 extend-select = ["I"]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-
 
 [tool.bumpversion]
 current_version = "0.9.0"
