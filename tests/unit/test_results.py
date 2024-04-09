@@ -17,6 +17,9 @@ logging.basicConfig()
 vcr_log = logging.getLogger("vcr")
 vcr_log.setLevel(logging.ERROR)
 
+headers_to_filters = ["authorization", "Set-Cookie", "User-Agent", "Accept-Encoding"]
+
+
 def assert_unique_results(results):
     """
     When we invoke a search request multiple times we want to ensure that we don't
@@ -57,7 +60,7 @@ class TestResults(unittest.TestCase):
         """
         with my_vcr.use_cassette(
             "tests/unit/fixtures/vcr_cassettes/MOD02QKM.yaml",
-            filter_headers=["authorization", "Set-Cookie"],
+            filter_headers=headers_to_filters,
         ) as cass:
             granules = earthaccess.search_data(short_name="MOD02QKM", count=3000)
 
@@ -76,7 +79,7 @@ class TestResults(unittest.TestCase):
         """
         with my_vcr.use_cassette(
             "tests/unit/fixtures/vcr_cassettes/MOD02QKM_2000.yaml",
-            filter_headers=["authorization", "Set-Cookie"],
+            filter_headers=headers_to_filters,
         ) as cass:
             granules = earthaccess.search_data(short_name="MOD02QKM", count=2000)
 
@@ -95,7 +98,7 @@ class TestResults(unittest.TestCase):
         """
         with my_vcr.use_cassette(
             "tests/unit/fixtures/vcr_cassettes/TELLUS_GRAC.yaml",
-            filter_headers=["authorization", "Set-Cookie"],
+            filter_headers=headers_to_filters,
         ) as cass:
             granules = earthaccess.search_data(
                 short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000
@@ -116,7 +119,7 @@ class TestResults(unittest.TestCase):
         """
         with my_vcr.use_cassette(
             "tests/unit/fixtures/vcr_cassettes/CYGNSS.yaml",
-            filter_headers=["authorization", "Set-Cookie"],
+            filter_headers=headers_to_filters,
         ) as cass:
             granules = earthaccess.search_data(
                 short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
@@ -137,7 +140,7 @@ class TestResults(unittest.TestCase):
         """
         with my_vcr.use_cassette(
             "tests/unit/fixtures/vcr_cassettes/PODAAC.yaml",
-            filter_headers=["authorization", "Set-Cookie"],
+            filter_headers=headers_to_filters,
         ) as cass:
             query = DataCollections().daac("PODAAC").cloud_hosted(True)
             collections = query.get(20)
@@ -159,7 +162,7 @@ class TestResults(unittest.TestCase):
         """
         with my_vcr.use_cassette(
             "tests/unit/fixtures/vcr_cassettes/ALL.yaml",
-            filter_headers=["authorization", "Set-Cookie"],
+            filter_headers=headers_to_filters,
         ) as cass:
             query = DataCollections()
             collections = query.get(3000)
