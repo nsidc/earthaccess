@@ -1,2 +1,3 @@
 notebooks/** linguist-documentation
 docs/** linguist-documentation
+tests/unit/fixtures/vcr_cassettes/** linguist-documentation
