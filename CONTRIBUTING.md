@@ -7,6 +7,7 @@ Please note that we have a [code of conduct](./CODE_OF_CONDUCT.md). Please follo
 
 ## Development environment
 
+
 `earthaccess` is a Python library that uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda.
 
 ### Using Conda

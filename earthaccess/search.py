@@ -1,14 +1,56 @@
 import datetime as dt
 from inspect import getmembers, ismethod
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, List, Optional, Tuple, Type, Union
 
 import dateutil.parser as parser  # type: ignore
-from cmr import CollectionQuery, GranuleQuery  # type: ignore
-from requests import exceptions, session
+import requests
+from cmr import CollectionQuery, GranuleQuery
 
+# type: ignore
 from .auth import Auth
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
+
+
+def get_results(
+    query: Union[CollectionQuery, GranuleQuery], limit: int = 2000
+) -> List[Any]:
+    """
+    Get all results up to some limit, even if spanning multiple pages.
+
+    ???+ Tip
+        The default page size is 2000, if the supplied value is greater then the Search-After header
+        will be used to iterate across multiple requests until either the limit has been reached
+        or there are no more results.
+    Parameters:
+        limit: The number of results to return
+
+    Returns:
+        query results as a list
+    """
+
+    page_size = min(limit, 2000)
+    url = query._build_url()
+
+    results: List = []
+    more_results = True
+    headers = dict(query.headers or {})
+    while more_results:
+        response = requests.get(url, headers=headers, params={"page_size": page_size})
+        headers["cmr-search-after"] = response.headers.get("cmr-search-after")
+
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as ex:
+            raise RuntimeError(ex.response.text)
+
+        latest = response.json()["items"]
+
+        results.extend(latest)
+
+        more_results = page_size <= len(latest) and len(results) < limit
+
+    return results
 
 
 class DataCollections(CollectionQuery):
@@ -20,18 +62,6 @@ class DataCollections(CollectionQuery):
 
     _fields = None
     _format = "umm_json"
-    _valid_formats_regex = [
-        "json",
-        "xml",
-        "echo10",
-        "iso",
-        "iso19115",
-        "csv",
-        "atom",
-        "kml",
-        "native",
-        "umm_json",
-    ]
 
     def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
         """Builds an instance of DataCollections to query CMR
@@ -41,7 +71,7 @@ class DataCollections(CollectionQuery):
                 for queries that need authentication, e.g. restricted datasets.
         """
         super().__init__(*args, **kwargs)
-        self.session = session()
+        self.session = requests.session()
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -66,10 +96,31 @@ class DataCollections(CollectionQuery):
 
         try:
             response.raise_for_status()
-        except exceptions.HTTPError as ex:
+        except requests.exceptions.HTTPError as ex:
             raise RuntimeError(ex.response.text)
 
         return int(response.headers["CMR-Hits"])
+
+    def get(self, limit: int = 2000) -> List[DataCollection]:
+        """Get all the collections (datasets) that match with our current parameters
+        up to some limit, even if spanning multiple pages.
+
+        ???+ Tip
+            The default page size is 2000, we need to be careful with the request size because all the JSON
+            elements will be loaded into memory. This is more of an issue with granules than collections as
+            they can be potentially millions of them.
+
+        Parameters:
+            limit: The number of results to return
+
+        Returns:
+            query results as a list of `DataCollection` instances.
+        """
+
+        return list(
+            DataCollection(collection, self._fields)
+            for collection in get_results(self, limit)
+        )
 
     def concept_id(self, IDs: List[str]) -> Type[CollectionQuery]:
         """Filter by concept ID.
@@ -257,60 +308,6 @@ class DataCollections(CollectionQuery):
         self.params["provider"] = find_provider(daac_short_name, cloud_hosted)
         return self
 
-    def get(self, limit: int = 2000) -> list:
-        """Get all the collections (datasets) that match with our current parameters
-        up to some limit, even if spanning multiple pages.
-
-        ???+ Tip
-            The default page size is 2000, we need to be careful with the request size because all the JSON
-            elements will be loaded into memory. This is more of an issue with granules than collections as
-            they can be potentially millions of them.
-
-        Parameters:
-            limit: The number of results to return
-
-        Returns:
-            query results as a list of `DataCollection` instances.
-        """
-
-        page_size = min(limit, 2000)
-        url = self._build_url()
-
-        results: List = []
-        page = 1
-        while len(results) < limit:
-            params = {"page_size": page_size, "page_num": page}
-            if self._debug:
-                print(f"Fetching: {url}")
-            # TODO: implement caching
-            response = self.session.get(url, params=params)
-
-            try:
-                response.raise_for_status()
-            except exceptions.HTTPError as ex:
-                if ex.response is not None:
-                    raise RuntimeError(ex.response.text) from ex
-                else:
-                    raise RuntimeError(str(ex)) from ex
-
-            if self._format == "json":
-                latest = response.json()["feed"]["entry"]
-            elif self._format == "umm_json":
-                latest = list(
-                    DataCollection(collection, self._fields)
-                    for collection in response.json()["items"]
-                )
-            else:
-                latest = [response.text]
-
-            if len(latest) == 0:
-                break
-
-            results.extend(latest)
-            page += 1
-
-        return results
-
     def temporal(
         self,
         date_from: Optional[Union[str, dt.datetime]] = None,
@@ -352,23 +349,11 @@ class DataGranules(GranuleQuery):
     """
 
     _format = "umm_json"
-    _valid_formats_regex = [
-        "json",
-        "xml",
-        "echo10",
-        "iso",
-        "iso19115",
-        "csv",
-        "atom",
-        "kml",
-        "native",
-        "umm_json",
-    ]
 
     def __init__(self, auth: Any = None, *args: Any, **kwargs: Any) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
-        self.session = session()
+        self.session = requests.session()
         if auth is not None and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
@@ -389,13 +374,34 @@ class DataGranules(GranuleQuery):
 
         try:
             response.raise_for_status()
-        except exceptions.HTTPError as ex:
+        except requests.exceptions.HTTPError as ex:
             if ex.response is not None:
                 raise RuntimeError(ex.response.text) from ex
             else:
                 raise RuntimeError(str(ex)) from ex
 
         return int(response.headers["CMR-Hits"])
+
+    def get(self, limit: int = 2000) -> List[DataGranule]:
+        """Get all the collections (datasets) that match with our current parameters
+        up to some limit, even if spanning multiple pages.
+
+        ???+ Tip
+            The default page size is 2000, we need to be careful with the request size because all the JSON
+            elements will be loaded into memory. This is more of an issue with granules than collections as
+            they can be potentially millions of them.
+
+        Parameters:
+            limit: The number of results to return
+
+        Returns:
+            query results as a list of `DataGranules` instances.
+        """
+        response = get_results(self, limit)
+
+        cloud = self._is_cloud_hosted(response[0])
+
+        return list(DataGranule(granule, cloud_hosted=cloud) for granule in response)
 
     def parameters(self, **kwargs: Any) -> Type[CollectionQuery]:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
@@ -598,76 +604,6 @@ class DataGranules(GranuleQuery):
         """
         super().short_name(short_name)
         return self
-
-    def get(self, limit: int = 2000) -> list:
-        """Get all the collections (datasets) that match with our current parameters
-        up to some limit, even if spanning multiple pages.
-
-        ???+ Tip
-            The default page size is 2000, we need to be careful with the request size because all the JSON
-            elements will be loaded into memory. This is more of an issue with granules than collections as
-            they can be potentially millions of them.
-
-        Parameters:
-            limit: The number of results to return
-
-        Returns:
-            query results as a list of `DataCollection` instances.
-        """
-        # TODO: implement items() iterator
-        page_size = min(limit, 2000)
-        url = self._build_url()
-
-        results: List = []
-        page = 1
-        headers: Dict[str, str] = {}
-        while len(results) < limit:
-            params = {"page_size": page_size}
-            # TODO: should be in a logger
-            if self._debug:
-                print(f"Fetching: {url}", f"headers: {headers}")
-
-            response = self.session.get(url, params=params, headers=headers)
-
-            try:
-                response.raise_for_status()
-            except exceptions.HTTPError as ex:
-                if ex.response is not None:
-                    raise RuntimeError(ex.response.text) from ex
-                else:
-                    raise RuntimeError(str(ex)) from ex
-
-            if self._format == "json":
-                latest = response.json()["feed"]["entry"]
-            elif self._format == "umm_json":
-                json_response = response.json()["items"]
-                if len(json_response) > 0:
-                    if "CMR-Search-After" in response.headers:
-                        headers["CMR-Search-After"] = response.headers[
-                            "CMR-Search-After"
-                        ]
-                    else:
-                        headers = {}
-                    if self._is_cloud_hosted(json_response[0]):
-                        cloud = True
-                    else:
-                        cloud = False
-                    latest = list(
-                        DataGranule(granule, cloud_hosted=cloud)
-                        for granule in response.json()["items"]
-                    )
-                else:
-                    latest = []
-            else:
-                latest = [response.text]
-
-            if len(latest) == 0:
-                break
-
-            results.extend(latest)
-            page += 1
-
-        return results
 
     def debug(self, debug: bool = True) -> Type[GranuleQuery]:
         """If True, prints the actual query to CMR, notice that the pagination happens in the headers.

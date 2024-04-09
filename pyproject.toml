@@ -78,6 +78,7 @@ h5netcdf = ">=0.11"
 dask = ">=2022.1"
 pyproj = ">=3.5.0"
 bump-my-version = ">=0.10.0"
+vcrpy = ">=6.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
