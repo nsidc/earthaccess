@@ -1,26 +1,15 @@
 import logging
-import unittest
 
 import earthaccess
-import vcr
 from earthaccess.search import DataCollections
 
-my_vcr = vcr.VCR(
-    record_mode="once",
-    decode_compressed_response=True,
-    # Header matching is not set by default, we need that to test the
-    # search-after functionality is performing correctly.
-    match_on=["method", "scheme", "host", "port", "path", "query", "headers"],
-)
+from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
 logging.basicConfig()
-vcr_log = logging.getLogger("vcr")
-vcr_log.setLevel(logging.ERROR)
-
-headers_to_filters = ["authorization", "Set-Cookie", "User-Agent", "Accept-Encoding"]
+logging.getLogger("vcr").setLevel(logging.ERROR)
 
 
-def assert_unique_results(results):
+def unique_results(results):
     """
     When we invoke a search request multiple times we want to ensure that we don't
     get the same results back. This is a one shot test as the results are preserved
@@ -30,7 +19,31 @@ def assert_unique_results(results):
     return len(unique_concept_ids) == len(results)
 
 
-class TestResults(unittest.TestCase):
+class TestResults(VCRTestCase):
+    def _get_vcr(self, **kwargs):
+        myvcr = super(TestResults, self)._get_vcr(**kwargs)
+        myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
+        myvcr.decode_compressed_response = True
+        # Header matching is not set by default, we need that to test the
+        # search-after functionality is performing correctly.
+        myvcr.match_on = [
+            "method",
+            "scheme",
+            "host",
+            "port",
+            "path",
+            "query",
+            "headers",
+        ]
+        myvcr.filter_headers = [
+            "Accept-Encoding",
+            "Authorization",
+            "Set-Cookie",
+            "User-Agent",
+        ]
+
+        return myvcr
+
     def test_data_links(self):
         granules = earthaccess.search_data(
             short_name="SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205",
@@ -58,18 +71,12 @@ class TestResults(unittest.TestCase):
         then we expect multiple invocations of a cmr granule search and
         to not fetch back more results than we ask for
         """
-        with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/MOD02QKM.yaml",
-            filter_headers=headers_to_filters,
-        ) as cass:
-            granules = earthaccess.search_data(short_name="MOD02QKM", count=3000)
+        granules = earthaccess.search_data(short_name="MOD02QKM", count=3000)
 
-            self.assertEqual(len(granules), 4000)
-
-            # Assert that we performed one 'hits' search and two 'results' search queries
-            self.assertEqual(len(cass), 3)
-
-            assert_unique_results(granules)
+        # Assert that we performed one 'hits' search and two 'results' search queries
+        self.assertEqual(len(self.cassette), 3)
+        self.assertEqual(len(granules), 4000)
+        self.assertTrue(unique_results(granules))
 
     def test_get(self):
         """
@@ -77,18 +84,12 @@ class TestResults(unittest.TestCase):
         to get the maximum no. of granules from a single CMR call (2000)
         in a single request
         """
-        with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/MOD02QKM_2000.yaml",
-            filter_headers=headers_to_filters,
-        ) as cass:
-            granules = earthaccess.search_data(short_name="MOD02QKM", count=2000)
+        granules = earthaccess.search_data(short_name="MOD02QKM", count=2000)
 
-            self.assertEqual(len(granules), 2000)
-
-            # Assert that we performed one 'hits' search and one 'results' search queries
-            self.assertEqual(len(cass), 2)
-
-            assert_unique_results(granules)
+        # Assert that we performed one 'hits' search and one 'results' search queries
+        self.assertEqual(len(self.cassette), 2)
+        self.assertEqual(len(granules), 2000)
+        self.assertTrue(unique_results(granules))
 
     def test_get_all_less_than_2k(self):
         """
@@ -96,20 +97,14 @@ class TestResults(unittest.TestCase):
         invocations of a cmr granule search and
         to not fetch back more results than we ask for
         """
-        with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/TELLUS_GRAC.yaml",
-            filter_headers=headers_to_filters,
-        ) as cass:
-            granules = earthaccess.search_data(
-                short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000
-            )
+        granules = earthaccess.search_data(
+            short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000
+        )
 
-            self.assertEqual(len(granules), 163)
-
-            # Assert that we performed a hits query and one search results query
-            self.assertEqual(len(cass), 2)
-
-            assert_unique_results(granules)
+        # Assert that we performed a hits query and one search results query
+        self.assertEqual(len(self.cassette), 2)
+        self.assertEqual(len(granules), 163)
+        self.assertTrue(unique_results(granules))
 
     def test_get_all_more_than_2k(self):
         """
@@ -117,20 +112,14 @@ class TestResults(unittest.TestCase):
         invocations of a cmr granule search and
         to not fetch back more results than we ask for
         """
-        with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/CYGNSS.yaml",
-            filter_headers=headers_to_filters,
-        ) as cass:
-            granules = earthaccess.search_data(
-                short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
-            )
+        granules = earthaccess.search_data(
+            short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
+        )
 
-            self.assertEqual(len(granules), 2520)
-
-            # Assert that we performed a hits query and two search results queries
-            self.assertEqual(len(cass), 3)
-
-            assert_unique_results(granules)
+        # Assert that we performed a hits query and two search results queries
+        self.assertEqual(len(self.cassette), 3)
+        self.assertEqual(len(granules), 2520)
+        self.assertTrue(unique_results(granules))
 
     def test_collections_less_than_2k(self):
         """
@@ -138,21 +127,14 @@ class TestResults(unittest.TestCase):
         invocations of a cmr granule search and
         to not fetch back more results than we ask for
         """
-        with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/PODAAC.yaml",
-            filter_headers=headers_to_filters,
-        ) as cass:
-            query = DataCollections().daac("PODAAC").cloud_hosted(True)
-            collections = query.get(20)
+        query = DataCollections().daac("PODAAC").cloud_hosted(True)
+        collections = query.get(20)
 
-            self.assertEqual(len(collections), 20)
-
-            # Assert that we performed a single search results query
-            self.assertEqual(len(cass), 1)
-
-            assert_unique_results(collections)
-
-            self.is_using_search_after(cass)
+        # Assert that we performed a single search results query
+        self.assertEqual(len(self.cassette), 1)
+        self.assertEqual(len(collections), 20)
+        self.assertTrue(unique_results(collections))
+        self.assert_is_using_search_after(self.cassette)
 
     def test_collections_more_than_2k(self):
         """
@@ -160,30 +142,21 @@ class TestResults(unittest.TestCase):
         invocations of a cmr granule search and
         to not fetch back more results than we ask for
         """
-        with my_vcr.use_cassette(
-            "tests/unit/fixtures/vcr_cassettes/ALL.yaml",
-            filter_headers=headers_to_filters,
-        ) as cass:
-            query = DataCollections()
-            collections = query.get(3000)
+        query = DataCollections()
+        collections = query.get(3000)
 
-            self.assertEqual(len(collections), 4000)
+        # Assert that we performed two search results queries
+        self.assertEqual(len(self.cassette), 2)
+        self.assertEqual(len(collections), 4000)
+        self.assertTrue(unique_results(collections))
+        self.assert_is_using_search_after(self.cassette)
 
-            # Assert that we performed two search results queries
-            self.assertEqual(len(cass), 2)
-
-            assert_unique_results(collections)
-
-            self.is_using_search_after(cass)
-
-    def is_using_search_after(self, cass):
-        # Verify the page no. was not used
+    def assert_is_using_search_after(self, cass):
         first_request = True
+
         for request in cass.requests:
+            # Verify the page number was not used
             self.assertTrue("page_num" not in request.uri)
             # Verify that Search After was used in all requests except first
-            if first_request:
-                self.assertFalse("CMR-Search-After" in request.headers)
-            else:
-                self.assertTrue("CMR-Search-After" in request.headers)
+            self.assertEqual(first_request, "CMR-Search-After" not in request.headers)
             first_request = False

@@ -3,6 +3,7 @@ from inspect import getmembers, ismethod
 
 import dateutil.parser as parser
 import requests
+
 from cmr import CollectionQuery, GranuleQuery
 
 from .auth import Auth
@@ -10,7 +11,6 @@ from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 from .typing_ import (
     Any,
-    Dict,
     List,
     Never,
     Optional,
@@ -54,7 +54,7 @@ def get_results(
     while more_results:
         response = requests.get(url, headers=headers, params={"page_size": page_size})
 
-        if cmr_search_after := query.headers.get("cmr-search-after"):
+        if cmr_search_after := response.headers.get("cmr-search-after"):
             headers["cmr-search-after"] = cmr_search_after
 
         try:

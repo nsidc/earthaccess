@@ -110,6 +110,7 @@ module = [
   "pqdm.*",
   "s3fs",
   "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
+  "vcr.unittest",  # TODO: generate stubs for vcr and remove this line
 ]
 ignore_missing_imports = true
 
