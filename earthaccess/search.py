@@ -101,7 +101,7 @@ class DataCollections(CollectionQuery):
 
         return int(response.headers["CMR-Hits"])
 
-    def get(self, limit: int = 2000) -> List[Any]:
+    def get(self, limit: int = 2000) -> List[DataCollection]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -382,7 +382,7 @@ class DataGranules(GranuleQuery):
 
         return int(response.headers["CMR-Hits"])
 
-    def get(self, limit: int = 2000) -> List[Any]:
+    def get(self, limit: int = 2000) -> List[DataGranule]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
