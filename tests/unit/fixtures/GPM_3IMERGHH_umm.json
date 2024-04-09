@@ -1,0 +1,100 @@
+{
+  "hits": 1,
+  "took": 689,
+  "items": [
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G1618495041-GES_DISC",
+        "revision-id": 3,
+        "native-id": "GPM_3IMERGHH.06:3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+        "provider-id": "GES_DISC",
+        "format": "application/echo10+xml",
+        "revision-date": "2022-08-17T23:44:44.205Z"
+      },
+      "umm": {
+        "RelatedUrls": [
+          {
+            "URL": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGHH.06/2019/051/3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+            "Type": "GET DATA",
+            "Description": "Download 3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5"
+          },
+          {
+            "URL": "s3://gesdisc-cumulus-prod-protected/GPM_L3/GPM_3IMERGHH.06/2019/051/3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/GPM_L3/GPM_3IMERGHH.06/2019/051/3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "The OPENDAP location for the granule.",
+            "MimeType": "application/x-hdf"
+          },
+          {
+            "URL": "https://data.gesdisc.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -180,
+                  "EastBoundingCoordinate": 180,
+                  "NorthBoundingCoordinate": 90,
+                  "SouthBoundingCoordinate": -90
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2019-06-12T02:47:11.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2019-06-12T02:47:11.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "GPM_3IMERGHH",
+          "Version": "06"
+        },
+        "DataGranule": {
+          "DayNightFlag": "Unspecified",
+          "Identifiers": [
+            {
+              "Identifier": "3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+              "IdentifierType": "ProducerGranuleId"
+            }
+          ],
+          "ProductionDateTime": "2019-06-11T23:33:09.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 10.07326889038086,
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "2019-02-20T00:00:00.000Z",
+            "EndingDateTime": "2019-02-20T00:29:59.999Z"
+          }
+        },
+        "GranuleUR": "GPM_3IMERGHH.06:3B-HHR.MS.MRG.3IMERG.20190220-S000000-E002959.0000.V06B.HDF5",
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    }
+  ]
+}

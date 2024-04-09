@@ -1,3 +1,4 @@
+import logging
 import unittest
 
 import earthaccess
@@ -12,6 +13,9 @@ my_vcr = vcr.VCR(
     match_on=["method", "scheme", "host", "port", "path", "query", "headers"],
 )
 
+logging.basicConfig()
+vcr_log = logging.getLogger("vcr")
+vcr_log.setLevel(logging.ERROR)
 
 def assert_unique_results(results):
     """

@@ -1,0 +1,1059 @@
+{
+  "feed": {
+    "updated": "2023-03-13T00:01:28.691Z",
+    "id": "https://cmr.earthdata.nasa.gov:443/search/granules.json?concept_id=C2532426483-ORNL_CLOUD",
+    "title": "ECHO granule metadata",
+    "entry": [
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_dayl_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533272776-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "2.015649",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_dayl_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_dayl_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_dayl_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_dayl_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_dayl_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_dayl_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_srad_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533273209-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "13.319942",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_srad_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_srad_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_srad_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_srad_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_srad_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_srad_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533273484-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "14.786678",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_vp_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_vp_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533273499-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "9.474246",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_tmax_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_tmax_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmin_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533273533-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "8.950741",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_tmin_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmin_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_tmin_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmin_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmin_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_tmin_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_swe_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533273797-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "1.350456",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_swe_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_swe_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_swe_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_swe_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_swe_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_swe_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1950-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1950.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1950-12-31T23:59:59.000Z",
+        "id": "G2533274129-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "5.81705",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_prcp_1950.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_prcp_1950.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1950.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1950.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1950.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1951-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1951.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1951-12-31T23:59:59.000Z",
+        "id": "G2533273002-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "14.725072",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_vp_1951.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1951.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_vp_1951.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1951.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1951.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1951.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1951-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1951.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1951-12-31T23:59:59.000Z",
+        "id": "G2533273429-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "9.071668",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_tmax_1951.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1951.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_tmax_1951.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1951.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1951.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1951.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      },
+      {
+        "boxes": [
+          "16.8444 -67.9928 19.9382 -64.1196"
+        ],
+        "time_start": "1951-01-01T00:00:00.000Z",
+        "updated": "2023-03-03T14:27:01.000Z",
+        "dataset_id": "Daymet: Daily Surface Weather Data on a 1-km Grid for North America, Version 4 R1",
+        "data_center": "ORNL_CLOUD",
+        "title": "Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1951.nc",
+        "coordinate_system": "CARTESIAN",
+        "day_night_flag": "BOTH",
+        "time_end": "1951-12-31T23:59:59.000Z",
+        "id": "G2533273501-ORNL_CLOUD",
+        "original_format": "ECHO10",
+        "granule_size": "5.03199",
+        "browse_flag": false,
+        "collection_concept_id": "C2532426483-ORNL_CLOUD",
+        "online_access_flag": true,
+        "links": [
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_prcp_1951.nc",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1951.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "title": "Download daymet_v4_daily_pr_prcp_1951.nc.sha256",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1951.nc.sha256"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/s3#",
+            "title": "This link provides direct download access via S3 to the granule",
+            "hreflang": "en-US",
+            "href": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1951.nc"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "ORNL DAAC Data Set Documentation (USER'S GUIDE)",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data set Landing Page DOI URL (DATA SET LANDING PAGE)",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "Data Set Documentation (GENERAL DOCUMENTATION)",
+            "hreflang": "en-US",
+            "href": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "title": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access (VIEW RELATED INFORMATION)",
+            "hreflang": "en-US",
+            "href": "https://data.ornldaac.earthdata.nasa.gov/s3credentials"
+          },
+          {
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/service#",
+            "title": "OPeNDAP request URL (GET DATA : OPENDAP DATA)",
+            "hreflang": "en-US",
+            "href": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1951.nc"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/data#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://doi.org/10.3334/ORNLDAAC/2129"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/metadata#",
+            "hreflang": "en-US",
+            "href": "https://daymet.ornl.gov"
+          },
+          {
+            "inherited": true,
+            "rel": "http://esipfed.org/ns/fedsearch/1.1/documentation#",
+            "hreflang": "en-US",
+            "href": "https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/2129/catalog.html"
+          }
+        ]
+      }
+    ]
+  }
+}

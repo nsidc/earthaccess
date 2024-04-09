@@ -1,0 +1,1476 @@
+{
+  "hits": 1113,
+  "took": 372,
+  "items": [
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533272776-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_dayl_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:27:54.751Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_dayl_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_dayl_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_dayl_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_dayl_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_dayl_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_dayl_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_dayl_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 2.015649,
+              "SizeInBytes": 2015649,
+              "Checksum": {
+                "Value": "449827b2ede5fe14d716f39d06d6338c96032b26ec0fb3225a73d9ed45f0409f",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273209-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_srad_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:11.074Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_srad_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_srad_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_srad_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_srad_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_srad_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_srad_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_srad_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 13.319942,
+              "SizeInBytes": 13319942,
+              "Checksum": {
+                "Value": "1370f997fbd109126a0c9144a9058512a6c20b4914fb51026432c5fa4176996d",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273484-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:21.031Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_vp_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_vp_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 14.786678,
+              "SizeInBytes": 14786678,
+              "Checksum": {
+                "Value": "886a6ddaa8e70e1451571e85910b869e532b783b0f43248daf753a71e6ab2616",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273499-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:21.291Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_tmax_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_tmax_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 9.474246,
+              "SizeInBytes": 9474246,
+              "Checksum": {
+                "Value": "425e19160c9da2f613abfa093dfe02ff8aec6451fba2a832b055ae9d068dee62",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273533-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmin_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:22.737Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmin_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmin_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_tmin_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmin_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_tmin_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmin_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_tmin_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 8.950741,
+              "SizeInBytes": 8950741,
+              "Checksum": {
+                "Value": "2be751975eebbd6d58a1c0d234776effb2f1689821f98f3255d4e2681e36e12c",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273797-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_swe_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:34.568Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_swe_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_swe_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_swe_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_swe_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_swe_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_swe_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_swe_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 1.350456,
+              "SizeInBytes": 1350456,
+              "Checksum": {
+                "Value": "528c9df8bde3b8f8d2cb914eaa4ad646a4b201f5deeccbf30f53f91316c6a0b7",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533274129-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1950.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:50.577Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1950-01-01T00:00:00.000Z",
+            "EndingDateTime": "1950-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1950.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1950.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_prcp_1950.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1950.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_prcp_1950.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1950.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1950.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 5.81705,
+              "SizeInBytes": 5817050,
+              "Checksum": {
+                "Value": "a4aedf37f59f45011c7817e597048d79dcf44233c8dbf92174f6e3adaceea864",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273002-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1951.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:05.411Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1951-01-01T00:00:00.000Z",
+            "EndingDateTime": "1951-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1951.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1951.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_vp_1951.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1951.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_vp_1951.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_vp_1951.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_vp_1951.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 14.725072,
+              "SizeInBytes": 14725072,
+              "Checksum": {
+                "Value": "110959be3641dfa935e38ad15cf0acdf31db97b1c190da854f1e06d46ba80e9f",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273429-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1951.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:18.193Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1951-01-01T00:00:00.000Z",
+            "EndingDateTime": "1951-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1951.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1951.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_tmax_1951.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1951.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_tmax_1951.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_tmax_1951.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_tmax_1951.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 9.071668,
+              "SizeInBytes": 9071668,
+              "Checksum": {
+                "Value": "2a5c9b12c33fdeb16212b92ad66696705bdb3f1a953db50e8d1674ea96830962",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G2533273501-ORNL_CLOUD",
+        "revision-id": 2,
+        "native-id": "Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1951.nc",
+        "provider-id": "ORNL_CLOUD",
+        "format": "application/echo10+xml",
+        "revision-date": "2023-03-03T14:28:20.761Z"
+      },
+      "umm": {
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "1951-01-01T00:00:00.000Z",
+            "EndingDateTime": "1951-12-31T23:59:59.000Z"
+          }
+        },
+        "GranuleUR": "Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1951.nc",
+        "MeasuredParameters": [
+          {
+            "ParameterName": "VAPOR PRESSURE"
+          },
+          {
+            "ParameterName": "24 HOUR PRECIPITATION AMOUNT"
+          },
+          {
+            "ParameterName": "MAXIMUM/MINIMUM TEMPERATURE"
+          },
+          {
+            "ParameterName": "SHORTWAVE RADIATION"
+          },
+          {
+            "ParameterName": "SNOW WATER EQUIVALENT"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -67.9928,
+                  "EastBoundingCoordinate": -64.1196,
+                  "NorthBoundingCoordinate": 19.9382,
+                  "SouthBoundingCoordinate": 16.8444
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2023-03-01T00:00:00.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2023-03-03T14:27:01.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "Daymet_Daily_V4R1_2129",
+          "Version": "4.5"
+        },
+        "RelatedUrls": [
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1951.nc",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_prcp_1951.nc"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/public/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1951.nc.sha256",
+            "Type": "GET DATA",
+            "Description": "Download daymet_v4_daily_pr_prcp_1951.nc.sha256"
+          },
+          {
+            "URL": "s3://ornl-cumulus-prod-protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_pr_prcp_1951.nc",
+            "Type": "GET DATA VIA DIRECT ACCESS",
+            "Description": "This link provides direct download access via S3 to the granule"
+          },
+          {
+            "URL": "https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "ORNL DAAC Data Set Documentation"
+          },
+          {
+            "URL": "https://doi.org/10.3334/ORNLDAAC/2129",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data set Landing Page DOI URL"
+          },
+          {
+            "URL": "https:/daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4R1/comp/Daymet_Daily_V4R1.pdf",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "Data Set Documentation"
+          },
+          {
+            "URL": "https://data.ornldaac.earthdata.nasa.gov/s3credentials",
+            "Type": "VIEW RELATED INFORMATION",
+            "Description": "api endpoint to retrieve temporary credentials valid for same-region direct s3 access"
+          },
+          {
+            "URL": "https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_pr_prcp_1951.nc",
+            "Type": "USE SERVICE API",
+            "Subtype": "OPENDAP DATA",
+            "Description": "OPeNDAP request URL"
+          }
+        ],
+        "Projects": [
+          {
+            "ShortName": "Not provided",
+            "Campaigns": [
+              "Daymet"
+            ]
+          }
+        ],
+        "DataGranule": {
+          "DayNightFlag": "Both",
+          "ProductionDateTime": "2023-03-01T00:00:00.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 5.03199,
+              "SizeInBytes": 5031990,
+              "Checksum": {
+                "Value": "fed8c1dd36d1b1ad606d6cf7bebdf88445b0aada10e87218d289c8d7733c9aa6",
+                "Algorithm": "SHA-256"
+              },
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "Platforms": [
+          {
+            "ShortName": "MODELS",
+            "Instruments": [
+              {
+                "ShortName": "Computer"
+              }
+            ]
+          }
+        ],
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    }
+  ]
+}

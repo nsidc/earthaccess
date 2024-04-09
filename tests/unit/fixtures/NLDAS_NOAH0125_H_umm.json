@@ -1,0 +1,82 @@
+{
+  "hits": 1,
+  "took": 1300,
+  "items": [
+    {
+      "meta": {
+        "concept-type": "granule",
+        "concept-id": "G1594284907-GES_DISC",
+        "revision-id": 1,
+        "native-id": "NLDAS_NOAH0125_H.002:NLDAS_NOAH0125_H.A20190220.0000.002.grb",
+        "provider-id": "GES_DISC",
+        "format": "application/echo10+xml",
+        "revision-date": "2019-02-23T18:12:43.204Z"
+      },
+      "umm": {
+        "RelatedUrls": [
+          {
+            "URL": "https://hydro1.gesdisc.eosdis.nasa.gov/data/NLDAS/NLDAS_NOAH0125_H.002/2019/051/NLDAS_NOAH0125_H.A20190220.0000.002.grb",
+            "Type": "GET DATA"
+          }
+        ],
+        "SpatialExtent": {
+          "HorizontalSpatialDomain": {
+            "Geometry": {
+              "BoundingRectangles": [
+                {
+                  "WestBoundingCoordinate": -125,
+                  "EastBoundingCoordinate": -67,
+                  "NorthBoundingCoordinate": 53,
+                  "SouthBoundingCoordinate": 25
+                }
+              ]
+            }
+          }
+        },
+        "ProviderDates": [
+          {
+            "Date": "2019-02-23T18:11:12.000Z",
+            "Type": "Insert"
+          },
+          {
+            "Date": "2019-02-23T18:11:12.000Z",
+            "Type": "Update"
+          }
+        ],
+        "CollectionReference": {
+          "ShortName": "NLDAS_NOAH0125_H",
+          "Version": "002"
+        },
+        "DataGranule": {
+          "DayNightFlag": "Unspecified",
+          "Identifiers": [
+            {
+              "Identifier": "NLDAS_NOAH0125_H.A20190220.0000.002.grb",
+              "IdentifierType": "ProducerGranuleId"
+            }
+          ],
+          "ProductionDateTime": "2019-02-23T18:11:12.000Z",
+          "ArchiveAndDistributionInformation": [
+            {
+              "Name": "Not provided",
+              "Size": 6.69670295715332,
+              "SizeUnit": "MB"
+            }
+          ]
+        },
+        "TemporalExtent": {
+          "RangeDateTime": {
+            "BeginningDateTime": "2019-02-20T00:00:00.000Z",
+            "EndingDateTime": "2019-02-20T00:00:00.000Z"
+          }
+        },
+        "GranuleUR": "NLDAS_NOAH0125_H.002:NLDAS_NOAH0125_H.A20190220.0000.002.grb",
+        "MetadataSpecification": {
+          "URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.4",
+          "Name": "UMM-G",
+          "Version": "1.6.4"
+        }
+      }
+    }
+  ]
+}
