@@ -2,11 +2,11 @@
 
 ## Bi-weekly (alternating weeks) _earthaccess_ hack days
 
-???+ info
+???+ info "How to get invited"
 
-  For an invitation to our recurring hack day meeting, please visit our
-  [announcement thread on GitHub Discussions](https://github.com/nsidc/earthaccess/discussions/440#)
-  and make a comment to request a calendar invitation and Zoom link.
+    For an invitation to our recurring hack day meeting, please visit our
+    [announcement thread on GitHub Discussions](https://github.com/nsidc/earthaccess/discussions/440#)
+    and make a comment to request a calendar invitation and Zoom link.
 
 
 Hack days...
