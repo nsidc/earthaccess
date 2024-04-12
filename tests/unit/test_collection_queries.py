@@ -27,9 +27,9 @@ def test_query_can_find_cloud_provider():
     assert query.params["provider"] == "POCLOUD"
     query = DataCollections().cloud_hosted(True).daac("PODAAC")
     assert query.params["provider"] == "POCLOUD"
-    # OBDAAC does not have a cloud provider so it should default to the on prem provider
-    query = DataCollections().cloud_hosted(True).daac("OBDAAC")
-    assert query.params["provider"] == "OB_DAAC"
+    # SEDAC does not have a cloud provider so it should default to the on prem provider
+    query = DataCollections().cloud_hosted(True).daac("SEDAC")
+    assert query.params["provider"] == "SEDAC"
 
 
 def test_querybuilder_can_handle_doi():
