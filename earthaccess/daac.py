@@ -126,6 +126,7 @@ DAAC_TEST_URLS = [
     "https://hydro1.gesdisc.eosdis.nasa.gov/data/GLDAS/GLDAS_NOAH10_M.2.0/1948/",
     "https://e4ftl01.cr.usgs.gov//DP114/MOTA/MCD43A3.006/2000.02.24/MCD43A3.A2000055.h15v07.006.2016101151720.hdf.xml",
     "https://daac.ornl.gov/daacdata/npp/grassland/NPP_BCN/data/bcn_cli.txt",
+    "https://data.asdc.earthdata.nasa.gov/asdc-prod-protected/FIELDCAMPAIGN/TRACE/TRACE-A_001/TRACE-A-tra11_90.m.Z",
 ]
 
 
