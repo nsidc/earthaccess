@@ -100,7 +100,7 @@ DAACS = [
         "homepage": "https://asdc.larc.nasa.gov/",
         "cloud-providers": ["LARC_CLOUD"],
         "on-prem-providers": ["LARC_ASDC"],
-        "s3-credentials": "",
+        "s3-credentials": "https://data.asdc.earthdata.nasa.gov/s3credentials",
         "eulas": [],
     },
 ]
