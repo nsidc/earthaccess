@@ -97,7 +97,15 @@ class TestStoreSessions(unittest.TestCase):
 
         store = Store(self.auth)
         self.assertTrue(isinstance(store.auth, Auth))
-        for daac in ["NSIDC", "PODAAC", "LPDAAC", "ORNLDAAC", "GES_DISC", "ASF"]:
+        for daac in [
+            "NSIDC",
+            "PODAAC",
+            "LPDAAC",
+            "ORNLDAAC",
+            "GES_DISC",
+            "ASF",
+            "ASDC",
+        ]:
             s3_fs = store.get_s3fs_session(daac=daac)
             assert isinstance(s3_fs, s3fs.S3FileSystem)
             assert s3_fs.storage_options == expected_storage_options
@@ -114,6 +122,7 @@ class TestStoreSessions(unittest.TestCase):
             "ORNL_CLOUD",
             "GES_DISC",
             "ASF",
+            "ASDC",
         ]:
             s3_fs = store.get_s3fs_session(provider=provider)
             assert isinstance(s3_fs, s3fs.S3FileSystem)
