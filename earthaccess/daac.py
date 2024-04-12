@@ -94,6 +94,15 @@ DAACS = [
         "s3-credentials": "https://data.laadsdaac.earthdatacloud.nasa.gov/s3credentials",
         "eulas": [],
     },
+    {
+        "short-name": "ASDC",
+        "name": "Atmospheric Science Data Center",
+        "homepage": "https://asdc.larc.nasa.gov/",
+        "cloud-providers": ["LARC_CLOUD"],
+        "on-prem-providers": ["LARC_ASDC"],
+        "s3-credentials": "",
+        "eulas": [],
+    },
 ]
 
 
@@ -106,6 +115,7 @@ CLOUD_PROVIDERS = [
     "GHRC_DAAC",
     "ORNL_CLOUD",
     "LAADS",
+    "LARC_CLOUD",
 ]
 
 # Some testing urls behind EDL
