@@ -122,7 +122,7 @@ class TestStoreSessions(unittest.TestCase):
             "ORNL_CLOUD",
             "GES_DISC",
             "ASF",
-            "ASDC",
+            "LARC_CLOUD",
         ]:
             s3_fs = store.get_s3fs_session(provider=provider)
             assert isinstance(s3_fs, s3fs.S3FileSystem)
