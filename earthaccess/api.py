@@ -8,7 +8,7 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .typing_ import Any, Dict, List, Optional, Union
+from .typing_ import Any, Dict, List, Never, Optional, Union
 from .utils import _validation as validate
 
 
@@ -27,7 +27,9 @@ def _normalize_location(location: Optional[str]) -> Optional[str]:
     return location
 
 
-def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
+def search_datasets(
+    count: int = -1, **kwargs: Any
+) -> Union[List[DataCollection], Never]:
     """Search datasets using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -50,6 +52,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     Returns:
         A list of DataCollection results that can be used to get information about a
             dataset, e.g. concept_id, doi, etc.
+
+    Raises:
+        RuntimeError: The CMR query failed.
 
     Examples:
         ```python
@@ -75,7 +80,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     return query.get_all()
 
 
-def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
+def search_data(count: int = -1, **kwargs: Any) -> Union[List[DataGranule], Never]:
     """Search dataset granules using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -98,6 +103,9 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     Returns:
         a list of DataGranules that can be used to access the granule files by using
             `download()` or `open()`.
+
+    Raises:
+        RuntimeError: The CMR query failed.
 
     Examples:
         ```python
@@ -158,7 +166,7 @@ def download(
     local_path: Optional[str],
     provider: Optional[str] = None,
     threads: int = 8,
-) -> List[str]:
+) -> Union[List[str], Never]:
     """Retrieves data granules from a remote storage system.
 
        * If we run this in the cloud, we will be using S3 to move data to `local_path`.
@@ -173,6 +181,9 @@ def download(
 
     Returns:
         List of downloaded files
+
+    Raises:
+        Exception: A file download failed.
     """
     provider = _normalize_location(provider)
     if isinstance(granules, DataGranule):

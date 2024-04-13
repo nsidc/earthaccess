@@ -29,19 +29,23 @@ PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
 
 def get_results(
     query: Union[CollectionQuery, GranuleQuery], limit: int = 2000
-) -> List[Any]:
+) -> Union[List[Any], Never]:
     """
     Get all results up to some limit, even if spanning multiple pages.
 
     ???+ Tip
-        The default page size is 2000, if the supplied value is greater then the Search-After header
-        will be used to iterate across multiple requests until either the limit has been reached
-        or there are no more results.
+        The default page size is 2000, if the supplied value is greater then the
+        Search-After header will be used to iterate across multiple requests until
+        either the limit has been reached or there are no more results.
+
     Parameters:
         limit: The number of results to return
 
     Returns:
         query results as a list
+
+    Raises:
+        RuntimeError: The CMR query failed.
     """
 
     page_size = min(limit, 2000)
@@ -74,7 +78,8 @@ def get_results(
 class DataCollections(CollectionQuery):
     """
     ???+ Info
-        The DataCollection class queries against https://cmr.earthdata.nasa.gov/search/collections.umm_json,
+        The DataCollection class queries against
+        https://cmr.earthdata.nasa.gov/search/collections.umm_json,
         the response has to be in umm_json to use the result classes.
     """
 
@@ -82,7 +87,7 @@ class DataCollections(CollectionQuery):
     _format = "umm_json"
 
     def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
-        """Builds an instance of DataCollections to query CMR
+        """Builds an instance of DataCollections to query the CMR.
 
         Parameters:
             auth: An authenticated `Auth` instance. This is an optional parameter
@@ -108,11 +113,11 @@ class DataCollections(CollectionQuery):
         making a lightweight query to CMR and inspecting the returned headers.
         Restricted datasets will always return zero results even if there are results.
 
-        Raises:
-            RuntimeError: if the CMR query fails
-
         Returns:
-            The number of results reported by CMR.
+            The number of results reported by the CMR.
+
+        Raises:
+            RuntimeError: The CMR query failed.
         """
         url = self._build_url()
 
@@ -131,18 +136,19 @@ class DataCollections(CollectionQuery):
         up to some limit, even if spanning multiple pages.
 
         ???+ Tip
-            The default page size is 2000, we need to be careful with the request size because all the JSON
-            elements will be loaded into memory. This is more of an issue with granules than collections as
-            they can be potentially millions of them.
+            The default page size is 2000, we need to be careful with the request size
+            because all the JSON elements will be loaded into memory. This is more of an
+            issue with granules than collections as they can be potentially millions of
+            them.
 
         Parameters:
             limit: The number of results to return
 
-        Raises:
-            RuntimeError: if the CMR query fails
-
         Returns:
-            query results as a (possibly empty) list of `DataCollection` instances.
+            Query results as a (possibly empty) list of `DataCollection` instances.
+
+        Raises:
+            RuntimeError: The CMR query failed.
         """
 
         return [
@@ -151,25 +157,28 @@ class DataCollections(CollectionQuery):
         ]
 
     @override
-    def concept_id(self, IDs: Sequence[str]) -> Union[Self, Never]:
+    def concept_id(self, IDs: Sequence[str]) -> Self:
         """Filter by concept ID.
-        For example: C1299783579-LPDAAC_ECS or G1327299284-LPDAAC_ECS, S12345678-LPDAAC_ECS
+
+        For example: C1299783579-LPDAAC_ECS or G1327299284-LPDAAC_ECS,
+        S12345678-LPDAAC_ECS
 
         Collections, granules, tools, services are uniquely identified with this ID.
-        >
-        * If providing a collection's concept ID here, it will filter by granules associated with that collection.
-        * If providing a granule's concept ID here, it will uniquely identify those granules.
-        * If providing a tool's concept ID here, it will uniquely identify those tools.
-        * If providing a service's concept ID here, it will uniquely identify those services.
+
+        * If providing a collection's concept ID, it will filter by granules associated
+          with that collection.
+        * If providing a granule's concept ID, it will uniquely identify those granules.
+        * If providing a tool's concept ID, it will uniquely identify those tools.
+        * If providing a service's concept ID, it will uniquely identify those services.
 
         Parameters:
             IDs: ID(s) to search by. Can be provided as a string or list of strings.
 
-        Raises:
-            ValueError: if an ID does not start with a valid prefix
-
         Returns:
             self
+
+        Raises:
+            ValueError: An ID does not start with a valid prefix.
         """
         return super().concept_id(IDs)
 
@@ -187,7 +196,7 @@ class DataCollections(CollectionQuery):
         """
         return super().keyword(text)
 
-    def doi(self, doi: str) -> Union[Self, Never]:
+    def doi(self, doi: str) -> Self:
         """Search datasets by DOI.
 
         ???+ Tip
@@ -198,11 +207,11 @@ class DataCollections(CollectionQuery):
         Parameters:
             doi: DOI of a datasets, e.g. 10.5067/AQR50-3Q7CS
 
-        Raises:
-            TypeError: if `doi` is not of type `str`
-
         Returns:
             self
+
+        Raises:
+            TypeError: `doi` is not of type `str`.
         """
         if not isinstance(doi, str):
             raise TypeError("doi must be of type str")
@@ -210,8 +219,8 @@ class DataCollections(CollectionQuery):
         self.params["doi"] = doi
         return self
 
-    def instrument(self, instrument: str) -> Union[Self, Never]:
-        """Searh datasets by instrument
+    def instrument(self, instrument: str) -> Self:
+        """Searh datasets by instrument.
 
         ???+ Tip
             Not all datasets have an associated instrument. This works
@@ -220,11 +229,11 @@ class DataCollections(CollectionQuery):
         Parameters:
             instrument (String): instrument of a datasets, e.g. instrument=GEDI
 
-        Raises:
-            TypeError: if `instrument` is not of type `str`
-
         Returns:
             self
+
+        Raises:
+            TypeError: `instrument` is not of type `str`.
         """
         if not isinstance(instrument, str):
             raise TypeError("instrument must be of type str")
@@ -232,8 +241,8 @@ class DataCollections(CollectionQuery):
         self.params["instrument"] = instrument
         return self
 
-    def project(self, project: str) -> Union[Self, Never]:
-        """Searh datasets by associated project
+    def project(self, project: str) -> Self:
+        """Searh datasets by associated project.
 
         ???+ Tip
             Not all datasets have an associated project. This works
@@ -243,11 +252,11 @@ class DataCollections(CollectionQuery):
         Parameters:
             project (String): associated project of a datasets, e.g. project=EMIT
 
-        Raises:
-            TypeError: if `project` is not of type `str`
-
         Returns:
             self
+
+        Raises:
+            TypeError: `project` is not of type `str`.
         """
         if not isinstance(project, str):
             raise TypeError("project must be of type str")
@@ -256,24 +265,26 @@ class DataCollections(CollectionQuery):
         return self
 
     @override
-    def parameters(self, **kwargs: Any) -> Union[Self, Never]:
+    def parameters(self, **kwargs: Any) -> Self:
         """Provide query parameters as keyword arguments. The keyword needs to match the name
         of the method, and the value should either be the value or a tuple of values.
 
         ???+ Example
             ```python
-            query = DataCollections.parameters(short_name="AST_L1T",
-                                               temporal=("2015-01","2015-02"),
-                                               point=(42.5, -101.25))
+            query = DataCollections.parameters(
+                short_name="AST_L1T",
+                temporal=("2015-01","2015-02"),
+                point=(42.5, -101.25)
+            )
             ```
-
-        Raises:
-            ValueError: if the name of a keyword argument is not the name of a method
-            TypeError: if the value of a keyword argument is not an argument or tuple
-                of arguments matching the number and type(s) of the method's parameters
 
         Returns:
             self
+
+        Raises:
+            ValueError: The name of a keyword argument is not the name of a method.
+            TypeError: The value of a keyword argument is not an argument or tuple
+                of arguments matching the number and type(s) of the method's parameters.
         """
         methods = dict(getmembers(self, predicate=ismethod))
 
@@ -300,7 +311,8 @@ class DataCollections(CollectionQuery):
         """Masks the response by only showing the fields included in this list.
 
         Parameters:
-            fields (List): list of fields to show, these fields come from the UMM model e.g. Abstract, Title
+            fields (List): list of fields to show. These fields come from the UMM model
+                (e.g. Abstract, Title).
 
         Returns:
             self
@@ -309,10 +321,11 @@ class DataCollections(CollectionQuery):
         return self
 
     def debug(self, debug: bool = True) -> Self:
-        """If True, prints the actual query to CMR, notice that the pagination happens in the headers.
+        """If True, prints the actual query to CMR. Note that the pagination happens in
+        the headers.
 
         Parameters:
-            debug (Boolean): Print CMR query.
+            debug (Boolean): If `True`, print the CMR query.
 
         Returns:
             self
@@ -320,21 +333,22 @@ class DataCollections(CollectionQuery):
         self._debug = debug
         return self
 
-    def cloud_hosted(self, cloud_hosted: bool = True) -> Union[Self, Never]:
-        """Only match granules that are hosted in the cloud. This is valid for public collections.
+    def cloud_hosted(self, cloud_hosted: bool = True) -> Self:
+        """Only match granules that are hosted in the cloud. This is valid for public
+        collections.
 
         ???+ Tip
             Cloud hosted collections can be public or restricted.
             Restricted collections will not be matched using this parameter
 
         Parameters:
-            cloud_hosted: True to require granules only be online
-
-        Raises:
-            TypeError: if `cloud_hosted` is not of type `bool`
+            cloud_hosted: If `True`, obtain only cloud-hosted collections.
 
         Returns:
             self
+
+        Raises:
+            TypeError: `cloud_hosted` is not of type `bool`.
         """
         if not isinstance(cloud_hosted, bool):
             raise TypeError("cloud_hosted must be of type bool")
@@ -350,8 +364,8 @@ class DataCollections(CollectionQuery):
         """Only match collections from a given provider.
 
         A NASA datacenter or DAAC can have one or more providers.
-        E.g., PODAAC is a data center or DAAC; PODAAC is the default provider for on-premises data,
-        POCLOUD is the PODAAC provider for their data in the cloud.
+        E.g., PODAAC is a data center or DAAC; PODAAC is the default provider for
+        on-premises data, POCLOUD is the PODAAC provider for their data in the cloud.
 
         Parameters:
             provider: a provider code for any DAAC, e.g. POCLOUD, NSIDC_CPRD, etc.
@@ -363,7 +377,7 @@ class DataCollections(CollectionQuery):
         return self
 
     def data_center(self, data_center_name: str) -> Self:
-        """An alias name for the `daac` method.
+        """An alias for the `daac` method.
 
         Parameters:
             data_center_name: DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
@@ -374,7 +388,8 @@ class DataCollections(CollectionQuery):
         return self.daac(data_center_name)
 
     def daac(self, daac_short_name: str) -> Self:
-        """Only match collections for a given DAAC, by default the on-prem collections for the DAAC.
+        """Only match collections for a given DAAC, by default the on-prem collections
+        for the DAAC.
 
         Parameters:
             daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
@@ -396,24 +411,25 @@ class DataCollections(CollectionQuery):
         date_from: Optional[Union[str, dt.datetime]] = None,
         date_to: Optional[Union[str, dt.datetime]] = None,
         exclude_boundary: bool = False,
-    ) -> Union[Self, Never]:
-        """Filter by an open or closed date range. Dates can be provided as datetime objects
-        or ISO 8601 formatted strings. Multiple ranges can be provided by successive calls
-        to this method before calling execute().
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as datetime
+        objects or ISO 8601 formatted strings. Multiple ranges can be provided by
+        successive calls to this method before calling execute().
 
         Parameters:
             date_from (String or Datetime object): earliest date of temporal range
             date_to (String or Datetime object): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in the matched range.
-
-        Raises:
-            ValueError: if `date_from` or `date_to` is a non-`None` value that is
-                neither a datetime object nor a string that can be parsed as a datetime
-                object; or if `date_from` and `date_to` are both datetime objects (or
-                parsable as such) and `date_from` is greater than `date_to`
+            exclude_boundary (Boolean): whether or not to exclude the date_from/to in
+                the matched range.
 
         Returns:
             self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None and not isinstance(date_from, dt.datetime):
@@ -457,13 +473,14 @@ class DataGranules(GranuleQuery):
     @override
     def hits(self) -> Union[int, Never]:
         """Returns the number of hits the current query will return.
-        This is done by making a lightweight query to CMR and inspecting the returned headers.
-
-        Raises:
-            RuntimeError: if the CMR query fails
+        This is done by making a lightweight query to CMR and inspecting the returned
+        headers.
 
         Returns:
-            The number of results reported by CMR.
+            The number of results reported by the CMR.
+
+        Raises:
+            RuntimeError: The CMR query failed.
         """
 
         url = self._build_url()
@@ -486,18 +503,19 @@ class DataGranules(GranuleQuery):
         up to some limit, even if spanning multiple pages.
 
         ???+ Tip
-            The default page size is 2000, we need to be careful with the request size because all the JSON
-            elements will be loaded into memory. This is more of an issue with granules than collections as
-            they can be potentially millions of them.
+            The default page size is 2000, we need to be careful with the request size
+            because all the JSON elements will be loaded into memory. This is more of an
+            issue with granules than collections as they can be potentially millions of
+            them.
 
         Parameters:
-            limit: The number of results to return
-
-        Raises:
-            RuntimeError: if the CMR query fails
+            limit: The number of results to return.
 
         Returns:
-            query results as a (possibly empty) list of `DataGranules` instances.
+            Query results as a (possibly empty) list of `DataGranules` instances.
+
+        Raises:
+            RuntimeError: The CMR query failed.
         """
         response = get_results(self, limit)
 
@@ -506,24 +524,27 @@ class DataGranules(GranuleQuery):
         return [DataGranule(granule, cloud_hosted=cloud) for granule in response]
 
     @override
-    def parameters(self, **kwargs: Any) -> Union[Self, Never]:
-        """Provide query parameters as keyword arguments. The keyword needs to match the name
-        of the method, and the value should either be the value or a tuple of values.
+    def parameters(self, **kwargs: Any) -> Self:
+        """Provide query parameters as keyword arguments. The keyword needs to match the
+        name of the method, and the value should either be the value or a tuple of
+        values.
 
         ???+ Example
             ```python
-            query = DataCollections.parameters(short_name="AST_L1T",
-                                               temporal=("2015-01","2015-02"),
-                                               point=(42.5, -101.25))
+            query = DataCollections.parameters(
+                short_name="AST_L1T",
+                temporal=("2015-01","2015-02"),
+                point=(42.5, -101.25)
+            )
             ```
-
-        Raises:
-            ValueError: if the name of a keyword argument is not the name of a method
-            TypeError: if the value of a keyword argument is not an argument or tuple
-                of arguments matching the number and type(s) of the method's parameters
 
         Returns:
             self
+
+        Raises:
+            ValueError: The name of a keyword argument is not the name of a method.
+            TypeError: The value of a keyword argument is not an argument or tuple
+                of arguments matching the number and type(s) of the method's parameters.
         """
         methods = {}
         for name, func in getmembers(self, predicate=ismethod):
@@ -560,7 +581,7 @@ class DataGranules(GranuleQuery):
         return self
 
     def data_center(self, data_center_name: str) -> Self:
-        """An alias name for `daac()`.
+        """An alias for the `daac` method.
 
         Parameters:
             data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
@@ -571,7 +592,8 @@ class DataGranules(GranuleQuery):
         return self.daac(data_center_name)
 
     def daac(self, daac_short_name: str) -> Self:
-        """Only match collections for a given DAAC. Default to on-prem collections for the DAAC.
+        """Only match collections for a given DAAC. Default to on-prem collections for
+        the DAAC.
 
         Parameters:
             daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
@@ -605,7 +627,7 @@ class DataGranules(GranuleQuery):
         """
         return super().orbit_number(orbit1, orbit2)
 
-    def cloud_hosted(self, cloud_hosted: bool = True) -> Union[Self, Never]:
+    def cloud_hosted(self, cloud_hosted: bool = True) -> Self:
         """Only match granules that are hosted in the cloud.
         This is valid for public collections and when using the short_name parameter.
         Concept-Id is unambiguous.
@@ -615,13 +637,13 @@ class DataGranules(GranuleQuery):
             Restricted collections will not be matched using this parameter.
 
         Parameters:
-            cloud_hosted: True to require granules only be online
-
-        Raises:
-            TypeError: if `cloud_hosted` is not of type `bool`
+            cloud_hosted: If `True`, obtain only granules from cloud-hosted collections.
 
         Returns:
             self
+
+        Raises:
+            TypeError: `cloud_hosted` is not of type `bool`.
         """
         if not isinstance(cloud_hosted, bool):
             raise TypeError("cloud_hosted must be of type bool")
@@ -634,7 +656,7 @@ class DataGranules(GranuleQuery):
                 self.params["provider"] = provider
         return self
 
-    def granule_name(self, granule_name: str) -> Union[Self, Never]:
+    def granule_name(self, granule_name: str) -> Self:
         """Find granules matching either granule ur or producer granule id,
         queries using the readable_granule_name metadata field.
 
@@ -645,11 +667,11 @@ class DataGranules(GranuleQuery):
         Parameters:
             granule_name: granule name (accepts wildcards)
 
-        Raises:
-            TypeError: if `granule_name` is not of type `str`
-
         Returns:
             self
+
+        Raises:
+            TypeError: if `granule_name` is not of type `str`
         """
         if not isinstance(granule_name, str):
             raise TypeError("granule_name must be of type string")
@@ -659,65 +681,66 @@ class DataGranules(GranuleQuery):
         return self
 
     @override
-    def online_only(self, online_only: bool = True) -> Union[Self, Never]:
+    def online_only(self, online_only: bool = True) -> Self:
         """Only match granules that are listed online and not available for download.
-        The opposite of this method is downloadable().
+        The inverse of this method is `downloadable`.
 
         Parameters:
-            online_only: True to require granules only be online
-
-        Raises:
-            TypeError: if `online_only` is not of type `bool`
+            online_only: If `True`, obtain only granules that are online (not
+                downloadable)
 
         Returns:
             self
+
+        Raises:
+            TypeError: `online_only` is not of type `bool`.
         """
         return super().online_only(online_only)
 
     @override
-    def day_night_flag(self, day_night_flag: str) -> Union[Self, Never]:
+    def day_night_flag(self, day_night_flag: str) -> Self:
         """Filter by period of the day the granule was collected during.
 
         Parameters:
             day_night_flag: "day", "night", or "unspecified"
 
-        Raises:
-            TypeError: if `day_night_flag` is not of type `str`
-            ValueError: if `day_night_flag` is not one of `"day"`, `"night"`, or
-                `"unspecified"`
-
         Returns:
             self
+
+        Raises:
+            TypeError: `day_night_flag` is not of type `str`.
+            ValueError: `day_night_flag` is not one of `"day"`, `"night"`, or
+                `"unspecified"`.
         """
         return super().day_night_flag(day_night_flag)
 
     @override
-    def instrument(self, instrument: str) -> Union[Self, Never]:
+    def instrument(self, instrument: str) -> Self:
         """Filter by the instrument associated with the granule.
 
         Parameters:
             instrument: name of the instrument
 
-        Raises:
-            ValueError: if `instrument` is not a non-empty string
-
         Returns:
             self
+
+        Raises:
+            ValueError: `instrument` is not a non-empty string.
         """
         return super().instrument(instrument)
 
     @override
-    def platform(self, platform: str) -> Union[Self, Never]:
+    def platform(self, platform: str) -> Self:
         """Filter by the satellite platform the granule came from.
 
         Parameters:
             platform: name of the satellite
 
-        Raises:
-            ValueError: if `platform` is not a non-empty string
-
         Returns:
             self
+
+        Raises:
+            ValueError: `platform` is not a non-empty string.
         """
         return super().platform(platform)
 
@@ -726,19 +749,19 @@ class DataGranules(GranuleQuery):
         self,
         min_cover: Optional[FloatLike] = 0,
         max_cover: Optional[FloatLike] = 100,
-    ) -> Union[Self, Never]:
+    ) -> Self:
         """Filter by the percentage of cloud cover present in the granule.
 
         Parameters:
             min_cover: minimum percentage of cloud cover
             max_cover: maximum percentage of cloud cover
 
-        Raises:
-            ValueError: if `min_cover` or `max_cover` is not convertible to a float,
-                or if `min_cover` is greater than `max_cover`
-
         Returns:
             self
+
+        Raises:
+            ValueError: `min_cover` or `max_cover` is not convertible to a float,
+                or `min_cover` is greater than `max_cover`.
         """
         return super().cloud_cover(min_cover, max_cover)
 
@@ -778,10 +801,11 @@ class DataGranules(GranuleQuery):
         return super().short_name(short_name)
 
     def debug(self, debug: bool = True) -> Self:
-        """If True, prints the actual query to CMR, notice that the pagination happens in the headers.
+        """If True, prints the actual query to CMR, notice that the pagination happens
+        in the headers.
 
         Parameters:
-            debug: Print CMR query.
+            debug: If `True`, print the CMR query.
 
         Returns:
             self
@@ -795,24 +819,26 @@ class DataGranules(GranuleQuery):
         date_from: Optional[Union[str, dt.datetime]] = None,
         date_to: Optional[Union[str, dt.datetime]] = None,
         exclude_boundary: bool = False,
-    ) -> Union[Self, Never]:
+    ) -> Self:
         """Filter by an open or closed date range.
-        Dates can be provided as a datetime objects or ISO 8601 formatted strings. Multiple
-        ranges can be provided by successive calls to this method before calling execute().
+
+        Dates can be provided as a datetime objects or ISO 8601 formatted strings.
+        Multiple ranges can be provided by successive calls to this method before
+        calling execute().
 
         Parameters:
             date_from: earliest date of temporal range
             date_to: latest date of temporal range
             exclude_boundary: whether to exclude the date_from/to in the matched range
 
-        Raises:
-            ValueError: if `date_from` or `date_to` is a non-`None` value that is
-                neither a datetime object nor a string that can be parsed as a datetime
-                object; or if `date_from` and `date_to` are both datetime objects (or
-                parsable as such) and `date_from` is greater than `date_to`
-
         Returns:
             self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
         """
         DEFAULT = dt.datetime(1979, 1, 1)
         if date_from is not None and not isinstance(date_from, dt.datetime):
@@ -845,36 +871,36 @@ class DataGranules(GranuleQuery):
         return super().version(version)
 
     @override
-    def point(self, lon: FloatLike, lat: FloatLike) -> Union[Self, Never]:
+    def point(self, lon: FloatLike, lat: FloatLike) -> Self:
         """Filter by granules that include a geographic point.
 
         Parameters:
-            lon (String): longitude of geographic point
-            lat (String): latitude of geographic point
-
-        Raises:
-            ValueError: if `lon` or `lat` cannot be converted to a float
+            lon: longitude of geographic point
+            lat: latitude of geographic point
 
         Returns:
             self
+
+        Raises:
+            ValueError: `lon` or `lat` cannot be converted to a float.
         """
         return super().point(lon, lat)
 
     @override
-    def polygon(self, coordinates: Sequence[PointLike]) -> Union[Self, Never]:
-        """Filter by granules that overlap a polygonal area. Must be used in combination with a
-        collection filtering parameter such as short_name or entry_title.
+    def polygon(self, coordinates: Sequence[PointLike]) -> Self:
+        """Filter by granules that overlap a polygonal area. Must be used in combination
+        with a collection filtering parameter such as short_name or entry_title.
 
         Parameters:
             coordinates: list of (lon, lat) tuples
 
-        Raises:
-            ValueError: if `coordinates` is not a sequence of at least 4 coordinate
-            pairs, any of the coordinates cannot be converted to a float, or the first
-            and last coordinate pairs are not equal
-
         Returns:
             self
+
+        Raises:
+            ValueError: `coordinates` is not a sequence of at least 4 coordinate
+                pairs, any of the coordinates cannot be converted to a float, or the
+                first and last coordinate pairs are not equal.
         """
         return super().polygon(coordinates)
 
@@ -885,9 +911,9 @@ class DataGranules(GranuleQuery):
         lower_left_lat: FloatLike,
         upper_right_lon: FloatLike,
         upper_right_lat: FloatLike,
-    ) -> Union[Self, Never]:
-        """Filter by granules that overlap a bounding box. Must be used in combination with
-        a collection filtering parameter such as short_name or entry_title.
+    ) -> Self:
+        """Filter by granules that overlap a bounding box. Must be used in combination
+        with a collection filtering parameter such as short_name or entry_title.
 
         Parameters:
             lower_left_lon: lower left longitude of the box
@@ -895,51 +921,52 @@ class DataGranules(GranuleQuery):
             upper_right_lon: upper right longitude of the box
             upper_right_lat: upper right latitude of the box
 
-        Raises:
-            ValueError: if any of the coordinates cannot be converted to a float
-
         Returns:
             self
+
+        Raises:
+            ValueError: A coordinate could not be converted to a float.
         """
         return super().bounding_box(
             lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat
         )
 
     @override
-    def line(self, coordinates: Sequence[PointLike]) -> Union[Self, Never]:
-        """Filter by granules that overlap a series of connected points. Must be used in combination
-        with a collection filtering parameter such as short_name or entry_title.
+    def line(self, coordinates: Sequence[PointLike]) -> Self:
+        """Filter by granules that overlap a series of connected points. Must be used
+        in combination with a collection filtering parameter such as short_name or
+        entry_title.
 
         Parameters:
             coordinates: a list of (lon, lat) tuples
 
-        Raises:
-            ValueError: if `coordinates` is not a sequence of at least 2 coordinate
-            pairs, or any of the coordinates cannot be converted to a float
-
         Returns:
             self
+
+        Raises:
+            ValueError: `coordinates` is not a sequence of at least 2 coordinate
+                pairs, or a coordinate could not be converted to a float.
         """
         return super().line(coordinates)
 
     @override
-    def downloadable(self, downloadable: bool = True) -> Union[Self, Never]:
-        """Only match granules that are available for download. The opposite of this
-        method is online_only().
+    def downloadable(self, downloadable: bool = True) -> Self:
+        """Only match granules that are available for download. The inverse of this
+        method is `online_only`.
 
         Parameters:
-            downloadable: True to require granules be downloadable
-
-        Raises:
-            TypeError: if `downloadable` is not of type `bool`
+            downloadable: If `True`, obtain only granules that are downloadable.
 
         Returns:
             self
+
+        Raises:
+            TypeError: `downloadable` is not of type `bool`.
         """
         return super().downloadable(downloadable)
 
     def doi(self, doi: str) -> Union[Self, Never]:
-        """Search data granules by DOI
+        """Search data granules by DOI.
 
         ???+ Tip
             Not all datasets have an associated DOI, internally if a DOI is found
@@ -948,18 +975,26 @@ class DataGranules(GranuleQuery):
         Parameters:
             doi: DOI of a dataset, e.g. 10.5067/AQR50-3Q7CS
 
-        Raises:
-            RuntimeError: if the CMR query to get the collection for the DOI fails
-
         Returns:
             self
+
+        Raises:
+            RuntimeError: The CMR query to get the collection for the DOI fails.
         """
+
+        # TODO consider deferring this query until the search is executed
         collection = DataCollections().doi(doi).get()
+
+        # TODO consider raising an exception when there are multiple collections, since
+        # we can't know which one the user wants, and choosing one is arbitrary.
         if len(collection) > 0:
             concept_id = collection[0].concept_id()
             self.params["concept_id"] = concept_id
         else:
+            # TODO consider removing this print statement since we don't print such
+            # a message in other cases where no results are found.  Seems arbitrary.
             print(
                 f"earthaccess couldn't find any associated collections with the DOI: {doi}"
             )
+
         return self
