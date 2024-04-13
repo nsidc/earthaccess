@@ -12,7 +12,6 @@ from .results import DataCollection, DataGranule
 from .typing_ import (
     Any,
     List,
-    Never,
     Optional,
     Self,
     Sequence,
@@ -29,7 +28,7 @@ PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
 
 def get_results(
     query: Union[CollectionQuery, GranuleQuery], limit: int = 2000
-) -> Union[List[Any], Never]:
+) -> List[Any]:
     """
     Get all results up to some limit, even if spanning multiple pages.
 
@@ -108,7 +107,7 @@ class DataCollections(CollectionQuery):
         self.params["include_granule_counts"] = True
 
     @override
-    def hits(self) -> Union[int, Never]:
+    def hits(self) -> int:
         """Returns the number of hits the current query will return. This is done by
         making a lightweight query to CMR and inspecting the returned headers.
         Restricted datasets will always return zero results even if there are results.
@@ -131,7 +130,7 @@ class DataCollections(CollectionQuery):
         return int(response.headers["CMR-Hits"])
 
     @override
-    def get(self, limit: int = 2000) -> Union[List[DataCollection], Never]:
+    def get(self, limit: int = 2000) -> List[DataCollection]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -471,7 +470,7 @@ class DataGranules(GranuleQuery):
         self._debug = False
 
     @override
-    def hits(self) -> Union[int, Never]:
+    def hits(self) -> int:
         """Returns the number of hits the current query will return.
         This is done by making a lightweight query to CMR and inspecting the returned
         headers.
@@ -498,7 +497,7 @@ class DataGranules(GranuleQuery):
         return int(response.headers["CMR-Hits"])
 
     @override
-    def get(self, limit: int = 2000) -> Union[List[DataGranule], Never]:
+    def get(self, limit: int = 2000) -> List[DataGranule]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -965,7 +964,7 @@ class DataGranules(GranuleQuery):
         """
         return super().downloadable(downloadable)
 
-    def doi(self, doi: str) -> Union[Self, Never]:
+    def doi(self, doi: str) -> Self:
         """Search data granules by DOI.
 
         ???+ Tip

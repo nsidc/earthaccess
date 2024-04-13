@@ -18,11 +18,9 @@ else:
     from typing import TypeAlias
 
 if sys.version_info < (3, 11):
-    from typing import NoReturn as Never
-
     from typing_extensions import Self
 else:
-    from typing import Never, Self
+    from typing import Self
 
 if sys.version_info < (3, 12):
     from typing_extensions import override
@@ -35,7 +33,6 @@ __all__ = [
     "Dict",
     "List",
     "Mapping",
-    "Never",
     "Optional",
     "Self",
     "Sequence",

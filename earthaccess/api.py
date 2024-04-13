@@ -8,7 +8,7 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .typing_ import Any, Dict, List, Never, Optional, Union
+from .typing_ import Any, Dict, List, Optional, Union
 from .utils import _validation as validate
 
 
@@ -27,9 +27,7 @@ def _normalize_location(location: Optional[str]) -> Optional[str]:
     return location
 
 
-def search_datasets(
-    count: int = -1, **kwargs: Any
-) -> Union[List[DataCollection], Never]:
+def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     """Search datasets using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -80,7 +78,7 @@ def search_datasets(
     return query.get_all()
 
 
-def search_data(count: int = -1, **kwargs: Any) -> Union[List[DataGranule], Never]:
+def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     """Search dataset granules using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -166,7 +164,7 @@ def download(
     local_path: Optional[str],
     provider: Optional[str] = None,
     threads: int = 8,
-) -> Union[List[str], Never]:
+) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
        * If we run this in the cloud, we will be using S3 to move data to `local_path`.
