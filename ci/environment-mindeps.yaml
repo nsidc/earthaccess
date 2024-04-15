@@ -26,4 +26,4 @@ dependencies:
   - vcrpy
   - pip
   - pip:
-    - python-cmr==0.10.0
+      - python-cmr==0.10.0
