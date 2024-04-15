@@ -2,6 +2,7 @@ import logging
 
 import earthaccess
 from earthaccess.search import DataCollections
+
 from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
 logging.basicConfig()
@@ -37,6 +38,7 @@ class TestResults(VCRTestCase):
         myvcr.filter_headers = [
             "Accept-Encoding",
             "Authorization",
+            "Cookie",
             "Set-Cookie",
             "User-Agent",
         ]

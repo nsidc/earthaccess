@@ -27,7 +27,9 @@ PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
 
 
 def get_results(
-    query: Union[CollectionQuery, GranuleQuery], limit: int = 2000
+    session: requests.Session,
+    query: Union[CollectionQuery, GranuleQuery],
+    limit: int = 2000,
 ) -> List[Any]:
     """
     Get all results up to some limit, even if spanning multiple pages.
@@ -55,7 +57,7 @@ def get_results(
     headers = dict(query.headers or {})
 
     while more_results:
-        response = requests.get(url, headers=headers, params={"page_size": page_size})
+        response = session.get(url, headers=headers, params={"page_size": page_size})
 
         if cmr_search_after := response.headers.get("cmr-search-after"):
             headers["cmr-search-after"] = cmr_search_after
@@ -152,7 +154,7 @@ class DataCollections(CollectionQuery):
 
         return [
             DataCollection(collection, self._fields)
-            for collection in get_results(self, limit)
+            for collection in get_results(self.session, self, limit)
         ]
 
     @override
@@ -516,7 +518,7 @@ class DataGranules(GranuleQuery):
         Raises:
             RuntimeError: The CMR query failed.
         """
-        response = get_results(self, limit)
+        response = get_results(self.session, self, limit)
 
         cloud = self._is_cloud_hosted(response[0])
 
