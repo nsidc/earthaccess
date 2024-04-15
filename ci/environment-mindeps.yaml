@@ -8,14 +8,12 @@ channels:
 dependencies:
   # required dependencies
   - python=3.8
-  - python-cmr=0.10.0
   - pqdm=0.1
   - requests=2.26
   - s3fs=2022.11
   - fsspec=2022.11
   - tinynetrc=1.3.1
   - multimethod=1.8
-  - python-dateutil=2.8.2
   - importlib-resources=6.3.2
   # test dependencies
   - responses
@@ -26,3 +24,6 @@ dependencies:
   - types-setuptools
   - ruff
   - vcrpy
+  - pip
+  - pip:
+    - python-cmr=0.10.0
