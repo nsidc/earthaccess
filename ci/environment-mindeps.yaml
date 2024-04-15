@@ -8,7 +8,7 @@ channels:
 dependencies:
   # required dependencies
   - python=3.8
-  - python-cmr=0.9.0
+  - python-cmr=0.10.0
   - pqdm=0.1
   - requests=2.26
   - s3fs=2022.11
