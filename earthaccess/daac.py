@@ -70,10 +70,10 @@ DAACS = [
     {
         "short-name": "OBDAAC",
         "name": "NASA's Ocean Biology Distributed Active Archive Center",
-        "homepage": "https://earthdata.nasa.gov/eosdis/daacs/obdaac",
-        "cloud-providers": [],
+        "homepage": "https://oceancolor.gsfc.nasa.gov/",
+        "cloud-providers": ["OB_CLOUD"],
         "on-prem-providers": ["OB_DAAC"],
-        "s3-credentials": "",
+        "s3-credentials": "https://obdaac-tea.earthdatacloud.nasa.gov/s3credentials",
         "eulas": [],
     },
     {

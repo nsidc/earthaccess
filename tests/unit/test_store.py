@@ -104,6 +104,7 @@ class TestStoreSessions(unittest.TestCase):
             "ORNLDAAC",
             "GES_DISC",
             "ASF",
+            "OBDAAC",
             "ASDC",
         ]:
             s3_fs = store.get_s3fs_session(daac=daac)
@@ -122,6 +123,7 @@ class TestStoreSessions(unittest.TestCase):
             "ORNL_CLOUD",
             "GES_DISC",
             "ASF",
+            "OB_CLOUD",
             "LARC_CLOUD",
         ]:
             s3_fs = store.get_s3fs_session(provider=provider)
