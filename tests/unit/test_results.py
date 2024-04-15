@@ -2,7 +2,6 @@ import logging
 
 import earthaccess
 from earthaccess.search import DataCollections
-
 from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
 logging.basicConfig()
