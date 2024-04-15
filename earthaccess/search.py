@@ -317,10 +317,10 @@ class DataCollections(CollectionQuery):
         or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
 
         ???+ Tip
-            Giving `datetime.date(Y, M, D)` or `%Y-%m-%d` as the `date_to` parameter is inclusive
-            of the whole day (the time component is set to `23:59:59`).
-            Using `datetime.datetime(Y, M, D)` is different, because the time component defaults
-            to `00:00:00`.
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
 
         Parameters:
             date_from (String or Date): start of temporal range
@@ -613,10 +613,10 @@ class DataGranules(GranuleQuery):
         or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
 
         ???+ Tip
-            Giving `datetime.date(Y, M, D)` or `%Y-%m-%d` as the `date_to` parameter is inclusive
-            of the whole day (the time component is set to `23:59:59`).
-            Using `datetime.datetime(Y, M, D)` is different, because the time component defaults
-            to `00:00:00`.
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
 
         Parameters:
             date_from (String or Date): start of temporal range

@@ -46,7 +46,7 @@ def search_datasets(
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
             * **temporal**: a tuple representing temporal bounds in the form
-              `("yyyy-mm-dd", "yyyy-mm-dd")`
+              `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
@@ -96,7 +96,7 @@ def search_data(
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
             * **temporal**: a tuple representing temporal bounds in the form
-              `("yyyy-mm-dd", "yyyy-mm-dd")`
+              `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
