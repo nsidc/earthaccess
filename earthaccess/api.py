@@ -1,6 +1,7 @@
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
+from typing_extensions import Any, Dict, List, Optional, Union
 
 import earthaccess
 
@@ -8,7 +9,6 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .typing_ import Any, Dict, List, Optional, Union
 from .utils import _validation as validate
 
 

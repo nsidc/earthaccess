@@ -3,13 +3,7 @@ from inspect import getmembers, ismethod
 
 import dateutil.parser as parser
 import requests
-
-from cmr import CollectionQuery, GranuleQuery
-
-from .auth import Auth
-from .daac import find_provider, find_provider_by_shortname
-from .results import DataCollection, DataGranule
-from .typing_ import (
+from typing_extensions import (
     Any,
     List,
     Optional,
@@ -21,6 +15,12 @@ from .typing_ import (
     Union,
     override,
 )
+
+from cmr import CollectionQuery, GranuleQuery
+
+from .auth import Auth
+from .daac import find_provider, find_provider_by_shortname
+from .results import DataCollection, DataGranule
 
 FloatLike: TypeAlias = Union[str, SupportsFloat]
 PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
