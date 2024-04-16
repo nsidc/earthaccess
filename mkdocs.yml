@@ -47,8 +47,8 @@ plugins:
 
 nav:
   - Welcome: "index.md"
-#      - "Getting started": "tutorials/getting-started.ipynb"
-#      - "Resources": "resources.md"
+      - "Quick Start": "welcome/quick_start.md"
+      - "Work With Us": "welcome/work_with_us.md" 
   - User Guide:
       - "Overview": "user_guide/overview.md"
       - "Authentication": "user_guide/authenticate.md"
