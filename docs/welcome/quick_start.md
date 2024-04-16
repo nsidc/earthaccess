@@ -1,8 +1,6 @@
 # Quick Start
 
-## **Getting Started**
-
-### **Installing earthaccess**
+## **Installing earthaccess**
 
 The latest release of `earthaccess` can be installed with `mamba`, `conda` or `pip`.  We recommend using `mamba` because it is faster.
 
