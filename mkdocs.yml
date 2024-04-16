@@ -46,7 +46,8 @@ plugins:
         - "**/.ipynb_checkpoints/*"
 
 nav:
-  - Welcome: "index.md"
+  - Welcome:
+      - "What is earthaccess?": "index.md"
       - "Quick Start": "welcome/quick_start.md"
       - "Work With Us": "welcome/work_with_us.md" 
   - User Guide:
