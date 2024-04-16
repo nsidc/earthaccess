@@ -105,6 +105,7 @@ class TestStoreSessions(unittest.TestCase):
             "GES_DISC",
             "ASF",
             "OBDAAC",
+            "ASDC",
         ]:
             s3_fs = store.get_s3fs_session(daac=daac)
             assert isinstance(s3_fs, s3fs.S3FileSystem)
@@ -123,6 +124,7 @@ class TestStoreSessions(unittest.TestCase):
             "GES_DISC",
             "ASF",
             "OB_CLOUD",
+            "LARC_CLOUD",
         ]:
             s3_fs = store.get_s3fs_session(provider=provider)
             assert isinstance(s3_fs, s3fs.S3FileSystem)
