@@ -1,3 +1,5 @@
+# Welcome
+
 <p align="center">
 <img alt="earthaccess, a python library to search, download or stream NASA Earth science data with just a few lines of code" src="https://user-images.githubusercontent.com/717735/205517116-7a5d0f41-7acc-441e-94ba-2e541bfb7fc8.png" width="70%" align="center" />
 </p>
@@ -30,7 +32,8 @@
 
 </p>
 
-## **Welcome to `earthaccess`**
+
+## What is `earthaccess`?
 
 `earthaccess` is a python library to **search for**, and **download** or **stream** NASA Earth science data with just a few lines of code.
 
@@ -46,24 +49,24 @@ Try it in your browser without installing anything! [![Binder](https://mybinder.
 
 
 
-## Getting Started
+## How to Get Started with `earthaccess`
 
 Go to the [Quick Start](welcome/quick_start.md) to learn how to install and see a simple example of using `earthaccess`.
 
 
-### Compatibility
+## Compatibility
 
 Only **Python 3.8+** is supported.
+
+
+## How to Contribute to `earthaccess`
+
+If you want to find out how to contribute to `earthaccess` checkout the [Contributing Guide](CONTRIBUTING.md).
 
 
 ## Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=nsidc/earthaccess)](https://github.com/nsidc/earthaccess/graphs/contributors)
 
-## Contributing Guide
-
-Welcome! 😊👋
-
-> Please see the [Contributing Guide](CONTRIBUTING.md).
 
 ### [Project Board](https://github.com/nsidc/earthdata/discussions).
