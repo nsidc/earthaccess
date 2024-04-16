@@ -152,10 +152,6 @@ Welcome! 😊👋
 
 ### [Project Board](https://github.com/nsidc/earthdata/discussions).
 
-### Glossary
-
-<a href="https://www.earthdata.nasa.gov/learn/glossary">NASA Earth Science Glossary</a>
-
 ## License
 
 earthaccess is licensed under the MIT license. See [LICENSE](LICENSE.txt).
