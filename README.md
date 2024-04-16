@@ -38,6 +38,8 @@ Open science only reaches its full potential if we have easy-to-use workflows th
 
 During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html), the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort; it involves people from different technical backgrounds, and the data analysis to solve the pressing problems we face cannot be limited by the complexity of the underlying systems. Therefore, providing easy access to NASA Earthdata regardless of the data storage location (hosted within or outside of the cloud) is the main motivation behind this Python library.
 
+The library is an open source community effort under an [MIT license](LICENSE.txt).  We welcome contributions to improve `earthaccess`.  Please see the [Contributing Guide](CONTRIBUTING.md) to learn how to get involved.
+
 ***earthaccess*** handles authentication with [NASA's Earthdata Login (EDL)](https://urs.earthdata.nasa.gov), search using NASA's [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html) and access through [`fsspec`](https://github.com/fsspec/filesystem_spec).
 
 Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
@@ -151,15 +153,3 @@ Welcome! 😊👋
 > Please see the [Contributing Guide](CONTRIBUTING.md).
 
 ### [Project Board](https://github.com/nsidc/earthdata/discussions).
-
-## License
-
-earthaccess is licensed under the MIT license. See [LICENSE](LICENSE.txt).
-
-## Level of Support
-
-<div><img src="https://raw.githubusercontent.com/nsidc/earthdata/main/docs/nsidc-logo.png" width="84px" align="left" text-align="middle"/>
-<br>
- This repository is supported by a joint effort of NSIDC, NASA DAACs, and the Earth science community, and we welcome any contribution in the form of issue submissions, pull requests, or discussions. Issues labeled as https://github.com/nsidc/earthaccess/labels/good%20first%20issue are a great place to get started.
-</div>
-
