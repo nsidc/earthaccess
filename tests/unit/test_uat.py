@@ -59,6 +59,7 @@ class TestUatEnvironmentArgument:
         auth.login(strategy="interactive", earthdata_environment=Env.UAT)
         assert auth.authenticated
         assert auth.token in json_response
+        assert auth.earthdata_environment.value == Env.UAT.value
 
         # Test that we are creating a session with the proper headers
         assert "User-Agent" in headers
