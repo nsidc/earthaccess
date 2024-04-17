@@ -17,11 +17,14 @@ dependencies:
   - multimethod=1.8
   - python-dateutil=2.8.2
   - importlib-resources=6.3.2
+  - typing-extensions=4.10.0
   # test dependencies
   - responses
   - pytest
   - pytest-cov
+  - python-magic
   - mypy
+  - types-python-dateutil
   - types-requests
   - types-setuptools
   - ruff

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
-set -x
+set -ex
 
-mypy earthaccess --disallow-untyped-defs
+mypy earthaccess stubs tests
 ruff check .

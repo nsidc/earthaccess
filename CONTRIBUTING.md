@@ -84,6 +84,15 @@ Finally, for _development dependencies only_, you must add an entry to
 make format lint
 ```
 
+We attempt to provide comprehensive type annotations within this repository.  If
+you do not provide fully annotated functions or methods, the `lint` command will
+fail.  Over time, we plan to increase type-checking strictness in order to
+ensure more precise, beneficial type annotations.
+
+We have included type stubs for the untyped `python-cmr` library, which we
+intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package,
+the stubs appear under `stubs/cmr`.
+
 ### Requirements to merge code (Pull Request Process)
 
 - you must include test coverage

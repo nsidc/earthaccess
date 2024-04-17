@@ -5,6 +5,10 @@
     * fixed 483 by extracting a common CMR query method for collections and granules using SearchAfter header
     * Added VCR support for verifying the API call to CMR and the parsing of returned results without relying on CMR availability post development
 
+* Enhancements:
+  * Corrected and enhanced static type hints for functions and methods that make
+    CMR queries or handle CMR query results (#508)
+
 ## [v0.9.0] 2024-02-28
 
 * Bug fixes:
