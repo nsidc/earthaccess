@@ -51,7 +51,7 @@ class TestUatEnvironmentArgument:
         auth = Auth()
 
         # Check that we're not already authenticated.
-        session = auth.get_session(earthdata_environment=Env.UAT)
+        session = auth.get_session()
         headers = session.headers
         assert not auth.authenticated
 
@@ -65,6 +65,6 @@ class TestUatEnvironmentArgument:
         assert "earthaccess" in headers["User-Agent"]
 
         # Query CMR, and check that mock communication was with UAT CMR
-        results = search_data(session=session)
+        results = search_data()
         # Then possibly this:
         assert len(results) == 0
