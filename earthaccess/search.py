@@ -7,7 +7,7 @@ import requests
 from cmr import CMR_OPS, CMR_SIT, CMR_UAT, CollectionQuery, GranuleQuery
 
 # type: ignore
-from .auth import Auth, Env
+from .auth import Auth, Env, SessionWithHeaderRedirection
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
@@ -66,7 +66,6 @@ class DataCollections(CollectionQuery):
     def __init__(
         self,
         auth: Optional[Auth] = None,
-        existing_session: Optional[requests.Session] = None,
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -78,10 +77,12 @@ class DataCollections(CollectionQuery):
         """
         super().__init__(*args, **kwargs)
 
-        if existing_session is not None:
-            self.session = existing_session
+        if auth is not None and auth.authenticated:
+            # To search, we need the new bearer tokens from NASA Earthdata
+            self.session: requests.Session = auth.get_session(bearer_token=True)
         else:
-            self.session = requests.session()
+            self.session: requests.Session = requests.sessions.Session()
+            self.session.AUTH_HOSTS = SessionWithHeaderRedirection.AUTH_HOSTS
 
         if self.session.AUTH_HOSTS[0] == Env.PROD.value:
             self.mode(CMR_OPS)
@@ -89,9 +90,6 @@ class DataCollections(CollectionQuery):
             self.mode(CMR_UAT)
         elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
             self.mode(CMR_SIT)
-        if auth is not None and auth.authenticated:
-            # To search, we need the new bearer tokens from NASA Earthdata
-            self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
 
@@ -370,17 +368,18 @@ class DataGranules(GranuleQuery):
     def __init__(
         self,
         auth: Any = None,
-        # earthdata_environment: Optional[Env] = None,
-        existing_session: Optional[requests.Session] = None,
         *args: Any,
         **kwargs: Any,
     ) -> None:
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
-        if existing_session is not None:
-            self.session = existing_session
+
+        if auth is not None and auth.authenticated:
+            # To search, we need the new bearer tokens from NASA Earthdata
+            self.session = auth.get_session(bearer_token=True)
         else:
-            self.session = requests.session()
+            self.session = requests.sessions.Session()
+            self.session.AUTH_HOSTS = SessionWithHeaderRedirection.AUTH_HOSTS
 
         if self.session.AUTH_HOSTS[0] == Env.PROD.value:
             self.mode(CMR_OPS)
@@ -388,9 +387,6 @@ class DataGranules(GranuleQuery):
             self.mode(CMR_UAT)
         elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
             self.mode(CMR_SIT)
-        if auth is not None and auth.authenticated:
-            # To search, we need the new bearer tokens from NASA Earthdata
-            self.session = auth.get_session(bearer_token=True)
 
         self._debug = False
 
