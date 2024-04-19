@@ -78,7 +78,10 @@ Finally, for _development dependencies only_, you must add an entry to
 
 ### ...to fix an issue or bug
 
-- Create a GitHub issue with a minimally reproducible example (TODO: Link to SSCCE?)
+- Create a GitHub issue with a
+  [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example),
+  a.k.a Minimal Complete Verifiable Example (MCVE), Minimal Working Example (MWE),
+  SSCCE (Short, Self Contained, Complete Example), or "reprex".
 - Create a branch to resolve your issue
 - Run the unit tests successfully in your branch
 - Create one or more new tests to demonstrate the bug and observe them fail
@@ -92,7 +95,6 @@ Finally, for _development dependencies only_, you must add an entry to
 - Run the unit tests successfully in your branch
 - Write the code to implement your new feature in a backwards compatible manner
 - Create at least one test that exercises your feature and run the test suite as you go
-    - Example: _TODO: Add a good example of a small PR with a feature and a test._
 
 ## Submitting your contribution
 
