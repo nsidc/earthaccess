@@ -50,6 +50,7 @@ nav:
       - "What is earthaccess?": "index.md"
       - "Quick Start": "welcome/quick_start.md"
       - "Work With Us": "work-with-us.md"
+      - "Contributing": "contributing/index.md"
       - "Resources": "resources.md"
   - User Guide:
       - "Overview": "user_guide/overview.md"
