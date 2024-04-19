@@ -84,6 +84,15 @@ Finally, for _development dependencies only_, you must add an entry to
 make format lint
 ```
 
+We attempt to provide comprehensive type annotations within this repository.  If
+you do not provide fully annotated functions or methods, the `lint` command will
+fail.  Over time, we plan to increase type-checking strictness in order to
+ensure more precise, beneficial type annotations.
+
+We have included type stubs for the untyped `python-cmr` library, which we
+intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package,
+the stubs appear under `stubs/cmr`.
+
 ### Requirements to merge code (Pull Request Process)
 
 - you must include test coverage
@@ -131,3 +140,26 @@ make format lint
 > :memo: `earthaccess` is published to conda-forge through the
 > [earthdata-feedstock](https://github.com/conda-forge/earthdata-feedstock), as this
 > project was renamed early in its life. The conda package is named `earthaccess`.
+
+##  Steps to make changes to documentation
+
+1. Fork [earthaccess](https://github.com/nsidc/earthaccess) in the GitHub user interface to create your own copy. Later on, you may need to sync your fork with the upstream original repository. This can also be done in the GitHub UI or command line. If you get stuck, the emergency escape hatch is to take a fresh fork again! :)
+2. Clone the repo: `git clone git@github.com:<yourusername>/earthaccess.git`
+3. Change the directory: `cd earthaccess\binder`
+4. Create conda environment: `conda env create -f environment-dev.yml`. If you see a warning that the environment already exists, do `conda env remove -n earthaccess-dev`
+5. Activate conda: `conda activate earthaccess-dev`
+6. Change to the base project directory. `cd ..`
+7. Install packages : `pip install --editable .`
+8. Run mkdocs script: `./scripts/docs-live.sh`
+10. On your browser, go to: `https://0.0.0.0:8008`
+11. You can now change any pages in the `docs` folder in your text editor, which will instantly reflect in the browser.
+12. Commit the changes and push them to the forked repository:
+```bash
+git status # check git status to see what changed
+git switch -c "test" # create a new branch
+git add . # add changes
+git commit -m "add commit messages" # commit changes
+git push -u origin test # push changes
+```
+13. Open a pull request (PR) in the GitHub user interface from your fork to the original `nsidc/earthaccess` repo. When you ran `git push` in a previous step, it provided a convenient link to open that PR directly.
+14. In the PR interface, you can view the progress of the GitHub Actions workflows specific to the PR at the bottom of the page.
