@@ -50,6 +50,7 @@ nav:
       - "Readme": "index.md"
       - "Getting started": "tutorials/getting-started.ipynb"
       - "Resources": "resources.md"
+      - "Contributing": "contributing/index.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
