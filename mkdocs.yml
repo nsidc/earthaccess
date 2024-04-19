@@ -16,6 +16,10 @@ theme:
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
+  features:
+    # Allow navigation sections to link to index/overview pages.
+    # See: https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages
+    - navigation.indexes
 
 repo_name: nsidc/earthaccess
 repo_url: https://github.com/nsidc/earthaccess
