@@ -7,8 +7,10 @@ Please note that we have a [code of conduct](./CODE_OF_CONDUCT.md). Please follo
 
 ## Development environment
 
+1. Fork [nsidc/earthaccess](https://github.com/nsidc/earthaccess)
+1. Clone your fork (`git clone git@github.com:{my-username}/earthaccess`)
 
-`earthaccess` is a Python library that uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or patch bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with both Poetry or/and Conda.
+`earthaccess` uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or fix bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with Poetry and/or Conda.
 
 ### Using Conda
 
@@ -37,6 +39,10 @@ and now we can run the local Jupyter Lab and run the scripts etc. using Poetry:
 poetry run jupyter lab
 ```
 
+!!! note
+
+    You may need to use `poetry run make ...` to run commands in the environment.
+
 ### Managing Dependencies
 
 If you need to add a dependency, you should do the following:
@@ -62,21 +68,39 @@ Finally, for _development dependencies only_, you must add an entry to
 `ci/environment-dev.yaml` with the same version constraint as in
 `pyproject.toml`.
 
-## First Steps to fix an issue or bug
+## First Steps to contribute
 
-- Read the documentation (working on adding more)
-- create the minimally reproducible issue
-- try to edit the relevant code and see if it fixes it
-- submit the fix to the problem as a pull request
-- include an explanation of what you did and why
+- Read the documentation
+- Fork this repo (see "Development environment" section above for more)
+- Install environment (see "Development environment" section above for more)
+- Run the unit tests successfully in `main` branch:
+    - `make test`
 
-## First steps to contribute new features
+### ...to fix an issue or bug
 
-- Create an issue to discuss the feature's scope and its fit for this package
-- run pytest to ensure your local version of code passes all unit tests
-- try to edit the relevant code and implement your new feature in a backwards compatible manner
-- create new tests as you go, and run the test suite as you go
-- update the documentation as you go
+- Create a GitHub issue with a minimally reproducible example (TODO: Link to SSCCE?)
+- Create a branch to resolve your issue
+- Run the unit tests successfully in your branch
+- Create one or more new tests to demonstrate the bug and observe them fail
+- Update the relevant code to fix the issue
+- Successfully run your new unit tests
+
+### ...to contribute a new feature
+
+- Create an issue and discuss the feature's scope and its fit for this package with the team
+- Create a branch for your new feature in your fork
+- Run the unit tests successfully in your branch
+- Write the code to implement your new feature in a backwards compatible manner
+- Create at least one test that exercises your feature and run the test suite as you go
+    - Example: _TODO: Add a good example of a small PR with a feature and a test._
+
+## Submitting your contribution
+
+- Run all unit tests successfully in your branch
+- Lint and format your code
+- Update the documentation and CHANGELOG.md
+- Submit the fix to the problem as a pull request
+- Include an explanation of what you did and why in the pull request
 
 ### Please format and lint as you go
 
