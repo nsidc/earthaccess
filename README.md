@@ -51,7 +51,7 @@ Try it in your browser without installing anything! [![Binder](https://mybinder.
 
 ## How to Get Started with `earthaccess`
 
-Go to the [Quick Start](welcome/quick_start.md) to learn how to install and see a simple example of using `earthaccess`.
+Go to the [Quick Start](quick-start.md) to learn how to install and see a simple example of using `earthaccess`.
 
 
 ## Compatibility

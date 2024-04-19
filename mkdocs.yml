@@ -50,13 +50,12 @@ plugins:
         - "**/.ipynb_checkpoints/*"
 
 nav:
-  - Welcome:
-      - "What is earthaccess?": "index.md"
-      - "Quick start": "welcome/quick_start.md"
-      - "Work with us":
-          - "contributing/index.md"
-          - "Our meet-ups": "contributing/our-meet-ups.md"
-      - "Resources": "resources.md"
+  - "What is earthaccess?": "index.md"
+  - "Quick start": "quick-start.md"
+  - "Work with us":
+      - "contributing/index.md"
+      - "Our meet-ups": "contributing/our-meet-ups.md"
+  - "Resources": "resources.md"
   - User Guide:
       - "Overview": "user_guide/overview.md"
       - "Authentication": "user_guide/authenticate.md"
