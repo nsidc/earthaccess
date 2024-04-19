@@ -10,7 +10,7 @@ interactions:
     uri: https://urs.earthdata.nasa.gov/api/users/tokens
   response:
     body:
-      string: '[{"access_token":"eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3RwdWJrZXlfb3BzIiwiYWxnIjoiUlMyNTYifQ.eyJ0eXBlIjoiVXNlciIsInVpZCI6ImRzY2h1Y2siLCJleHAiOjE3MTcyNjM4MTMsImlhdCI6MTcxMjA3OTgxMywiaXNzIjoiRWFydGhkYXRhIExvZ2luIn0.S_tw0-5JNFEv3si07GYVxvQi81QejNAT2Sh2ZIxAwmqr9UqoSmYg2Wp2Jdn3jaWrSVsRgxBXuLD5w7XFeRju2qOtIqovN3XGJ8VnTdvpklr-gTjk_iLq58334Zzbu5ntnqy-QTzPCKvjvqr3GNuIJcp9z7j5rzd3MEUYOFP1xsd8wehGLpBHzT6ZSzCOwdgzE1AufKq9Vd2GqM_5bc3M9cj-gGy2g3m1mP2OB41wiGvPzup79ds4t_gEPkCecm2rplCP4n1hrY6ZQtXshgM6o49J1nkGSJjE0olHcPwEujKE2s1htWZEycI1TCCxrGpx8K1vwEd0lNaekgPUWwdOlA","token_type":"Bearer","expiration_date":"06/01/2024"}]'
+      string: '[{"access_token":"foo","token_type":"Bearer","expiration_date":"06/01/2024"}]'
     headers:
       Cache-Control:
       - no-store
@@ -61,10 +61,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://urs.earthdata.nasa.gov/api/users/dschuck?client_id=ntD0YGC_SM3Bjs-Tnxd7bg
+    uri: https://urs.earthdata.nasa.gov/api/users/foo?client_id=foo
   response:
     body:
-      string: '{"uid":"dschuck","first_name":"Charles","last_name":"Daniels","email_address":"chuck@developmentseed.org","registered_date":"
+      string: '{"uid":"foo","first_name":"foo","last_name":"foo","email_address":"foo","registered_date":"
         2 Apr 2024 17:43:33PM","country":"United States","study_area":"Other","allow_auth_app_emails":true,"user_type":"Application","affiliation":"Commercial","agreed_to_meris_eula":true,"agreed_to_sentinel_eula":true,"email_verified":true,"user_groups":[],"user_authorized_apps":23,"nams_auid":null}'
     headers:
       Cache-Control:
@@ -136,7 +136,7 @@ interactions:
       Server:
       - nginx/1.22.1
       Set-Cookie:
-      - _urs-gui_session=abd23c587ce267b8c84ef154346028b0; path=/; expires=Wed, 10
+      - _urs-gui_session=foo; path=/; expires=Wed, 10
         Apr 2024 21:58:55 GMT; HttpOnly
       Strict-Transport-Security:
       - max-age=31536000
@@ -167,7 +167,7 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - _urs-gui_session=abd23c587ce267b8c84ef154346028b0
+      - _urs-gui_session=foo
     method: GET
     uri: https://urs.earthdata.nasa.gov/home
   response:
@@ -299,7 +299,7 @@ interactions:
       Server:
       - nginx/1.22.1
       Set-Cookie:
-      - _urs-gui_session=abd23c587ce267b8c84ef154346028b0; path=/; expires=Wed, 10
+      - _urs-gui_session=foo; path=/; expires=Wed, 10
         Apr 2024 21:58:55 GMT; HttpOnly
       Strict-Transport-Security:
       - max-age=31536000
