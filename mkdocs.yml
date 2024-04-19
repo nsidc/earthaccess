@@ -48,8 +48,10 @@ plugins:
 nav:
   - Welcome:
       - "What is earthaccess?": "index.md"
-      - "Quick Start": "welcome/quick_start.md"
-      - "Work With Us": "work-with-us.md"
+      - "Quick start": "welcome/quick_start.md"
+      - "Work with us":
+          - "contributing/index.md"
+          - "Our meet-ups": "contributing/our-meet-ups.md"
       - "Resources": "resources.md"
   - User Guide:
       - "Overview": "user_guide/overview.md"
