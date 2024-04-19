@@ -49,12 +49,16 @@ nav:
   - Welcome:
       - "What is earthaccess?": "index.md"
       - "Quick Start": "welcome/quick_start.md"
-      - "Work With Us": "welcome/work_with_us.md" 
+      - "Work With Us": "work-with-us.md"
   - User Guide:
       - "Overview": "user_guide/overview.md"
       - "Authentication": "user_guide/authenticate.md"
       - "Search": "user_guide/search.md"
       - "Access": "user_guide/access.md"
+  - OVERVIEW:
+      - "Readme": "index.md"
+      - "Getting started": "tutorials/getting-started.ipynb"
+      - "Resources": "resources.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
