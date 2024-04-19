@@ -1,15 +1,15 @@
 from typing import Any, List
 from uuid import uuid4
 
-import pkg_resources
+import importlib_resources
 
-STATIC_FILES = ["css/iso_bootstrap4.0.0min.css", "css/styles.css"]
+STATIC_FILES = ["iso_bootstrap4.0.0min.css", "styles.css"]
 
 
 def _load_static_files() -> List[str]:
     """Load styles"""
     return [
-        pkg_resources.resource_string("earthaccess", fname).decode("utf8")
+        importlib_resources.files("earthaccess.css").joinpath(fname).read_text("utf8")
         for fname in STATIC_FILES
     ]
 
@@ -27,7 +27,7 @@ def _repr_granule_html(granule: Any) -> str:
     dataviz_img = "".join(
         [
             f'<a href="{link}"><img style="{style}" src="{link}" alt="Data Preview"/></a>'
-            for link in granule.dataviz_links()[0:2]
+            for link in granule.dataviz_links()[:2]
             if link.startswith("http")
         ]
     )
@@ -38,8 +38,9 @@ def _repr_granule_html(granule: Any) -> str:
         ]
     )
     granule_size = round(granule.size(), 2)
+
     # TODO: probably this needs to be integrated on a list data structure
-    granule_str = f"""
+    return f"""
     {css_inline}
     <div class="bootstrap">
       <div class="container-fluid border">
@@ -56,4 +57,3 @@ def _repr_granule_html(granule: Any) -> str:
       </div>
     </div>
     """
-    return granule_str

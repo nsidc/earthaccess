@@ -442,7 +442,7 @@ class Store(object):
     def get(
         self,
         granules: Union[List[DataGranule], List[str]],
-        local_path: Optional[Path] = None,
+        local_path: Union[Path, str, None] = None,
         provider: Optional[str] = None,
         threads: int = 8,
     ) -> List[str]:
@@ -468,6 +468,8 @@ class Store(object):
             today = datetime.datetime.today().strftime("%Y-%m-%d")
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
+        elif isinstance(local_path, str):
+            local_path = Path(local_path)
 
         if len(granules):
             files = self._get(granules, local_path, provider, threads)

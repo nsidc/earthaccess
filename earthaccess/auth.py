@@ -2,6 +2,8 @@ import getpass
 import importlib.metadata
 import logging
 import os
+import platform
+import shutil
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -31,7 +33,6 @@ class SessionWithHeaderRedirection(requests.Session):
         "urs.earthdata.nasa.gov",
         "cumulus.asf.alaska.edu",
         "sentinel1.asf.alaska.edu",
-        "nisar.asf.alaska.edu",
         "datapool.asf.alaska.edu",
     ]
 
@@ -370,6 +371,23 @@ class Auth(object):
         my_netrc = Netrc(str(netrc_path))
         my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
         my_netrc.save()
+        urs_cookies_path = Path.home() / ".urs_cookies"
+        if not urs_cookies_path.exists():
+            urs_cookies_path.write_text("")
+
+        # Create and write to .dodsrc file
+        dodsrc_path = Path.home() / ".dodsrc"
+        if not dodsrc_path.exists():
+            dodsrc_contents = (
+                f"HTTP.COOKIEJAR={urs_cookies_path}\nHTTP.NETRC={netrc_path}"
+            )
+            dodsrc_path.write_text(dodsrc_contents)
+
+        if platform.system() == "Windows":
+            local_dodsrc_path = Path.cwd() / dodsrc_path.name
+            if not local_dodsrc_path.exists():
+                shutil.copy2(dodsrc_path, local_dodsrc_path)
+
         return True
 
     def _get_cloud_auth_url(
