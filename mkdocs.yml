@@ -57,7 +57,7 @@ nav:
       - "Our meet-ups": "contributing/our-meet-ups.md"
   - "Resources": "resources.md"
   - User Guide:
-      - "Overview": "user_guide/overview.md"
+      - "user_guide/index.md"
       - "Authentication": "user_guide/authenticate.md"
       - "Search": "user_guide/search.md"
       - "Access": "user_guide/access.md"
