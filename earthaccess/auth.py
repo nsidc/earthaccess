@@ -312,9 +312,9 @@ class Auth(object):
             raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
-        if my_netrc[self.earthdata_environment.value] is not None:
-            username = my_netrc[self.earthdata_environment.value]["login"]
-            password = my_netrc[self.earthdata_environment.value]["password"]
+        if my_netrc[self.earthdata_environment["edl"]] is not None:
+            username = my_netrc[self.earthdata_environment["edl"]]["login"]
+            password = my_netrc[self.earthdata_environment["edl"]]["password"]
         else:
             return False
         authenticated = self._get_credentials(username, password)
@@ -420,7 +420,7 @@ class Auth(object):
             print(e)
             return False
         my_netrc = Netrc(str(netrc_path))
-        my_netrc[self.earthdata_environment.value] = {
+        my_netrc[self.earthdata_environment["edl"]] = {
             "login": username,
             "password": password,
         }
