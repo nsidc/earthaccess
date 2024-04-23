@@ -15,7 +15,7 @@ class TestUatEnvironmentArgument:
         "builtins.input",
         new=mock.Mock(return_value="user"),
     )
-    def test_uat_login_when_uat_selected(self) -> bool:
+    def test_uat_login_when_uat_selected(self):
         """Test the correct env is queried based on what's selected at login-time."""
         json_response = [
             {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
