@@ -40,7 +40,7 @@ class TestUatEnvironmentArgument:
             status=200,
         )
 
-        with open("fixtures/atl03_umm.json", "r") as f:
+        with open("tests/unit/fixtures/atl03_umm.json", "r") as f:
             cmr_json_response = json.loads(f.read())
 
         responses.add(
