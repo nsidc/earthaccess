@@ -126,7 +126,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
 
 
 def login(
-    strategy: str = "all", persist: bool = False, earthdata_environment: Env = Env.PROD
+    strategy: str = "all", persist: bool = False, earthdata_environment: dict = Env.PROD
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
@@ -139,7 +139,7 @@ def login(
             * **"netrc"**: retrieve username and password from ~/.netrc.
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist: will persist credentials in a .netrc file
-        earthdata_environment: the CMR endpoint to log in to Earthdata, defaults to PROD
+        earthdata_environment: the EDL endpoint to log in to Earthdata, defaults to PROD
 
     Returns:
         An instance of Auth.

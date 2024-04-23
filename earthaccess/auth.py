@@ -105,7 +105,7 @@ class Auth(object):
                 * **"environment"**:
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
-            earthdata_environment (Env): the CMR endpoint to log in to Earthdata, defaults to PROD
+            earthdata_environment (Env): the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
             An instance of Auth.
