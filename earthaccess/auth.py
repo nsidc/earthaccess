@@ -4,7 +4,7 @@ import logging
 import os
 import platform
 import shutil
-from enum import Enum
+from collections import namedtuple
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -12,6 +12,8 @@ from urllib.parse import urlparse
 
 import requests  # type: ignore
 from tinynetrc import Netrc
+
+from cmr import CMR_OPS, CMR_SIT, CMR_UAT
 
 from .daac import DAACS
 
@@ -24,18 +26,13 @@ except importlib.metadata.PackageNotFoundError:
 logger = logging.getLogger(__name__)
 CLIENT_ID = "ntD0YGC_SM3Bjs-Tnxd7bg"
 
-
-class Env(Enum):
-    """
-    Host URL options, for different Earthdata domains.
-
-    TODO: Make the values a TypedDict / Dataclass?
-        {"edl": "urs.earthdata.nasa.gov", "cmr": "cmr.etc.gov"}
-    """
-
-    PROD = "urs.earthdata.nasa.gov"
-    UAT = "uat.urs.earthdata.nasa.gov"
-    SIT = "sit.urs.earthdata.nasa.gov"
+# Host URL options, for different Earthdata domains.
+Environment_Definitions = namedtuple("Environment_Definitions", ["PROD", "UAT", "SIT"])
+Env = Environment_Definitions(
+    {"edl": "urs.earthdata.nasa.gov", "cmr": CMR_OPS},
+    {"edl": "uat.urs.earthdata.nasa.gov", "cmr": CMR_UAT},
+    {"edl": "sit.urs.earthdata.nasa.gov", "cmr": CMR_SIT},
+)
 
 
 class SessionWithHeaderRedirection(requests.Session):
@@ -55,7 +52,7 @@ class SessionWithHeaderRedirection(requests.Session):
         self,
         username: Optional[str] = None,
         password: Optional[str] = None,
-        earthdata_environment: Optional[str] = None,
+        earthdata_environment: Optional[namedtuple] = None,
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
@@ -65,7 +62,7 @@ class SessionWithHeaderRedirection(requests.Session):
 
         if earthdata_environment is not None:
             self.AUTH_HOSTS.pop(0)
-            self.AUTH_HOSTS.insert(0, earthdata_environment.value)
+            self.AUTH_HOSTS.insert(0, earthdata_environment["edl"])
 
     # Overrides from the library to keep headers when redirected to or from
     # the NASA auth host.
@@ -100,7 +97,7 @@ class Auth(object):
         self,
         strategy: str = "netrc",
         persist: bool = False,
-        earthdata_environment: Optional[Env] = None,
+        earthdata_environment: Optional[dict] = None,
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -133,24 +130,24 @@ class Auth(object):
 
         return self
 
-    def _set_earthdata_environment(self, earthdata_environment: Env) -> None:
+    def _set_earthdata_environment(self, earthdata_environment: dict) -> None:
         self.earthdata_environment = earthdata_environment
 
         # Maybe all these predefined URLs should be in a constants.py file
         self.EDL_GET_TOKENS_URL = (
-            f"https://{self.earthdata_environment.value}/api/users/tokens"
+            f"https://{self.earthdata_environment['edl']}/api/users/tokens"
         )
-        self.EDL_GET_PROFILE = f"https://{self.earthdata_environment.value}/api/users/<USERNAME>?client_id={CLIENT_ID}"
+        self.EDL_GET_PROFILE = f"https://{self.earthdata_environment['edl']}/api/users/<USERNAME>?client_id={CLIENT_ID}"
         self.EDL_GENERATE_TOKENS_URL = (
-            f"https://{self.earthdata_environment.value}/api/users/token"
+            f"https://{self.earthdata_environment['edl']}/api/users/token"
         )
         self.EDL_REVOKE_TOKEN = (
-            f"https://{self.earthdata_environment.value}/api/users/revoke_token"
+            f"https://{self.earthdata_environment['edl']}/api/users/revoke_token"
         )
 
-        self._eula_url = f"https://{self.earthdata_environment.value}/users/earthaccess/unaccepted_eulas"
+        self._eula_url = f"https://{self.earthdata_environment['edl']}/users/earthaccess/unaccepted_eulas"
         self._apps_url = (
-            f"https://{self.earthdata_environment.value}/application_search"
+            f"https://{self.earthdata_environment['edl']}/application_search"
         )
 
     def refresh_tokens(self) -> bool:
@@ -264,7 +261,7 @@ class Auth(object):
             return {}
 
     def get_session(
-        self, bearer_token: bool = True, earthdata_environment: Optional[Env] = None
+        self, bearer_token: bool = True, earthdata_environment: Optional[dict] = None
     ) -> requests.Session:
         """Returns a new request session instance.
 

@@ -16,9 +16,9 @@ from typing_extensions import (
     override,
 )
 
-from cmr import CMR_OPS, CMR_SIT, CMR_UAT, CollectionQuery, GranuleQuery
+from cmr import CollectionQuery, GranuleQuery
 
-from .auth import Auth, Env, SessionWithHeaderRedirection
+from .auth import Auth
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
 
@@ -96,19 +96,13 @@ class DataCollections(CollectionQuery):
         """
         super().__init__(*args, **kwargs)
 
-        if auth is not None and auth.authenticated:
+        if auth and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
-            self.session: requests.Session = auth.get_session(bearer_token=True)
-        else:
-            self.session: requests.Session = requests.sessions.Session()
-            self.session.AUTH_HOSTS = SessionWithHeaderRedirection.AUTH_HOSTS
+            self.session = auth.get_session(bearer_token=True)
 
-        if self.session.AUTH_HOSTS[0] == Env.PROD.value:
-            self.mode(CMR_OPS)
-        elif self.session.AUTH_HOSTS[0] == Env.UAT.value:
-            self.mode(CMR_UAT)
-        elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
-            self.mode(CMR_SIT)
+            self.mode(auth.earthdata_environment["cmr"])
+        else:
+            self.session = requests.sessions.Session()
 
         self._debug = False
 
@@ -469,19 +463,13 @@ class DataGranules(GranuleQuery):
         """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
 
-        if auth is not None and auth.authenticated:
+        if auth and auth.authenticated:
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
+
+            self.mode(auth.earthdata_environment["cmr"])
         else:
             self.session = requests.sessions.Session()
-            self.session.AUTH_HOSTS = SessionWithHeaderRedirection.AUTH_HOSTS
-
-        if self.session.AUTH_HOSTS[0] == Env.PROD.value:
-            self.mode(CMR_OPS)
-        elif self.session.AUTH_HOSTS[0] == Env.UAT.value:
-            self.mode(CMR_UAT)
-        elif self.session.AUTH_HOSTS[0] == Env.SIT.value:
-            self.mode(CMR_SIT)
 
         self._debug = False
 
