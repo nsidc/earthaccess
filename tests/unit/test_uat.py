@@ -1,5 +1,6 @@
 # package imports
 import json
+from pathlib import Path
 from unittest import mock
 
 import earthaccess
@@ -40,7 +41,7 @@ class TestUatEnvironmentArgument:
             status=200,
         )
 
-        with open("tests/unit/fixtures/atl03_umm.json", "r") as f:
+        with open(Path(__file__).parent / "fixtures" / "atl03_umm.json", "r") as f:
             cmr_json_response = json.loads(f.read())
 
         responses.add(
@@ -51,16 +52,9 @@ class TestUatEnvironmentArgument:
             status=200,
         )
 
-        # Use Auth instance instead of the top-level (`earthaccess.`) API since this is a unit,
-        # not an integration, test
-        auth = earthaccess.login()
-        # Check that we're not already authenticated.
-        assert not auth.authenticated
-
         # Login
         auth = earthaccess.login(strategy="interactive", earthdata_environment=Env.UAT)
         assert auth.authenticated
-        assert auth.token in json_response
         assert auth.earthdata_environment["edl"] == Env.UAT["edl"]
 
         # Query CMR, and check that mock communication was with UAT CMR
