@@ -8,6 +8,7 @@
 * Enhancements:
   * Corrected and enhanced static type hints for functions and methods that make
     CMR queries or handle CMR query results (#508)
+  * Enable queries to Earthdata test environments for authenticated accounts (pull #426)
 
 ## [v0.9.0] 2024-02-28
 
