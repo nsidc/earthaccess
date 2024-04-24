@@ -76,6 +76,9 @@ Finally, for _development dependencies only_, you must add an entry to
 - Run the unit tests successfully in `main` branch:
     - `make test`
 
+From here, you might want to fix and issue or bug, or add a new feature.  Jump to the
+relevant section to proceed.
+
 ### ...to fix an issue or bug
 
 - Create a GitHub issue with a
@@ -88,6 +91,8 @@ Finally, for _development dependencies only_, you must add an entry to
 - Update the relevant code to fix the issue
 - Successfully run your new unit tests
 
+Once you've completed these steps, you are ready to submit your contribution.
+
 ### ...to contribute a new feature
 
 - Create an issue and discuss the feature's scope and its fit for this package with the team
@@ -96,10 +101,12 @@ Finally, for _development dependencies only_, you must add an entry to
 - Write the code to implement your new feature in a backwards compatible manner
 - Create at least one test that exercises your feature and run the test suite as you go
 
+Once you've completed these steps, you are ready to submit your contribution.
+
 ## Submitting your contribution
 
 - Run all unit tests successfully in your branch
-- Lint and format your code
+- Lint and format your code.  See below.
 - Update the documentation and CHANGELOG.md
 - Submit the fix to the problem as a pull request
 - Include an explanation of what you did and why in the pull request
@@ -123,7 +130,7 @@ the stubs appear under `stubs/cmr`.
 
 - you must include test coverage
 - you must update the documentation
-- you must run the command above to format and lint
+- you must format and lint
 
 ## Pull Request process
 
