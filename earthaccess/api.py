@@ -144,6 +144,10 @@ def login(
     Returns:
         An instance of Auth.
     """
+    # Set the underlying Auth object's earthdata environment,
+    # before triggering the getattr function for `__auth__`.
+    earthaccess._auth._set_earthdata_environment(earthdata_environment)
+
     if strategy == "all":
         for strategy in ["environment", "netrc", "interactive"]:
             try:
