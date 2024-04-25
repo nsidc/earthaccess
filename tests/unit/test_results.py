@@ -9,7 +9,8 @@ from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 logging.basicConfig()
 logging.getLogger("vcr").setLevel(logging.ERROR)
 
-REDACTED_STRING = 'REDACTED'
+REDACTED_STRING = "REDACTED"
+
 
 def unique_results(results):
     """
@@ -22,7 +23,6 @@ def unique_results(results):
 
 
 class TestResults(VCRTestCase):
-    
     def _get_vcr(self, **kwargs):
         myvcr = super(TestResults, self)._get_vcr(**kwargs)
         myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
@@ -91,9 +91,12 @@ class TestResults(VCRTestCase):
                 "nams_auid",
             ]
         )
-        
+
         def redact_login_request(request):
-            if "/api/users/" in request.path and "/api/users/tokens" not in request.path:
+            if (
+                "/api/users/" in request.path
+                and "/api/users/tokens" not in request.path
+            ):
                 if REDACTED_STRING not in request.path:
                     _, user_name = os.path.split(request.path)
                     request.uri = request.uri.replace(user_name, REDACTED_STRING)
