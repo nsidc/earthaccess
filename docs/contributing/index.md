@@ -1,7 +1,10 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the maintainers before making a change.
+When contributing to this repository, please first discuss the change you wish to make
+with the community and maintainers via
+[a GitHub issue](https://github.com/nsidc/earthaccess/issues),
+[a GitHub Discussion](https://github.com/nsidc/earthaccess/discussions),
+or [any other method](our-meet-ups.md).
 
 Please note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow it in all of your interactions with the project.
 
