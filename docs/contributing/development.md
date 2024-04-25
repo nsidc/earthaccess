@@ -3,7 +3,7 @@
 1. Fork [nsidc/earthaccess](https://github.com/nsidc/earthaccess)
 1. Clone your fork (`git clone git@github.com:{my-username}/earthaccess`)
 
-`earthaccess` uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or fix bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with Poetry and/or Conda.
+`earthaccess` uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or fix bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with Conda and Poetry, or just with Poetry.  Both workflows achieve the same result.
 
 ### Using Conda
 
