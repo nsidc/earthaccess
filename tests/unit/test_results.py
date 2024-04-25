@@ -50,8 +50,8 @@ class TestResults(VCRTestCase):
         def redact_key_values(keys_to_redact):
             def before_record_response(response):
                 # Only do this if the response has not been recorded
-                if 'REDACTED' not in response['body']['string'].decode('utf8'):
-                    string_body = response['body']['string'].decode('utf8')
+                string_body = response['body']['string'].decode('utf8')
+                if 'REDACTED' not in string_body:
                     # Only do this is if the body contains one or more
                     # of the keys to redact.
                     if any(key in string_body for key in keys_to_redact):
