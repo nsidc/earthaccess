@@ -52,7 +52,7 @@ new entry in `pyproject.toml` and change the `^` to `>=`.  (See
 this.)
 
 In addition, you must also add a corresponding entry to
-`ci/environment-mindeps.yaml`.  You'll notice in that file that required
+`ci/environment-mindeps.yaml`.  You'll notice in this file that required
 dependencies should be pinned exactly to the versions specified in
 `pyproject.toml` (after changing `^` to `>=` there), and that development
 dependencies should be left unpinned.
