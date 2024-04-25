@@ -20,7 +20,6 @@ def unique_results(results):
 
 
 class TestResults(VCRTestCase):
-    
     def _get_vcr(self, **kwargs):
         myvcr = super(TestResults, self)._get_vcr(**kwargs)
         myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
@@ -44,53 +43,57 @@ class TestResults(VCRTestCase):
             "User-Agent",
         ]
         myvcr.filter_query_parameters = [
-             ("client_id", "foo"),
-        ]     
-                    
+            ("client_id", "foo"),
+        ]
+
         def redact_key_values(keys_to_redact):
             def before_record_response(response):
                 # Only do this if the response has not been recorded
-                string_body = response['body']['string'].decode('utf8')
-                if 'REDACTED' not in string_body:
+                string_body = response["body"]["string"].decode("utf8")
+                if "REDACTED" not in string_body:
                     # Only do this is if the body contains one or more
                     # of the keys to redact.
                     if any(key in string_body for key in keys_to_redact):
-                        try:                 
+                        try:
                             # Marshall into json object, if it is a JSON object.
                             payload = json.loads(string_body)
                             if isinstance(payload, list):
-                                payload = payload[0]    
+                                payload = payload[0]
                             for key in keys_to_redact:
                                 if key in payload:
                                     # Redact the key value
-                                    payload[key] = 'REDACTED'
+                                    payload[key] = "REDACTED"
                             # Write out the updated json object to the response
                             # body string.
-                            response['body']['string'] = json.dumps(payload).encode()
+                            response["body"]["string"] = json.dumps(payload).encode()
                         except ValueError:
                             # If it is not a json object, return
                             return response
-                       
+
                 return response
+
             return before_record_response
-        
-        myvcr.before_record_response=redact_key_values(["access_token", 
-                                                       "uid", 
-                                                       "first_name", 
-                                                       "last_name", 
-                                                       "email_address", 
-                                                       "nams_auid",])
+
+        myvcr.before_record_response = redact_key_values(
+            [
+                "access_token",
+                "uid",
+                "first_name",
+                "last_name",
+                "email_address",
+                "nams_auid",
+            ]
+        )
 
         return myvcr
 
     def test_data_links(self):
-        
         granules = earthaccess.search_data(
             short_name="SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205",
             temporal=("2020", "2022"),
             count=1,
         )
-        
+
         g = granules[0]
         # `access` specified
         assert g.data_links(access="direct")[0].startswith("s3://")
