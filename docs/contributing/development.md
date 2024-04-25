@@ -38,7 +38,7 @@ poetry run jupyter lab
 
 ### Managing Dependencies
 
-If you need to add a dependency, you should do the following:
+If you need to add a new dependency, you should do the following:
 
 - Run `poetry add <package>` for a required (non-development) dependency
 - Run `poetry add --group=dev <package>` for a development dependency, such
