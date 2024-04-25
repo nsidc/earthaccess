@@ -44,8 +44,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ## **Get Data in 3 Steps**
 
-`earthaccess` allows you to search for and access data in as little as three steps.  We give a very quick example below.  These three steps allow you to get data whether you are working in the cloud or on your local laptop or workstation.  Read the [User Guide](user_guide.qmd) for more information.  If you want to quickly find how to perform some common searches and data access,
-take a look at our [How-to](how_to.qmd) guide.
+`earthaccess` allows you to search for and access data in as little as three steps.  We
+give a very quick example below.  These three steps allow you to get data whether you
+are working in the cloud or on your local laptop or workstation.  Read the
+[User Guide](user_guide/index.md) for more information.  If you want to quickly find how
+to perform some common searches and data access, take a look at our how-to guides in the
+sidebar.
 
 The only requirement to use this library is to open a free account with NASA [EDL](https://urs.earthdata.nasa.gov).
 
@@ -54,7 +58,7 @@ The only requirement to use this library is to open a free account with NASA [ED
 To access NASA data, you have to login using your Earth Data Login credentials.  You can register for a free Earth Data Login account [here](https://urs.earthdata.nasa.gov/).
 
 By default, `earthaccess` will look for your Earth Data Login credentials in a `.netrc` file, or in environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`.  If you don't
-have either of these set up, you can login manually.  See [Authenticating](authenticate.qmd) to learn how to create a `.netrc` file or environment variables.
+have either of these set up, you can login manually.  See [Authenticating](howto/authenticate.md) to learn how to create a `.netrc` file or environment variables.
 
 ```
 import earthaccess

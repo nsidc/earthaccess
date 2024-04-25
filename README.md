@@ -52,7 +52,7 @@ Only **Python 3.8+** is supported.
 
 ## How to Contribute to `earthaccess`
 
-If you want to find out how to contribute to `earthaccess` checkout the [Contributing Guide](https://earthaccess.readthedocs.io/en/latest/contributing/).
+If you want to contribute to `earthaccess` checkout the [Contributing Guide](https://earthaccess.readthedocs.io/en/latest/contributing/).
 
 
 ### Contributors
