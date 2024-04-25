@@ -44,7 +44,7 @@ If you need to add a new dependency, you should do the following:
 - Run `poetry add --group=dev <package>` for a development dependency, such
   as a testing or code analysis dependency
 
-Both commands will add an entry to `pyproject.toml` with a version that is
+Both commands add an entry to `pyproject.toml` with a version that is
 compatible with the rest of the dependencies.  However, `poetry` pins versions
 with a caret (`^`), which is not what we want.  Therefore, you must locate the
 new entry in `pyproject.toml` and change the `^` to `>=`.  (See
