@@ -6,12 +6,11 @@ from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
 
 class TestServices(VCRTestCase):
-    
     def _get_vcr(self, **kwargs):
         myvcr = super(TestServices, self)._get_vcr(**kwargs)
         myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
         return myvcr
-    
+
     def test_services(self):
         """Test DataService get function return of service metadata results."""
 
@@ -24,5 +23,6 @@ class TestServices(VCRTestCase):
             expected = json.load(jf)
         self.assertTrue(actual["items"] == expected[0]["items"])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
