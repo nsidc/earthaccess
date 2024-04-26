@@ -57,6 +57,8 @@ nav:
   - "Quick start": "quick-start.md"
   - "Work with us":
       - "contributing/index.md"
+      - "Development": "contributing/development.md"
+      - "Releasing": "contributing/releasing.md"
       - "Our meet-ups": "contributing/our-meet-ups.md"
   - "Resources": "resources.md"
   - User Guide:
@@ -64,7 +66,6 @@ nav:
       - "Authentication": "user_guide/authenticate.md"
       - "Search": "user_guide/search.md"
       - "Access": "user_guide/access.md"
-      - "Contributing": "contributing/index.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
