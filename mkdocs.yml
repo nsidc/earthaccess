@@ -61,7 +61,7 @@ nav:
       - "Releasing": "contributing/releasing.md"
       - "Our meet-ups": "contributing/our-meet-ups.md"
   - "Resources": "resources.md"
-  - User Guide:
+  - USER GUIDE:
       - "user_guide/index.md"
       - "Authentication": "user_guide/authenticate.md"
       - "Search": "user_guide/search.md"
