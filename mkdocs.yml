@@ -2,6 +2,9 @@ site_name: earthaccess
 site_description: Client library for NASA Earthdata APIs
 site_url: https://github.com/nsidc/earthaccess
 
+# Fail on broken links
+strict: true
+
 theme:
   name: "material"
   logo: earth.png
