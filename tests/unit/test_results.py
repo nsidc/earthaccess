@@ -25,10 +25,34 @@ def unique_results(results):
 
 def redact_login_request(request):
     if "/api/users/" in request.path and "/api/users/tokens" not in request.path:
-        if REDACTED_STRING not in request.path:
-            _, user_name = os.path.split(request.path)
-            request.uri = request.uri.replace(user_name, REDACTED_STRING)
+        _, user_name = os.path.split(request.path)
+        request.uri = request.uri.replace(user_name, REDACTED_STRING)
+
     return request
+
+
+def redact_key_values(keys_to_redact):
+    def redact(payload):
+        for key in keys_to_redact:
+            if key in payload:
+                payload[key] = REDACTED_STRING
+        return payload
+
+    def before_record_response(response):
+        body = response["body"]["string"].decode("utf8")
+
+        with contextlib.suppress(json.JSONDecodeError):
+            payload = json.loads(body)
+            redacted_payload = (
+                list(map(redact, payload))
+                if isinstance(payload, list)
+                else redact(payload)
+            )
+            response["body"]["string"] = json.dumps(redacted_payload).encode()
+
+        return response
+
+    return before_record_response
 
 
 class TestResults(VCRTestCase):
@@ -57,32 +81,6 @@ class TestResults(VCRTestCase):
         myvcr.filter_query_parameters = [
             ("client_id", REDACTED_STRING),
         ]
-
-        def redact_key_values(keys_to_redact):
-            def before_record_response(response):
-                string_body = response["body"]["string"].decode("utf8")
-                # Only do this is if the body contains one or more
-                # of the keys to redact.
-                if any(key in string_body for key in keys_to_redact):
-                    with contextlib.suppress(json.JSONDecodeError):
-                        is_list = False
-                        # Marshall into json object, if it is a JSON object.
-                        payload = json.loads(string_body)
-                        if isinstance(payload, list):
-                            payload = payload[0]
-                            is_list = True
-                        for key in keys_to_redact:
-                            if key in payload:
-                                # Redact the key value
-                                payload[key] = REDACTED_STRING
-                        # Write out the updated json object to the response
-                        # body string.
-                        if is_list:
-                            payload = [payload]
-                        response["body"]["string"] = json.dumps(payload).encode()
-                return response
-
-            return before_record_response
 
         myvcr.before_record_response = redact_key_values(
             [
