@@ -1,7 +1,8 @@
 from typing import Any, List, Optional
 
-from cmr import ServiceQuery
 from requests import exceptions, session
+
+from cmr import ServiceQuery
 
 from .auth import Auth
 
