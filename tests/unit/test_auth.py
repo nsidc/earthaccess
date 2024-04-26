@@ -11,7 +11,7 @@ class TestCreateAuth(unittest.TestCase):
     @responses.activate
     @mock.patch("getpass.getpass")
     @mock.patch("builtins.input")
-    def test_auth_gets_proper_credentials(self, user_input, user_password) -> bool:
+    def test_auth_gets_proper_credentials(self, user_input, user_password):
         user_input.return_value = "user"
         user_password.return_value = "password"
         json_response = [
@@ -53,9 +53,7 @@ class TestCreateAuth(unittest.TestCase):
     @responses.activate
     @mock.patch("getpass.getpass")
     @mock.patch("builtins.input")
-    def test_auth_can_create_proper_credentials(
-        self, user_input, user_password
-    ) -> bool:
+    def test_auth_can_create_proper_credentials(self, user_input, user_password):
         user_input.return_value = "user"
         user_password.return_value = "password"
         json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
@@ -94,7 +92,7 @@ class TestCreateAuth(unittest.TestCase):
     @responses.activate
     @mock.patch("getpass.getpass")
     @mock.patch("builtins.input")
-    def test_auth_fails_for_wrong_credentials(self, user_input, user_password) -> bool:
+    def test_auth_fails_for_wrong_credentials(self, user_input, user_password):
         user_input.return_value = "bad_user"
         user_password.return_value = "bad_password"
         json_response = {"error": "wrong credentials"}

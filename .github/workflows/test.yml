@@ -21,7 +21,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Get full python version
         id: full-python-version
-        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+        run: echo "version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
       - name: Install poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
@@ -29,7 +29,7 @@ jobs:
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true
       - name: Set up cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache
         with:
           path: .venv
@@ -42,4 +42,4 @@ jobs:
       - name: Test
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
