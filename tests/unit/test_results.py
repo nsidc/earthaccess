@@ -1,3 +1,4 @@
+import contextlib
 import json
 import logging
 import os.path
@@ -11,6 +12,7 @@ logging.getLogger("vcr").setLevel(logging.ERROR)
 
 REDACTED_STRING = "REDACTED"
 
+
 def unique_results(results):
     """
     When we invoke a search request multiple times we want to ensure that we don't
@@ -20,15 +22,15 @@ def unique_results(results):
     unique_concept_ids = {result["meta"]["concept-id"] for result in results}
     return len(unique_concept_ids) == len(results)
 
+
 def redact_login_request(request):
-    if (
-        "/api/users/" in request.path
-        and "/api/users/tokens" not in request.path
-    ):
+    if "/api/users/" in request.path and "/api/users/tokens" not in request.path:
         if REDACTED_STRING not in request.path:
             _, user_name = os.path.split(request.path)
             request.uri = request.uri.replace(user_name, REDACTED_STRING)
     return request
+
+
 class TestResults(VCRTestCase):
     def _get_vcr(self, **kwargs):
         myvcr = super(TestResults, self)._get_vcr(**kwargs)
@@ -62,7 +64,7 @@ class TestResults(VCRTestCase):
                 # Only do this is if the body contains one or more
                 # of the keys to redact.
                 if any(key in string_body for key in keys_to_redact):
-                    try:
+                    with contextlib.suppress(json.JSONDecodeError):
                         is_list = False
                         # Marshall into json object, if it is a JSON object.
                         payload = json.loads(string_body)
@@ -78,12 +80,10 @@ class TestResults(VCRTestCase):
                         if is_list:
                             payload = [payload]
                         response["body"]["string"] = json.dumps(payload).encode()
-                    except ValueError:
-                        # If it is not a json object, return
-                        return response
                 return response
+
             return before_record_response
-        
+
         myvcr.before_record_response = redact_key_values(
             [
                 "access_token",
