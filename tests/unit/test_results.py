@@ -172,7 +172,9 @@ class TestResults(VCRTestCase):
 
         # Assert that we performed a hits query and two search results queries
         self.assertEqual(len(self.cassette), 3)
-        self.assertEqual(len(granules), 2520)
+        self.assertEqual(
+            len(granules), int(self.cassette.responses[0]["headers"]["CMR-Hits"][0])
+        )
         self.assertTrue(unique_results(granules))
 
     def test_collections_less_than_2k(self):
