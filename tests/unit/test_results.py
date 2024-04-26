@@ -51,31 +51,29 @@ class TestResults(VCRTestCase):
 
         def redact_key_values(keys_to_redact):
             def before_record_response(response):
-                # Only do this if the response has not been recorded
                 string_body = response["body"]["string"].decode("utf8")
-                if REDACTED_STRING not in string_body:
-                    # Only do this is if the body contains one or more
-                    # of the keys to redact.
-                    if any(key in string_body for key in keys_to_redact):
-                        try:
-                            is_list = False
-                            # Marshall into json object, if it is a JSON object.
-                            payload = json.loads(string_body)
-                            if isinstance(payload, list):
-                                payload = payload[0]
-                                is_list = True
-                            for key in keys_to_redact:
-                                if key in payload:
-                                    # Redact the key value
-                                    payload[key] = REDACTED_STRING
-                            # Write out the updated json object to the response
-                            # body string.
-                            if is_list:
-                                payload = [payload]
-                            response["body"]["string"] = json.dumps(payload).encode()
-                        except ValueError:
-                            # If it is not a json object, return
-                            return response
+                # Only do this is if the body contains one or more
+                # of the keys to redact.
+                if any(key in string_body for key in keys_to_redact):
+                    try:
+                        is_list = False
+                        # Marshall into json object, if it is a JSON object.
+                        payload = json.loads(string_body)
+                        if isinstance(payload, list):
+                            payload = payload[0]
+                            is_list = True
+                        for key in keys_to_redact:
+                            if key in payload:
+                                # Redact the key value
+                                payload[key] = REDACTED_STRING
+                        # Write out the updated json object to the response
+                        # body string.
+                        if is_list:
+                            payload = [payload]
+                        response["body"]["string"] = json.dumps(payload).encode()
+                    except ValueError:
+                        # If it is not a json object, return
+                        return response
 
                 return response
 
