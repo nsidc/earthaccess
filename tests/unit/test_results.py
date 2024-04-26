@@ -11,7 +11,6 @@ logging.getLogger("vcr").setLevel(logging.ERROR)
 
 REDACTED_STRING = "REDACTED"
 
-
 def unique_results(results):
     """
     When we invoke a search request multiple times we want to ensure that we don't
@@ -21,7 +20,15 @@ def unique_results(results):
     unique_concept_ids = {result["meta"]["concept-id"] for result in results}
     return len(unique_concept_ids) == len(results)
 
-
+def redact_login_request(request):
+    if (
+        "/api/users/" in request.path
+        and "/api/users/tokens" not in request.path
+    ):
+        if REDACTED_STRING not in request.path:
+            _, user_name = os.path.split(request.path)
+            request.uri = request.uri.replace(user_name, REDACTED_STRING)
+    return request
 class TestResults(VCRTestCase):
     def _get_vcr(self, **kwargs):
         myvcr = super(TestResults, self)._get_vcr(**kwargs)
@@ -74,11 +81,9 @@ class TestResults(VCRTestCase):
                     except ValueError:
                         # If it is not a json object, return
                         return response
-
                 return response
-
             return before_record_response
-
+        
         myvcr.before_record_response = redact_key_values(
             [
                 "access_token",
@@ -89,16 +94,6 @@ class TestResults(VCRTestCase):
                 "nams_auid",
             ]
         )
-
-        def redact_login_request(request):
-            if (
-                "/api/users/" in request.path
-                and "/api/users/tokens" not in request.path
-            ):
-                if REDACTED_STRING not in request.path:
-                    _, user_name = os.path.split(request.path)
-                    request.uri = request.uri.replace(user_name, REDACTED_STRING)
-            return request
 
         myvcr.before_record_request = redact_login_request
 
