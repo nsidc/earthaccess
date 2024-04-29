@@ -175,6 +175,10 @@ class TestResults(VCRTestCase):
         self.assertEqual(
             len(granules), int(self.cassette.responses[0]["headers"]["CMR-Hits"][0])
         )
+        self.assertEqual(
+            len(granules),
+            min(3000, int(self.cassette.responses[0]["headers"]["CMR-Hits"][0])),
+        )
         self.assertTrue(unique_results(granules))
 
     def test_collections_less_than_2k(self):
