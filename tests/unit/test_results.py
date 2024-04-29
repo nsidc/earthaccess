@@ -1,4 +1,7 @@
+import contextlib
+import json
 import logging
+import os.path
 
 import earthaccess
 from earthaccess.search import DataCollections
@@ -6,6 +9,8 @@ from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
 logging.basicConfig()
 logging.getLogger("vcr").setLevel(logging.ERROR)
+
+REDACTED_STRING = "REDACTED"
 
 
 def unique_results(results):
@@ -16,6 +21,38 @@ def unique_results(results):
     """
     unique_concept_ids = {result["meta"]["concept-id"] for result in results}
     return len(unique_concept_ids) == len(results)
+
+
+def redact_login_request(request):
+    if "/api/users/" in request.path and "/api/users/tokens" not in request.path:
+        _, user_name = os.path.split(request.path)
+        request.uri = request.uri.replace(user_name, REDACTED_STRING)
+
+    return request
+
+
+def redact_key_values(keys_to_redact):
+    def redact(payload):
+        for key in keys_to_redact:
+            if key in payload:
+                payload[key] = REDACTED_STRING
+        return payload
+
+    def before_record_response(response):
+        body = response["body"]["string"].decode("utf8")
+
+        with contextlib.suppress(json.JSONDecodeError):
+            payload = json.loads(body)
+            redacted_payload = (
+                list(map(redact, payload))
+                if isinstance(payload, list)
+                else redact(payload)
+            )
+            response["body"]["string"] = json.dumps(redacted_payload).encode()
+
+        return response
+
+    return before_record_response
 
 
 class TestResults(VCRTestCase):
@@ -41,6 +78,22 @@ class TestResults(VCRTestCase):
             "Set-Cookie",
             "User-Agent",
         ]
+        myvcr.filter_query_parameters = [
+            ("client_id", REDACTED_STRING),
+        ]
+
+        myvcr.before_record_response = redact_key_values(
+            [
+                "access_token",
+                "uid",
+                "first_name",
+                "last_name",
+                "email_address",
+                "nams_auid",
+            ]
+        )
+
+        myvcr.before_record_request = redact_login_request
 
         return myvcr
 
@@ -50,6 +103,7 @@ class TestResults(VCRTestCase):
             temporal=("2020", "2022"),
             count=1,
         )
+
         g = granules[0]
         # `access` specified
         assert g.data_links(access="direct")[0].startswith("s3://")
@@ -118,7 +172,13 @@ class TestResults(VCRTestCase):
 
         # Assert that we performed a hits query and two search results queries
         self.assertEqual(len(self.cassette), 3)
-        self.assertEqual(len(granules), 2520)
+        self.assertEqual(
+            len(granules), int(self.cassette.responses[0]["headers"]["CMR-Hits"][0])
+        )
+        self.assertEqual(
+            len(granules),
+            min(3000, int(self.cassette.responses[0]["headers"]["CMR-Hits"][0])),
+        )
         self.assertTrue(unique_results(granules))
 
     def test_collections_less_than_2k(self):
