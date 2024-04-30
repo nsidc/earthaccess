@@ -89,4 +89,5 @@ Once you have found the files you want, you can download them to your local mach
 files = earthaccess.download(results, "./local_folder")
 ```
 
-If you are working in the cloud and the data files are hosted in the cloud, you can stream the data directly, without having to download data.  See [Direct S3 Access]()
+Data can also be opened in-memory with `earthacces.open()`. See [our API
+docs](user-reference/api/api.md) for more.
