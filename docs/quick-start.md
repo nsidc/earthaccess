@@ -93,5 +93,11 @@ Once you have found the files you want, you can download them to your local mach
 files = earthaccess.download(results, "./local_folder")
 ```
 
+!!! note
+
+    This will download the data to a directory named `local_folder` in your current
+    working directory (the directory from which you are running this code, also known as
+    `.`).  If that directory doesn't exist, it will be created automatically.
+
 Data can also be opened in-memory with `earthacces.open()`. See [our API
 docs](user-reference/api/api.md) for more.
