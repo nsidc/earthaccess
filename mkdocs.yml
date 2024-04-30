@@ -68,6 +68,7 @@ nav:
       - "Access": "user_guide/access.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
+      - "Access data": "howto/access-data.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
       - "Search for data using filters": "howto/search-granules.md"
       - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
