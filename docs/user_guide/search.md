@@ -6,7 +6,7 @@
     How-Tos and Tutorials in links below.
     [How-To Access Data](/howto/access-data.md)
     [Getting Started Tutorial](/tutorials/getting-started.ipynb)
-    
+
 ## `search_datasets`
 
 ## `search_data`
