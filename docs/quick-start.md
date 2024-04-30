@@ -60,7 +60,7 @@ To access NASA data, you have to login using your Earth Data Login credentials. 
 By default, `earthaccess` will look for your Earth Data Login credentials in a `.netrc` file, or in environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`.  If you don't
 have either of these set up, you can login manually.  See [Authenticating](howto/authenticate.md) to learn how to create a `.netrc` file or environment variables.
 
-```
+```python
 import earthaccess
 
 earthaccess.login()
@@ -72,7 +72,7 @@ earthaccess.login()
 As an example, we'll search for data from the NASA ICESat-2 mission.  ATL06
 
 
-```
+```python
 results = earthaccess.search_data(
     short_name='ATL06'
     bounding_box=(-10, 20, 10, 50),
@@ -85,7 +85,7 @@ results = earthaccess.search_data(
 
 Once you have found the files you want, you can download them to your local machine.
 
-```
+```python
 files = earthaccess.download(results, "./local_folder")
 ```
 
