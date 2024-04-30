@@ -1,5 +1,5 @@
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Optional, SupportsFloat, Union
 
 if sys.version_info < (3, 9):
@@ -48,8 +48,8 @@ class GranuleCollectionBaseQuery(Query):
     def online_only(self, online_only: bool = True) -> Self: ...
     def temporal(
         self,
-        date_from: Optional[Union[str, datetime]],
-        date_to: Optional[Union[str, datetime]],
+        date_from: Optional[Union[str, date, datetime]],
+        date_to: Optional[Union[str, date, datetime]],
         exclude_boundary: bool = False,
     ) -> Self: ...
     def short_name(self, short_name: str) -> Self: ...

@@ -10,7 +10,8 @@ interactions:
     uri: https://urs.earthdata.nasa.gov/api/users/tokens
   response:
     body:
-      string: '[{"access_token":"eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3RwdWJrZXlfb3BzIiwiYWxnIjoiUlMyNTYifQ.eyJ0eXBlIjoiVXNlciIsInVpZCI6ImRzY2h1Y2siLCJleHAiOjE3MTcyNjM4MTMsImlhdCI6MTcxMjA3OTgxMywiaXNzIjoiRWFydGhkYXRhIExvZ2luIn0.S_tw0-5JNFEv3si07GYVxvQi81QejNAT2Sh2ZIxAwmqr9UqoSmYg2Wp2Jdn3jaWrSVsRgxBXuLD5w7XFeRju2qOtIqovN3XGJ8VnTdvpklr-gTjk_iLq58334Zzbu5ntnqy-QTzPCKvjvqr3GNuIJcp9z7j5rzd3MEUYOFP1xsd8wehGLpBHzT6ZSzCOwdgzE1AufKq9Vd2GqM_5bc3M9cj-gGy2g3m1mP2OB41wiGvPzup79ds4t_gEPkCecm2rplCP4n1hrY6ZQtXshgM6o49J1nkGSJjE0olHcPwEujKE2s1htWZEycI1TCCxrGpx8K1vwEd0lNaekgPUWwdOlA","token_type":"Bearer","expiration_date":"06/01/2024"}]'
+      string: '[{"access_token": "REDACTED", "token_type": "Bearer", "expiration_date":
+        "06/25/2024"}]'
     headers:
       Cache-Control:
       - no-store
@@ -19,9 +20,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 09 Apr 2024 21:58:55 GMT
+      - Mon, 29 Apr 2024 23:19:04 GMT
       ETag:
-      - W/"61d0ce8df0bc684ac04ce623aea3668c"
+      - W/"a0cdb36a1d9bf5a3d3eee622ea7c455d"
       Expires:
       - Fri, 01 Jan 1990 00:00:00 GMT
       Pragma:
@@ -45,9 +46,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 28f6c88b-114d-4319-b6a2-0de0f54c9405
+      - d25462a1-1f80-47e7-8f93-05071e90f8a4
       X-Runtime:
-      - '0.013338'
+      - '1.058293'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -61,11 +62,15 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://urs.earthdata.nasa.gov/api/users/dschuck?client_id=ntD0YGC_SM3Bjs-Tnxd7bg
+    uri: https://urs.earthdata.nasa.gov/api/users/REDACTED?client_id=REDACTED
   response:
     body:
-      string: '{"uid":"dschuck","first_name":"Charles","last_name":"Daniels","email_address":"chuck@developmentseed.org","registered_date":"
-        2 Apr 2024 17:43:33PM","country":"United States","study_area":"Other","allow_auth_app_emails":true,"user_type":"Application","affiliation":"Commercial","agreed_to_meris_eula":true,"agreed_to_sentinel_eula":true,"email_verified":true,"user_groups":[],"user_authorized_apps":23,"nams_auid":null}'
+      string: '{"uid": "REDACTED", "first_name": "REDACTED", "last_name": "REDACTED",
+        "email_address": "REDACTED", "registered_date": " 2 Apr 2024 17:43:33PM",
+        "country": "United States", "study_area": "Other", "allow_auth_app_emails":
+        true, "user_type": "Application", "affiliation": "Commercial", "agreed_to_meris_eula":
+        true, "agreed_to_sentinel_eula": true, "email_verified": true, "user_groups":
+        [], "user_authorized_apps": 24, "nams_auid": "REDACTED"}'
     headers:
       Cache-Control:
       - no-store
@@ -74,9 +79,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 09 Apr 2024 21:58:55 GMT
+      - Mon, 29 Apr 2024 23:19:04 GMT
       ETag:
-      - W/"5d6f0c723c97c730432ca73084995037"
+      - W/"91914441d3cf5c48fd9794d7d56234aa"
       Expires:
       - Fri, 01 Jan 1990 00:00:00 GMT
       Pragma:
@@ -100,9 +105,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - c8cf2bd3-731d-4863-8967-1906de679cbc
+      - 56042173-d203-4e39-9fc1-20a6017d433b
       X-Runtime:
-      - '0.017383'
+      - '0.027858'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -128,7 +133,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 09 Apr 2024 21:58:55 GMT
+      - Mon, 29 Apr 2024 23:19:04 GMT
       Location:
       - https://urs.earthdata.nasa.gov/home
       Referrer-Policy:
@@ -136,8 +141,8 @@ interactions:
       Server:
       - nginx/1.22.1
       Set-Cookie:
-      - _urs-gui_session=abd23c587ce267b8c84ef154346028b0; path=/; expires=Wed, 10
-        Apr 2024 21:58:55 GMT; HttpOnly
+      - _urs-gui_session=92a39ca69d55605a9f306660b175ad1d; path=/; expires=Tue, 30
+        Apr 2024 23:19:04 GMT; HttpOnly
       Strict-Transport-Security:
       - max-age=31536000
       Transfer-Encoding:
@@ -151,9 +156,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - b6384698-e18b-4a99-b80c-b0ebe6cb80b7
+      - cd1119fa-68df-4b28-b645-d3d7cb3b84f6
       X-Runtime:
-      - '0.008282'
+      - '0.016459'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -166,8 +171,6 @@ interactions:
       - '*/*'
       Connection:
       - keep-alive
-      Cookie:
-      - _urs-gui_session=abd23c587ce267b8c84ef154346028b0
     method: GET
     uri: https://urs.earthdata.nasa.gov/home
   response:
@@ -185,12 +188,12 @@ interactions:
         \     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n
         \   })(window,document,'script','dataLayer','GTM-WNP7MLF');</script>\n    <!--
         End Google Tag Manager -->\n\n    <link href=\"https://cdn.earthdata.nasa.gov/eui/1.1.3/stylesheets/application.css\"
-        rel=\"stylesheet\" />\n    <link rel=\"stylesheet\" href=\"/assets/application-d9676c03949446ce1c936d36d78a58525aac3f85bd2ff83160510fb600cda744.css\"
+        rel=\"stylesheet\" />\n    <link rel=\"stylesheet\" href=\"/assets/application-2a77b6483df06458b29e8033e0c8bc9fd8ae66918c52556d8527414dea566bc0.css\"
         media=\"all\" />\n    <!--[if IE 7]>\n      <link rel=\"stylesheet\" href=\"/assets/font-awesome-ie7.min.css\">\n
         \   <![endif]-->\n    <link href=\"//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css\"
         rel=\"stylesheet\">\n    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700'
         rel='stylesheet' type='text/css'>\n    <meta name=\"csrf-param\" content=\"authenticity_token\"
-        />\n<meta name=\"csrf-token\" content=\"HnqBUL1BEA6amXF5OW_TCivwa3egRrKDIv8HhcBZbSO-S8x6GruAEm0UCIjTRfr2hXUF8NNhrcLBToSYCrb6Mw\"
+        />\n<meta name=\"csrf-token\" content=\"7dba-1Qing4eyIW16ZLY6heW_ChaDTUw7-9vHp2q_AKoSmpV14pIsa5UNJf-dyaN_SAJYGMNhAbFGk4xGS_nWQ\"
         />\n    \n\n    <!-- Grid background: http://subtlepatterns.com/graphy/ -->\n
         \ </head>\n  <body class=\"static_pages home\" data-turbolinks-eval=false>\n\n
         \   <!-- Google Tag Manager (noscript) -->\n    <noscript>\n      <iframe
@@ -212,7 +215,7 @@ interactions:
         \     <section id=\"callout-login\">\n  <form id=\"login\" action=\"/login\"
         accept-charset=\"UTF-8\" method=\"post\"><input name=\"utf8\" type=\"hidden\"
         value=\"&#x2713;\" autocomplete=\"off\" /><input type=\"hidden\" name=\"authenticity_token\"
-        value=\"dgkQWfC57cs1blV-hxuIctuaBd8_DtQ47pqFd5NE4_nWOF1zV0N918LjLI9tMaGOdR9rWEwpy3kNKwZqWat06Q\"
+        value=\"CubCdWsEnK71hCL6Xjg52QZ9NLj_nA2j35-Cdb4PyaNPenLb6KxKEUUYk9hJ3ce-7MvB8MacvJX1aqNaOorS-A\"
         autocomplete=\"off\" />\n  <p>\n    <label for=\"username\">Username</label>\n
         \   <i class=\"fa fa-question-circle fa-question-circle--blue user-name\"
         title=\"Login using either your Username or Email Address\"></i>\n    <input
@@ -259,7 +262,7 @@ interactions:
         \ <h3>For questions regarding the EOSDIS Earthdata Login, please contact <a
         href=\"javascript:feedback.showForm();\" title=\"Earthdata Support form\">Earthdata
         Support</a></h3>\n  <ul>\n    <li class=\"version badge eui-badge--md\">V
-        4.199.0\n</li>\n    <li><a href=\"/\">Home</a></li>\n    <li><a href=\"/users/new\">Register</a></li>\n
+        4.200.0\n</li>\n    <li><a href=\"/\">Home</a></li>\n    <li><a href=\"/users/new\">Register</a></li>\n
         \   <li><a title=\"NASA Home\" href=\"http://www.nasa.gov\">NASA</a></li>\n
         \   <li><a title=\"Accessability\" href=\"https://www.nasa.gov/accessibility/\">Accessibility</a></li>\n
         \ </ul>\n  <p>NASA Official: Stephen Berrick</p>\n</footer>\n\n    <script
@@ -287,9 +290,9 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 09 Apr 2024 21:58:55 GMT
+      - Mon, 29 Apr 2024 23:19:04 GMT
       ETag:
-      - W/"7af405988c901d45ff1b80e3d54e85fa"
+      - W/"35779c3d7c24a6ecf93781d1446f73b0"
       Expires:
       - Fri, 01 Jan 1990 00:00:00 GMT
       Pragma:
@@ -299,8 +302,8 @@ interactions:
       Server:
       - nginx/1.22.1
       Set-Cookie:
-      - _urs-gui_session=abd23c587ce267b8c84ef154346028b0; path=/; expires=Wed, 10
-        Apr 2024 21:58:55 GMT; HttpOnly
+      - _urs-gui_session=92a39ca69d55605a9f306660b175ad1d; path=/; expires=Tue, 30
+        Apr 2024 23:19:04 GMT; HttpOnly
       Strict-Transport-Security:
       - max-age=31536000
       Transfer-Encoding:
@@ -316,9 +319,9 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - a5f4494f-83d0-40cc-a966-a45d47155163
+      - 0e1c2fba-0335-45c2-8bf2-9662938c0d04
       X-Runtime:
-      - '0.012801'
+      - '0.103555'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -334,10 +337,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://cmr.earthdata.nasa.gov/search/granules.umm_json?short_name=SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205&temporal%5B%5D=2020-01-01T00:00:00Z,2022-01-01T00:00:00Z&page_size=0
+    uri: https://cmr.earthdata.nasa.gov/search/granules.umm_json?page_size=0&short_name=SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205&temporal%5B%5D=2020-01-01T00%3A00%3A00Z%2C2022-12-31T23%3A59%3A59Z
   response:
     body:
-      string: '{"hits":147,"took":55,"items":[]}'
+      string: '{"hits": 218, "took": 62, "items": []}'
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -345,21 +348,21 @@ interactions:
       - CMR-Hits, CMR-Request-Id, X-Request-Id, CMR-Scroll-Id, CMR-Search-After, CMR-Timed-Out,
         CMR-Shapefile-Original-Point-Count, CMR-Shapefile-Simplified-Point-Count
       CMR-Hits:
-      - '147'
+      - '218'
       CMR-Request-Id:
-      - c8f9b01d-a6a3-4809-8a65-e707f30b3d47
+      - 48fe1a67-1d7c-4231-87cc-4af38a531989
       CMR-Took:
-      - '55'
+      - '63'
       Connection:
       - keep-alive
       Content-MD5:
-      - 376935be7b2a0e96352603908fe0dcd5
+      - ffac843131fefd3102480e1e650f3d20
       Content-SHA1:
-      - b02f8a240f36ad8cd6798334ce2455c338e6d55f
+      - e3114c476c0985b3873bca4a6c47b0cbe2447ba9
       Content-Type:
       - application/vnd.nasa.cmr.umm_results+json;version=1.6.5; charset=utf-8
       Date:
-      - Tue, 09 Apr 2024 21:58:56 GMT
+      - Mon, 29 Apr 2024 23:19:06 GMT
       Server:
       - ServerTokens ProductOnly
       Strict-Transport-Security:
@@ -369,11 +372,11 @@ interactions:
       Vary:
       - Accept-Encoding, User-Agent
       Via:
-      - 1.1 f300b5f0c0ff51593fb31953294424c0.cloudfront.net (CloudFront)
+      - 1.1 eb7da8ca0dd07aa429ce47312003e292.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 6UKqbnR1dCiMWGTDKFtLjE_KomjiZXUhp0ICfljulkAzPCeqJgb3cw==
+      - cL-d8hyuvHmUzFEWoW-T6GmPBNlZzmtgQzVGHOEBP4kL9E4DkyzH6Q==
       X-Amz-Cf-Pop:
-      - PHL51-P1
+      - JFK50-P7
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:
@@ -381,7 +384,7 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 6UKqbnR1dCiMWGTDKFtLjE_KomjiZXUhp0ICfljulkAzPCeqJgb3cw==
+      - cL-d8hyuvHmUzFEWoW-T6GmPBNlZzmtgQzVGHOEBP4kL9E4DkyzH6Q==
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -397,19 +400,42 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://cmr.earthdata.nasa.gov/search/granules.umm_json?short_name=SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205&temporal%5B%5D=2020-01-01T00:00:00Z,2022-01-01T00:00:00Z&page_size=1
+    uri: https://cmr.earthdata.nasa.gov/search/granules.umm_json?page_size=1&short_name=SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205&temporal%5B%5D=2020-01-01T00%3A00%3A00Z%2C2022-12-31T23%3A59%3A59Z
   response:
     body:
-      string: '{"hits":147,"took":253,"items":[{"meta":{"concept-type":"granule","concept-id":"G2546526969-POCLOUD","revision-id":2,"native-id":"ssh_grids_v2205_2020010212","collection-concept-id":"C2270392799-POCLOUD","provider-id":"POCLOUD","format":"application/vnd.nasa.cmr.umm+json","revision-date":"2023-01-11T00:16:28.862Z"},"umm":{"TemporalExtent":{"RangeDateTime":{"EndingDateTime":"2020-01-02T00:00:00.000Z","BeginningDateTime":"2020-01-02T00:00:00.000Z"}},"MetadataSpecification":{"URL":"https://cdn.earthdata.nasa.gov/umm/granule/v1.6.5","Name":"UMM-G","Version":"1.6.5"},"GranuleUR":"ssh_grids_v2205_2020010212","ProviderDates":[{"Type":"Insert","Date":"2023-01-11T00:16:13.878Z"},{"Type":"Update","Date":"2023-01-11T00:16:13.878Z"}],"SpatialExtent":{"HorizontalSpatialDomain":{"Geometry":{"BoundingRectangles":[{"WestBoundingCoordinate":0.083,"SouthBoundingCoordinate":-79.917,"EastBoundingCoordinate":180,"NorthBoundingCoordinate":79.917},{"WestBoundingCoordinate":-180,"SouthBoundingCoordinate":-79.917,"EastBoundingCoordinate":-0.083,"NorthBoundingCoordinate":79.917}]}}},"DataGranule":{"ArchiveAndDistributionInformation":[{"SizeUnit":"MB","Size":9.246453285217285,"Checksum":{"Value":"9002febf17632e5921eba5b8f62237e6","Algorithm":"MD5"},"SizeInBytes":9695609,"Name":"ssh_grids_v2205_2020010212.nc"},{"SizeUnit":"MB","Size":6.008148193359375E-5,"Checksum":{"Value":"b0c271019f89f876b2d3c0a9c46b8f77","Algorithm":"MD5"},"SizeInBytes":63,"Name":"ssh_grids_v2205_2020010212.nc.md5"}],"DayNightFlag":"Unspecified","ProductionDateTime":"2022-10-30T20:57:22.377Z"},"CollectionReference":{"Version":"2205","ShortName":"SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205"},"RelatedUrls":[{"URL":"https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc.md5","Description":"Download
-        ssh_grids_v2205_2020010212.nc.md5","Type":"EXTENDED METADATA"},{"URL":"s3://podaac-ops-cumulus-public/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc.md5","Description":"This
-        link provides direct download access via S3 to the granule","Type":"EXTENDED
-        METADATA"},{"URL":"https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc","Description":"Download
-        ssh_grids_v2205_2020010212.nc","Type":"GET DATA"},{"URL":"s3://podaac-ops-cumulus-protected/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc","Description":"This
-        link provides direct download access via S3 to the granule","Type":"GET DATA
-        VIA DIRECT ACCESS"},{"URL":"https://archive.podaac.earthdata.nasa.gov/s3credentials","Description":"api
-        endpoint to retrieve temporary credentials valid for same-region direct s3
-        access","Type":"VIEW RELATED INFORMATION"},{"URL":"https://opendap.earthdata.nasa.gov/collections/C2270392799-POCLOUD/granules/ssh_grids_v2205_2020010212","Type":"USE
-        SERVICE API","Subtype":"OPENDAP DATA","Description":"OPeNDAP request URL"}]}}]}'
+      string: '{"hits": 218, "took": 222, "items": [{"meta": {"concept-type": "granule",
+        "concept-id": "G2546526969-POCLOUD", "revision-id": 2, "native-id": "ssh_grids_v2205_2020010212",
+        "collection-concept-id": "C2270392799-POCLOUD", "provider-id": "POCLOUD",
+        "format": "application/vnd.nasa.cmr.umm+json", "revision-date": "2023-01-11T00:16:28.862Z"},
+        "umm": {"TemporalExtent": {"RangeDateTime": {"EndingDateTime": "2020-01-02T00:00:00.000Z",
+        "BeginningDateTime": "2020-01-02T00:00:00.000Z"}}, "MetadataSpecification":
+        {"URL": "https://cdn.earthdata.nasa.gov/umm/granule/v1.6.5", "Name": "UMM-G",
+        "Version": "1.6.5"}, "GranuleUR": "ssh_grids_v2205_2020010212", "ProviderDates":
+        [{"Type": "Insert", "Date": "2023-01-11T00:16:13.878Z"}, {"Type": "Update",
+        "Date": "2023-01-11T00:16:13.878Z"}], "SpatialExtent": {"HorizontalSpatialDomain":
+        {"Geometry": {"BoundingRectangles": [{"WestBoundingCoordinate": 0.083, "SouthBoundingCoordinate":
+        -79.917, "EastBoundingCoordinate": 180, "NorthBoundingCoordinate": 79.917},
+        {"WestBoundingCoordinate": -180, "SouthBoundingCoordinate": -79.917, "EastBoundingCoordinate":
+        -0.083, "NorthBoundingCoordinate": 79.917}]}}}, "DataGranule": {"ArchiveAndDistributionInformation":
+        [{"SizeUnit": "MB", "Size": 9.246453285217285, "Checksum": {"Value": "9002febf17632e5921eba5b8f62237e6",
+        "Algorithm": "MD5"}, "SizeInBytes": 9695609, "Name": "ssh_grids_v2205_2020010212.nc"},
+        {"SizeUnit": "MB", "Size": 6.008148193359375e-05, "Checksum": {"Value": "b0c271019f89f876b2d3c0a9c46b8f77",
+        "Algorithm": "MD5"}, "SizeInBytes": 63, "Name": "ssh_grids_v2205_2020010212.nc.md5"}],
+        "DayNightFlag": "Unspecified", "ProductionDateTime": "2022-10-30T20:57:22.377Z"},
+        "CollectionReference": {"Version": "2205", "ShortName": "SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205"},
+        "RelatedUrls": [{"URL": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-public/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc.md5",
+        "Description": "Download ssh_grids_v2205_2020010212.nc.md5", "Type": "EXTENDED
+        METADATA"}, {"URL": "s3://podaac-ops-cumulus-public/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc.md5",
+        "Description": "This link provides direct download access via S3 to the granule",
+        "Type": "EXTENDED METADATA"}, {"URL": "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc",
+        "Description": "Download ssh_grids_v2205_2020010212.nc", "Type": "GET DATA"},
+        {"URL": "s3://podaac-ops-cumulus-protected/SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205/ssh_grids_v2205_2020010212.nc",
+        "Description": "This link provides direct download access via S3 to the granule",
+        "Type": "GET DATA VIA DIRECT ACCESS"}, {"URL": "https://archive.podaac.earthdata.nasa.gov/s3credentials",
+        "Description": "api endpoint to retrieve temporary credentials valid for same-region
+        direct s3 access", "Type": "VIEW RELATED INFORMATION"}, {"URL": "https://opendap.earthdata.nasa.gov/collections/C2270392799-POCLOUD/granules/ssh_grids_v2205_2020010212",
+        "Type": "USE SERVICE API", "Subtype": "OPENDAP DATA", "Description": "OPeNDAP
+        request URL"}]}}]}'
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -417,23 +443,23 @@ interactions:
       - CMR-Hits, CMR-Request-Id, X-Request-Id, CMR-Scroll-Id, CMR-Search-After, CMR-Timed-Out,
         CMR-Shapefile-Original-Point-Count, CMR-Shapefile-Simplified-Point-Count
       CMR-Hits:
-      - '147'
+      - '218'
       CMR-Request-Id:
-      - 59762a2f-23b9-45a2-a99b-be84748be0e5
+      - ae151b5c-ff6b-4109-8f9f-ad9eb51f70b3
       CMR-Search-After:
       - '["pocloud",1577923200000,2546526969]'
       CMR-Took:
-      - '254'
+      - '224'
       Connection:
       - keep-alive
       Content-MD5:
-      - 53cf1a1f972e393a32e3cd15ec36f700
+      - 1d6e4d64cad093bfb7d9465535b8f257
       Content-SHA1:
-      - 60c47f03299dda570448eaecfbd8b3ed10f7bd5a
+      - 3435d16ab946785205baf6617e3faa9a575b0cbe
       Content-Type:
       - application/vnd.nasa.cmr.umm_results+json;version=1.6.5; charset=utf-8
       Date:
-      - Tue, 09 Apr 2024 21:58:56 GMT
+      - Mon, 29 Apr 2024 23:19:06 GMT
       Server:
       - ServerTokens ProductOnly
       Strict-Transport-Security:
@@ -443,11 +469,11 @@ interactions:
       Vary:
       - Accept-Encoding, User-Agent
       Via:
-      - 1.1 f300b5f0c0ff51593fb31953294424c0.cloudfront.net (CloudFront)
+      - 1.1 eb7da8ca0dd07aa429ce47312003e292.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - N9NqPFJ1jWMYiNKZDyuZ71_auV8xRiEL-06uHzn3q2PrTU66FCOKFA==
+      - KSHFR1DLNXOZQodAInTokLzeyFimhRHPMOIiS5eHCAr3smWA-uhNLQ==
       X-Amz-Cf-Pop:
-      - PHL51-P1
+      - JFK50-P7
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:
@@ -455,7 +481,7 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - N9NqPFJ1jWMYiNKZDyuZ71_auV8xRiEL-06uHzn3q2PrTU66FCOKFA==
+      - KSHFR1DLNXOZQodAInTokLzeyFimhRHPMOIiS5eHCAr3smWA-uhNLQ==
       X-XSS-Protection:
       - 1; mode=block
       content-length:

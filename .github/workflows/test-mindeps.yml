@@ -17,7 +17,7 @@ defaults:
     shell: bash -l {0}
 
 jobs:
-  test:
+  test-mindeps:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

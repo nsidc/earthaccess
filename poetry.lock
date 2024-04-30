@@ -3727,16 +3727,17 @@ watchdog = ">=0.6.0"
 
 [[package]]
 name = "python-cmr"
-version = "0.9.0"
+version = "0.10.0"
 description = "Python wrapper to the NASA Common Metadata Repository (CMR) API."
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "python_cmr-0.9.0-py3-none-any.whl", hash = "sha256:ef20e41ef59cd323a4847cf52fc63e91e5fc632dc1743e42935748b5a474c5ef"},
-    {file = "python_cmr-0.9.0.tar.gz", hash = "sha256:5c9a0eb9877de67d80df2d2e572f8614845c75a8457faddfbff9edc1ab90e992"},
+    {file = "python_cmr-0.10.0-py3-none-any.whl", hash = "sha256:f9ef557b42b2482b0fae99ad4885556daf7689d45e796f0041209c46dc150ccf"},
+    {file = "python_cmr-0.10.0.tar.gz", hash = "sha256:d806025ab80ebabe9607ddf905bae58e90e3a93076a164f35df0f37fb3b2d564"},
 ]
 
 [package.dependencies]
+python-dateutil = ">=2.8.2,<3.0.0"
 requests = ">=2.26.0,<3.0.0"
 
 [[package]]
@@ -5120,4 +5121,4 @@ kerchunk = ["dask", "kerchunk"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "530a3cffb6d044e431ec3671268949e797d3c468c0f653b6fea7c90cdc422b3d"
+content-hash = "99b3023c1221ac3f30b44853b47af6e10a12118642ef43067e49838fbf7062f4"

@@ -1,7 +1,6 @@
 import datetime as dt
 from inspect import getmembers, ismethod
 
-import dateutil.parser as parser
 import requests
 from typing_extensions import (
     Any,
@@ -410,18 +409,23 @@ class DataCollections(CollectionQuery):
     @override
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.datetime]] = None,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Self:
-        """Filter by an open or closed date range. Dates can be provided as datetime
-        objects or ISO 8601 formatted strings. Multiple ranges can be provided by
-        successive calls to this method before calling execute().
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
 
         Parameters:
-            date_from (String or Datetime object): earliest date of temporal range
-            date_to (String or Datetime object): latest date of temporal range
-            exclude_boundary (Boolean): whether or not to exclude the date_from/to in
+            date_from: start of temporal range
+            date_to: end of temporal range
+            exclude_boundary: whether or not to exclude the date_from/to in
                 the matched range.
 
         Returns:
@@ -433,20 +437,6 @@ class DataCollections(CollectionQuery):
                 object; or `date_from` and `date_to` are both datetime objects (or
                 parsable as such) and `date_from` is after `date_to`.
         """
-        DEFAULT = dt.datetime(1979, 1, 1)
-        if date_from is not None and not isinstance(date_from, dt.datetime):
-            try:
-                date_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided start date was not recognized")
-                date_from = ""
-
-        if date_to is not None and not isinstance(date_to, dt.datetime):
-            try:
-                date_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided end date was not recognized")
-                date_to = ""
 
         return super().temporal(date_from, date_to, exclude_boundary)
 
@@ -819,20 +809,23 @@ class DataGranules(GranuleQuery):
     @override
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.datetime]] = None,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
         exclude_boundary: bool = False,
     ) -> Self:
-        """Filter by an open or closed date range.
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
 
-        Dates can be provided as a datetime objects or ISO 8601 formatted strings.
-        Multiple ranges can be provided by successive calls to this method before
-        calling execute().
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
 
         Parameters:
-            date_from: earliest date of temporal range
-            date_to: latest date of temporal range
-            exclude_boundary: whether to exclude the date_from/to in the matched range
+            date_from: start of temporal range
+            date_to: end of temporal range
+            exclude_boundary: whether to exclude the date_from and date_to in the matched range
 
         Returns:
             self
@@ -843,20 +836,6 @@ class DataGranules(GranuleQuery):
                 object; or `date_from` and `date_to` are both datetime objects (or
                 parsable as such) and `date_from` is after `date_to`.
         """
-        DEFAULT = dt.datetime(1979, 1, 1)
-        if date_from is not None and not isinstance(date_from, dt.datetime):
-            try:
-                date_from = parser.parse(date_from, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided start date was not recognized")
-                date_from = ""
-
-        if date_to is not None and not isinstance(date_to, dt.datetime):
-            try:
-                date_to = parser.parse(date_to, default=DEFAULT).isoformat() + "Z"
-            except Exception:
-                print("The provided end date was not recognized")
-                date_to = ""
 
         return super().temporal(date_from, date_to, exclude_boundary)
 
