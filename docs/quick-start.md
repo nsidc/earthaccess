@@ -74,7 +74,7 @@ As an example, we'll search for data from the NASA ICESat-2 mission.  ATL06
 
 ```python
 results = earthaccess.search_data(
-    short_name='ATL06'
+    short_name='ATL06',
     bounding_box=(-10, 20, 10, 50),
     temporal=("1999-02", "2019-03"),
     count=10
