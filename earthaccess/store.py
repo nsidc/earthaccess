@@ -188,9 +188,9 @@ class Store(object):
                 resp.raise_for_status()
             else:
                 self._requests_cookies.update(new_session.cookies.get_dict())
-        elif 200 <= resp.status_code <= 300:
+        elif 200 <= resp.status_code < 300:
             self._requests_cookies = self._http_session.cookies.get_dict()
-        elif resp.status_code >= 500:
+        else:
             resp.raise_for_status()
 
     def get_s3fs_session(
