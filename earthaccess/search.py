@@ -99,7 +99,7 @@ class DataCollections(CollectionQuery):
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
 
-            self.mode(auth.earthdata_environment["cmr"])
+            self.mode(auth.system.cmr_base_url)
         else:
             self.session = requests.sessions.Session()
 
@@ -457,7 +457,7 @@ class DataGranules(GranuleQuery):
             # To search, we need the new bearer tokens from NASA Earthdata
             self.session = auth.get_session(bearer_token=True)
 
-            self.mode(auth.earthdata_environment["cmr"])
+            self.mode(auth.system.cmr_base_url)
         else:
             self.session = requests.sessions.Session()
 

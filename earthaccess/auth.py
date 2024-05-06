@@ -4,7 +4,6 @@ import logging
 import os
 import platform
 import shutil
-from collections import namedtuple
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -13,9 +12,8 @@ from urllib.parse import urlparse
 import requests  # type: ignore
 from tinynetrc import Netrc
 
-from cmr import CMR_OPS, CMR_SIT, CMR_UAT
-
 from .daac import DAACS
+from .system import PROD, System
 
 try:
     user_agent = f"earthaccess v{importlib.metadata.version('earthaccess')}"
@@ -25,14 +23,6 @@ except importlib.metadata.PackageNotFoundError:
 
 logger = logging.getLogger(__name__)
 CLIENT_ID = "ntD0YGC_SM3Bjs-Tnxd7bg"
-
-# Host URL options, for different Earthdata domains.
-Environment_Definitions = namedtuple("Environment_Definitions", ["PROD", "UAT", "SIT"])
-Env = Environment_Definitions(
-    {"edl": "urs.earthdata.nasa.gov", "cmr": CMR_OPS},
-    {"edl": "uat.urs.earthdata.nasa.gov", "cmr": CMR_UAT},
-    {"edl": "sit.urs.earthdata.nasa.gov", "cmr": CMR_SIT},
-)
 
 
 class SessionWithHeaderRedirection(requests.Session):
@@ -86,13 +76,13 @@ class Auth(object):
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
         self.tokens: List = []
-        self._set_earthdata_environment(Env.PROD)
+        self._set_earthdata_system(PROD)
 
     def login(
         self,
         strategy: str = "netrc",
         persist: bool = False,
-        earthdata_environment: Optional[dict] = None,
+        system: Optional[System] = None,
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -105,15 +95,15 @@ class Auth(object):
                 * **"environment"**:
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
-            earthdata_environment (Env): the EDL endpoint to log in to Earthdata, defaults to PROD
+            system (Env): the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
             An instance of Auth.
         """
-        if earthdata_environment is not None:
-            self._set_earthdata_environment(earthdata_environment)
+        if system is not None:
+            self._set_earthdata_system(system)
 
-        if self.authenticated and (earthdata_environment == self.earthdata_environment):
+        if self.authenticated and (system == self.system):
             logger.debug("We are already authenticated with NASA EDL")
             return self
         if strategy == "interactive":
@@ -125,25 +115,23 @@ class Auth(object):
 
         return self
 
-    def _set_earthdata_environment(self, earthdata_environment: dict) -> None:
-        self.earthdata_environment = earthdata_environment
+    def _set_earthdata_system(self, system: System) -> None:
+        self.system = system
 
         # Maybe all these predefined URLs should be in a constants.py file
-        self.EDL_GET_TOKENS_URL = (
-            f"https://{self.earthdata_environment['edl']}/api/users/tokens"
-        )
-        self.EDL_GET_PROFILE = f"https://{self.earthdata_environment['edl']}/api/users/<USERNAME>?client_id={CLIENT_ID}"
+        self.EDL_GET_TOKENS_URL = f"https://{self.system.edl_hostname}/api/users/tokens"
+        self.EDL_GET_PROFILE = f"https://{self.system.edl_hostname}/api/users/<USERNAME>?client_id={CLIENT_ID}"
         self.EDL_GENERATE_TOKENS_URL = (
-            f"https://{self.earthdata_environment['edl']}/api/users/token"
+            f"https://{self.system.edl_hostname}/api/users/token"
         )
         self.EDL_REVOKE_TOKEN = (
-            f"https://{self.earthdata_environment['edl']}/api/users/revoke_token"
+            f"https://{self.system.edl_hostname}/api/users/revoke_token"
         )
 
-        self._eula_url = f"https://{self.earthdata_environment['edl']}/users/earthaccess/unaccepted_eulas"
-        self._apps_url = (
-            f"https://{self.earthdata_environment['edl']}/application_search"
+        self._eula_url = (
+            f"https://{self.system.edl_hostname}/users/earthaccess/unaccepted_eulas"
         )
+        self._apps_url = f"https://{self.system.edl_hostname}/application_search"
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
@@ -260,7 +248,7 @@ class Auth(object):
 
         Parameters:
             bearer_token: whether to include bearer token
-            earthdata_environment: optional EARTHDATA environment to use
+            system: optional EARTHDATA environment to use
 
         Returns:
             class Session instance with Auth and bearer token headers
@@ -301,9 +289,9 @@ class Auth(object):
             raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
-        if my_netrc[self.earthdata_environment["edl"]] is not None:
-            username = my_netrc[self.earthdata_environment["edl"]]["login"]
-            password = my_netrc[self.earthdata_environment["edl"]]["password"]
+        if my_netrc[self.system.edl_hostname] is not None:
+            username = my_netrc[self.system.edl_hostname]["login"]
+            password = my_netrc[self.system.edl_hostname]["password"]
         else:
             return False
         authenticated = self._get_credentials(username, password)
@@ -409,7 +397,7 @@ class Auth(object):
             print(e)
             return False
         my_netrc = Netrc(str(netrc_path))
-        my_netrc[self.earthdata_environment["edl"]] = {
+        my_netrc[self.system.edl_hostname] = {
             "login": username,
             "password": password,
         }

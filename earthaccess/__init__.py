@@ -20,6 +20,7 @@ from .auth import Auth
 from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
 from .store import Store
+from .system import PROD, UAT
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,8 @@ __all__ = [
     "Store",
     "auth_environ",
     "consolidate_metadata",
+    "PROD",
+    "UAT",
 ]
 
 __version__ = version("earthaccess")

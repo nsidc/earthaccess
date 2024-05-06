@@ -164,13 +164,12 @@ And that's it! Just one line of code, and this same piece of code will also work
 If your EDL account is authorized to access the User Acceptance Testing (UAT)
 or System Integration Testing (SIT) environments,
 you can set earthaccess to work with those EDL and CMR endpoints
-by setting the `earthdata_environment` argument at login, as follows:
+by setting the `system` argument at login, as follows:
 
 ```python
 import earthaccess
-from earthaccess.auth import Env
 
-earthaccess.login(earthdata_environment=Env.UAT)
+earthaccess.login(system=earthaccess.UAT)
 
 ```
 

@@ -5,7 +5,7 @@ from unittest import mock
 
 import earthaccess
 import responses
-from earthaccess.auth import CLIENT_ID, Env
+from earthaccess.auth import CLIENT_ID
 
 
 # TODO: Still need to create an integration test, with corresponding credentials for UAT.
@@ -53,11 +53,11 @@ class TestUatEnvironmentArgument:
         )
 
         # Login
-        auth = earthaccess.login(strategy="interactive", earthdata_environment=Env.UAT)
+        auth = earthaccess.login(strategy="interactive", system=earthaccess.UAT)
         assert auth.authenticated
-        assert auth.earthdata_environment["edl"] == Env.UAT["edl"]
+        assert auth.system.edl_hostname == earthaccess.UAT.edl_hostname
 
         # Query CMR, and check that mock communication was with UAT CMR
         results = earthaccess.search_data()
         assert len(results) == 1
-        assert earthaccess.__auth__.earthdata_environment["edl"] == Env.UAT["edl"]
+        assert earthaccess.__auth__.system.edl_hostname == earthaccess.UAT.edl_hostname
