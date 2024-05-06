@@ -5,14 +5,14 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: check-yaml
       - id: trailing-whitespace
       - id: check-toml
       - id: check-json
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.2.1
+    rev: v0.4.3
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
