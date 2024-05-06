@@ -9,7 +9,7 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .system import PROD
+from .system import PROD, System
 from .utils import _validation as validate
 
 
@@ -126,7 +126,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     return query.get_all()
 
 
-def login(strategy: str = "all", persist: bool = False, system: dict = PROD) -> Auth:
+def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
