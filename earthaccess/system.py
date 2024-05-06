@@ -1,4 +1,5 @@
 """Earthdata Environments/Systems module."""
+
 from dataclasses import dataclass
 
 from typing_extensions import NewType
