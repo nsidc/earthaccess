@@ -99,5 +99,5 @@ files = earthaccess.download(results, "./local_folder")
     working directory (the directory from which you are running this code, also known as
     `.`).  If that directory doesn't exist, it will be created automatically.
 
-Data can also be opened in-memory with `earthacces.open()`. See [our API
+Data can also be opened in-memory with `earthaccess.open()`. See [our API
 docs](user-reference/api/api.md) for more.
