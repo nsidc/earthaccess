@@ -73,7 +73,7 @@ earthaccess.login()
 
 ### Step 2: Search for data
 
-As an example, we'll search for data from the NASA ICESat-2 mission.  ATL06
+As an example, we'll search for the "ATLAS/ICESat-2 L3A Land Ice Height", or ATL06, dataset from the NASA [ICESat-2](https://nsidc.org/data/icesat-2) mission.
 
 
 ```python
