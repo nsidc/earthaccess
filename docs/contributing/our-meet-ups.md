@@ -14,7 +14,7 @@ Hack days...
 * Occur on alternating Tuesdays at 11AM - 1PM Mountain Time.
 * Are self-determining; you can work on what sounds fun to you!
 * Are supportive; _earthaccess_ developers, maintainers, and community managers will
-  be present on the call.
+  be present on the call. We welcome and aim to foster new contributions and community members.
 * Include live demos on request!
 
 For a glimpse in to the work we do on a typical hack day, please visit our
