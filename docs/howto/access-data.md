@@ -37,7 +37,7 @@ ds = xr.open_mfdataset(files)
 
 ```
 
-And that's it! Just one line of code, and this same piece of code will also work for data that are not hosted in the cloud, i.e. located at NASA storage centers.
+And that's it in just one line of code! This same piece of code will also work for data that are not hosted in the cloud, i.e. located at NASA storage centers.
 
 
 > More examples coming soon!
