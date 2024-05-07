@@ -52,7 +52,7 @@ to perform some common searches and data access, take a look at our how-to guide
 sidebar.
 
 The only requirement to use this library is to open a free account with NASA
-[EDL](https://urs.earthdata.nasa.gov).
+[Earthdata Login](https://urs.earthdata.nasa.gov).
 
 The following steps can be executed in a Python interpreter, a Python file, or a
 [Jupyter notebook](https://docs.jupyter.org/en/latest/start/index.html).
