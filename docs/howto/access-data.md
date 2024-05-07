@@ -26,7 +26,7 @@ files = earthaccess.download(results, "./local_folder")
 
 **Option 3: Direct S3 Access - Stream data directly to xarray**
 
-This method works best if you are in the same Amazon Web Services (AWS) region as the data (us-west-2) and you are working with gridded datasets (processing level 3 and above).
+This method works best if you are in the same Amazon Web Services (AWS) region as the data (us-west-2) and you are working with gridded (processing level 3 and above) datasets without nested or hierarchical data variables.
 
 ```python
 import xarray as xr
