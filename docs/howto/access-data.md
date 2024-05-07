@@ -14,7 +14,7 @@ data_links = [granule.data_links(access="external") for granule in results]
 
 ```
 
-> Note: *earthaccess* can get S3 credentials for us, or auhenticated HTTP sessions in case we want to use them with a different library.
+> Note: *earthaccess* can get S3 credentials for us, or authenticated HTTP sessions in case we want to use them with a different library.
 
 **Option 2: Download data to a local folder**
 
