@@ -29,3 +29,34 @@ If you wish to enter your Earthdata Login credentials when prompted with optiona
 ```py
 auth = earthaccess.login(strategy="interactive", persist=True)
 ```
+
+
+
+### **Authentication**
+
+By default, `earthaccess` with automatically look for your EDL account credentials in two locations:
+
+1. A `~/.netrc` file
+2. `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables
+
+If neither of these options are configured, you can authenticate by calling the `earthaccess.login()` method
+and manually entering your EDL account credentials.
+
+```python
+import earthaccess
+
+earthaccess.login()
+```
+
+Note you can pass `persist=True` to `earthaccess.login()` to have the EDL account credentials you enter
+automatically saved to a `~/.netrc` file for future use.
+
+
+Once you are authenticated with NASA EDL you can:
+
+* Get a file from a DAAC using a `fsspec` session.
+* Request temporary S3 credentials from a particular DAAC (needed to download or stream data from an S3 bucket in the cloud).
+* Use the library to download or stream data directly from S3.
+* Regenerate CMR tokens (used for restricted datasets).
+
+
