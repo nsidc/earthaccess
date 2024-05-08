@@ -42,7 +42,7 @@ Try it in your browser without installing anything! [![Binder](https://mybinder.
 
 ## How to Get Started with `earthaccess`
 
-Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start.html) to learn how to install and see a simple example of using `earthaccess`.
+Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start/) to learn how to install and see a simple example of using `earthaccess`.
 
 
 ## Compatibility
