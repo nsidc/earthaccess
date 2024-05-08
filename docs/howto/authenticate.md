@@ -58,3 +58,17 @@ Once you are authenticated with NASA EDL you can:
 * Request temporary S3 credentials from a particular DAAC (needed to download or stream data from an S3 bucket in the cloud).
 * Use the library to download or stream data directly from S3.
 * Regenerate CMR tokens (used for restricted datasets).
+
+
+### Earthdata User Acceptance Testing (UAT) environment
+
+If your EDL account is authorized to access the User Acceptance Testing (UAT),
+you can set earthaccess to work with its EDL and CMR endpoints
+by setting the `system` argument at login, as follows:
+
+```python
+import earthaccess
+
+earthaccess.login(system=earthaccess.UAT)
+
+```
