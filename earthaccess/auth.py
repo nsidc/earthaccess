@@ -248,7 +248,6 @@ class Auth(object):
 
         Parameters:
             bearer_token: whether to include bearer token
-            system: optional EARTHDATA environment to use
 
         Returns:
             class Session instance with Auth and bearer token headers
