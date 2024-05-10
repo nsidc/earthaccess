@@ -8,7 +8,7 @@
 * Enhancements:
   * Corrected and enhanced static type hints for functions and methods that make
     CMR queries or handle CMR query results ([#508](https://github.com/nsidc/earthaccess/issues/508))
-  * Enable queries to Earthdata test environments for authenticated accounts ([#421](https://github.com/nsidc/earthaccess/issues/421))
+  * Enable queries to Earthdata User Acceptance Testing (UAT) system for authenticated accounts ([#421](https://github.com/nsidc/earthaccess/issues/421))
 
 ## [v0.9.0] 2024-02-28
 
