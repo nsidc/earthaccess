@@ -60,3 +60,15 @@ Once you are authenticated with NASA EDL you can:
 * Regenerate CMR tokens (used for restricted datasets).
 
 
+### Earthdata User Acceptance Testing (UAT) environment
+
+If your EDL account is authorized to access the User Acceptance Testing (UAT) system,
+you can set earthaccess to work with its EDL and CMR endpoints
+by setting the `system` argument at login, as follows:
+
+```python
+import earthaccess
+
+earthaccess.login(system=earthaccess.UAT)
+
+```

@@ -98,9 +98,12 @@ class DataCollections(CollectionQuery):
         self.session = (
             # To search, we need the new bearer tokens from NASA Earthdata
             auth.get_session(bearer_token=True)
-            if auth is not None and auth.authenticated
+            if auth and auth.authenticated
             else requests.session()
         )
+
+        if auth:
+            self.mode(auth.system.cmr_base_url)
 
         self._debug = False
 
@@ -449,15 +452,17 @@ class DataGranules(GranuleQuery):
     _format = "umm_json"
 
     def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
-        """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
 
         self.session = (
             # To search, we need the new bearer tokens from NASA Earthdata
             auth.get_session(bearer_token=True)
-            if auth is not None and auth.authenticated
+            if auth and auth.authenticated
             else requests.session()
         )
+
+        if auth:
+            self.mode(auth.system.cmr_base_url)
 
         self._debug = False
 
@@ -769,7 +774,7 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
-        """Check if a granule record in CMR advertises "direct access"."""
+        """Check if a granule record, from CMR, advertises "direct access"."""
         if "RelatedUrls" not in granule["umm"]:
             return False
 
