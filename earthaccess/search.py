@@ -95,13 +95,15 @@ class DataCollections(CollectionQuery):
         """
         super().__init__(*args, **kwargs)
 
-        if auth and auth.authenticated:
+        self.session = (
             # To search, we need the new bearer tokens from NASA Earthdata
-            self.session = auth.get_session(bearer_token=True)
+            auth.get_session(bearer_token=True)
+            if auth and auth.authenticated
+            else requests.session()
+        )
 
+        if auth:
             self.mode(auth.system.cmr_base_url)
-        else:
-            self.session = requests.sessions.Session()
 
         self._debug = False
 
@@ -452,13 +454,15 @@ class DataGranules(GranuleQuery):
     def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
-        if auth and auth.authenticated:
+        self.session = (
             # To search, we need the new bearer tokens from NASA Earthdata
-            self.session = auth.get_session(bearer_token=True)
+            auth.get_session(bearer_token=True)
+            if auth and auth.authenticated
+            else requests.session()
+        )
 
+        if auth:
             self.mode(auth.system.cmr_base_url)
-        else:
-            self.session = requests.sessions.Session()
 
         self._debug = False
 

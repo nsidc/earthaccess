@@ -277,11 +277,11 @@ class Auth(object):
             raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
-        if (creds := my_netrc[self.system.edl_hostname]) is not None:
-            username = creds["login"]
-            password = creds["password"]
-        else:
+        if (creds := my_netrc[self.system.edl_hostname]) is None:
             return False
+
+        username = creds["login"]
+        password = creds["password"]
         authenticated = self._get_credentials(username, password)
         if authenticated:
             logger.debug("Using .netrc file for EDL")
