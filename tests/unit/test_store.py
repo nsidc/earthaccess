@@ -7,7 +7,6 @@ import pytest
 import responses
 import s3fs
 from earthaccess import Auth, Store
-from earthaccess.auth import CLIENT_ID
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -23,12 +22,6 @@ class TestStoreSessions(unittest.TestCase):
             responses.GET,
             "https://urs.earthdata.nasa.gov/api/users/tokens",
             json=json_response,
-            status=200,
-        )
-        responses.add(
-            responses.GET,
-            f"https://urs.earthdata.nasa.gov/api/users/user?client_id={CLIENT_ID}",
-            json={},
             status=200,
         )
         self.auth = Auth()

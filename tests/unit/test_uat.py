@@ -5,7 +5,6 @@ from unittest import mock
 
 import earthaccess
 import responses
-from earthaccess.auth import CLIENT_ID
 
 
 # TODO: Still need to create an integration test, with corresponding credentials for UAT.
@@ -32,12 +31,6 @@ class TestUatEnvironmentArgument:
             responses.GET,
             "https://uat.urs.earthdata.nasa.gov/profile",
             json={"email_address": "test@test.edu"},
-            status=200,
-        )
-        responses.add(
-            responses.GET,
-            f"https://uat.urs.earthdata.nasa.gov/api/users/user?client_id={CLIENT_ID}",
-            json={},
             status=200,
         )
 

@@ -22,7 +22,6 @@ except importlib.metadata.PackageNotFoundError:
 
 
 logger = logging.getLogger(__name__)
-CLIENT_ID = "ntD0YGC_SM3Bjs-Tnxd7bg"
 
 
 class SessionWithHeaderRedirection(requests.Session):
@@ -120,7 +119,6 @@ class Auth(object):
 
         # Maybe all these predefined URLs should be in a constants.py file
         self.EDL_GET_TOKENS_URL = f"https://{self.system.edl_hostname}/api/users/tokens"
-        self.EDL_GET_PROFILE = f"https://{self.system.edl_hostname}/api/users/<USERNAME>?client_id={CLIENT_ID}"
         self.EDL_GENERATE_TOKENS_URL = (
             f"https://{self.system.edl_hostname}/api/users/token"
         )
@@ -261,15 +259,6 @@ class Auth(object):
             )
         return session
 
-    def get_user_profile(self) -> Dict[str, Any]:
-        if hasattr(self, "username") and self.authenticated:
-            session = self.get_session()
-            url = self.EDL_GET_PROFILE.replace("<USERNAME>", self.username)
-            user_profile = session.get(url).json()
-            return user_profile
-        else:
-            return {}
-
     def _interactive(self, persist_credentials: bool = False) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
@@ -340,12 +329,6 @@ class Auth(object):
                 logger.debug(
                     f"Using token with expiration date: {self.token['expiration_date']}"
                 )
-            profile = self.get_user_profile()
-            if "email_address" in profile:
-                self.user_profile = profile
-                self.email = profile["email_address"]
-            else:
-                self.email = ""
 
         return self.authenticated
 

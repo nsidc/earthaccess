@@ -5,7 +5,6 @@ from unittest import mock
 import pytest
 import responses
 from earthaccess import Auth
-from earthaccess.auth import CLIENT_ID
 
 
 class TestCreateAuth(unittest.TestCase):
@@ -29,12 +28,6 @@ class TestCreateAuth(unittest.TestCase):
             responses.GET,
             "https://urs.earthdata.nasa.gov/profile",
             json={"email_address": "test@test.edu"},
-            status=200,
-        )
-        responses.add(
-            responses.GET,
-            f"https://urs.earthdata.nasa.gov/api/users/user?client_id={CLIENT_ID}",
-            json={},
             status=200,
         )
 
@@ -72,12 +65,6 @@ class TestCreateAuth(unittest.TestCase):
             status=200,
         )
         responses.add(
-            responses.GET,
-            f"https://urs.earthdata.nasa.gov/api/users/user?client_id={CLIENT_ID}",
-            json={},
-            status=200,
-        )
-        responses.add(
             responses.POST,
             "https://urs.earthdata.nasa.gov/api/users/token",
             json=json_response,
@@ -107,12 +94,6 @@ class TestCreateAuth(unittest.TestCase):
         responses.add(
             responses.GET,
             "https://urs.earthdata.nasa.gov/profile",
-            json=json_response,
-            status=401,
-        )
-        responses.add(
-            responses.GET,
-            f"https://urs.earthdata.nasa.gov/api/users/user?client_id={CLIENT_ID}",
             json=json_response,
             status=401,
         )
