@@ -62,7 +62,7 @@ Once you are authenticated with NASA EDL you can:
 
 ### Earthdata User Acceptance Testing (UAT) environment
 
-If your EDL account is authorized to access the User Acceptance Testing (UAT),
+If your EDL account is authorized to access the User Acceptance Testing (UAT) system,
 you can set earthaccess to work with its EDL and CMR endpoints
 by setting the `system` argument at login, as follows:
 

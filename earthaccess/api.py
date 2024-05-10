@@ -138,12 +138,12 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
             * **"netrc"**: retrieve username and password from ~/.netrc.
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist: will persist credentials in a .netrc file
-        system: the EDL endpoint to log in to Earthdata, defaults to PROD
+        system: the Earthdata system to access, defaults to PROD
 
     Returns:
         An instance of Auth.
     """
-    # Set the underlying Auth object's earthdata environment,
+    # Set the underlying Auth object's earthdata system,
     # before triggering the getattr function for `__auth__`.
     earthaccess._auth._set_earthdata_system(system)
 

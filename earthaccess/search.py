@@ -450,7 +450,6 @@ class DataGranules(GranuleQuery):
     _format = "umm_json"
 
     def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
-        """Base class for Granule and Collection CMR queries."""
         super().__init__(*args, **kwargs)
 
         if auth and auth.authenticated:
@@ -771,7 +770,7 @@ class DataGranules(GranuleQuery):
         return True
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
-        """Check if a granule record, in CMR, advertises "direct access"."""
+        """Check if a granule record, from CMR, advertises "direct access"."""
         if "RelatedUrls" not in granule["umm"]:
             return False
 
