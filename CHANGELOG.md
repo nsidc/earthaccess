@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+* Changes
+  * Removed the `get_user_profile` method and the `email_address` and `profile` attributes from the `Auth` class ([#421](https://github.com/nsidc/earthaccess/issues/421))
 * Bug fixes:
     * fixed 483 by extracting a common CMR query method for collections and granules using SearchAfter header
     * Added VCR support for verifying the API call to CMR and the parsing of returned results without relying on CMR availability post development
