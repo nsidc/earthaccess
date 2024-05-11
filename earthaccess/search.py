@@ -1,4 +1,5 @@
 import datetime as dt
+import logging
 from inspect import getmembers, ismethod
 
 import requests
@@ -20,6 +21,8 @@ from cmr import CollectionQuery, GranuleQuery
 from .auth import Auth
 from .daac import find_provider, find_provider_by_shortname
 from .results import DataCollection, DataGranule
+
+logger = logging.getLogger(__name__)
 
 FloatLike: TypeAlias = Union[str, SupportsFloat]
 PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
@@ -306,8 +309,8 @@ class DataCollections(CollectionQuery):
 
     def print_help(self, method: str = "fields") -> None:
         """Prints the help information for a given method."""
-        print("Class components: \n")
-        print([method for method in dir(self) if method.startswith("_") is False])
+        logger.info("Class components: \n")
+        logger.info([method for method in dir(self) if method.startswith("_") is False])
         help(getattr(self, method))
 
     def fields(self, fields: Optional[List[str]] = None) -> Self:
@@ -978,7 +981,7 @@ class DataGranules(GranuleQuery):
         else:
             # TODO consider removing this print statement since we don't print such
             # a message in other cases where no results are found.  Seems arbitrary.
-            print(
+            logger.info(
                 f"earthaccess couldn't find any associated collections with the DOI: {doi}"
             )
 

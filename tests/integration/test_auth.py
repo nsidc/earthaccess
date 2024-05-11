@@ -62,7 +62,7 @@ def test_auth_throws_exception_if_netrc_is_not_present():
     with pytest.raises(Exception) as e_info:
         earthaccess.login(strategy="netrc")
         assertions.assertRaises(FileNotFoundError)
-        print(e_info)
+        logger.info(e_info)
 
 
 def test_auth_populates_attrs():
@@ -87,12 +87,12 @@ def test_auth_can_fetch_s3_credentials():
     for daac in earthaccess.daac.DAACS:
         if len(daac["s3-credentials"]) > 0:
             try:
-                print(f"Testing S3 credentials for {daac['short-name']}")
+                logger.info(f"Testing S3 credentials for {daac['short-name']}")
                 credentials = earthaccess.get_s3_credentials(daac["short-name"])
                 assertions.assertIsInstance(credentials, dict)
                 assertions.assertTrue("accessKeyId" in credentials)
             except Exception as e:
-                print(
+                logger.error(
                     f"An error occured while trying to fetch S3 credentials for {daac['short-name']}: {e}"
                 )
 

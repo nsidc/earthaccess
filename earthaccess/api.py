@@ -1,3 +1,4 @@
+import logging
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
@@ -12,6 +13,7 @@ from .store import Store
 from .system import PROD, System
 from .utils import _validation as validate
 
+logger = logging.getLogger(__name__)
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
     """Handle user-provided `daac` and `provider` values.
@@ -64,7 +66,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         ```
     """
     if not validate.valid_dataset_parameters(**kwargs):
-        print(
+        logger.warn(
             "Warning: a valid set of parameters is needed to search for datasets on CMR"
         )
         return []
@@ -73,7 +75,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     else:
         query = DataCollections().parameters(**kwargs)
     datasets_found = query.hits()
-    print(f"Datasets found: {datasets_found}")
+    logger.info(f"Datasets found: {datasets_found}")
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -120,7 +122,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     else:
         query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
-    print(f"Granules found: {granules_found}")
+    logger.info(f"Granules found: {granules_found}")
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -199,8 +201,8 @@ def download(
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
-        print(err)
-        print("You must call earthaccess.login() before you can download data")
+        logger.error(err)
+        logger.info("You must call earthaccess.login() before you can download data")
         return []
     return results
 
