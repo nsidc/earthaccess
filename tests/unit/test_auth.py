@@ -9,7 +9,6 @@ from earthaccess import Auth
 
 logger = logging.getLogger(__name__)
 
-
 class TestCreateAuth(unittest.TestCase):
     @responses.activate
     @mock.patch("getpass.getpass")

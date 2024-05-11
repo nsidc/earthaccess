@@ -24,7 +24,6 @@ from .search import DataCollections
 
 logger = logging.getLogger(__name__)
 
-
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     def __init__(self, f: fsspec.AbstractFileSystem, granule: DataGranule) -> None:
         self.f = f
