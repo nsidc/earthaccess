@@ -1,4 +1,5 @@
 import logging
+
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
@@ -14,6 +15,7 @@ from .system import PROD, System
 from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
+
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
     """Handle user-provided `daac` and `provider` values.

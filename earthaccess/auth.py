@@ -242,7 +242,9 @@ class Auth(object):
             else:
                 # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
                 # does not have cloud collections yet
-                logger.info(f"Credentials for the cloud provider {daac} are not available")
+                logger.info(
+                    f"Credentials for the cloud provider {daac} are not available"
+                )
                 return {}
         else:
             logger.info("We need to authenticate with EDL first")
