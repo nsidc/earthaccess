@@ -16,6 +16,7 @@ from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
 
+
 def _normalize_location(location: Optional[str]) -> Optional[str]:
     """Handle user-provided `daac` and `provider` values.
 
