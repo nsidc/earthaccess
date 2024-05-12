@@ -11,18 +11,28 @@ repos:
       - id: trailing-whitespace
       - id: check-toml
       - id: check-json
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.4.3
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
+
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v4.0.0-alpha.8"
     hooks:
       - id: prettier
         types_or: [yaml]
         exclude: ".*/vcr_cassettes/.*\\.yaml"
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: "v2.2.4"
+    hooks:
+      - id: "codespell"
+        exclude: ".codespellignore|tests/.*"
+        additional_dependencies: ["tomli"]
+
   - repo: https://github.com/citation-file-format/cffconvert
     rev: "054bda51dbe278b3e86f27c890e3f3ac877d616c"
     hooks:
