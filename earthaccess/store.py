@@ -100,7 +100,7 @@ class Store(object):
             self._s3_credentials: Dict[
                 Tuple, Tuple[datetime.datetime, Dict[str, str]]
             ] = {}
-            oauth_profile = "https://urs.earthdata.nasa.gov/profile"
+            oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
             self.set_requests_session(oauth_profile)
@@ -188,9 +188,9 @@ class Store(object):
                 resp.raise_for_status()
             else:
                 self._requests_cookies.update(new_session.cookies.get_dict())
-        elif resp.status_code >= 200 and resp.status_code <= 300:
+        elif 200 <= resp.status_code < 300:
             self._requests_cookies = self._http_session.cookies.get_dict()
-        elif resp.status_code >= 500:
+        else:
             resp.raise_for_status()
 
     def get_s3fs_session(
@@ -458,6 +458,7 @@ class Store(object):
         Parameters:
             granules: A list of granules(DataGranule) instances or a list of granule links (HTTP).
             local_path: Local directory to store the remote data granules.
+            provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
 
@@ -497,6 +498,7 @@ class Store(object):
         Parameters:
             granules: A list of granules (DataGranule) instances or a list of granule links (HTTP).
             local_path: Local directory to store the remote data granules
+            provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
 

@@ -2,6 +2,9 @@ site_name: earthaccess
 site_description: Client library for NASA Earthdata APIs
 site_url: https://github.com/nsidc/earthaccess
 
+# Fail on broken links
+strict: true
+
 theme:
   name: "material"
   logo: earth.png
@@ -16,6 +19,10 @@ theme:
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
+  features:
+    # Allow navigation sections to link to index/overview pages.
+    # See: https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages
+    - navigation.indexes
 
 repo_name: nsidc/earthaccess
 repo_url: https://github.com/nsidc/earthaccess
@@ -46,16 +53,25 @@ plugins:
         - "**/.ipynb_checkpoints/*"
 
 nav:
-  - OVERVIEW:
-      - "Readme": "index.md"
-      - "Getting started": "tutorials/getting-started.ipynb"
-      - "Resources": "resources.md"
-      - "Contributing": "contributing/index.md"
+  - "What is earthaccess?": "index.md"
+  - "Quick start": "quick-start.md"
+  - "Work with us":
+      - "contributing/index.md"
+      - "Development": "contributing/development.md"
+      - "Releasing": "contributing/releasing.md"
+      - "Our meet-ups": "contributing/our-meet-ups.md"
+  - "Resources": "resources.md"
+  - USER GUIDE:
+      - "user_guide/index.md"
+      - "Authentication": "user_guide/authenticate.md"
+      - "Search": "user_guide/search.md"
+      - "Access": "user_guide/access.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
       - "Search for data using filters": "howto/search-granules.md"
       - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
+      - "Access data": "howto/access-data.md"
       - "Using authenticated sessions to access data": "howto/edl.ipynb"
       - "Download data from on-prem location": "howto/onprem.md"
       - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"

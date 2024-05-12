@@ -24,12 +24,6 @@ class TestStoreSessions(unittest.TestCase):
             json=json_response,
             status=200,
         )
-        responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/user?client_id=ntD0YGC_SM3Bjs-Tnxd7bg",
-            json={},
-            status=200,
-        )
         self.auth = Auth()
         self.auth.login(strategy="environment")
         self.assertEqual(self.auth.authenticated, True)
