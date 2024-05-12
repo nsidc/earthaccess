@@ -89,7 +89,7 @@
 ## [v0.5.2] 2023-04-21
 * bug fixes:
     * Fixing #230 by removing Benedict as the dict handler, thanks to @psarka!
-    * S3 credential endpoints are tried woth tokens and basic auth until all the DAACs accept the same auth
+    * S3 credential endpoints are tried with tokens and basic auth until all the DAACs accept the same auth
 
 * Core dependencies:
     * Removed Benedict as the default dict for JSON coming from CMR.
