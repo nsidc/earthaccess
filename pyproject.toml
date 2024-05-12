@@ -157,3 +157,4 @@ replace  = 'date-released: "{now:%Y-%m-%d}"'
 
 [tool.codespell]
 skip = '*.yml,*.yaml,./tests'
+ignore-words = ".codespellignore"
