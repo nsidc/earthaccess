@@ -156,5 +156,5 @@ search   = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
 replace  = 'date-released: "{now:%Y-%m-%d}"'
 
 [tool.codespell]
-skip = '*.yml,*.yaml,./tests'
+skip = 'poetry.lock,*.ipynb,*.yml,*.yaml,./tests'
 ignore-words = ".codespellignore"
