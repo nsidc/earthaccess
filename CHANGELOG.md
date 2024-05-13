@@ -6,6 +6,9 @@
 * Bug fixes:
     * fixed 483 by extracting a common CMR query method for collections and granules using SearchAfter header
     * Added VCR support for verifying the API call to CMR and the parsing of returned results without relying on CMR availability post development
+  * [#562](https://github.com/nsidc/earthaccess/issues/562): The destination
+     path is now created prior to direct S3 downloads, if it doesn't already
+     exist.
 
 * Enhancements:
   * Corrected and enhanced static type hints for functions and methods that make
