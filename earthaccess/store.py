@@ -571,6 +571,9 @@ class Store(object):
             else:
                 print(f"Accessing cloud dataset using provider: {provider}")
                 s3_fs = self.get_s3fs_session(provider=provider)
+
+            local_path.mkdir(parents=True, exist_ok=True)
+
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, str(local_path))
