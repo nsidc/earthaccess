@@ -5,12 +5,16 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+defaults:
+  run:
+    shell: bash -l {0}
+
 jobs:
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
       fail-fast: false
 
     steps:
@@ -23,17 +27,17 @@ jobs:
         id: full-python-version
         run: echo "version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
       - name: Install poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+        uses: abatilo/actions-poetry@v3
       - name: Configure poetry
-        run: poetry config virtualenvs.in-project true
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
       - name: Set up cache
         uses: actions/cache@v4
         id: cache
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
       - name: Ensure cache is healthy
         if: steps.cache.outputs.cache-hit == 'true'
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
@@ -42,4 +46,6 @@ jobs:
       - name: Test
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
+        # Don't upload coverage when using the `act` tool to run the workflow locally
+        if: ${{ !env.ACT }}
         uses: codecov/codecov-action@v4

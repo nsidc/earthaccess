@@ -8,7 +8,8 @@ maintainers = [
     "Luis Lopez <betolin@gmail.com>",
     "Joseph H. Kennedy <jhkennedy@alaska.edu>",
     "James Bourbeau <james@coiled.io>",
-    "Matt Fisher <mfisher87@gmail.com>"
+    "Matt Fisher <mfisher87@gmail.com>",
+    "Chuck Daniels <chuck@developmentseed.org>"
 ]
 license = "MIT"
 readme = "README.md"
@@ -24,6 +25,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development",
     "License :: OSI Approved :: MIT License",

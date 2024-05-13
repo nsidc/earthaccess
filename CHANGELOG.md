@@ -26,8 +26,10 @@
   * [#421](https://github.com/nsidc/earthaccess/issues/421): Enabled queries to
     Earthdata User Acceptance Testing (UAT) system for authenticated accounts.
   * [#562](https://github.com/nsidc/earthaccess/issues/562): The destination
-     path is now created prior to direct S3 downloads, if it doesn't already
-     exist.
+    path is now created prior to direct S3 downloads, if it doesn't already
+    exist.
+  * [#457](https://github.com/nsidc/earthaccess/issues/457): Add Python 3.12 to
+    automated test matrix.
 
 ## [v0.9.0] 2024-02-28
 
