@@ -17,11 +17,12 @@ class DataService(ServiceQuery):
 
     def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
         """Build an instance of DataServics to query CMR.
+        
+        auth is an optional parameter for queries that need authentication,
+        e.g. restricted datasets.
 
         Parameters:
             auth (Optional[Auth], optional): An authenticated `Auth` instance.
-            This is an optional parameter for queries that need authentication,
-            e.g. restricted datasets.
         """
 
         super().__init__(*args, **kwargs)
