@@ -51,7 +51,7 @@ typing_extensions = ">=4.10.0"
 [tool.poetry.extras]
 kerchunk = ["kerchunk", "dask"]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 python-magic = ">=0.4"
 mypy = ">=0.812"
 jupyterlab = ">=3"
