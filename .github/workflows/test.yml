@@ -32,6 +32,8 @@ jobs:
         run: |
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
+          # Avoid race condition that can lead to ChefBuildError
+          poetry config installer.max-workers 1 --local
           poetry self add setuptools
       - name: Set up cache
         uses: actions/cache@v4
