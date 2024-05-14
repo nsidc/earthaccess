@@ -1,6 +1,6 @@
 # How to search for services using `earthaccess`
 
-You can search for services associated with a dataset. Services include a back-end processing workflow that transforms or processes the data in some way.  
+You can search for services associated with a dataset. Services include a back-end processing workflow that transforms or processes the data in some way.
 
 `earthaccess` facilitates the retrieval of service metadata via the `search_datasets` function. The results from the `search_datasets` method are an enhanced Python dictionary that includes a `services` method which returns the metadata for all services associated with a collection. The service results are returned as a Python dictionary.
 
