@@ -44,6 +44,7 @@ jobs:
         run: |
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
+          poetry self add setuptools
       - name: Set up cache
         uses: actions/cache@v4
         id: cache
@@ -54,7 +55,8 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
       - name: Install Dependencies
-        run: poetry install
+        # Retry the installation command in case of transient network issues
+        run: poetry install || poetry install || poetry install
       - name: Test
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
