@@ -71,7 +71,7 @@ mkdocs-jupyter = ">=0.19.0"
 pymdown-extensions = ">=9.2"
 pygments = ">=2.11.1"
 responses = ">=0.14"
-ruff = "^0.4.2"
+ruff = ">=0.4.2"
 types-requests = ">=0.1"
 types-setuptools = ">=0.1"
 ipywidgets = ">=7.7.0"
@@ -84,6 +84,12 @@ dask = ">=2022.1"
 pyproj = ">=3.5.0"
 bump-my-version = ">=0.10.0"
 vcrpy = ">=6.0.1"
+# The following error occurs when building the docs, so we must explicitly
+# include lxml-html-clean as a dev dependency until mkdocs-jupyter is updated:
+#
+#   ImportError: lxml.html.clean module is now a separate project lxml_html_clean.
+#   Install lxml[html_clean] or lxml_html_clean directly.
+lxml-html-clean = ">=0.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
