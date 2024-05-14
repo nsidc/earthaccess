@@ -55,7 +55,12 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
       - name: Install Dependencies
-        # Retry the installation command in case of transient network issues
+        if: ${{ !env.ACT }}
+        run: poetry install
+      - name: Install Dependencies
+        if: ${{ env.ACT }}
+        # When using `act` to run the workflow locally, the `poetry install` command
+        # may fail due to network issues when running multiple Docker containers.
         run: poetry install || poetry install || poetry install
       - name: Test
         env:
