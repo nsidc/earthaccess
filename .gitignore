@@ -30,6 +30,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+node_modules/
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos
@@ -95,3 +96,11 @@ Temporary Items
 .envrc
 
 # End of https://www.toptal.com/developers/gitignore/api/direnv
+
+# Created by https://www.toptal.com/developers/gitignore/api/asdf
+# Edit at https://www.toptal.com/developers/gitignore?templates=asdf
+
+### asdf ###
+/.tool-versions
+
+# End of https://www.toptal.com/developers/gitignore/api/asdf

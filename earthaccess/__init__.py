@@ -6,6 +6,7 @@ from .api import (
     auth_environ,
     collection_query,
     download,
+    get_edl_token,
     get_fsspec_https_session,
     get_requests_https_session,
     get_s3_credentials,
@@ -20,10 +21,12 @@ from .auth import Auth
 from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
 from .store import Store
+from .system import PROD, UAT
 
 logger = logging.getLogger(__name__)
 
 __all__ = [
+    # api.py
     "login",
     "search_datasets",
     "search_data",
@@ -31,16 +34,23 @@ __all__ = [
     "get_fsspec_https_session",
     "get_s3fs_session",
     "get_s3_credentials",
+    "get_edl_token",
     "granule_query",
     "collection_query",
     "open",
     "download",
+    "auth_environ",
+    # search.py
     "DataGranules",
     "DataCollections",
+    # auth.py
     "Auth",
+    # store.py
     "Store",
-    "auth_environ",
+    # kerchunk
     "consolidate_metadata",
+    "PROD",
+    "UAT",
 ]
 
 __version__ = version("earthaccess")

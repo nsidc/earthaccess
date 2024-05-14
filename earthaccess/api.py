@@ -9,6 +9,7 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
+from .system import PROD, System
 from .utils import _validation as validate
 
 
@@ -43,7 +44,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
             * **temporal**: a tuple representing temporal bounds in the form
-              `("yyyy-mm-dd", "yyyy-mm-dd")`
+              `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
@@ -94,7 +95,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
             * **temporal**: a tuple representing temporal bounds in the form
-              `("yyyy-mm-dd", "yyyy-mm-dd")`
+              `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
@@ -125,7 +126,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     return query.get_all()
 
 
-def login(strategy: str = "all", persist: bool = False) -> Auth:
+def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
@@ -137,14 +138,21 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
             * **"netrc"**: retrieve username and password from ~/.netrc.
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist: will persist credentials in a .netrc file
+        system: the Earthdata system to access, defaults to PROD
 
     Returns:
         An instance of Auth.
     """
+    # Set the underlying Auth object's earthdata system,
+    # before triggering the getattr function for `__auth__`.
+    earthaccess._auth._set_earthdata_system(system)
+
     if strategy == "all":
         for strategy in ["environment", "netrc", "interactive"]:
             try:
-                earthaccess.__auth__.login(strategy=strategy, persist=persist)
+                earthaccess.__auth__.login(
+                    strategy=strategy, persist=persist, system=system
+                )
             except Exception:
                 pass
 
@@ -152,7 +160,7 @@ def login(strategy: str = "all", persist: bool = False) -> Auth:
                 earthaccess.__store__ = Store(earthaccess.__auth__)
                 break
     else:
-        earthaccess.__auth__.login(strategy=strategy, persist=persist)
+        earthaccess.__auth__.login(strategy=strategy, persist=persist, system=system)
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
 

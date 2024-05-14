@@ -30,12 +30,6 @@ class TestCreateAuth(unittest.TestCase):
             json={"email_address": "test@test.edu"},
             status=200,
         )
-        responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/user?client_id=ntD0YGC_SM3Bjs-Tnxd7bg",
-            json={},
-            status=200,
-        )
 
         # Test
         auth = Auth()
@@ -46,7 +40,7 @@ class TestCreateAuth(unittest.TestCase):
         self.assertEqual(auth.authenticated, True)
         self.assertTrue(auth.token in json_response)
 
-        # test that we are creaintg a session with the proper headers
+        # test that we are creating a session with the proper headers
         self.assertTrue("User-Agent" in headers)
         self.assertTrue("earthaccess" in headers["User-Agent"])
 
@@ -67,12 +61,6 @@ class TestCreateAuth(unittest.TestCase):
         responses.add(
             responses.GET,
             "https://urs.earthdata.nasa.gov/profile",
-            json={},
-            status=200,
-        )
-        responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/user?client_id=ntD0YGC_SM3Bjs-Tnxd7bg",
             json={},
             status=200,
         )
@@ -106,12 +94,6 @@ class TestCreateAuth(unittest.TestCase):
         responses.add(
             responses.GET,
             "https://urs.earthdata.nasa.gov/profile",
-            json=json_response,
-            status=401,
-        )
-        responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/user?client_id=ntD0YGC_SM3Bjs-Tnxd7bg",
             json=json_response,
             status=401,
         )

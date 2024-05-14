@@ -13,6 +13,7 @@ import requests  # type: ignore
 from tinynetrc import Netrc
 
 from .daac import DAACS
+from .system import PROD, System
 
 try:
     user_agent = f"earthaccess v{importlib.metadata.version('earthaccess')}"
@@ -37,7 +38,9 @@ class SessionWithHeaderRedirection(requests.Session):
     ]
 
     def __init__(
-        self, username: Optional[str] = None, password: Optional[str] = None
+        self,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
@@ -72,12 +75,14 @@ class Auth(object):
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
         self.tokens: List = []
-        self.EDL_GET_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/tokens"
-        self.EDL_GET_PROFILE = "https://urs.earthdata.nasa.gov/api/users/<USERNAME>?client_id=ntD0YGC_SM3Bjs-Tnxd7bg"
-        self.EDL_GENERATE_TOKENS_URL = "https://urs.earthdata.nasa.gov/api/users/token"
-        self.EDL_REVOKE_TOKEN = "https://urs.earthdata.nasa.gov/api/users/revoke_token"
+        self._set_earthdata_system(PROD)
 
-    def login(self, strategy: str = "netrc", persist: bool = False) -> Any:
+    def login(
+        self,
+        strategy: str = "netrc",
+        persist: bool = False,
+        system: Optional[System] = None,
+    ) -> Any:
         """Authenticate with Earthdata login.
 
         Parameters:
@@ -89,11 +94,15 @@ class Auth(object):
                 * **"environment"**:
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
+            system (Env): the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
             An instance of Auth.
         """
-        if self.authenticated:
+        if system is not None:
+            self._set_earthdata_system(system)
+
+        if self.authenticated and (system == self.system):
             logger.debug("We are already authenticated with NASA EDL")
             return self
         if strategy == "interactive":
@@ -102,7 +111,25 @@ class Auth(object):
             self._netrc()
         if strategy == "environment":
             self._environment()
+
         return self
+
+    def _set_earthdata_system(self, system: System) -> None:
+        self.system = system
+
+        # Maybe all these predefined URLs should be in a constants.py file
+        self.EDL_GET_TOKENS_URL = f"https://{self.system.edl_hostname}/api/users/tokens"
+        self.EDL_GENERATE_TOKENS_URL = (
+            f"https://{self.system.edl_hostname}/api/users/token"
+        )
+        self.EDL_REVOKE_TOKEN = (
+            f"https://{self.system.edl_hostname}/api/users/revoke_token"
+        )
+
+        self._eula_url = (
+            f"https://{self.system.edl_hostname}/users/earthaccess/unaccepted_eulas"
+        )
+        self._apps_url = f"https://{self.system.edl_hostname}/application_search"
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
@@ -198,10 +225,8 @@ class Auth(object):
                         print(
                             f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
                         )
-                        eula_url = "https://urs.earthdata.nasa.gov/users/earthaccess/unaccepted_eulas"
-                        apps_url = "https://urs.earthdata.nasa.gov/application_search"
                         print(
-                            f"Consider accepting the EULAs available at {eula_url} and applications at {apps_url}"
+                            f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
                         )
                         return {}
 
@@ -234,15 +259,6 @@ class Auth(object):
             )
         return session
 
-    def get_user_profile(self) -> Dict[str, Any]:
-        if hasattr(self, "username") and self.authenticated:
-            session = self.get_session()
-            url = self.EDL_GET_PROFILE.replace("<USERNAME>", self.username)
-            user_profile = session.get(url).json()
-            return user_profile
-        else:
-            return {}
-
     def _interactive(self, persist_credentials: bool = False) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
@@ -261,11 +277,11 @@ class Auth(object):
             raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
         except NetrcParseError as err:
             raise NetrcParseError("Unable to parse .netrc") from err
-        if my_netrc["urs.earthdata.nasa.gov"] is not None:
-            username = my_netrc["urs.earthdata.nasa.gov"]["login"]
-            password = my_netrc["urs.earthdata.nasa.gov"]["password"]
-        else:
+        if (creds := my_netrc[self.system.edl_hostname]) is None:
             return False
+
+        username = creds["login"]
+        password = creds["password"]
         authenticated = self._get_credentials(username, password)
         if authenticated:
             logger.debug("Using .netrc file for EDL")
@@ -313,12 +329,6 @@ class Auth(object):
                 logger.debug(
                     f"Using token with expiration date: {self.token['expiration_date']}"
                 )
-            profile = self.get_user_profile()
-            if "email_address" in profile:
-                self.user_profile = profile
-                self.email = profile["email_address"]
-            else:
-                self.email = ""
 
         return self.authenticated
 
@@ -369,7 +379,10 @@ class Auth(object):
             print(e)
             return False
         my_netrc = Netrc(str(netrc_path))
-        my_netrc["urs.earthdata.nasa.gov"] = {"login": username, "password": password}
+        my_netrc[self.system.edl_hostname] = {
+            "login": username,
+            "password": password,
+        }
         my_netrc.save()
         urs_cookies_path = Path.home() / ".urs_cookies"
         if not urs_cookies_path.exists():

@@ -14,8 +14,12 @@ build:
     post_create_environment:
       # Install poetry
       - asdf plugin add poetry
-      - asdf install poetry latest
-      - asdf global poetry latest
+      # HACK: As of ~2024-05-07, poetry "latest" is not installable with
+      # asdf ("Version 1.8.3 does not exist") because the latest tagged version
+      # of poetry is not yet released. Should we avoid using "latest" from here
+      # on, or change it back once 1.8.3 is released?
+      - asdf install poetry 1.8.2
+      - asdf global poetry 1.8.2
       # Tell poetry to not use a virtual environment
       - poetry config virtualenvs.create false
     post_install:

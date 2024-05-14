@@ -1,15 +1,35 @@
 # Changelog
 
 ## [Unreleased]
-* New Features:
-    * Enable the retrieval of services associated with a collection.
-* Bug fixes:
-    * fixed 483 by extracting a common CMR query method for collections and granules using SearchAfter header
-    * Added VCR support for verifying the API call to CMR and the parsing of returned results without relying on CMR availability post development
 
-* Enhancements:
-  * Corrected and enhanced static type hints for functions and methods that make
-    CMR queries or handle CMR query results (#508)
+* New Features
+
+  * [#447](https://github.com/nsidc/earthaccess/issues/447) Enable the retrieval of services associated with a collection.
+
+* Changes
+
+  * [#421](https://github.com/nsidc/earthaccess/issues/421): Removed the
+    `get_user_profile` method and the `email_address` and `profile` attributes
+    from the `Auth` class.  Calling the EDL API to get user profile information
+    is not intended for library access and is not necessary for this library's
+    intended use cases.
+  * [#555](https://github.com/nsidc/earthaccess/issues/555): YAML formatting is
+    now performed with `yamlfmt` instead of `prettier`.
+
+* Enhancements
+
+  * [#483](https://github.com/nsidc/earthaccess/issues/483): Now using
+    [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
+    for collection and granule searches to support deep-paging through large
+    result sets.
+  * [#508](https://github.com/nsidc/earthaccess/issues/508): Corrected and
+    enhanced static type hints for functions and methods that make CMR queries
+    or handle CMR query results.
+  * [#421](https://github.com/nsidc/earthaccess/issues/421): Enabled queries to
+    Earthdata User Acceptance Testing (UAT) system for authenticated accounts.
+  * [#562](https://github.com/nsidc/earthaccess/issues/562): The destination
+     path is now created prior to direct S3 downloads, if it doesn't already
+     exist.
 
 ## [v0.9.0] 2024-02-28
 
@@ -88,7 +108,7 @@
 ## [v0.5.2] 2023-04-21
 * bug fixes:
     * Fixing #230 by removing Benedict as the dict handler, thanks to @psarka!
-    * S3 credential endpoints are tried woth tokens and basic auth until all the DAACs accept the same auth
+    * S3 credential endpoints are tried with tokens and basic auth until all the DAACs accept the same auth
 
 * Core dependencies:
     * Removed Benedict as the default dict for JSON coming from CMR.

@@ -1,78 +1,18 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change.
+When contributing to this repository, please first discuss the change you wish to make
+with the community and maintainers via
+[a GitHub issue](https://github.com/nsidc/earthaccess/issues),
+[a GitHub Discussion](https://github.com/nsidc/earthaccess/discussions),
+or [any other method](our-meet-ups.md).
 
-Please note that we have a [code of conduct](./CODE_OF_CONDUCT.md). Please follow it in all of your interactions with the project.
-
-## Development environment
-
-1. Fork [nsidc/earthaccess](https://github.com/nsidc/earthaccess)
-1. Clone your fork (`git clone git@github.com:{my-username}/earthaccess`)
-
-`earthaccess` uses Poetry to build and publish the package to PyPI, the defacto Python repository. In order to develop new features or fix bugs etc. we need to set up a virtual environment and install the library locally. We can accomplish this with Poetry and/or Conda.
-
-### Using Conda
-
-If we have `mamba` (or `conda`) installed, we can use the environment file included in the `ci` folder. This will install all the libraries we need (including Poetry) to start developing `earthaccess`:
-
-```bash
-mamba env update -f ci/environment-dev.yml
-mamba activate earthaccess-dev
-poetry install
-```
-
-After activating our environment and installing the library with Poetry we can run Jupyter lab and start testing the local distribution or we can use `make` to run the tests and lint the code.
-Now we can create a feature branch and push those changes to our fork!
-
-### Using Poetry
-
-If we want to use Poetry, first we need to [install it](https://python-poetry.org/docs/#installation). After installing Poetry we can use the same workflow we used for Conda, first we install the library locally:
-
-```bash
-poetry install
-```
-
-and now we can run the local Jupyter Lab and run the scripts etc. using Poetry:
-
-```bash
-poetry run jupyter lab
-```
-
-!!! note
-
-    You may need to use `poetry run make ...` to run commands in the environment.
-
-### Managing Dependencies
-
-If you need to add a dependency, you should do the following:
-
-- Run `poetry add <package>` for a required (non-development) dependency
-- Run `poetry add --group=dev <package>` for a development dependency, such
-  as a testing or code analysis dependency
-
-Both commands will add an entry to `pyproject.toml` with a version that is
-compatible with the rest of the dependencies.  However, `poetry` pins versions
-with a caret (`^`), which is not what we want.  Therefore, you must locate the
-new entry in `pyproject.toml` and change the `^` to `>=`.  (See
-[poetry-relax](https://github.com/zanieb/poetry-relax) for the reasoning behind
-this.)
-
-In addition, you must also add a corresponding entry to
-`ci/environment-mindeps.yaml`.  You'll notice in that file that required
-dependencies should be pinned exactly to the versions specified in
-`pyproject.toml` (after changing `^` to `>=` there), and that development
-dependencies should be left unpinned.
-
-Finally, for _development dependencies only_, you must add an entry to
-`ci/environment-dev.yaml` with the same version constraint as in
-`pyproject.toml`.
+Please note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow it in all of your interactions with the project.
 
 ## First Steps to contribute
 
-- Read the documentation
-- Fork this repo (see "Development environment" section above for more)
-- Install environment (see "Development environment" section above for more)
+- Read the documentation!
+- Fork this repo and set up development environment (see
+  [development environment documentation](./development.md) for details)
 - Run the unit tests successfully in `main` branch:
     - `make test`
 
@@ -144,32 +84,3 @@ the stubs appear under `stubs/cmr`.
 1. You may merge the Pull Request once you have the sign-off of another
    developer, or if you do not have permission to do that, you may request the
    reviewer to merge it for you.
-
-## Release process
-
-> :memo: The versioning scheme we use is [SemVer](http://semver.org/). Note that until
-> we agree we're ready for v1.0.0, we will not increment the major version.
-
-1. Ensure all desired features are merged to `main` branch and `CHANGELOG.md` is updated.
-1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
-   increase the minor version (`1.2.3` to `1.3.0`):
-
-   ```plain
-   bump-my-version bump minor
-   ```
-
-1. Push a tag on the new commit containing the version number, prefixed with `v`, e.g.
-   `v1.3.0`.
-1. [Create a new GitHub Release](https://github.com/nsidc/earthaccess/releases/new). We
-   hand-curate our release notes to be valuable to humans. Please do not auto-generate
-   release notes and aim for consistency with the GitHub Release descriptions from other
-   releases.
-
-> :gear: After the GitHub release is published, multiple automations will trigger:
->
-> - Zenodo will create a new DOI.
-> - GitHub Actions will publish a PyPI release.
-
-> :memo: `earthaccess` is published to conda-forge through the
-> [earthdata-feedstock](https://github.com/conda-forge/earthdata-feedstock), as this
-> project was renamed early in its life. The conda package is named `earthaccess`.
