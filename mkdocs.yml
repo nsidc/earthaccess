@@ -75,6 +75,7 @@ nav:
       - "Using authenticated sessions to access data": "howto/edl.ipynb"
       - "Download data from on-prem location": "howto/onprem.md"
       - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
+      - "Search for services": "howto/search-services.md"
   - TUTORIALS:
       - "Accessing remote NASA data with fsspec": "tutorials/file-access.ipynb"
       - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
