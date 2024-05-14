@@ -309,8 +309,8 @@ class DataCollections(CollectionQuery):
 
     def print_help(self, method: str = "fields") -> None:
         """Prints the help information for a given method."""
-        logger.info("Class components: \n")
-        logger.info([method for method in dir(self) if method.startswith("_") is False])
+        print("Class components: \n")
+        print([method for method in dir(self) if method.startswith("_") is False])
         help(getattr(self, method))
 
     def fields(self, fields: Optional[List[str]] = None) -> Self:
