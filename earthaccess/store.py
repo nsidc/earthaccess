@@ -113,7 +113,7 @@ class Store(object):
                     self.set_requests_session(url)
 
         else:
-            logger.warn("Warning: the current session is not authenticated with NASA")
+            logger.warn("The current session is not authenticated with NASA")
             self.auth = None
         self.in_region = self._running_in_us_west_2()
 
