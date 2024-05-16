@@ -225,15 +225,8 @@ class Auth(object):
                         logger.error(
                             f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
                         )
-<<<<<<< HEAD
-                        print(
+                        logger.error(
                             f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
-=======
-                        eula_url = "https://urs.earthdata.nasa.gov/users/earthaccess/unaccepted_eulas"
-                        apps_url = "https://urs.earthdata.nasa.gov/application_search"
-                        logger.info(
-                            f"Consider accepting the EULAs available at {eula_url} and applications at {apps_url}"
->>>>>>> 8c94201 (fix: update to use logger)
                         )
                         return {}
 
