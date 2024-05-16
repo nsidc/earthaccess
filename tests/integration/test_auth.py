@@ -59,7 +59,7 @@ def test_auth_can_read_from_netrc_file():
 def test_auth_throws_exception_if_netrc_is_not_present():
     activate_environment()
     delete_netrc()
-    with pytest.raises(Exception) as e_info:
+    with pytest.raises(Exception):
         earthaccess.login(strategy="netrc")
         assertions.assertRaises(FileNotFoundError)
 
