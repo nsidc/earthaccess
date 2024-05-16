@@ -665,8 +665,7 @@ class Store(object):
             try:
                 fileset = _open_files(url_mapping, https_fs, threads)
             except Exception:
-                logger.error(
-                    "An exception occurred while trying to access remote files via HTTPS: "
-                    f"Exception: {traceback.format_exc()}"
+                logger.exception(
+                    "An exception occurred while trying to access remote files via HTTPS"
                 )
         return fileset
