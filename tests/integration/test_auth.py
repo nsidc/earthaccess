@@ -62,7 +62,6 @@ def test_auth_throws_exception_if_netrc_is_not_present():
     with pytest.raises(Exception) as e_info:
         earthaccess.login(strategy="netrc")
         assertions.assertRaises(FileNotFoundError)
-        logger.info(e_info)
 
 
 def test_auth_populates_attrs():
