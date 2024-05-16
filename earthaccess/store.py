@@ -618,8 +618,7 @@ class Store(object):
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                         shutil.copyfileobj(r.raw, f, length=1024 * 1024)
             except Exception:
-                logger.error(f"Error while downloading the file {local_filename}")
-                logger.error(traceback.format_exc())
+                logger.exception(f"Error while downloading the file {local_filename}")
                 raise Exception
         else:
             logger.info(f"File {local_filename} already downloaded")
