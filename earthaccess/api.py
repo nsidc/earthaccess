@@ -203,8 +203,7 @@ def download(
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
-        logger.error(err)
-        logger.info("You must call earthaccess.login() before you can download data")
+        logger.error(f"{err}: You must call earthaccess.login() before you can download data")
         return []
     return results
 
