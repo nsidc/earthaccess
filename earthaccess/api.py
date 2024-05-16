@@ -68,9 +68,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         ```
     """
     if not validate.valid_dataset_parameters(**kwargs):
-        logger.warn(
-            "A valid set of parameters is needed to search for datasets on CMR"
-        )
+        logger.warn("A valid set of parameters is needed to search for datasets on CMR")
         return []
     if earthaccess.__auth__.authenticated:
         query = DataCollections(auth=earthaccess.__auth__).parameters(**kwargs)
@@ -203,7 +201,9 @@ def download(
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
-        logger.error(f"{err}: You must call earthaccess.login() before you can download data")
+        logger.error(
+            f"{err}: You must call earthaccess.login() before you can download data"
+        )
         return []
     return results
 
