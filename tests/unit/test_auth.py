@@ -110,7 +110,6 @@ class TestCreateAuth(unittest.TestCase):
         auth = Auth()
         auth.login(strategy="interactive")
         with pytest.raises(Exception) as e_info:
-            logger.info(e_info)
             self.assertEqual(auth.authenticated, False)
             self.assertEqual(e_info, Exception)
             self.assertEqual(auth.password, "password")
