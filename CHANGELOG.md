@@ -4,7 +4,7 @@
 * Bug fixes:
     * fixed 483 by extracting a common CMR query method for collections and granules using SearchAfter header
     * Added VCR support for verifying the API call to CMR and the parsing of returned results without relying on CMR availability post development
-    * [#511](https://github.com/nsidc/earthaccess/issues/511): Replaced `print` calls with `logging` calls, where appropriate.
+    * [#511](https://github.com/nsidc/earthaccess/issues/511): Replaced `print` calls with `logging` calls, where appropriate and added T20 Ruff rule.
 
 * Enhancements:
   * Corrected and enhanced static type hints for functions and methods that make
