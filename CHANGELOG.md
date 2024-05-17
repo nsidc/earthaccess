@@ -28,8 +28,8 @@
   * [#562](https://github.com/nsidc/earthaccess/issues/562): The destination
     path is now created prior to direct S3 downloads, if it doesn't already
     exist.
-  * [#457](https://github.com/nsidc/earthaccess/issues/457): Add Python 3.12 to
-    automated test matrix.
+  * [#457](https://github.com/nsidc/earthaccess/issues/457): Added support for
+    Python 3.12 and drop support for Python 3.8.
 
 ## [v0.9.0] 2024-02-28
 
