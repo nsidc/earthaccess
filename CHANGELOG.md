@@ -11,6 +11,8 @@
     intended use cases.
   * [#555](https://github.com/nsidc/earthaccess/issues/555): YAML formatting is
     now performed with `yamlfmt` instead of `prettier`.
+  * [#511](https://github.com/nsidc/earthaccess/issues/511): Replaced `print`
+    calls with `logging` calls where appropriate and added T20 Ruff rule.
 
 * Enhancements
 
