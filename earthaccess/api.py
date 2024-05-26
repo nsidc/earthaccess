@@ -268,7 +268,7 @@ def collection_query() -> CollectionQuery:
 
 
 def granule_query() -> GranuleQuery:
-    """Returns a query builder instance for data granules
+    """Returns a query builder instance for data granules.
 
     Returns:
         a query builder instance for data granules.

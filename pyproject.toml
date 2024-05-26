@@ -125,7 +125,12 @@ line-length = 88
 src = ["earthaccess", "stubs", "tests"]
 
 [tool.ruff.lint]
-extend-select = ["I", "T20"]
+extend-select = ["I", "T20", "D"]
+ignore = ["D1", "D205", "D401", "D417"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

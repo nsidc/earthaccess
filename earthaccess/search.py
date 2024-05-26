@@ -33,8 +33,7 @@ def get_results(
     query: Union[CollectionQuery, GranuleQuery],
     limit: int = 2000,
 ) -> List[Any]:
-    """
-    Get all results up to some limit, even if spanning multiple pages.
+    """Get all results up to some limit, even if spanning multiple pages.
 
     ???+ Tip
         The default page size is 2000, if the supplied value is greater then the
@@ -50,7 +49,6 @@ def get_results(
     Raises:
         RuntimeError: The CMR query failed.
     """
-
     page_size = min(limit, 2000)
     url = query._build_url()
 
@@ -79,11 +77,10 @@ def get_results(
 
 
 class DataCollections(CollectionQuery):
-    """
-    ???+ Info
-        The DataCollection class queries against
-        https://cmr.earthdata.nasa.gov/search/collections.umm_json,
-        the response has to be in umm_json to use the result classes.
+    """???+ Info "Placeholder"
+    The DataCollection class queries against
+    https://cmr.earthdata.nasa.gov/search/collections.umm_json,
+    the response has to be in umm_json to use the result classes.
     """
 
     _fields: Optional[List[str]] = None
@@ -156,7 +153,6 @@ class DataCollections(CollectionQuery):
         Raises:
             RuntimeError: The CMR query failed.
         """
-
         return [
             DataCollection(collection, self._fields)
             for collection in get_results(self.session, self, limit)
@@ -442,7 +438,6 @@ class DataCollections(CollectionQuery):
                 object; or `date_from` and `date_to` are both datetime objects (or
                 parsable as such) and `date_from` is after `date_to`.
         """
-
         return super().temporal(date_from, date_to, exclude_boundary)
 
 
@@ -481,7 +476,6 @@ class DataGranules(GranuleQuery):
         Raises:
             RuntimeError: The CMR query failed.
         """
-
         url = self._build_url()
 
         response = self.session.get(url, headers=self.headers, params={"page_size": 0})
@@ -842,7 +836,6 @@ class DataGranules(GranuleQuery):
                 object; or `date_from` and `date_to` are both datetime objects (or
                 parsable as such) and `date_from` is after `date_to`.
         """
-
         return super().temporal(date_from, date_to, exclude_boundary)
 
     @override
@@ -969,7 +962,6 @@ class DataGranules(GranuleQuery):
         Raises:
             RuntimeError: The CMR query to get the collection for the DOI fails.
         """
-
         # TODO consider deferring this query until the search is executed
         collection = DataCollections().doi(doi).get()
 

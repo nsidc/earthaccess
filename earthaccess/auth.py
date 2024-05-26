@@ -25,8 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 class SessionWithHeaderRedirection(requests.Session):
-    """
-    Requests removes auth headers if the redirect happens outside the
+    """Requests removes auth headers if the redirect happens outside the
     original req domain.
     """
 

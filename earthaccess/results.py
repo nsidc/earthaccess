@@ -94,9 +94,10 @@ class DataCollection(CustomDict):
         return summary_dict
 
     def get_umm(self, umm_field: str) -> Union[str, Dict[str, Any]]:
-        """
+        """Placeholder.
+
         Parameters:
-            umm_field: Valid UMM item, i.e. `TemporalExtent`
+            umm_field: Valid UMM item, i.e. `TemporalExtent`.
 
         Returns:
             The value of a given field inside the UMM (Unified Metadata Model).
@@ -106,17 +107,16 @@ class DataCollection(CustomDict):
         return ""
 
     def concept_id(self) -> str:
-        """
-        Returns:
-            A collection's `concept_id`.
-                This id is the most relevant search field on granule queries.
+        """Placeholder.
+
+        Returns: A collection's `concept_id`.This id is the most relevant search field on granule queries.
         """
         return self["meta"]["concept-id"]
 
     def data_type(self) -> str:
-        """
-        Returns:
-            The collection data type, i.e. HDF5, CSV etc., if available.
+        """Placeholder.
+
+        Returns: The collection data type, i.e. HDF5, CSV etc., if available.
         """
         if "ArchiveAndDistributionInformation" in self["umm"]:
             return str(
@@ -127,27 +127,27 @@ class DataCollection(CustomDict):
         return ""
 
     def version(self) -> str:
-        """
-        Returns:
-            The collection's version.
+        """Placeholder.
+
+        Returns: The collection's version.
         """
         if "Version" in self["umm"]:
             return self["umm"]["Version"]
         return ""
 
     def abstract(self) -> str:
-        """
-        Returns:
-            The abstract of a collection
+        """Placeholder.
+
+        Returns:The abstract of a collection.
         """
         if "Abstract" in self["umm"]:
             return self["umm"]["Abstract"]
         return ""
 
     def landing_page(self) -> str:
-        """
-        Returns:
-            The first landing page for the collection (can be many), if available.
+        """Placeholder.
+
+        Returns: The first landing page for the collection (can be many), if available.
         """
         links = self._filter_related_links("LANDING PAGE")
         if len(links) > 0:
@@ -155,18 +155,17 @@ class DataCollection(CustomDict):
         return ""
 
     def get_data(self) -> List[str]:
-        """
-        Returns:
-            The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
+        """Placeholder.
+
+        Returns: The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
         links = self._filter_related_links("GET DATA")
         return links
 
     def s3_bucket(self) -> Dict[str, Any]:
-        """
-        Returns:
-            The S3 bucket information if the collection has it.
-                (**cloud hosted collections only**)
+        """Placeholder.
+
+        Returns: The S3 bucket information if the collection has it.(**cloud hosted collections only**).
         """
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
@@ -214,9 +213,9 @@ class DataGranule(CustomDict):
             self.render_dict = self._filter_fields_(fields)
 
     def __repr__(self) -> str:
-        """
-        Returns:
-            A basic representation of a data granule.
+        """Placeholder.
+
+        Returns: A basic representation of a data granule.
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
@@ -229,9 +228,9 @@ class DataGranule(CustomDict):
         return rep_str
 
     def _repr_html_(self) -> str:
-        """
-        Returns:
-            A rich representation for a data granule if we are in a Jupyter notebook.
+        """Placeholder.
+
+        Returns: A rich representation for a data granule if we are in a Jupyter notebook.
         """
         granule_html_repr = _repr_granule_html(self)
         return granule_html_repr
@@ -243,9 +242,9 @@ class DataGranule(CustomDict):
         return None
 
     def size(self) -> float:
-        """
-        Returns:
-            The total size for the granule in MB.
+        """Placeholder.
+
+        Returns: The total size for the granule in MB.
         """
         try:
             data_granule = self["umm"]["DataGranule"]
@@ -284,7 +283,9 @@ class DataGranule(CustomDict):
     def data_links(
         self, access: Optional[str] = None, in_region: bool = False
     ) -> List[str]:
-        """Returns the data links from a granule.
+        """Placeholder.
+
+        Returns the data links from a granule.
 
         Parameters:
             access: direct or external.
@@ -325,9 +326,9 @@ class DataGranule(CustomDict):
                 return https_links
 
     def dataviz_links(self) -> List[str]:
-        """
-        Returns:
-            The data visualization links, usually the browse images.
+        """Placeholder.
+
+        Returns: The data visualization links, usually the browse images.
         """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links
