@@ -23,7 +23,7 @@
     Earthdata User Acceptance Testing (UAT) system for authenticated accounts.
 
 ### Removed
-- **Breaking:**: [#421](https://github.com/nsidc/earthaccess/issues/421): Remove the
+- **Breaking**: [#421](https://github.com/nsidc/earthaccess/issues/421): Remove the
     `get_user_profile` method and the `email_address` and `profile` attributes
     from the `Auth` class.  Calling the EDL API to get user profile information
     is not intended for library access and is not necessary for this library's
@@ -150,7 +150,7 @@
 
 ### Changed
 - For CI, documentation is now only built for the main, dev and documentation branches
-- For CI, noteboks are executed every time the documentation gets published!
+- For CI, notebooks are executed every time the documentation gets published!
 
 ### Added
 - Add ability to use the top level API to get S3 credentials, authenticated fsspec and requests sessions!
@@ -193,8 +193,8 @@
 ## [0.4.0] - 2022-08-17
 
 ### Added
-- Add store, auth to docs and update mkdocs congif
-- For `auth`, add ability to persist credentials into a `.netrc` file
+- Add store, auth to docs and update mkdocs config
+- For `auth`, add the ability to persist credentials into a `.netrc` file
 - For `store`, use fsspec s3fs for in cloud access and https sessions for out of region access
 - For `store`, can open files with fsspec in and out of region (stream into xarray)
 
