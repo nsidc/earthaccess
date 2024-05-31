@@ -78,7 +78,7 @@ def get_results(
 
 class DataCollections(CollectionQuery):
     """Placeholder.
-    
+
     ???+ Info
         The DataCollection class queries against
         https://cmr.earthdata.nasa.gov/search/collections.umm_json,

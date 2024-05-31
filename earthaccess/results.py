@@ -109,14 +109,16 @@ class DataCollection(CustomDict):
     def concept_id(self) -> str:
         """Placeholder.
 
-        Returns: A collection's `concept_id`.This id is the most relevant search field on granule queries.
+        Returns:
+            A collection's `concept_id`.This id is the most relevant search field on granule queries.
         """
         return self["meta"]["concept-id"]
 
     def data_type(self) -> str:
         """Placeholder.
 
-        Returns: The collection data type, i.e. HDF5, CSV etc., if available.
+        Returns:
+            The collection data type, i.e. HDF5, CSV etc., if available.
         """
         if "ArchiveAndDistributionInformation" in self["umm"]:
             return str(
@@ -129,7 +131,8 @@ class DataCollection(CustomDict):
     def version(self) -> str:
         """Placeholder.
 
-        Returns: The collection's version.
+        Returns:
+            The collection's version.
         """
         if "Version" in self["umm"]:
             return self["umm"]["Version"]
@@ -138,7 +141,8 @@ class DataCollection(CustomDict):
     def abstract(self) -> str:
         """Placeholder.
 
-        Returns:The abstract of a collection.
+        Returns:
+            The abstract of a collection.
         """
         if "Abstract" in self["umm"]:
             return self["umm"]["Abstract"]
@@ -147,7 +151,8 @@ class DataCollection(CustomDict):
     def landing_page(self) -> str:
         """Placeholder.
 
-        Returns: The first landing page for the collection (can be many), if available.
+        Returns:
+            The first landing page for the collection (can be many), if available.
         """
         links = self._filter_related_links("LANDING PAGE")
         if len(links) > 0:
@@ -157,7 +162,8 @@ class DataCollection(CustomDict):
     def get_data(self) -> List[str]:
         """Placeholder.
 
-        Returns: The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
+        Returns:
+            The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
         links = self._filter_related_links("GET DATA")
         return links
@@ -165,7 +171,8 @@ class DataCollection(CustomDict):
     def s3_bucket(self) -> Dict[str, Any]:
         """Placeholder.
 
-        Returns: The S3 bucket information if the collection has it.(**cloud hosted collections only**).
+        Returns:
+            The S3 bucket information if the collection has it (**cloud hosted collections only**).
         """
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
@@ -215,7 +222,8 @@ class DataGranule(CustomDict):
     def __repr__(self) -> str:
         """Placeholder.
 
-        Returns: A basic representation of a data granule.
+        Returns:
+            A basic representation of a data granule.
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
@@ -230,7 +238,8 @@ class DataGranule(CustomDict):
     def _repr_html_(self) -> str:
         """Placeholder.
 
-        Returns: A rich representation for a data granule if we are in a Jupyter notebook.
+        Returns:
+            A rich representation for a data granule if we are in a Jupyter notebook.
         """
         granule_html_repr = _repr_granule_html(self)
         return granule_html_repr
@@ -244,7 +253,8 @@ class DataGranule(CustomDict):
     def size(self) -> float:
         """Placeholder.
 
-        Returns: The total size for the granule in MB.
+        Returns:
+            The total size for the granule in MB.
         """
         try:
             data_granule = self["umm"]["DataGranule"]
@@ -328,7 +338,8 @@ class DataGranule(CustomDict):
     def dataviz_links(self) -> List[str]:
         """Placeholder.
 
-        Returns: The data visualization links, usually the browse images.
+        Returns:
+            The data visualization links, usually the browse images.
         """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links
