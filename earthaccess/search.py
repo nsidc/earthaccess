@@ -77,10 +77,12 @@ def get_results(
 
 
 class DataCollections(CollectionQuery):
-    """???+ Info "Placeholder"
-    The DataCollection class queries against
-    https://cmr.earthdata.nasa.gov/search/collections.umm_json,
-    the response has to be in umm_json to use the result classes.
+    """Placeholder.
+    
+    ???+ Info
+        The DataCollection class queries against
+        https://cmr.earthdata.nasa.gov/search/collections.umm_json,
+        the response has to be in umm_json to use the result classes.
     """
 
     _fields: Optional[List[str]] = None
