@@ -5135,4 +5135,4 @@ kerchunk = ["dask", "kerchunk"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "645f98bdf6f5f39726913f2bfc7e04672e6e7d6b7f1d5bb5092109c47573edfd"
+content-hash = "e084da80d3a075be0a97d04031c994a17ec56c6bca8bfec9118dd02836734dd2"

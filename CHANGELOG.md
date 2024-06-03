@@ -2,34 +2,43 @@
 
 ## [Unreleased]
 
-* Changes
+### Changed
 
-  * [#421](https://github.com/nsidc/earthaccess/issues/421): Removed the
-    `get_user_profile` method and the `email_address` and `profile` attributes
-    from the `Auth` class.  Calling the EDL API to get user profile information
-    is not intended for library access and is not necessary for this library's
-    intended use cases.
-  * [#555](https://github.com/nsidc/earthaccess/issues/555): YAML formatting is
-    now performed with `yamlfmt` instead of `prettier`.
-  * [#511](https://github.com/nsidc/earthaccess/issues/511): Replaced `print`
-    calls with `logging` calls where appropriate and added T20 Ruff rule.
+* Use `yamlfmt` instead of `prettier` for YAML formatting
+  ([#555](https://github.com/nsidc/earthaccess/issues/555))
+* Replace `print` calls with `logging` calls where appropriate, and add T20 Ruff
+  rule to produce lint errors for usages of `print`
+  ([#511](https://github.com/nsidc/earthaccess/issues/511))
 
-* Enhancements
+### Added
 
-  * [#483](https://github.com/nsidc/earthaccess/issues/483): Now using
-    [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
-    for collection and granule searches to support deep-paging through large
-    result sets.
-  * [#508](https://github.com/nsidc/earthaccess/issues/508): Corrected and
-    enhanced static type hints for functions and methods that make CMR queries
-    or handle CMR query results.
-  * [#421](https://github.com/nsidc/earthaccess/issues/421): Enabled queries to
-    Earthdata User Acceptance Testing (UAT) system for authenticated accounts.
-  * [#562](https://github.com/nsidc/earthaccess/issues/562): The destination
-    path is now created prior to direct S3 downloads, if it doesn't already
-    exist.
-  * [#457](https://github.com/nsidc/earthaccess/issues/457): Added support for
-    Python 3.12 and drop support for Python 3.8.
+* Enable queries to Earthdata User Acceptance Testing (UAT) system for
+  authenticated accounts
+  ([#421](https://github.com/nsidc/earthaccess/issues/421))
+* Add support for Python 3.12
+  ([#457](https://github.com/nsidc/earthaccess/issues/457))
+
+### Removed
+
+* **Breaking:** Remove support for Python 3.8
+  ([#457](https://github.com/nsidc/earthaccess/issues/457))
+* **Breaking:** Remove the `get_user_profile` method and the `email_address` and
+  `profile` attributes from the `Auth` class.  Calling the EDL API to get user
+  profile information is not intended for library access and is not necessary
+  for this library's intended use cases.
+  ([#421](https://github.com/nsidc/earthaccess/issues/421))
+
+### Fixed
+
+* Use
+  [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
+  for collection and granule searches to support deep-paging through large
+  result sets ([#483](https://github.com/nsidc/earthaccess/issues/483))
+* Correct and enhance static type hints for functions and methods that make CMR
+  queries or handle CMR query results
+  ([#508](https://github.com/nsidc/earthaccess/issues/508))
+* Create destination directory prior to direct S3 downloads, if it doesn't
+  already exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
 
 ## [v0.9.0] 2024-02-28
 
