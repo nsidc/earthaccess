@@ -181,10 +181,7 @@ class DataCollection(CustomDict):
             A list of services available for the collection.
         """
 
-        services = []
-        if "associations" in self["meta"]:
-            if "services" in self["meta"]["associations"]:
-                services = self["meta"]["associations"]["services"]
+        services = self.get("meta", {}).get("associations", {}).get("services", [])
 
         parsed = {}
         if services:
