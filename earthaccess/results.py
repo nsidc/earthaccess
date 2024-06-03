@@ -184,16 +184,15 @@ class DataCollection(CustomDict):
         services = self.get("meta", {}).get("associations", {}).get("services", [])
 
         parsed = {}
-        if services:
-            for service in services:
-                if earthaccess.__auth__.authenticated:
-                    query = DataService(auth=earthaccess.__auth__).parameters(
-                        concept_id=service
-                    )
-                else:
-                    query = DataService().parameters(concept_id=service)
-                results = query.get(query.hits())
-                parsed[service] = self._parse_service_result(results)
+        for service in services:
+            if earthaccess.__auth__.authenticated:
+                query = DataService(auth=earthaccess.__auth__).parameters(
+                    concept_id=service
+                )
+            else:
+                query = DataService().parameters(concept_id=service)
+            results = query.get(query.hits())
+            parsed[service] = self._parse_service_result(results)
         return parsed
 
     def _parse_service_result(self, service_results: List) -> List[Dict[str, Any]]:
