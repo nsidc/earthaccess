@@ -33,7 +33,7 @@ class DataService(ServiceQuery):
             self.session = auth.get_session(bearer_token=True)
 
     def get(self, limit: int = 2000) -> List:
-        """Get all service reuslts up to some limit.
+        """Get all service results up to some limit.
 
         Parameters
             limit (int): The number of results to return
