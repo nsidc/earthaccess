@@ -7,7 +7,7 @@ channels:
   - conda-forge
 dependencies:
   # required dependencies
-  - python=3.8
+  - python=3.9
   - python-cmr=0.10.0
   - pqdm=0.1
   - requests=2.26
