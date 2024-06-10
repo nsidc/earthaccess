@@ -226,7 +226,7 @@ class DataCollections(CollectionQuery):
         return self
 
     def instrument(self, instrument: str) -> Self:
-        """Searh datasets by instrument.
+        """Search datasets by instrument.
 
         ???+ Tip
             Not all datasets have an associated instrument. This works
@@ -248,7 +248,7 @@ class DataCollections(CollectionQuery):
         return self
 
     def project(self, project: str) -> Self:
-        """Searh datasets by associated project.
+        """Search datasets by associated project.
 
         ???+ Tip
             Not all datasets have an associated project. This works
