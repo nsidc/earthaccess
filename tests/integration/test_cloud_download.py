@@ -72,9 +72,8 @@ store = Store(auth)
 
 
 def get_sample_granules(granules, sample_size, max_granule_size):
-    """
-    returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size
+    """Returns a list with sample granules and their size in MB if
+    the total size is less than the max_granule_size.
     """
     files_to_download = []
     total_size = 0
@@ -98,9 +97,7 @@ def get_sample_granules(granules, sample_size, max_granule_size):
 
 @pytest.mark.parametrize("daac", daac_list)
 def test_earthaccess_can_download_cloud_collection_granules(daac):
-    """
-    Tests that we can download cloud collections using HTTPS links
-    """
+    """Tests that we can download cloud collections using HTTPS links."""
     daac_shortname = daac["short_name"]
     collections_count = daac["collections_count"]
     collections_sample_size = daac["collections_sample_size"]
