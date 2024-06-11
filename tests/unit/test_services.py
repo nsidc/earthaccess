@@ -1,6 +1,3 @@
-import json
-import os.path
-import pathlib
 import unittest
 
 import earthaccess
@@ -36,30 +33,14 @@ class TestServices(VCRTestCase):
         )
         actual = query.get(query.hits())
 
-        expected_file = pathlib.Path(
-            os.path.dirname(os.path.realpath(__file__))
-        ).joinpath("fixtures/S2004184019-POCLOUD.json")
-        with open(expected_file) as jf:
-            expected = json.load(jf)
-
+        self.assertTrue(actual[0]["umm"]["Type"] == "OPeNDAP")
         self.assertTrue(
-            actual[0]["umm"]["Type"]
-            == expected["S2004184019-POCLOUD"][0]["umm"]["Type"]
+            actual[0]["umm"]["ServiceOrganizations"][0]["ShortName"] == "UCAR/UNIDATA"
         )
         self.assertTrue(
-            actual[0]["umm"]["ServiceOrganizations"][0]["ShortName"]
-            == expected["S2004184019-POCLOUD"][0]["umm"]["ServiceOrganizations"][0][
-                "ShortName"
-            ]
+            actual[0]["umm"]["Description"] == "Earthdata OPEnDAP in the cloud"
         )
-        self.assertTrue(
-            actual[0]["umm"]["Description"]
-            == expected["S2004184019-POCLOUD"][0]["umm"]["Description"]
-        )
-        self.assertTrue(
-            actual[0]["umm"]["LongName"]
-            == expected["S2004184019-POCLOUD"][0]["umm"]["LongName"]
-        )
+        self.assertTrue(actual[0]["umm"]["LongName"] == "PO.DAAC OPeNDADP In the Cloud")
 
     def test_service_results(self):
         """Test results.DataCollection.services to return available services."""
