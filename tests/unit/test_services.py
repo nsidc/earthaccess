@@ -1,4 +1,6 @@
 import json
+import os.path
+import pathlib
 import unittest
 
 import earthaccess
@@ -34,7 +36,10 @@ class TestServices(VCRTestCase):
         )
         actual = query.get(query.hits())
 
-        with open("tests/unit/fixtures/S2004184019-POCLOUD.json") as jf:
+        expected_file = pathlib.Path(
+            os.path.dirname(os.path.realpath(__file__))
+        ).joinpath("fixtures/S2004184019-POCLOUD.json")
+        with open(expected_file) as jf:
             expected = json.load(jf)
 
         self.assertTrue(
