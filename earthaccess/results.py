@@ -182,11 +182,9 @@ class DataCollection(CustomDict):
         return {}
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
+        """Returns:
+        A list of services available for the collection.
         """
-        Returns:
-            A list of services available for the collection.
-        """
-
         services = self.get("meta", {}).get("associations", {}).get("services", [])
 
         parsed = {}

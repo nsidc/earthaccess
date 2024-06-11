@@ -9,8 +9,7 @@ def get_results(
     query: Union[CollectionQuery, GranuleQuery, ServiceQuery],
     limit: int = 2000,
 ) -> List[Any]:
-    """
-    Get all results up to some limit, even if spanning multiple pages.
+    """Get all results up to some limit, even if spanning multiple pages.
 
     ???+ Tip
         The default page size is 2000, if the supplied value is greater then the
@@ -26,7 +25,6 @@ def get_results(
     Raises:
         RuntimeError: The CMR query failed.
     """
-
     page_size = min(limit, 2000)
     url = query._build_url()
 

@@ -25,7 +25,6 @@ class DataService(ServiceQuery):
         Parameters:
             auth (Optional[Auth], optional): An authenticated `Auth` instance.
         """
-
         super().__init__(*args, **kwargs)
         self._debug = False
         self.session = session()
@@ -39,8 +38,7 @@ class DataService(ServiceQuery):
         Parameters
             limit (int): The number of results to return
 
-        Returns
+        Returns:
             Query results as a list
         """
-
         return search.get_results(self.session, self, limit)

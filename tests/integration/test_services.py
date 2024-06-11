@@ -40,7 +40,6 @@ class TestServices(VCRTestCase):
 
     def test_services(self):
         """Test that a list of services can be retrieved."""
-
         datasets = search_datasets(
             short_name="MUR-JPL-L4-GLOB-v4.1",
             cloud_hosted=True,

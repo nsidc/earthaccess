@@ -29,7 +29,6 @@ class TestServices(VCRTestCase):
 
     def test_services(self):
         """Test DataService get function return of service metadata results."""
-
         query = earthaccess.services.DataService().parameters(
             concept_id="S2004184019-POCLOUD"
         )
@@ -59,7 +58,6 @@ class TestServices(VCRTestCase):
 
     def test_service_results(self):
         """Test results.DataCollection.services to return available services."""
-
         datasets = search_datasets(
             short_name="MUR-JPL-L4-GLOB-v4.1",
             cloud_hosted=True,
