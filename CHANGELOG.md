@@ -2,10 +2,6 @@
 
 ## [Unreleased]
 
-* New Features
-
-  * [#447](https://github.com/nsidc/earthaccess/issues/447) Enable the retrieval of services associated with a collection.
-
 * Changes
 
   * [#421](https://github.com/nsidc/earthaccess/issues/421): Removed the
@@ -18,6 +14,8 @@
 
 * Enhancements
 
+  * [#447](https://github.com/nsidc/earthaccess/issues/447): Enable the retrieval
+    of services associated with a collection.
   * [#483](https://github.com/nsidc/earthaccess/issues/483): Now using
     [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
     for collection and granule searches to support deep-paging through large
