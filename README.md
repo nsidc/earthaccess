@@ -39,8 +39,20 @@ Visit [our documentation](https://earthaccess.readthedocs.io/en/latest) to learn
 
 Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
 
+## Why `earthaccess`
+
+During several workshops organized by NASA Openscapes, the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort; it involves people from different technical backgrounds, and the data analysis to solve the pressing problems we face cannot be limited by the complexity of the underlying systems. Therefore, providing easy access to NASA Earthdata regardless of the data storage location (hosted within or outside of the cloud) is the main motivation behind this Python library.
+
 
 ## How to Get Started with `earthaccess`
+
+### How to install
+
+To install `earthaccess` go to your terminal and install it using `pip`:
+
+```
+pip install earthaccess
+```
 
 Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start/) to learn how to install and see a simple example of using `earthaccess`.
 

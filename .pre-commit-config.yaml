@@ -13,7 +13,7 @@ repos:
       - id: check-json
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.3
+    rev: v0.4.7
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
@@ -26,7 +26,7 @@ repos:
         exclude: ".*/vcr_cassettes/.*\\.yaml"
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.4"
+    rev: "v2.3.0"
     hooks:
       - id: "codespell"
         exclude: ".codespellignore|tests/.*"

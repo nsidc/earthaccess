@@ -1,3 +1,5 @@
+import logging
+
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
@@ -11,6 +13,8 @@ from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .system import PROD, System
 from .utils import _validation as validate
+
+logger = logging.getLogger(__name__)
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
@@ -64,16 +68,14 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         ```
     """
     if not validate.valid_dataset_parameters(**kwargs):
-        print(
-            "Warning: a valid set of parameters is needed to search for datasets on CMR"
-        )
+        logger.warn("A valid set of parameters is needed to search for datasets on CMR")
         return []
     if earthaccess.__auth__.authenticated:
         query = DataCollections(auth=earthaccess.__auth__).parameters(**kwargs)
     else:
         query = DataCollections().parameters(**kwargs)
     datasets_found = query.hits()
-    print(f"Datasets found: {datasets_found}")
+    logger.info(f"Datasets found: {datasets_found}")
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -120,7 +122,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     else:
         query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
-    print(f"Granules found: {granules_found}")
+    logger.info(f"Granules found: {granules_found}")
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -199,8 +201,9 @@ def download(
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
-        print(err)
-        print("You must call earthaccess.login() before you can download data")
+        logger.error(
+            f"{err}: You must call earthaccess.login() before you can download data"
+        )
         return []
     return results
 
@@ -265,7 +268,7 @@ def collection_query() -> CollectionQuery:
 
 
 def granule_query() -> GranuleQuery:
-    """Returns a query builder instance for data granules
+    """Returns a query builder instance for data granules.
 
     Returns:
         a query builder instance for data granules.

@@ -61,8 +61,7 @@ _lock = threading.Lock()
 
 
 def __getattr__(name):  # type: ignore
-    """
-    Module-level getattr to handle automatic authentication when accessing
+    """Module-level getattr to handle automatic authentication when accessing
     `earthaccess.__auth__` and `earthaccess.__store__`.
 
     Other unhandled attributes raise as `AttributeError` as expected.
