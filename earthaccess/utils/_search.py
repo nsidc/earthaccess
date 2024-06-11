@@ -47,7 +47,7 @@ def get_results(
         except requests.exceptions.HTTPError as ex:
             raise RuntimeError(ex.response.text) from ex
 
-        logger.info("RESPONSE: %s", response)
+        logger.info("RESPONSE: %s", response.json())
         latest = response.json()["items"]
 
         results.extend(latest)
