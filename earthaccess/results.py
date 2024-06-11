@@ -191,28 +191,7 @@ class DataCollection(CustomDict):
                 )
             else:
                 query = DataService().parameters(concept_id=service)
-            results = query.get(query.hits())
-            parsed[service] = self._parse_service_result(results)
-        return parsed
-
-    def _parse_service_result(self, service_results: List) -> List[Dict[str, Any]]:
-        """Parse CMR query service search result.
-
-        Parameters:
-            service_result (list): List of service query results
-
-        Returns:
-            List of relevant service data
-        """
-
-        parsed = []
-        for service_result in service_results:
-            result_json = json.loads(service_result)
-            result_item = {
-                "provider-id": result_json["items"][0]["meta"]["provider-id"],
-                "umm": result_json["items"][0]["umm"],
-            }
-            parsed.append(result_item)
+            parsed[service] = query.get(query.hits())
         return parsed
 
     def __repr__(self) -> str:

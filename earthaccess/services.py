@@ -5,6 +5,7 @@ from requests import exceptions, session
 from cmr import ServiceQuery
 
 from .auth import Auth
+from .utils import _search as search
 
 
 class DataService(ServiceQuery):
@@ -42,32 +43,4 @@ class DataService(ServiceQuery):
             Query results as a list
         """
 
-        page_size = min(limit, 2000)
-        url = self._build_url()
-
-        results = []  # type: List[str]
-        page = 1
-        while len(results) < limit:
-            params = {"page_size": page_size, "page_num": page}
-            if self._debug:
-                print(f"Fetching: {url}")
-            # TODO: implement caching
-            response = self.session.get(url, params=params)
-
-            try:
-                response.raise_for_status()
-            except exceptions.HTTPError as ex:
-                raise RuntimeError(ex.response.text)
-
-            if self._format == "json":
-                latest = response.json()["items"]
-            else:
-                latest = [response.text]
-
-            if len(latest) == 0:
-                break
-
-            results.extend(latest)
-            page += 1
-
-        return results
+        return search.get_results(self.session, self, limit)

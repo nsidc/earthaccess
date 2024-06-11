@@ -44,7 +44,7 @@ class TestServices(VCRTestCase):
         datasets = search_datasets(
             short_name="MUR-JPL-L4-GLOB-v4.1",
             cloud_hosted=True,
-            temporal=("2024-02-27", "2024-02-29"),
+            temporal=("2024-02-27T00:00:00Z", "2024-02-29T00:00:00Z"),
         )
 
         dataset_services = {}
