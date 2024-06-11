@@ -47,9 +47,8 @@ class SessionWithHeaderRedirection(requests.Session):
         if username and password:
             self.auth = (username, password)
 
-    # Overrides from the library to keep headers when redirected to or from
-    # the NASA auth host.
     def rebuild_auth(self, prepared_request: Any, response: Any) -> None:
+        """Overrides from the library to keep headers when redirected to or from the NASA auth host."""
         headers = prepared_request.headers
         url = prepared_request.url
 
@@ -93,7 +92,7 @@ class Auth(object):
                 * **"environment"**:
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
-            system (Env): the EDL endpoint to log in to Earthdata, defaults to PROD
+            system: the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
             An instance of Auth.
@@ -132,6 +131,7 @@ class Auth(object):
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
+
         Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
         This method renews the tokens to make sure we can query the collections allowed to our EDL user.
         """
@@ -188,6 +188,7 @@ class Auth(object):
         endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider.
+
         The easier way is to use the DAAC short name; provider is optional if we know it.
 
         Parameters:
