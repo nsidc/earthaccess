@@ -1,6 +1,6 @@
 from typing import Any, List, Optional
 
-from requests import exceptions, session
+from requests import session
 
 from cmr import ServiceQuery
 
