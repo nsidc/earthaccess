@@ -1,7 +1,11 @@
+import logging
+
 import requests
 from typing_extensions import Any, List, Union
 
 from cmr import CollectionQuery, GranuleQuery, ServiceQuery
+
+logger = logging.getLogger(__name__)
 
 
 def get_results(
@@ -43,6 +47,7 @@ def get_results(
         except requests.exceptions.HTTPError as ex:
             raise RuntimeError(ex.response.text) from ex
 
+        logger.info("RESPONSE: %s", response)
         latest = response.json()["items"]
 
         results.extend(latest)
