@@ -22,6 +22,7 @@ from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
 from .store import Store
 from .system import PROD, UAT
+from .virtualizarr import open_virtual_dataset, open_virtual_mfdataset
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,9 @@ __all__ = [
     "Store",
     # kerchunk
     "consolidate_metadata",
+    # virtualizarr
+    "open_virtual_dataset",
+    "open_virtual_mfdataset",
     "PROD",
     "UAT",
 ]
