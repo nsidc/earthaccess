@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "earthaccess"
 version = "0.9.0"
-homepage = "https://github.com/nsidc/earthaccess"
+repository = "https://github.com/nsidc/earthaccess"
+documentation = "https://earthaccess.readthedocs.io"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
 maintainers = [
