@@ -60,6 +60,8 @@ nav:
       - "Development": "contributing/development.md"
       - "Releasing": "contributing/releasing.md"
       - "Our meet-ups": "contributing/our-meet-ups.md"
+      
+      - "Maintainers Guide": "contributing/maintainers-guide.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"

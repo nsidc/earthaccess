@@ -35,7 +35,7 @@ To get permissions, please start by participating on GitHub by answering questio
 
     3d. Merge contributions promptly.
 
-4. As a maintainer, you will be releasing different versions. More on this in [here](./contributing/releasing.md).
+4. As a maintainer, you will be releasing different versions. More on this in [here](./releasing.md).
 
 ## Branches
 
@@ -44,7 +44,7 @@ main: This is the main branch, which is consistently tested and prepared for rel
 
 ## Continuous Integration & Delivery
 
-The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI files can be found in the `./.github/workflows/` which manage the continuous integration process, the dependencies are listed out in the `./ci/environment-dev.yml` file. Here we briefly summarize the functions of the files in the `./ci/` directory.
+The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`. Here we briefly summarize the functions of the files in the `./ci/` directory.
 
 `environment-dev.yml` - The environment configuration file specifies dependencies for Python development.
 
