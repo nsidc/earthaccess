@@ -106,18 +106,6 @@ DAACS = [
 ]
 
 
-CLOUD_PROVIDERS = [
-    "GES_DISC",
-    "LPCLOUD",
-    "NSIDC_CPRD",
-    "POCLOUD",
-    "ASF",
-    "GHRC_DAAC",
-    "ORNL_CLOUD",
-    "LAADS",
-    "LARC_CLOUD",
-]
-
 # Some testing urls behind EDL
 DAAC_TEST_URLS = [
     "https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/JASON_CS_S6A_L2_ALT_LR_STD_OST_NRT_F/",
