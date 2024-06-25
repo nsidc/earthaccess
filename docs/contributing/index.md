@@ -66,21 +66,8 @@ We have included type stubs for the untyped `python-cmr` library, which we
 intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package,
 the stubs appear under `stubs/cmr`.
 
-### Requirements to merge code (Pull Request Process)
-
-- you must include test coverage
-- you must update the documentation
-- you must format and lint
-
 ## Pull Request process
 
-1. Ensure you include test coverage for all changes
-1. Ensure your code is formatted properly following this document
-1. Update the documentation and the `README.md` with details of changes to the
-   interface, this includes new environment variables, function names,
-   decorators, etc.
-1. Update `CHANGELOG.md` with details about your change in a section titled
-   `Unreleased`. If one does not exist, please create one.
-1. You may merge the Pull Request once you have the sign-off of another
-   developer, or if you do not have permission to do that, you may request the
-   reviewer to merge it for you.
+Fork the repository using the "Fork" button on the [repository
+homepage](https://github.com/nsidc/earthaccess), make your change on the fork, then open
+a pull request from your fork and follow the instructions populated in the text box.
