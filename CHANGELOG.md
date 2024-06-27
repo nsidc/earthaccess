@@ -39,6 +39,8 @@
   ([#508](https://github.com/nsidc/earthaccess/issues/508))
 * Create destination directory prior to direct S3 downloads, if it doesn't
   already exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
+* Remove the base class on `EarthAccessFile` to fix method resolution
+  ([#610](https://github.com/nsidc/earthaccess/issues/610))
 
 ## [v0.9.0] 2024-02-28
 
