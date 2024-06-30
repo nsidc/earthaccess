@@ -2,4 +2,4 @@
 
 set -ex
 
-mypy earthaccess stubs tests
+mypy .
