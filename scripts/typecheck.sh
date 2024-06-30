@@ -2,4 +2,4 @@
 
 set -ex
 
-ruff check .
+mypy earthaccess stubs tests
