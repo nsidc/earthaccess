@@ -42,14 +42,14 @@ jobs:
       - name: Ensure cache is healthy
         if: steps.cache.outputs.cache-hit == 'true'
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
-      - name: Install Dependencies
+      - name: Install dependencies
         if: ${{ !env.ACT }}
-        run: poetry install
-      - name: Install Dependencies
+        run: poetry install -E test
+      - name: Install dependencies
         if: ${{ env.ACT }}
         # When using `act` to run the workflow locally, the `poetry install` command
         # may fail due to network issues when running multiple Docker containers.
-        run: poetry install || poetry install || poetry install
+        run: poetry install -E test || poetry install -E test || poetry install -E test
       - name: Test
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
