@@ -50,6 +50,8 @@ jobs:
         # When using `act` to run the workflow locally, the `poetry install` command
         # may fail due to network issues when running multiple Docker containers.
         run: poetry install -E test || poetry install -E test || poetry install -E test
+      - name: Typecheck
+        run: poetry run bash scripts/typecheck.sh
       - name: Test
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
