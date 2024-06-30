@@ -27,6 +27,14 @@ repos:
       - id: no-commit-to-branch # protects `main` by default
       - id: trailing-whitespace
 
+  - repo: https://github.com/python-poetry/poetry
+    rev: '1.8.3'
+    hooks:
+      - id: poetry-check
+      # This hook is very slow! Run with `pre-commit run -a poetry-lock --hook-stage manual`
+      - id: poetry-lock
+        stages: [manual]
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.6.3
     hooks:
