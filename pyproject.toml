@@ -124,7 +124,7 @@ docs = [
   "mkdocs-jupyter",
   "pymdown-extensions",
   "ipywidgets",
-  "widetsnbextension",
+  "widgetsnbextension",
   "xarray",
   "matplotlib",
   "h5netcdf",
