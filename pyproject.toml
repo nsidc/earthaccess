@@ -43,6 +43,14 @@ s3fs = ">=2022.11"
 fsspec = ">=2022.11"
 tinynetrc = "^1.3.1"
 multimethod = ">=1.8"
+importlib-resources = ">=6.3.2"
+typing_extensions = ">=4.10.0"
+
+## Optional dependencies; can be opted-in with extra specifications below
+## This is so verbose because Poetry requires it: https://python-poetry.org/docs/pyproject#extras
+## If we switch to PEP621 specification, we can specify extras (called
+## "optional" under PEP621) with versions in one line:
+#https://peps.python.org/pep-0621/#example
 kerchunk = { version = ">=0.1.2", optional = true }
 # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12 support
 numpy = [
@@ -50,48 +58,47 @@ numpy = [
   { version = ">=1.26.0", optional = true, python = ">=3.12" }
 ]
 dask = { version = ">=2022.1.0", optional = true }
-importlib-resources = ">=6.3.2"
-typing_extensions = ">=4.10.0"
 
-[tool.poetry.extras]
-kerchunk = ["kerchunk", "dask"]
+# Dev
+bump-my-version = { version = ">=0.10.0", optional = true }
+pre-commit = { version = ">=2.4", optional = true }
+ruff = { version = ">=0.4.2", optional = true }
 
-[tool.poetry.group.dev.dependencies]
-python-magic = ">=0.4"
-mypy = ">=0.812"
-jupyterlab = ">=3"
-pre-commit = ">=2.4"
-pytest = ">=6.0"
-pytest-cov = ">=2.8"
-pytest-watch = ">=4.2"
+# Test
+mypy = { version = ">=0.812", optional = true }
+pytest = { version = ">=6.0", optional = true }
+pytest-cov = { version = ">=2.8", optional = true }
+pytest-watch = { version = ">=4.2", optional = true }
+python-magic = { version = ">=0.4", optional = true }
+responses = { version = ">=0.14", optional = true }
+types-requests = { version = ">=0.1", optional = true }
+types-setuptools = { version = ">=0.1", optional = true }
+vcrpy = { version = ">=6.0.1", optional = true }
+
+# Docs
+jupyterlab = { version = ">=3", optional = true }
+ipywidgets = { version = ">=7.7.0", optional = true }
+widgetsnbextension = { version = ">=3.6.0", optional = true }
 # Prevent install of 1.6.0 because the module mkdocs.tests
 # is no longer exported, which causes mkdocs-jupyter to
 # break with a ModuleNotFoundError.
-mkdocs = ">=1.2,!=1.6.0"
-mkdocs-material = ">=7.1,<10.0"
-mkdocs-redirects = ">=1.2.1"
-markdown-callouts = ">=0.2.0"
-markdown-include = ">=0.6"
-mkdocstrings = {extras = ["python"], version = ">=0.19.0"}
-mkdocs-jupyter = ">=0.19.0"
-pymdown-extensions = ">=9.2"
-pygments = ">=2.11.1"
-responses = ">=0.14"
-ruff = ">=0.4.2"
-types-requests = ">=0.1"
-types-setuptools = ">=0.1"
-ipywidgets = ">=7.7.0"
-widgetsnbextension = ">=3.6.0"
+mkdocs = { version = ">=1.2,!=1.6.0", optional = true }
+mkdocs-material = { version = ">=7.1,<10.0", optional = true }
+mkdocs-redirects = { version = ">=1.2.1", optional = true }
+markdown-callouts = { version = ">=0.2.0", optional = true }
+markdown-include = { version = ">=0.6", optional = true }
+mkdocstrings = {extras = ["python"], version = ">=0.19.0", optional = true}
+mkdocs-jupyter = { version = ">=0.19.0", optional = true }
+pymdown-extensions = { version = ">=9.2", optional = true }
+pygments = { version = ">=2.11.1", optional = true }
 # for notebook integrations and documentation examples
-xarray = ">=2023.01"
-matplotlib = ">=3.3"
-h5netcdf = ">=0.11"
+xarray = { version = ">=2023.01", optional = true }
+matplotlib = { version = ">=3.3", optional = true }
+h5netcdf = { version = ">=0.11", optional = true }
 pyproj = [
-  { version = ">=3.5.0", python = "<3.12" },
-  { version = ">=3.6.1", python = ">=3.12" }
+  { version = ">=3.5.0", python = "<3.12", optional = true },
+  { version = ">=3.6.1", python = ">=3.12", optional = true },
 ]
-bump-my-version = ">=0.10.0"
-vcrpy = ">=6.0.1"
 # The following error occurs when building the docs, so we must explicitly
 # include lxml-html-clean as a dev dependency until mkdocs-jupyter is updated:
 #
@@ -100,7 +107,31 @@ vcrpy = ">=6.0.1"
 #
 # See https://github.com/danielfrg/mkdocs-jupyter/issues/200
 # See https://github.com/danielfrg/mkdocs-jupyter/issues/197
-lxml-html-clean = ">=0.1.1"
+lxml-html-clean = {version = ">=0.1.1", optional = true}
+
+[tool.poetry.extras]
+kerchunk = ["kerchunk", "dask"]
+dev = ["bump-my-version", "pre-commit", "ruff"]
+test = ["mypy", "pytest", "pytest-cov", "pytest-watch", "python-magic", "responses", "types-requests", "types-setuptools", "vcrpy"]
+docs = [
+  "jupyterlab",
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocs-redirects",
+  "markdown-callouts",
+  "markdown-include",
+  "mkdocstrings",
+  "mkdocs-jupyter",
+  "pymdown-extensions",
+  "ipywidgets",
+  "widetsnbextension",
+  "xarray",
+  "matplotlib",
+  "h5netcdf",
+  "pyproj",
+]
+
+[tool.poetry.group.dev.dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
