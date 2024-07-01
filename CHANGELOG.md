@@ -12,6 +12,8 @@
 
 ### Added
 
+* [#447](https://github.com/nsidc/earthaccess/issues/447): Enable the retrieval
+  of services associated with a collection.
 * Enable queries to Earthdata User Acceptance Testing (UAT) system for
   authenticated accounts
   ([#421](https://github.com/nsidc/earthaccess/issues/421))
