@@ -32,5 +32,3 @@ results = earthaccess.search_data(
 ```
 
 Now that we have our results we can do multiple things: We can iterate over them to get HTTP (or S3) links, we can download the files to a local folder, or we can open these files and stream their content directly to other libraries e.g. xarray.
-
-

@@ -7,4 +7,3 @@
         show_source: false
         inherited_members: true
     show_source: false
-
