@@ -10,7 +10,7 @@ import earthaccess
 from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
-from .store import Store
+from .store import EarthAccessFile, Store
 from .system import PROD, System
 from .utils import _validation as validate
 
@@ -211,8 +211,8 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
-) -> List[AbstractFileSystem]:
-    """Returns a list of fsspec file-like objects that can be used to access files
+) -> List[EarthAccessFile]:
+    """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
 
     Parameters:
@@ -221,7 +221,7 @@ def open(
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
 
     Returns:
-        a list of s3fs "file pointers" to s3 files.
+        A list of "file pointers" to remote (i.e. s3 or https) files.
     """
     provider = _normalize_location(provider)
     results = earthaccess.__store__.open(granules=granules, provider=provider)
