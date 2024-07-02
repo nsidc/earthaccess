@@ -1,0 +1,54 @@
+<!--
+Replace this text, including the symbols above and below it, with descriptive text about
+the change you are proposing. Please include a reference to any issues addressed or
+resolved in that text, for example "resolves #1".
+-->
+
+<!--
+IMPORTANT: As a contributor, we would like as much help as you can offer, but we only
+expect you to complete the steps in the "PR draft checklist" below. Maintainers are
+willing and ready to help pick it up from there!
+
+Please start by opening this Pull Request as a "draft". You can do this by
+clicking the arrow on the right side of the green "Create pull request" button. Follow
+the draft checklist below to move the PR out of draft state. If you accidentally created
+the PR as a non-draft, don't worry, you can still change it to a draft using the
+"Convert to draft" button on  the right side panel under the "Reviewers" section.
+-->
+
+<details><summary>Pull Request (PR) draft checklist - click to expand</summary>
+
+- [ ] Populate a descriptive title. Ensure the title does not look like "Updated
+      README.md".
+- [ ] Populate the body of the pull request with :
+    - A clear description of the change you are proposing.
+    - Links to any issues resolved by this PR with text in the PR description, for
+      example "closes #1".
+- [ ] Please review our
+      [contributing documentation](https://earthaccess.readthedocs.io/en/latest/contributing/)
+      before getting started.
+- [ ] Ensure an issue exists representing the problem being solved in this PR.
+- [ ] Update `CHANGELOG.md` with details about your change in a section titled
+      `## Unreleased`. If such a section does not exist, please create one.
+- [ ] Update the documentation and/or the `README.md` with details of changes to the
+      interface. This includes new environment variables, function names, decorators,
+      etc.
+- [ ] Click the "Ready for review" button at the bottom of the "Conversation" tab in GitHub
+      once these requirements are fulfilled. Don't worry if you see any test failures in
+      GitHub at this point!
+
+</details>
+
+<details><summary>Pull Request (PR) merge checklist - click to expand</summary>
+
+Please do your best to complete these requirements! If you need help with any of these
+requirements, you can ping the `@nsidc/earthaccess-support` team in a comment and we
+will help you out!
+
+- [ ] Add unit tests for any new features.
+- [ ] Apply formatting and linting autofixes. You can add a GitHub comment in this Pull
+      Request containing "pre-commit.ci autofix" to automate this.
+- [ ] Ensure all automated PR checks (seen at the bottom of the "conversation" tab) pass.
+- [ ] Get at least one approving review.
+
+</details>
