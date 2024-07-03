@@ -6,7 +6,7 @@ with the community and maintainers via
 [a GitHub Discussion](https://github.com/nsidc/earthaccess/discussions),
 or [any other method](our-meet-ups.md).
 
-Please note that we have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
+Please note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow it in all of your interactions with the project.
 
 ## First Steps to contribute
 
@@ -43,6 +43,28 @@ Once you've completed these steps, you are ready to submit your contribution.
 
 Once you've completed these steps, you are ready to submit your contribution.
 
+
+### ...to contribute to docs
+
+####  Documentation Style
+
+To ensure that our code is well-documented and easy to understand, we use [Google-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) to document all functions, classes, and methods in this library
+
+#### Getting Help with Setup and Configuration
+
+To work on docs locally follow the steps below:
+
+- To setup the documentation, navigate to the scripts directory
+- Run the `scripts/build-docs.sh` script to build the documentation
+- Serve the documentation locally, using the `scripts/docs-live.sh` script
+
+If you encounter any issues while setting up the documentation using the provided steps, please refer to our [tutorial]( https://www.youtube.com/watch?v=mNjlMZ4F3So) for additional guidance.
+
+#### Caveats and Considerations
+
+Our mkdocs setup has a known limitation: the hot reloader won't auto-reload when changing docstrings. To see updates, manually rebuild and re-serve docs. We're working to improve the dev experience and appreciate your patience.
+
+
 ## Submitting your contribution
 
 - Run all unit tests successfully in your branch
@@ -53,18 +75,20 @@ Once you've completed these steps, you are ready to submit your contribution.
 
 ### Please format and lint as you go
 
-```bash
-make format lint
-```
 
-We attempt to provide comprehensive type annotations within this repository.  If
-you do not provide fully annotated functions or methods, the `lint` command will
-fail.  Over time, we plan to increase type-checking strictness in order to
-ensure more precise, beneficial type annotations.
+#### Usage of Pre-Commit
 
-We have included type stubs for the untyped `python-cmr` library, which we
-intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package,
-the stubs appear under `stubs/cmr`.
+To maintain code quality, we use pre-commit for automated checks before committing changes. Install and configure pre-commit to ensure high-quality contributions
+
+To set up pre-commit follow these steps:
+
+- `pip install pre-commit` for Windows and for Linux refer to your distribution's package index
+- `pre-commit install` to enable it to run automatically
+- `pre-commit run -a`  to run it manually
+
+We attempt to provide comprehensive type annotations within this repository. If you do not provide fully annotated functions or methods, the `lint` command will fail.  Over time, we plan to increase type-checking strictness in order to ensure more precise, beneficial type annotations.
+
+We have included type stubs for the untyped `python-cmr` library, which we intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package, the stubs appear under `stubs/cmr`.
 
 ### Requirements to merge code (Pull Request Process)
 
@@ -75,12 +99,12 @@ the stubs appear under `stubs/cmr`.
 ## Pull Request process
 
 1. Ensure you include test coverage for all changes
-1. Ensure your code is formatted properly following this document
-1. Update the documentation and the `README.md` with details of changes to the
+2. Ensure your code is formatted properly following this document
+3. Update the documentation and the `README.md` with details of changes to the
    interface, this includes new environment variables, function names,
    decorators, etc.
-1. Update `CHANGELOG.md` with details about your change in a section titled
+4. Update `CHANGELOG.md` with details about your change in a section titled
    `Unreleased`. If one does not exist, please create one.
-1. You may merge the Pull Request once you have the sign-off of another
+5. You may merge the Pull Request once you have the sign-off of another
    developer, or if you do not have permission to do that, you may request the
    reviewer to merge it for you.
