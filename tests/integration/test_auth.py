@@ -79,22 +79,8 @@ def test_auth_can_create_authenticated_requests_sessions():
     assertions.assertTrue("Bearer" in session.headers["Authorization"])
 
 
-@pytest.mark.parametrize(
-    ("daac", "provider"),
-    (
-        ("NSIDC", "NSIDC_CPRD"),
-        ("GHRCDAAC", "GHRC_DAAC"),
-        ("PODAAC", "POCLOUD"),
-        ("ASF", "ASF"),
-        ("ORNLDAAC", "ORNL_CLOUD"),
-        ("LPDAAC", "LPCLOUD"),
-        ("GES_DISC", "GES_DISC"),
-        ("OBDAAC", "OB_CLOUD"),
-        ("LAADS", "LAADS"),
-        ("ASDC", "LARC_CLOUD"),
-    ),
-)
-def test_auth_can_fetch_s3_credentials(daac, provider):
+@pytest.mark.parametrize("daac", [daac for daac in earthaccess.daac.DAACS])
+def test_auth_can_fetch_s3_credentials(daac):
     activate_environment()
     auth = earthaccess.login(strategy="environment")
     assertions.assertTrue(auth.authenticated)
