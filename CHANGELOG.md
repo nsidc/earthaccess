@@ -61,7 +61,7 @@
 
 ### Changed
 - Handle S3 credential expiration more gracefully.
-- Use dependabot to update Github Actions.
+- Use dependabot to update GitHub Actions.
 - Consolidate dependabot updates.
 - Switch to `ruff` for formatting.
 
@@ -133,101 +133,101 @@
 ## [0.5.1] - 2023-03-20
 
 ### Changed
-- For CI, documentation for readthedocs fixed by including poetry as the default tool
-- For CI, injected new secrets to test Auth using the icepyx convention (EARTHDATA_USERNAME)
+- For CI, documentation for readthedocs fixed by including poetry as the default tool ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+- For CI, injected new secrets to test Auth using the icepyx convention (EARTHDATA_USERNAME) ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@JessicaS11**](https://github.com/JessicaS11), [**@betolink**](https://github.com/betolink))
 
 ### Added
-- Add ability to get the user's profile with auth.user_profile which includes the user email
-- Add LAAD as a supported DAAC
+- Add ability to get the user's profile with auth.user_profile which includes the user email ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+- Add LAAD as a supported DAAC ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
 
 ### Fixed
-- get_s3_credentials() only worked when a netrc file was present, bug reported by @scottyhq and @JessicaS11
-- including tests for all DAAC S3 endpoints
-- Notebooks updated to use the new top level API
-- removed magic from dependencies (not available in windows and not used but just in tests)
+- get_s3_credentials() only worked when a netrc file was present, bug reported by @scottyhq and @JessicaS11 ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink), [**@JessicaS11**](https://github.com/JessicaS11), [**@scottyhq**](https://github.com/scottyhq))
+- including tests for all DAAC S3 endpoints ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+- Notebooks updated to use the new top level API ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+- removed magic from dependencies (not available in windows and not used but just in tests) ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
 
 ## [0.5.0] - 2023-02-23
 
 ### Changed
-- For CI, documentation is now only built for the main, dev and documentation branches
-- For CI, notebooks are executed every time the documentation gets published!
+- For CI, documentation is now only built for the main, dev and documentation branches ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
+- For CI, notebooks are executed every time the documentation gets published! ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink), [**@asteiker**](https://github.com/asteiker))
 
 ### Added
-- Add ability to use the top level API to get S3 credentials, authenticated fsspec and requests sessions!
-- Make available ASF direct access for Sentinel1 products
+- Add ability to use the top level API to get S3 credentials, authenticated fsspec and requests sessions! ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
+- Make available ASF direct access for Sentinel1 products ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
 
 ### Fixed
-- @JessicaS11 fixed a bug where the Auth class was invoked without the proper parameters
-- if a user specifies the netrc strategy and there is no netrc an exception is raised
-- S3 URLs broke the Store class when opened outside AWS
-- Opening files using URLs was not working properly on AWS, thanks to @amfriesz for reporting it!
+- Fix a bug where the Auth class is invoked without the proper parameters ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@JessicaS11**](https://github.com/JessicaS11))
+- if a user specifies the netrc strategy and there is no netrc an exception is raised ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
+- S3 URLs broke the Store class when opened outside AWS ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
+- Opening files using URLs was not working properly on AWS, thanks to @amfriesz for reporting it! ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink), ([**@amfriesz**](https://github.com/amfriesz)))
 
 ## [0.4.7] - 2022-12-11
 
 ### Fixed
-- Fix open() for direct access
-- Move python-magic to the dev section because it is a test dependency
-- Make minor edits in the README
+- Fix open() for direct access ([#186](https://github.com/nsidc/earthaccess/pull/186))([**@betolink**](https://github.com/betolink))
+- Move python-magic to the dev section because it is a test dependency ([#186](https://github.com/nsidc/earthaccess/pull/186))([**@betolink**](https://github.com/betolink))
+- Make minor edits in the README ([#186](https://github.com/nsidc/earthaccess/pull/186))([**@betolink**](https://github.com/betolink))
 
 ## [0.4.6] - 2022-12-08
 
 ### Changed
-- For CI, only run the publish workflow after a release on GitHub
+- For CI, only run the publish workflow after a release on GitHub ([#183](https://github.com/nsidc/earthaccess/pull/183))([**@betolink**](https://github.com/betolink))
 
 ### Added
-- Add feature to search collections by DOI
-- Add new API documentation and simplify notation to access data
+- Add feature to search collections by DOI ([#183](https://github.com/nsidc/earthaccess/pull/183))([**@betolink**](https://github.com/betolink))
+- Add new API documentation and simplify notation to access data ([#183](https://github.com/nsidc/earthaccess/pull/183)) ([**@jroebuck932**](https://github.com/jroebuck932))
 
 ## [0.4.1] - 2022-11-02
 
 ### Changed
-- For CI, install Poetry using the new script
-- For CI, change dependabot alerts to monthly
-- Improve documentation by reimplementing python_cmr methods for docstring compatibility
-- Use `CMR-Search-After` see #145
+- For CI, install Poetry using the new script ([#131](https://github.com/nsidc/earthaccess/pull/131)) ([**@betolink**](https://github.com/betolink))
+- For CI, change dependabot alerts to monthly ([#131](https://github.com/nsidc/earthaccess/pull/131)) ([**@betolink**](https://github.com/betolink))
+- Improve documentation by reimplementing python_cmr methods for docstring compatibility ([#131](https://github.com/nsidc/earthaccess/pull/131)) ([**@betolink**](https://github.com/betolink))
+- Use `CMR-Search-After` see #145 ([#131](https://github.com/nsidc/earthaccess/pull/131)) ([**@betolink**](https://github.com/betolink))
 
 ### Added
-- Add GES_DISC S3 endpoint
-- Improve documentation by adding types to method signatures
+- Add GES_DISC S3 endpoint ([#131](https://github.com/nsidc/earthaccess/pull/131)) ([**@betolink**](https://github.com/betolink))
+- Improve documentation by adding types to method signatures ([#131](https://github.com/nsidc/earthaccess/pull/131)) ([**@betolink**](https://github.com/betolink))
 
 ## [0.4.0] - 2022-08-17
 
 ### Added
-- Add store, auth to docs and update mkdocs config
-- For `auth`, add the ability to persist credentials into a `.netrc` file
-- For `store`, use fsspec s3fs for in cloud access and https sessions for out of region access
-- For `store`, can open files with fsspec in and out of region (stream into xarray)
+- Add store, auth to docs and update mkdocs config ([#119](https://github.com/nsidc/earthaccess/pull/119))([**@betolink**](https://github.com/betolink))
+- For `auth`, add the ability to persist credentials into a `.netrc` file ([#119](https://github.com/nsidc/earthaccess/pull/119))([**@betolink**](https://github.com/betolink))
+- For `store`, use fsspec s3fs for in cloud access and https sessions for out of region access ([#43](https://github.com/nsidc/earthaccess/issues/43))([**@betolink**](https://github.com/betolink))
+- For `store`, can open files with fsspec in and out of region (stream into xarray) ([#41](https://github.com/nsidc/earthaccess/issues/41))([**@betolink**](https://github.com/betolink))
 
 ## [0.3.0] - 2022-04-28
 
 ### Changed
-- Update python-cmr to NASA fork
-- Drop unused `pydantic` dependency
-- Auth can refresh CMR tokens
-- Verify git tag and poetry version are the same before publish to pypi
+- Update python-cmr to NASA fork ([#75](https://github.com/nsidc/earthaccess/pull/75))([**@jhkennedy**](https://github.com/jhkennedy))
+- Drop unused `pydantic` dependency ([`5761548`](https://github.com/nsidc/earthaccess/pull/75/commits/5761548fcd8ba8733ce4f5ff9b8ce7967c3a8398))([**@jhkennedy**](https://github.com/jhkennedy))
+- Auth can refresh CMR tokens ([#82](https://github.com/nsidc/earthaccess/pull/82))([**@betolink**](https://github.com/betolink))
+- Verify git tag and poetry version are the same before publishing to PyPI
 
 ### Added
-- Add documentation for readthedocs and GitHub
+- Add documentation for readthedocs and GitHub ([#82](https://github.com/nsidc/earthaccess/pull/82))([**@betolink**](https://github.com/betolink))
 
 ### Removed
-- **Breaking**: Dropped python 3.7 support
+- **Breaking**: Drop python 3.7 support ([#82](https://github.com/nsidc/earthaccess/pull/82))([**@betolink**](https://github.com/betolink))
 
 ### Fixed
 - Fix bug with CMR tokens
-- Add missing `python-datutil` dependency
+- Add missing `python-datutil` dependency ([`747e992`](https://github.com/nsidc/earthaccess/pull/75/commits/747e9926a5ab83d75bbf7f17d4c52f24b563147b))([**@jhkennedy**](https://github.com/jhkennedy))
 
 ## [0.2.2] - 2022-03-23
 
 ### Fixed
-- Fix store to download multi-file granules
-- Fix granule formatting
+- Fix store to download multi-file granules ([#73](https://github.com/nsidc/earthaccess/pull/73))([**@betolink**](https://github.com/betolink))
+- Fix granule formatting ([#73](https://github.com/nsidc/earthaccess/pull/73))([**@betolink**](https://github.com/betolink))
 
 ## [0.2.1] - 2022-03-19
 
 ### Changed
-- Rename Accessor to Store
-- Relax dependency requirements
-- Store can download plain links if they are on prem
+- Rename Accessor to Store ([`4bd618d`](https://github.com/nsidc/earthaccess/pull/66/commits/4bd618d4d48c3cd256a077fb8329f40df2d5b7ff))([**@betolink**](https://github.com/betolink))
+- Relax dependency requirements ([`c9a5ed6`](https://github.com/nsidc/earthaccess/pull/66/commits/c9a5ed6b917435e7c4ece58485939065fa71cc8f))([**@betolink**](https://github.com/betolink))
+- Store can download plain links if they are on prem ([`92d2919`](https://github.com/nsidc/earthaccess/commit/92d291962e5b72b458c2971eae8a6b813d4bae39))([**@betolink**](https://github.com/betolink))
 
 ## [0.1.0-beta.1] - 2021-09-21
 
