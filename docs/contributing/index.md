@@ -69,5 +69,6 @@ the stubs appear under `stubs/cmr`.
 ## Pull Request process
 
 Fork the repository using the "Fork" button on the [repository
-homepage](https://github.com/nsidc/earthaccess), make your change on the fork, then open
-a pull request from your fork and follow the instructions populated in the text box.
+homepage](https://github.com/nsidc/earthaccess), create a branch with your changes in the fork, then open
+a draft pull request from your fork. Starting a pull request provides additional instructions and requirements, and
+there is no harm in starting a draft pull request while still developing.
