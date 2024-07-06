@@ -5,5 +5,3 @@
 * [earthaccess @ AGU poster](https://docs.google.com/presentation/d/1OOSZzbHv6Ck4lzOE01FQdI4kX0VCfcVBS4pWCc7dtBo/edit?usp=sharing)
 
 * [NSIDC Cloud Data Access Guide](https://nsidc.org/data/user-resources/help-center/nasa-earthdata-cloud-data-access-guide)
-
-
