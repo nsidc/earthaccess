@@ -10,9 +10,12 @@ expect you to complete the steps in the "PR draft checklist" below. Maintainers 
 willing and ready to help pick it up from there!
 
 Please start by opening this Pull Request as a "draft". You can do this by
-clicking the arrow on the right side of the green "Create pull request" button. Follow
-the draft checklist below to move the PR out of draft state. If you accidentally created
-the PR as a non-draft, don't worry, you can still change it to a draft using the
+clicking the arrow on the right side of the green "Create pull request" button. While
+your pull request is in "draft" state, maintainers will assume the PR isn't ready for
+their attention unless they are specifically summoned using GitHub's @ system.
+
+Follow the draft checklist below to move the PR out of draft state. If you accidentally
+created the PR as a non-draft, don't worry, you can still change it to a draft using the
 "Convert to draft" button on  the right side panel under the "Reviewers" section.
 -->
 
