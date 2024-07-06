@@ -68,7 +68,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         ```
     """
     if not validate.valid_dataset_parameters(**kwargs):
-        logger.warn("A valid set of parameters is needed to search for datasets on CMR")
+        logger.warning(
+            "A valid set of parameters is needed to search for datasets on CMR"
+        )
         return []
     if earthaccess.__auth__.authenticated:
         query = DataCollections(auth=earthaccess.__auth__).parameters(**kwargs)
