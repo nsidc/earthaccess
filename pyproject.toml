@@ -60,8 +60,9 @@ numpy = [
 dask = { version = ">=2022.1.0", optional = true }
 
 # Dev
-bump-my-version = { version = ">=0.10.0", optional = true }
 pre-commit = { version = ">=2.4", optional = true }
+nox = { version = ">=2024.4.15", optional = true }
+bump-my-version = { version = ">=0.10.0", optional = true }
 ruff = { version = ">=0.4.2", optional = true }
 
 # Test
@@ -111,7 +112,7 @@ lxml-html-clean = {version = ">=0.1.1", optional = true}
 
 [tool.poetry.extras]
 kerchunk = ["kerchunk", "dask"]
-dev = ["bump-my-version", "pre-commit", "ruff"]
+dev = ["nox", "pre-commit", "bump-my-version", "ruff"]
 test = ["mypy", "pytest", "pytest-cov", "pytest-watch", "python-magic", "responses", "types-requests", "types-setuptools", "vcrpy"]
 docs = [
   "jupyterlab",
@@ -141,6 +142,7 @@ build-backend = "poetry.core.masonry.api"
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
+files = "."
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
 # TODO: incrementally work towards strict mode (currently too many errors)
@@ -161,6 +163,7 @@ module = [
   "kerchunk.*",
   "pqdm.*",
   "s3fs",
+  "nox",
   "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
   "vcr.unittest",  # TODO: generate stubs for vcr and remove this line
 ]
