@@ -36,9 +36,10 @@ created the PR as a non-draft, don't worry, you can still change it to a draft u
 - [ ] Update the documentation and/or the `README.md` with details of changes to the
       interface. This includes new environment variables, function names, decorators,
       etc.
-- [ ] Click the "Ready for review" button at the bottom of the "Conversation" tab in GitHub
-      once these requirements are fulfilled. Don't worry if you see any test failures in
-      GitHub at this point!
+
+Click the "Ready for review" button at the bottom of the "Conversation" tab in GitHub
+once these requirements are fulfilled. Don't worry if you see any test failures in
+GitHub at this point!
 
 </details>
 
