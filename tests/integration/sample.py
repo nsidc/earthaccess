@@ -1,5 +1,6 @@
 import logging
 import random
+from typing import Union
 
 logger = logging.getLogger(__name__)
 
@@ -7,7 +8,7 @@ logger = logging.getLogger(__name__)
 def get_sample_granules(
     granules: list,
     sample_size: int,
-    max_granule_size: int | float,
+    max_granule_size: Union[int, float],
     round_ndigits: int = None,
 ):
     """Return a list of randomly-sampled granules and their size in MB.
