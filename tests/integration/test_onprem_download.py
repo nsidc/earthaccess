@@ -1,4 +1,3 @@
-# package imports
 import logging
 import os
 import random
@@ -9,6 +8,8 @@ from pathlib import Path
 import earthaccess
 import pytest
 from earthaccess import Auth, DataCollections, DataGranules, Store
+
+from .sample import get_sample_granules
 
 logger = logging.getLogger(__name__)
 
@@ -63,30 +64,6 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 store = Store(auth)
 
 
-def get_sample_granules(granules, sample_size, max_granule_size):
-    """Returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size.
-    """
-    files_to_download = []
-    total_size = 0
-    max_tries = sample_size * 2
-    tries = 0
-
-    while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
-        if g.size() > max_granule_size:
-            # print(f"G: {g['meta']['concept-id']} exceded max size: {g.size()}")
-            tries += 1
-            continue
-        else:
-            # print(f"Adding : {g['meta']['concept-id']} size: {g.size()}")
-            files_to_download.append(g)
-            total_size += g.size()
-            if len(files_to_download) >= sample_size:
-                break
-    return files_to_download, round(total_size, 2)
-
-
 def supported_collection(data_links):
     for url in data_links:
         if "podaac-tools.jpl.nasa.gov/drive" in url:
@@ -125,7 +102,10 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
             continue
         local_path = f"./tests/integration/data/{concept_id}"
         granules_to_download, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
+            granules,
+            granules_sample_size,
+            granules_max_size,
+            round_ndigits=2,
         )
         if len(granules_to_download) == 0:
             logger.debug(
