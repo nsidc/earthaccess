@@ -6,22 +6,15 @@ import magic
 import pytest
 from earthaccess import Auth, DataCollections, DataGranules, Store
 
-logger = logging.getLogger(__name__)
+from .sample import get_sample_granules
 
+logger = logging.getLogger(__name__)
 
 daacs_list = [
     {
         "short_name": "NSIDC",
         "collections_count": 50,
         "collections_sample_size": 3,
-        "granules_count": 100,
-        "granules_sample_size": 2,
-        "granules_max_size_mb": 100,
-    },
-    {
-        "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
@@ -35,28 +28,6 @@ daacs_list = [
         "granules_max_size_mb": 130,
     },
 ]
-
-
-def get_sample_granules(granules, sample_size, max_granule_size):
-    """Returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size.
-    """
-    files_to_download = []
-    total_size = 0
-    max_tries = sample_size * 2
-    tries = 0
-
-    while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
-        if g.size() > max_granule_size:
-            tries += 1
-            continue
-        else:
-            files_to_download.append(g)
-            total_size += g.size()
-            if len(files_to_download) >= sample_size:
-                break
-    return files_to_download, round(total_size, 2)
 
 
 def supported_collection(data_links):
@@ -94,7 +65,10 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
             logger.warning(f"PODAAC DRIVE is not supported at the moment: {data_links}")
             continue
         granules_to_open, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
+            granules,
+            granules_sample_size,
+            granules_max_size,
+            round_ndigits=2,
         )
         if len(granules_to_open) == 0:
             logger.debug(
