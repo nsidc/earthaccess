@@ -18,8 +18,8 @@ the PR as a non-draft, don't worry, you can still change it to a draft using the
 
 <details><summary>Pull Request (PR) draft checklist - click to expand</summary>
 
-- [ ] Populate a descriptive title. Ensure the title does not look like "Updated
-      README.md".
+- [ ] Populate a descriptive title. For example, instead of "Updated README.md", use a
+      title such as "Add testing details to the contributor section of the README".
 - [ ] Populate the body of the pull request with :
     - A clear description of the change you are proposing.
     - Links to any issues resolved by this PR with text in the PR description, for
