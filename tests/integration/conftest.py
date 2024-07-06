@@ -19,7 +19,7 @@ def pytest_sessionfinish(session, exitstatus):
     tests and unit tests at the same time allows more tests to fail than executing
     integration tests alone.
     """
-    if exitstatus != 1:
+    if exitstatus != pytest.ExitCode.TESTS_FAILED:
         # Exit status 1 in PyTest indicates "Tests were collected and run but some of
         # the tests failed". In all other cases, for example "an internal error happened
         # while executing the tests", or "test execution interrupted by the user", we
