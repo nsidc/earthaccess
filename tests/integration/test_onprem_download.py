@@ -1,17 +1,11 @@
 # package imports
-import logging
-import os
 import random
 import shutil
-import unittest
 from pathlib import Path
 
 import earthaccess
 import pytest
-from earthaccess import Auth, DataCollections, DataGranules, Store
-
-logger = logging.getLogger(__name__)
-
+from earthaccess import DataCollections, DataGranules
 
 daacs_list = [
     {
@@ -48,44 +42,6 @@ daacs_list = [
     },
 ]
 
-assertions = unittest.TestCase("__init__")
-
-# we need to use a valid EDL credential
-
-assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
-assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
-
-auth = Auth().login(strategy="environment")
-assertions.assertTrue(auth.authenticated)
-logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
-logger.info(f"earthaccess version: {earthaccess.__version__}")
-
-store = Store(auth)
-
-
-def get_sample_granules(granules, sample_size, max_granule_size):
-    """Returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size.
-    """
-    files_to_download = []
-    total_size = 0
-    max_tries = sample_size * 2
-    tries = 0
-
-    while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
-        if g.size() > max_granule_size:
-            # print(f"G: {g['meta']['concept-id']} exceded max size: {g.size()}")
-            tries += 1
-            continue
-        else:
-            # print(f"Adding : {g['meta']['concept-id']} size: {g.size()}")
-            files_to_download.append(g)
-            total_size += g.size()
-            if len(files_to_download) >= sample_size:
-                break
-    return files_to_download, round(total_size, 2)
-
 
 def supported_collection(data_links):
     for url in data_links:
@@ -95,7 +51,9 @@ def supported_collection(data_links):
 
 
 @pytest.mark.parametrize("daac", daacs_list)
-def test_earthaccess_can_download_onprem_collection_granules(daac):
+def test_earthaccess_can_download_onprem_collection_granules(
+    authenticated_store, get_sample_granules, daac
+):
     """Tests that we can download cloud collections using HTTPS links."""
     daac_shortname = daac["short_name"]
     collections_count = daac["collections_count"]
@@ -103,6 +61,8 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
     granules_count = daac["granules_count"]
     granules_sample_size = daac["granules_sample_size"]
     granules_max_size = daac["granules_max_size_mb"]
+
+    store, logger, assertions = authenticated_store
 
     collection_query = DataCollections().data_center(daac_shortname).cloud_hosted(False)
     hits = collection_query.hits()
@@ -139,11 +99,11 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
         # We are testing this method
         downloaded_results = store.get(granules_to_download, local_path=local_path)
 
-        assertions.assertTrue(isinstance(downloaded_results, list))
-        assertions.assertTrue(len(downloaded_results) == granules_sample_size)
+        assert isinstance(downloaded_results, list) is True
+        assert (len(downloaded_results) == granules_sample_size) is True
 
         path = Path(local_path)
-        assertions.assertTrue(path.is_dir())
+        assert path.is_dir() is True
         # test that we downloaded the mb reported by CMR
         total_mb_downloaded = round(
             (sum(file.stat().st_size for file in path.rglob("*")) / 1024**2), 2
