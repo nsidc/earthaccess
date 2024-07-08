@@ -106,7 +106,7 @@ def test_earthaccess_can_open_onprem_collection_granules(
         # We are testing this method
         fileset = store.open(granules_to_open)
 
-        assertions.assertTrue(isinstance(fileset, list))
+        assert isinstance(fileset, list) is True
 
         # we test that we can read some bytes and get the file type
         for file in fileset:

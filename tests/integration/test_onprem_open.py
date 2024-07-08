@@ -77,7 +77,7 @@ def test_earthaccess_can_open_onprem_collection_granules(
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
         assertions.assertTrue(len(granules) > 0, "Could not fetch granules")
-        assertions.assertTrue(isinstance(granules[0], earthaccess.results.DataGranule))
+        assert isinstance(granules[0], earthaccess.results.DataGranule) is True
         data_links = granules[0].data_links()
         if not supported_collection(data_links):
             logger.warning(f"PODAAC DRIVE is not supported at the moment: {data_links}")
@@ -98,7 +98,7 @@ def test_earthaccess_can_open_onprem_collection_granules(
         # We are testing this method
         fileset = store.open(granules_to_open)
 
-        assertions.assertTrue(isinstance(fileset, list))
+        assert isinstance(fileset, list) is True
 
         # we test that we can read some bytes and get the file type
         for file in fileset:

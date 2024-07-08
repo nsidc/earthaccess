@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
 
 
-assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
-assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
+assert "EARTHDATA_USERNAME" in os.environ
+assert "EARTHDATA_PASSWORD" in os.environ
 
 logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
 logger.info(f"earthaccess version: {earthaccess.__version__}")
@@ -46,13 +46,13 @@ def test_auth_returns_valid_auth_class():
     auth = earthaccess.login(strategy="environment")
     assertions.assertIsInstance(auth, earthaccess.Auth)
     assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
-    assertions.assertTrue(earthaccess.__auth__.authenticated)
+    assert earthaccess.__auth__.authenticated is True
 
 
 def test_dataset_search_returns_none_with_no_parameters():
     results = earthaccess.search_datasets()
     assertions.assertIsInstance(results, list)
-    assertions.assertTrue(len(results) == 0)
+    assert (len(results) == 0) is True
 
 
 @pytest.mark.parametrize("kwargs", dataset_valid_params)
@@ -66,7 +66,7 @@ def test_dataset_search_returns_valid_results(kwargs):
 def test_granules_search_returns_valid_results(kwargs):
     results = earthaccess.search_data(count=10, **kwargs)
     assertions.assertIsInstance(results, list)
-    assertions.assertTrue(len(results) <= 10)
+    assert (len(results) <= 10) is True
 
 
 @pytest.mark.parametrize("selection", [0, slice(None)])

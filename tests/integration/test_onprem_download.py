@@ -99,11 +99,11 @@ def test_earthaccess_can_download_onprem_collection_granules(
         # We are testing this method
         downloaded_results = store.get(granules_to_download, local_path=local_path)
 
-        assertions.assertTrue(isinstance(downloaded_results, list))
-        assertions.assertTrue(len(downloaded_results) == granules_sample_size)
+        assert isinstance(downloaded_results, list) is True
+        assert (len(downloaded_results) == granules_sample_size) is True
 
         path = Path(local_path)
-        assertions.assertTrue(path.is_dir())
+        assert path.is_dir() is True
         # test that we downloaded the mb reported by CMR
         total_mb_downloaded = round(
             (sum(file.stat().st_size for file in path.rglob("*")) / 1024**2), 2

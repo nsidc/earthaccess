@@ -82,7 +82,7 @@ def test_auth_can_create_authenticated_requests_sessions():
 def test_auth_can_fetch_s3_credentials():
     activate_environment()
     auth = earthaccess.login(strategy="environment")
-    assertions.assertTrue(auth.authenticated)
+    assert auth.authenticated is True
     for daac in earthaccess.daac.DAACS:
         if len(daac["s3-credentials"]) > 0:
             try:

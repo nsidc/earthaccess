@@ -26,8 +26,8 @@ def authenticated_store():
 
     # we need to use a valid EDL credential
 
-    assert "EARTHDATA_USERNAME" in os.environ is True
-    assert "EARTHDATA_PASSWORD" in os.environ is True
+    assert "EARTHDATA_USERNAME" in os.environ
+    assert "EARTHDATA_PASSWORD" in os.environ
 
     auth = Auth().login(strategy="environment")
     assert auth.authenticated is True
