@@ -42,93 +42,95 @@
 ## [0.8.2] - 2023-12-06
 
 ### Changed
-- Update poetry lockfile
-- Use YAML formatting (prettier)
+- Update poetry lockfile ([#403](https://github.com/nsidc/earthaccess/pull/403))([**@jrbourbeau**](https://github.com/jrbourbeau))
+- Use YAML formatting (prettier) ([#398](https://github.com/nsidc/earthaccess/pull/398))([**@jrbourbeau**](https://github.com/jrbourbeau))
 
 ### Added
-- Add CI tests with minimum supported versions
-- Add `python-dateutil` as a direct dependency
+- Add CI tests with minimum supported versions ([#402](https://github.com/nsidc/earthaccess/pull/402))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87), [**@jhkennedy**](https://github.com/jhkennedy))
+- Add `python-dateutil` as a direct dependency ([#397](https://github.com/nsidc/earthaccess/pull/397))([**@jrbourbeau**](https://github.com/jrbourbeau))
 
 ### Removed
-- Remove binder PR comments
+- Remove binder PR comments ([#400](https://github.com/nsidc/earthaccess/pull/400))([**@jrbourbeau**](https://github.com/jrbourbeau))
 
 ### Fixed
-- Enable AWS check with IMDSv2
-- Add region to running in AWS check
-- Handle opening multi-file granules
+- Enable AWS check with IMDSv2 ([#391](https://github.com/nsidc/earthaccess/pull/391))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87), [**@itcarroll**](https://github.com/itcarroll))
+- Add region to running in AWS check ([#395](https://github.com/nsidc/earthaccess/pull/395))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@betolink**](https://github.com/betolink))
+- Handle opening multi-file granules ([#394](https://github.com/nsidc/earthaccess/pull/394))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@betolink**](https://github.com/betolink))
 
 ## [0.8.1] - 2023-12-01
 
 ### Changed
-- Handle S3 credential expiration more gracefully.
-- Use dependabot to update GitHub Actions.
-- Consolidate dependabot updates.
-- Switch to `ruff` for formatting.
+- Handle S3 credential expiration more gracefully ([#354](https://github.com/nsidc/earthaccess/pull/354))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87))
+- Use dependabot to update GitHub Actions ([#373](https://github.com/nsidc/earthaccess/pull/373))([**@jhkennedy**](https://github.com/jhkennedy))
+- Consolidate dependabot updates ([#380](https://github.com/nsidc/earthaccess/pull/380))([**@mfisher87**](https://github.com/mfisher87))
+- Switch to `ruff` for formatting ([#372](https://github.com/nsidc/earthaccess/pull/372))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87))
 
 ### Added
-- Add `kerchunk` metadata consolidation utility.
+- Add `kerchunk` metadata consolidation utility ([#278](https://github.com/nsidc/earthaccess/pull/278))
+  ([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87),
+    [**@betolink**](https://github.com/betolink), [**@martindurant**](https://github.com/martindurant),
+    [**lsterzinger**](https://github.com/lsterzinger), [**mrocklin**](https://github.com/mrocklin))
 
 ## [0.8.0] - 2023-11-29
 
 ### Changed
-- earthaccess will `raise` errors instead of `print`ing them in more cases.
+- earthaccess will `raise` errors instead of `print`ing them in more cases ([#351](https://github.com/nsidc/earthaccess/pull/351))([**@jrbourbeau**](https://github.com/jrbourbeau))
 - `daac` and `provider` parameters are now normalized to uppercase, since lowercase
-      characters are never valid.
+      characters are never valid ([#355](https://github.com/nsidc/earthaccess/pull/355))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87))
 
 ### Fixed
-- Fix zero granules being reported for restricted datasets.
+- Fix zero granules being reported for restricted datasets ([#358](https://github.com/nsidc/earthaccess/pull/358))([**@danielfromearth**](https://github.com/danielfromearth))
 
 ## [0.7.1] - 2023-11-08
 
 ### Fixed
-- Treat granules without `RelatedUrls` as not cloud-hosted.
+- Treat granules without `RelatedUrls` as not cloud-hosted ([#339](https://github.com/nsidc/earthaccess/pull/339))([**@mfisher87**](https://github.com/mfisher87))
 
 ## [0.7.0] - 2023-10-31
 
 ### Changed
-- `earthaccess.download` now accepts a single granule as input in addition to a list of granules.
-- `earthaccess.download` now returns fully qualified local file paths.
+- `earthaccess.download` now accepts a single granule as input in addition to a list of granules ([#317](https://github.com/nsidc/earthaccess/pull/317))([**@jrbourbeau**](https://github.com/jrbourbeau))
+- `earthaccess.download` now returns fully qualified local file paths ([#317](https://github.com/nsidc/earthaccess/pull/317))([**@jrbourbeau**](https://github.com/jrbourbeau))
 
 ### Added
 - Earthaccess will now automatically search for Earthdata authentication. ``earthaccess.login()``
       still works as before, but is no longer required if you have a ``~/.netrc`` file for have set
-      ``EARTHDATA_USERNAME`` and ``EARTHDATA_PASSWORD`` environment variables.
-- Add `earthaccess.auth_environ()` utility for getting Earthdata authentication environment variables.
+      ``EARTHDATA_USERNAME`` and ``EARTHDATA_PASSWORD`` environment variables ([#300](https://github.com/nsidc/earthaccess/pull/300))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87), [**@mfisher87**](https://github.com/mfisher87))
+- Add `earthaccess.auth_environ()` utility for getting Earthdata authentication environment variables ([#316](https://github.com/nsidc/earthaccess/pull/316))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87))
 
 ### Fixed
 - Fix spelling mistake in `access` variable assignment (`direc` -> `direct`)
-      in `earthaccess.store._get_granules`.
+      in `earthaccess.store._get_granules` ([#308](https://github.com/nsidc/earthaccess/pull/308))([**@trey-stafford**](https://github.com/trey-stafford))
 - Pass `threads` arg to `_open_urls_https` in
-      `earthaccess.store._open_urls`, replacing the hard-coded value of 8.
-- Return S3 data links by default when in region.
+      `earthaccess.store._open_urls`, replacing the hard-coded value of 8 ([#308](https://github.com/nsidc/earthaccess/pull/308))([**@trey-stafford**](https://github.com/trey-stafford))
+- Return S3 data links by default when in region ([#318](https://github.com/nsidc/earthaccess/pull/318))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87), [**@jhkennedy**](https://github.com/jhkennedy))
 
 ## [0.6.0] - 2023-09-20
 
 ### Added
-- earthaccess.get_s3fs_session() can use the results to find the right set of S3 credentials
+- earthaccess.get_s3fs_session() can use the results to find the right set of S3 credentials ([#296](https://github.com/nsidc/earthaccess/pull/296))([**@betolink**](https://github.com/betolink))
 
 ### Fixed
-- earthaccess.search_datasets() and earthaccess.search_data() can find restricted datasets #296
-- distributed serialization fixed for EarthAccessFile #301 and #276
+- earthaccess.search_datasets() and earthaccess.search_data() can find restricted datasets ([#296](https://github.com/nsidc/earthaccess/pull/296))([**@betolink**](https://github.com/betolink))
+- Fix distributed serialization for EarthAccessFile ([#301](https://github.com/nsidc/earthaccess/pull/301))([**@jrbourbeau**](https://github.com/jrbourbeau)) and ([#276](https://github.com/nsidc/earthaccess/pull/276))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@betolink**](https://github.com/betolink))
 
 ## [0.5.3] - 2023-08-01
 
 ### Changed
-- For CI, integration tests are now only run when we push to main (after a merge)
-- For CI, unit tests are run for any branch and opened PR
+- For CI, integration tests are now only run when we push to main (after a merge) ([#267](https://github.com/nsidc/earthaccess/pull/267))([**@betolink**](https://github.com/betolink))
+- For CI, unit tests are run for any branch and opened PR ([#267](https://github.com/nsidc/earthaccess/pull/267))([**@betolink**](https://github.com/betolink))
 
 ### Fixed
-- granule's size() returned zero
-- Add exception handling for fsspec sessions, thanks to @jrbourbeau
+- Granule's size() returned zero ([#267](https://github.com/nsidc/earthaccess/pull/267))([**@betolink**](https://github.com/betolink))
+- Add exception handling for fsspec sessions, thanks to @jrbourbeau ([#249](https://github.com/nsidc/earthaccess/pull/249))([**@jrbourbeau**](https://github.com/jrbourbeau))
 
 ## [0.5.2] - 2023-04-21
 
 ### Removed
-- Remove Benedict (core dependency) as the default dict for JSON coming from CMR.
+- Remove Benedict (core dependency) as the default dict for JSON coming from CMR ([#229](https://github.com/nsidc/earthaccess/pull/229), [#230](https://github.com/nsidc/earthaccess/issues/230))([**@psarka**](https://github.com/psarka))
 
 ### Fixed
-- Fix #230 by removing Benedict as the dict handler, thanks to @psarka!
-- S3 credential endpoints are tried with tokens and basic auth until all the DAACs accept the same auth
+- S3 credential endpoints are tried with tokens and basic auth until all the DAACs accept the same auth ([#234](https://github.com/nsidc/earthaccess/pull/234))([**@betolink**](https://github.com/betolink))
 
 ## [0.5.1] - 2023-03-20
 
