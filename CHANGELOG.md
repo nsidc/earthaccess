@@ -3,41 +3,58 @@
 ## [Unreleased]
 
 ### Changed
-- [#555](https://github.com/nsidc/earthaccess/issues/555): YAML formatting is
-    now performed with `yamlfmt` instead of `prettier`.
-- [#511](https://github.com/nsidc/earthaccess/issues/511): Replace `print`
-    calls with `logging` calls where appropriate and add T20 Ruff rule.
-- [#508](https://github.com/nsidc/earthaccess/issues/508): Correct and
-    enhance static type hints for functions and methods that make CMR queries
-    or handle CMR query results.
-- [#562](https://github.com/nsidc/earthaccess/issues/562): The destination
-     path is now created prior to direct S3 downloads, if it doesn't already
-     exist.
+- Perform YAML formatting with `yamlfmt` instead of
+  `prettier` ([#555](https://github.com/nsidc/earthaccess/issues/555))
+  ([**@chuckwondo**](https://github.com/chuckwondo),[**@mfisher87**](https://github.com/mfisher87))
+- Replace `print` calls with `logging` calls where appropriate and add T20 Ruff rule
+  ([#511](https://github.com/nsidc/earthaccess/issues/511))
+  ([**@botanical**](https://github.com/botanical),[**@chuckwondo**](https://github.com/chuckwondo),
+   [**@mfisher87**](https://github.com/mfisher87))
+- Correct and enhance static type hints for functions and methods that make CMR queries
+  or handle CMR query results ([#508](https://github.com/nsidc/earthaccess/issues/508))
+  ([**@mfisher87**](https://github.com/mfisher87),[**@jhkennedy**](https://github.com/jhkennedy),
+   [**@chuckwondo**](https://github.com/chuckwondo),[**@betolink**](https://github.com/betolink))
+- Create destination path prior to direct S3 downloads, if it doesn't already
+     exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
+  ([**@itcarroll**](https://github.com/itcarroll),[**@mfisher87**](https://github.com/mfisher87),
+   [**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Added
-- [#483](https://github.com/nsidc/earthaccess/issues/483): Now using
-    [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
-    for collection and granule searches to support deep-paging through large
-    result sets.
-- [#421](https://github.com/nsidc/earthaccess/issues/421): Enable queries to
-    Earthdata User Acceptance Testing (UAT) system for authenticated accounts.
+- Use [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
+  for collection and granule searches to support deep-paging through large result sets
+  ([#483](https://github.com/nsidc/earthaccess/issues/483))
+  ([**@doug-newman-nasa**](https://github.com/doug-newman-nasa),[**@chuckwondo**](https://github.com/chuckwondo),
+   [**@mfisher87**](https://github.com/mfisher87),[**@betolink**](https://github.com/betolink))
+- Enable queries to Earthdata User Acceptance Testing (UAT) system for authenticated accounts
+  ([#421](https://github.com/nsidc/earthaccess/issues/421))
+  ([**@danielfromearth**](https://github.com/danielfromearth),[**@mfisher87**](https://github.com/mfisher87),
+   [**@jhkennedy**](https://github.com/jhkennedy),[**@chuckwondo**](https://github.com/chuckwondo),
+   [**@betolink**](https://github.com/betolink))
 
 ### Removed
-- **Breaking**: [#421](https://github.com/nsidc/earthaccess/issues/421): Remove the
+- **Breaking:** Remove the
     `get_user_profile` method and the `email_address` and `profile` attributes
     from the `Auth` class.  Calling the EDL API to get user profile information
     is not intended for library access and is not necessary for this library's
-    intended use cases.
+    intended use cases. ([#421](https://github.com/nsidc/earthaccess/issues/421))
+    ([**@danielfromearth**](https://github.com/danielfromearth),[**@mfisher87**](https://github.com/mfisher87),
+     [**@jhkennedy**](https://github.com/jhkennedy),[**@chuckwondo**](https://github.com/chuckwondo),
+     [**@betolink**](https://github.com/betolink))
 
 ## [0.9.0] - 2024-02-28
 
 ### Added
-- Address #427 by adding parameters to collection query
-- Add user-agent in the request to track usage, closes #436
+- Improve search by adding instrument and project to collection queries
+  ([#427](https://github.com/nsidc/earthaccess/issues/427))
+  ([**@betolink**](https://github.com/betolink),[**@mfisher87**](https://github.com/mfisher87),
+   [**@jhkennedy**](https://github.com/jhkennedy))
+- Add user-agent in the request to track usage ([#436](https://github.com/nsidc/earthaccess/issues/436))
+  ([**@asteiker**](https://github.com/asteiker),[**@@mikedorfman**](https://github.com/@mikedorfman),
+   [**@betolink**](https://github.com/betolink))
 
 ### Fixed
-- Fix #439 by implementing more trusted domains in the SessionWithRedirection
-- Fix #438 by using an authenticated session for hits()
+- Implement more trusted domains in the SessionWithRedirection ([#439](https://github.com/nsidc/earthaccess/issues/439))([**@cmspeed**](https://github.com/cmspeed), [**@mfisher87**](https://github.com/mfisher87), [**@betolink**](https://github.com/betolink), [**@jhkennedy**](https://github.com/jhkennedy))
+- Use an authenticated session for hits() instead of calling parent's class super() ([#438](https://github.com/nsidc/earthaccess/issues/438))([**@betolink**](https://github.com/betolink), [**@mfisher87**](https://github.com/mfisher87), [**@jhkennedy**](https://github.com/jhkennedy))
 
 ## [0.8.2] - 2023-12-06
 
@@ -108,10 +125,10 @@
 ## [0.6.0] - 2023-09-20
 
 ### Added
-- earthaccess.get_s3fs_session() can use the results to find the right set of S3 credentials ([#296](https://github.com/nsidc/earthaccess/pull/296))([**@betolink**](https://github.com/betolink))
+- `earthaccess.get_s3fs_session()` can use the results to find the right set of S3 credentials ([#296](https://github.com/nsidc/earthaccess/pull/296))([**@betolink**](https://github.com/betolink))
 
 ### Fixed
-- earthaccess.search_datasets() and earthaccess.search_data() can find restricted datasets ([#296](https://github.com/nsidc/earthaccess/pull/296))([**@betolink**](https://github.com/betolink))
+- `earthaccess.search_datasets()` and `earthaccess.search_data()` can find restricted datasets ([#296](https://github.com/nsidc/earthaccess/pull/296))([**@betolink**](https://github.com/betolink))
 - Fix distributed serialization for EarthAccessFile ([#301](https://github.com/nsidc/earthaccess/pull/301))([**@jrbourbeau**](https://github.com/jrbourbeau)) and ([#276](https://github.com/nsidc/earthaccess/pull/276))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@betolink**](https://github.com/betolink))
 
 ## [0.5.3] - 2023-08-01
@@ -142,11 +159,13 @@
 - Add ability to get the user's profile with auth.user_profile which includes the user email ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
 - Add LAAD as a supported DAAC ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
 
+### Removed
+- Remove magic from dependencies (not available in windows and not used but just in tests) ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+
 ### Fixed
-- get_s3_credentials() only worked when a netrc file was present, bug reported by @scottyhq and @JessicaS11 ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink), [**@JessicaS11**](https://github.com/JessicaS11), [**@scottyhq**](https://github.com/scottyhq))
-- including tests for all DAAC S3 endpoints ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
-- Notebooks updated to use the new top level API ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
-- removed magic from dependencies (not available in windows and not used but just in tests) ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+- `get_s3_credentials()` only worked when a netrc file was present, bug reported by @scottyhq and @JessicaS11 ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink), [**@JessicaS11**](https://github.com/JessicaS11), [**@scottyhq**](https://github.com/scottyhq))
+- Include tests for all DAAC S3 endpoints ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
+- Update notebooks to use the new top level API ([#214](https://github.com/nsidc/earthaccess/pull/214))([**@betolink**](https://github.com/betolink))
 
 ## [0.5.0] - 2023-02-23
 
@@ -160,7 +179,7 @@
 
 ### Fixed
 - Fix a bug where the Auth class is invoked without the proper parameters ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@JessicaS11**](https://github.com/JessicaS11))
-- if a user specifies the netrc strategy and there is no netrc an exception is raised ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
+- Raise and exception if a user specifies the netrc strategy and there is no netrc ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
 - S3 URLs broke the Store class when opened outside AWS ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink))
 - Opening files using URLs was not working properly on AWS, thanks to @amfriesz for reporting it! ([#202](https://github.com/nsidc/earthaccess/pull/202))([**@betolink**](https://github.com/betolink), ([**@amfriesz**](https://github.com/amfriesz)))
 
