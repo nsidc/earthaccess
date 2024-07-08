@@ -41,5 +41,3 @@ And that's it in just one line of code! This same piece of code will also work f
 
 
 > More examples coming soon!
-
-

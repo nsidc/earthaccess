@@ -7,10 +7,25 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
+      # Validate format
       - id: check-yaml
-      - id: trailing-whitespace
       - id: check-toml
       - id: check-json
+      # Check for common mistakes
+      - id: check-added-large-files
+      - id: check-case-conflict
+      # - id: check-illegal-windows-names # TODO: Enable in next release
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: check-vcs-permalinks
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: no-commit-to-branch # protects `main` by default
+      - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
