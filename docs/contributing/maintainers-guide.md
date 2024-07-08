@@ -53,6 +53,3 @@ The GitHub Actions CI services handle the project's building, testing, and manag
 ## Continuous Documentation
 
 [ReadTheDocs](https://readthedocs.org/projects/earthaccess/) is used to generate and host [our documentation website](https://earthaccess.readthedocs.io/) as well as the preview for documentation changes made in pull requests. This service uses a configuration file in the root of the project, `.readthedocs.yml`.
-
-
-
