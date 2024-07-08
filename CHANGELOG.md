@@ -11,30 +11,23 @@
   ([#511](https://github.com/nsidc/earthaccess/issues/511))
   ([**@botanical**](https://github.com/botanical),[**@chuckwondo**](https://github.com/chuckwondo),
    [**@mfisher87**](https://github.com/mfisher87))
-- Correct and enhance static type hints for functions and methods that make CMR queries
-  or handle CMR query results ([#508](https://github.com/nsidc/earthaccess/issues/508))
-  ([**@mfisher87**](https://github.com/mfisher87),[**@jhkennedy**](https://github.com/jhkennedy),
-   [**@chuckwondo**](https://github.com/chuckwondo),[**@betolink**](https://github.com/betolink))
-- Create destination path prior to direct S3 downloads, if it doesn't already
-     exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
-  ([**@itcarroll**](https://github.com/itcarroll),[**@mfisher87**](https://github.com/mfisher87),
-   [**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Added
 
-- Use [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
-  for collection and granule searches to support deep-paging through large result sets
-  ([#483](https://github.com/nsidc/earthaccess/issues/483))
-  ([**@doug-newman-nasa**](https://github.com/doug-newman-nasa),[**@chuckwondo**](https://github.com/chuckwondo),
-   [**@mfisher87**](https://github.com/mfisher87),[**@betolink**](https://github.com/betolink))
 - Enable queries to Earthdata User Acceptance Testing (UAT) system for authenticated accounts
   ([#421](https://github.com/nsidc/earthaccess/issues/421))
   ([**@danielfromearth**](https://github.com/danielfromearth),[**@mfisher87**](https://github.com/mfisher87),
    [**@jhkennedy**](https://github.com/jhkennedy),[**@chuckwondo**](https://github.com/chuckwondo),
    [**@betolink**](https://github.com/betolink))
+- Add support for Python 3.12
+  ([#457](https://github.com/nsidc/earthaccess/issues/457))
+  ([**@chuckwondo**](https://github.com/chuckwondo),[**@mfisher87**](https://github.com/mfisher87))
 
 ### Removed
 
+- **Breaking:** Remove support for Python 3.8
+  ([#457](https://github.com/nsidc/earthaccess/issues/457))
+  ([**@mfisher87**](https://github.com/mfisher87),[**@chuckwondo**](https://github.com/chuckwondo))
 - **Breaking:** Remove the
     `get_user_profile` method and the `email_address` and `profile` attributes
     from the `Auth` class.  Calling the EDL API to get user profile information
@@ -43,6 +36,22 @@
     ([**@danielfromearth**](https://github.com/danielfromearth),[**@mfisher87**](https://github.com/mfisher87),
      [**@jhkennedy**](https://github.com/jhkennedy),[**@chuckwondo**](https://github.com/chuckwondo),
      [**@betolink**](https://github.com/betolink))
+
+### Fixed
+
+- Use [Search After](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#search-after)
+  for collection and granule searches to support deep-paging through large result sets
+  ([#483](https://github.com/nsidc/earthaccess/issues/483))
+  ([**@doug-newman-nasa**](https://github.com/doug-newman-nasa),[**@chuckwondo**](https://github.com/chuckwondo),
+   [**@mfisher87**](https://github.com/mfisher87),[**@betolink**](https://github.com/betolink))
+- Correct and enhance static type hints for functions and methods that make CMR queries
+  or handle CMR query results ([#508](https://github.com/nsidc/earthaccess/issues/508))
+  ([**@mfisher87**](https://github.com/mfisher87),[**@jhkennedy**](https://github.com/jhkennedy),
+   [**@chuckwondo**](https://github.com/chuckwondo),[**@betolink**](https://github.com/betolink))
+- Create destination path prior to direct S3 downloads, if it doesn't already
+     exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
+  ([**@itcarroll**](https://github.com/itcarroll),[**@mfisher87**](https://github.com/mfisher87),
+   [**@chuckwondo**](https://github.com/chuckwondo))
 
 ## [0.9.0] - 2024-02-28
 
