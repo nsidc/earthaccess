@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## Unreleased
 
 ### Changed
 
@@ -39,6 +39,8 @@
   ([#508](https://github.com/nsidc/earthaccess/issues/508))
 * Create destination directory prior to direct S3 downloads, if it doesn't
   already exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
+* Fix broken image link in sea level rise tutorial
+  (([#427](https://github.com/nsidc/earthaccess/issues/427))
 
 ## [v0.9.0] 2024-02-28
 
