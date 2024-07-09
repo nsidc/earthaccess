@@ -52,6 +52,8 @@
      exist ([#562](https://github.com/nsidc/earthaccess/issues/562))
   ([**@itcarroll**](https://github.com/itcarroll),[**@mfisher87**](https://github.com/mfisher87),
    [**@chuckwondo**](https://github.com/chuckwondo))
+-Fix broken image link in sea level rise tutorial
+  (([#427](https://github.com/nsidc/earthaccess/issues/427))([**@jbrownrs**](https://github.com/jbrownrs))
 
 ## [0.9.0] - 2024-02-28
 
