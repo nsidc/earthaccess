@@ -59,7 +59,7 @@ Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick
 
 ## Compatibility
 
-Only **Python 3.8+** is supported.
+Only **Python 3.9+** is supported.
 
 
 ## How to Contribute to `earthaccess`
