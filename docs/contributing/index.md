@@ -52,11 +52,11 @@ To ensure that our code is well-documented and easy to understand, we use [Googl
 
 #### Locally rendering the documentation
 
-To work on documentation locally, follow these steps:
+To work on documentation locally, we provide a script that will automatically re-render the docs when you make changes:
 
-- To setup the documentation, navigate to the scripts directory
-- Run the `scripts/build-docs.sh` script to build the documentation
-- Serve the documentation locally, using the `scripts/docs-live.sh` script
+```
+./scripts/docs-live.sh
+```
 
 If you encounter any issues while setting up the documentation using the provided steps, please refer to our [tutorial]( https://www.youtube.com/watch?v=mNjlMZ4F3So) for additional guidance.
 
