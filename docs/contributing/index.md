@@ -6,7 +6,7 @@ with the community and maintainers via
 [a GitHub Discussion](https://github.com/nsidc/earthaccess/discussions),
 or [any other method](our-meet-ups.md).
 
-Please note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow it in all of your interactions with the project.
+Please note that we have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
 
 ## First Steps to contribute
 
