@@ -82,7 +82,7 @@ To maintain code quality, we use pre-commit for automated checks before committi
 
 To set up pre-commit, follow these steps:
 
-- `pip install pre-commit` for Windows and for Linux refer to your distribution's package index
+- `pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
 - `pre-commit install` to enable it to run automatically
 - `pre-commit run -a`  to run it manually
 
