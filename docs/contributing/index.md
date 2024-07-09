@@ -50,7 +50,7 @@ Once you've completed these steps, you are ready to submit your contribution.
 
 To ensure that our code is well-documented and easy to understand, we use [Google-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) to document all functions, classes, and methods in this library.
 
-#### Getting Help with Setup and Configuration
+#### Locally rendering the documentation
 
 To work on documentation locally, follow these steps:
 
@@ -60,7 +60,7 @@ To work on documentation locally, follow these steps:
 
 If you encounter any issues while setting up the documentation using the provided steps, please refer to our [tutorial]( https://www.youtube.com/watch?v=mNjlMZ4F3So) for additional guidance.
 
-#### Caveats and Considerations
+##### Caveats and considerations
 
 Our mkdocs setup has a known limitation: the hot reloader won't auto-reload when changing docstrings. To see updates, manually rebuild and re-serve docs. We're working to improve the developer experience and appreciate your patience.
 
