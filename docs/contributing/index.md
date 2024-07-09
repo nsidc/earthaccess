@@ -86,7 +86,6 @@ To set up pre-commit, follow these steps:
 - `pre-commit install` to enable it to run automatically
 - `pre-commit run -a`  to run it manually
 
-We attempt to provide comprehensive type annotations within this repository. If you do not provide fully annotated functions or methods, the `lint` command will fail.  Over time, we plan to increase type-checking strictness in order to ensure more precise, beneficial type annotations.
 
 We have included type stubs for the untyped `python-cmr` library, which we intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package, the stubs appear under `stubs/cmr`.
 
