@@ -11,6 +11,10 @@
   ([#511](https://github.com/nsidc/earthaccess/issues/511))
   ([**@botanical**](https://github.com/botanical),[**@chuckwondo**](https://github.com/chuckwondo),
    [**@mfisher87**](https://github.com/mfisher87))
+- Update `CHANGELOG.md` to follow Common Changelog conventions
+  ([#584](https://github.com/nsidc/earthaccess/pull/584))
+  ([**@danielfromearth**](https://github.com/danielfromearth),[**@chuckwondo**](https://github.com/chuckwondo),
+   [**@jhkennedy**](https://github.com/jhkennedy),[**@mfisher87**](https://github.com/mfisher87))
 
 ### Added
 
