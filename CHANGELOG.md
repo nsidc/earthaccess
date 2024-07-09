@@ -115,6 +115,7 @@
 - earthaccess will `raise` errors instead of `print`ing them in more cases ([#351](https://github.com/nsidc/earthaccess/pull/351))([**@jrbourbeau**](https://github.com/jrbourbeau))
 - `daac` and `provider` parameters are now normalized to uppercase, since lowercase
       characters are never valid ([#355](https://github.com/nsidc/earthaccess/pull/355))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87))
+- Allow single file URL inputs for `earthaccess.download` ([#347](https://github.com/nsidc/earthaccess/pull/347))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mfisher87**](https://github.com/mfisher87))
 
 ### Fixed
 
@@ -161,10 +162,17 @@
 
 ## [0.5.3] - 2023-08-01
 
+### Added
+
+- Add download from onprem how-to ([#265](https://github.com/nsidc/earthaccess/pull/265))([**@andypbarrett**](https://github.com/andypbarrett))
+
 ### Changed
 
 - For CI, integration tests are now only run when we push to main (after a merge) ([#267](https://github.com/nsidc/earthaccess/pull/267))([**@betolink**](https://github.com/betolink))
 - For CI, unit tests are run for any branch and opened PR ([#267](https://github.com/nsidc/earthaccess/pull/267))([**@betolink**](https://github.com/betolink))
+- Update example in `search_datasets` ([#247](https://github.com/nsidc/earthaccess/pull/247))([**@jrbourbeau**](https://github.com/jrbourbeau))
+- Improve remote cluster performance ([#259](https://github.com/nsidc/earthaccess/pull/259))([**@jrbourbeau**](https://github.com/jrbourbeau), [**@mrocklin**](https://github.com/mrocklin), [**@mfisher87**](https://github.com/mfisher87))
+- Return useful error message for failed download ([#263](https://github.com/nsidc/earthaccess/pull/263))([**@andypbarrett**](https://github.com/andypbarrett))
 
 ### Fixed
 
