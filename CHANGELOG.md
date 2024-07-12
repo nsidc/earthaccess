@@ -26,6 +26,9 @@
 - Add support for Python 3.12
   ([#457](https://github.com/nsidc/earthaccess/issues/457))
   ([**@chuckwondo**](https://github.com/chuckwondo),[**@mfisher87**](https://github.com/mfisher87))
+- Added documentation for the backwards compatibility
+  ([#471](https://github.com/nsidc/earthaccess/issues/471))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),[**@mfisher87**](https://github.com/mfisher87))
 
 ### Removed
 
