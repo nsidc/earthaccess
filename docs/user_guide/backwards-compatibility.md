@@ -7,7 +7,7 @@ We care deeply about minimizing negative impacts of changes to earthaccess, but 
 We use [Semantic Versioning (SemVer)](https://semver.org/) to tell users what to expect when upgrading. We recommend following the link to learn more, but here are the important ways this affects you:
 
     1. There are 3 version parts: `MAJOR.MINOR.PATCH` (e.g. `1.2.3` is major version `1`, minor release `2`, patch release `3`).
-    2. When the major version changes, anything can break! Always visit this documentation before doing a major upgrade.
+    2. When the major version changes, anything can break! Always visit this documentation when doing a major upgrade.
     3. When the minor version changes, new features should be available, but nothing should break. Visit the documentation to learn about new features.
     4. When the patch version changes, only bugfixes should be included. Visit the CHANGELOG to learn more about the fixes.
 
