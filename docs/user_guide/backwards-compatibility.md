@@ -20,7 +20,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 ### Release Communication
 
 1. We will announce releases on the following channels: ___
-2. Release announcements will include a prominent notification of breaking changes, including a link to migration guide.
+2. Release announcements will include a prominent notification of breaking changes, including migration instructions.
 
 ### CHANGELOG
 
