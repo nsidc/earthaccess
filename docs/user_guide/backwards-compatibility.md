@@ -29,7 +29,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 
 ### Fixing Backwards Incompatible Changes
 
-1. We will plan to fix any backwards incompatible changes in non-major releases.
+1. We will plan to fix any backwards incompatible changes in non-major releases _or_ re-release with a major version bump.
 
 2. We cannot guarantee developers will be available to complete this work alongside other priorities.
 
