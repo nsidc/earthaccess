@@ -35,7 +35,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 
 3. Our maintenance team will always welcome outside contributions towards this goal.
 
-4. Please use an issue to communicate about this work.
+4. Please use a [GitHub Issue](https://github.com/nsidc/earthaccess/issues) to communicate about this work.
 
 ## Migration guides
 
