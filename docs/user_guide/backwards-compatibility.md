@@ -24,7 +24,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 
 ### CHANGELOG
 
-1. We will update the CHANGELOG for every release
+1. We will update the CHANGELOG for every release following [Common Changelog](https://common-changelog.org/) style.
 2. The CHANGELOG will include prominent notification of breaking changes, including a link to migration guide.
 
 ### Fixing Backwards Incompatible Changes
