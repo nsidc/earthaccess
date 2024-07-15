@@ -31,7 +31,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 
 1. We will plan to fix any backwards incompatible changes in non-major releases _or_ re-release with a major version bump.
 
-2. We cannot guarantee developers will be available to complete this work alongside other priorities.
+2. We cannot guarantee a timeline under which maintainers will be able to complete this work alongside their other priorities.
 
 3. Our maintenance team will always welcome outside contributions towards this goal.
 
