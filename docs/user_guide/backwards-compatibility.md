@@ -4,7 +4,7 @@ We care deeply about minimizing negative impacts of changes to earthaccess, but 
 
 ## Our versioning scheme
 
-We use [SemVer](https://semver.org/) to tell you what to expect when upgrading. We recommend following the link to learn more, but here are the important ways this affects you:
+We use [Semantic Versioning (SemVer)](https://semver.org/) to tell users what to expect when upgrading. We recommend following the link to learn more, but here are the important ways this affects you:
 
     1. There are 3 version parts: MAJOR.MINOR.PATCH (e.g. 1.2.3 is major version 1, minor release 2, patch release 3).
     2. When the major version changes, anything can break! Always visit this documentation before doing a major upgrade.
