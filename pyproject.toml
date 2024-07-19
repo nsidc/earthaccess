@@ -158,6 +158,7 @@ combine-as-imports = true
 current_version = "0.9.0"
 commit = false
 tag = false
+regex = true
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
