@@ -14,6 +14,7 @@ import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
+from typing_extensions import deprecated
 
 import earthaccess
 
@@ -197,7 +198,27 @@ class Store(object):
         else:
             resp.raise_for_status()
 
+    @deprecated("Use get_s3_filesystem instead")
     def get_s3fs_session(
+        self,
+        daac: Optional[str] = None,
+        concept_id: Optional[str] = None,
+        provider: Optional[str] = None,
+        endpoint: Optional[str] = None,
+    ) -> s3fs.S3FileSystem:
+        """Returns a s3fs instance for a given cloud provider / DAAC.
+
+        Parameters:
+           daac: any of the DAACs, e.g. NSIDC, PODAAC
+           provider: a data provider if we know them, e.g. PODAAC -> POCLOUD
+           endpoint: pass the URL for the credentials directly
+
+        Returns:
+           a s3fs file instance
+        """
+        return self.get_s3_filesystem(daac, concept_id, provider, endpoint)
+
+    def get_s3fs_filesystem(
         self,
         daac: Optional[str] = None,
         concept_id: Optional[str] = None,
