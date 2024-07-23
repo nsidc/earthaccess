@@ -65,7 +65,7 @@ def supported_collection(data_links):
 
 @pytest.mark.parametrize("daac", daacs_list)
 def test_earthaccess_can_download_onprem_collection_granules(daac):
-    """Tests that we can download cloud collections using HTTPS links."""
+    """Tests that we can download on-premises collections using HTTPS links."""
     daac_shortname = daac["short_name"]
     collections_count = daac["collections_count"]
     collections_sample_size = daac["collections_sample_size"]
@@ -75,7 +75,7 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
 
     collection_query = DataCollections().data_center(daac_shortname).cloud_hosted(False)
     hits = collection_query.hits()
-    logger.info(f"Cloud hosted collections for {daac_shortname}: {hits}")
+    logger.info(f"On-premises collections for {daac_shortname}: {hits}")
     collections = collection_query.get(collections_count)
     assertions.assertGreater(len(collections), collections_sample_size)
     # We sample n cloud hosted collections from the results
