@@ -6,7 +6,7 @@ with the community and maintainers via
 [a GitHub Discussion](https://github.com/nsidc/earthaccess/discussions),
 or [any other method](our-meet-ups.md).
 
-Please note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow it in all of your interactions with the project.
+Please note that we have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
 
 ## First Steps to contribute
 
@@ -19,7 +19,7 @@ Please note that we have a [code of conduct](/CODE_OF_CONDUCT.md). Please follow
 From here, you might want to fix and issue or bug, or add a new feature.  Jump to the
 relevant section to proceed.
 
-### ...to fix an issue or bug
+### Fixing an Issue or Bug
 
 - Create a GitHub issue with a
   [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example),
@@ -33,7 +33,7 @@ relevant section to proceed.
 
 Once you've completed these steps, you are ready to submit your contribution.
 
-### ...to contribute a new feature
+### Contributing a New Feature
 
 - Create an issue and discuss the feature's scope and its fit for this package with the team
 - Create a branch for your new feature in your fork
@@ -42,6 +42,28 @@ Once you've completed these steps, you are ready to submit your contribution.
 - Create at least one test that exercises your feature and run the test suite as you go
 
 Once you've completed these steps, you are ready to submit your contribution.
+
+
+### Contributing to Documentation
+
+#### Documentation Style
+
+To ensure that our code is well-documented and easy to understand, we use [Google-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) to document all functions, classes, and methods in this library.
+
+#### Locally rendering the documentation
+
+To work on documentation locally, we provide a script that will automatically re-render the docs when you make changes:
+
+```
+./scripts/docs-live.sh
+```
+
+If you encounter any issues while setting up the documentation using the provided steps, please refer to our [tutorial]( https://www.youtube.com/watch?v=mNjlMZ4F3So) for additional guidance.
+
+##### Caveats and considerations
+
+Our mkdocs setup has a known limitation: the hot reloader won't auto-reload when changing docstrings. To see updates, manually rebuild and re-serve docs. We're working to improve the developer experience and appreciate your patience.
+
 
 ## Submitting your contribution
 
@@ -53,34 +75,23 @@ Once you've completed these steps, you are ready to submit your contribution.
 
 ### Please format and lint as you go
 
-```bash
-make format lint
-```
 
-We attempt to provide comprehensive type annotations within this repository.  If
-you do not provide fully annotated functions or methods, the `lint` command will
-fail.  Over time, we plan to increase type-checking strictness in order to
-ensure more precise, beneficial type annotations.
+#### Usage of Pre-Commit
 
-We have included type stubs for the untyped `python-cmr` library, which we
-intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package,
-the stubs appear under `stubs/cmr`.
+To maintain code quality, we use pre-commit for automated checks before committing changes. Install and configure pre-commit to ensure high-quality contributions.
 
-### Requirements to merge code (Pull Request Process)
+To set up pre-commit, follow these steps:
 
-- you must include test coverage
-- you must update the documentation
-- you must format and lint
+- `pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
+- `pre-commit install` to enable it to run automatically
+- `pre-commit run -a`  to run it manually
+
+
+We have included type stubs for the untyped `python-cmr` library, which we intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package, the stubs appear under `stubs/cmr`.
 
 ## Pull Request process
 
-1. Ensure you include test coverage for all changes
-1. Ensure your code is formatted properly following this document
-1. Update the documentation and the `README.md` with details of changes to the
-   interface, this includes new environment variables, function names,
-   decorators, etc.
-1. Update `CHANGELOG.md` with details about your change in a section titled
-   `Unreleased`. If one does not exist, please create one.
-1. You may merge the Pull Request once you have the sign-off of another
-   developer, or if you do not have permission to do that, you may request the
-   reviewer to merge it for you.
+Fork the repository using the "Fork" button on the [repository
+homepage](https://github.com/nsidc/earthaccess), create a branch with your changes in the fork, then open
+a draft pull request from your fork. Starting a pull request provides additional instructions and requirements, and
+there is no harm in starting a draft pull request while still developing.

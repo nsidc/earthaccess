@@ -113,7 +113,7 @@ class Store(object):
                     self.set_requests_session(url)
 
         else:
-            logger.warn("The current session is not authenticated with NASA")
+            logger.warning("The current session is not authenticated with NASA")
             self.auth = None
         self.in_region = self._running_in_us_west_2()
 
@@ -165,6 +165,7 @@ class Store(object):
         self, url: str, method: str = "get", bearer_token: bool = False
     ) -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
+
         Mainly used to get the authentication cookies from different DAACs and URS.
         This HTTPS session can be used to download granules if we want to use a direct,
         lower level API.
@@ -265,6 +266,7 @@ class Store(object):
     @lru_cache
     def get_fsspec_session(self) -> fsspec.AbstractFileSystem:
         """Returns a fsspec HTTPS session with bearer tokens that are used by CMR.
+
         This HTTPS session can be used to download granules if we want to use a direct,
         lower level API.
 
@@ -283,6 +285,7 @@ class Store(object):
 
     def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
+
         This HTTPS session can be used to download granules if we want to use a direct,
         lower level API.
 

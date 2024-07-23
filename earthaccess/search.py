@@ -67,8 +67,9 @@ class DataCollections(CollectionQuery):
 
     @override
     def hits(self) -> int:
-        """Returns the number of hits the current query will return. This is done by
-        making a lightweight query to CMR and inspecting the returned headers.
+        """Returns the number of hits the current query will return.
+
+        This is done by making a lightweight query to CMR and inspecting the returned headers.
         Restricted datasets will always return zero results even if there are results.
 
         Returns:
@@ -422,6 +423,7 @@ class DataGranules(GranuleQuery):
     @override
     def hits(self) -> int:
         """Returns the number of hits the current query will return.
+
         This is done by making a lightweight query to CMR and inspecting the returned
         headers.
 
@@ -514,6 +516,7 @@ class DataGranules(GranuleQuery):
     @override
     def provider(self, provider: str) -> Self:
         """Only match collections from a given provider.
+
         A NASA datacenter or DAAC can have one or more providers.
         For example, PODAAC is a data center or DAAC,
         PODAAC is the default provider for on-prem data, and POCLOUD is

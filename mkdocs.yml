@@ -46,6 +46,10 @@ plugins:
           rendering:
             show_root_heading: false
             show_source: false
+  - redirects:
+      redirect_maps:
+        'CODE_OF_CONDUCT.md': 'contributing/code-of-conduct.md'
+        'CODE_OF_CONDUCT.md.md': 'contributing/code-of-conduct.md'
   - mkdocs-jupyter:
       execute: True
       ignore:
@@ -60,6 +64,8 @@ nav:
       - "Development": "contributing/development.md"
       - "Releasing": "contributing/releasing.md"
       - "Our meet-ups": "contributing/our-meet-ups.md"
+      - "Maintainers Guide": "contributing/maintainers-guide.md"
+      - "Code of Conduct": "contributing/code-of-conduct.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"

@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "earthaccess"
-version = "0.9.0"
-homepage = "https://github.com/nsidc/earthaccess"
+version = "0.10.0"
+repository = "https://github.com/nsidc/earthaccess"
+documentation = "https://earthaccess.readthedocs.io"
 description = "Client library for NASA Earthdata APIs"
 authors = ["earthaccess contributors"]
 maintainers = [
@@ -68,6 +69,7 @@ pytest-watch = ">=4.2"
 # break with a ModuleNotFoundError.
 mkdocs = ">=1.2,!=1.6.0"
 mkdocs-material = ">=7.1,<10.0"
+mkdocs-redirects = ">=1.2.1"
 markdown-callouts = ">=0.2.0"
 markdown-include = ">=0.6"
 mkdocstrings = {extras = ["python"], version = ">=0.19.0"}
@@ -142,8 +144,8 @@ line-length = 88
 src = ["earthaccess", "stubs", "tests"]
 
 [tool.ruff.lint]
-extend-select = ["I", "T20", "D"]
-ignore = ["D1", "D205", "D401", "D417"]
+extend-select = ["I", "T20", "D", "G"]
+ignore = ["D1", "D205", "D401", "D417", "G004"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -153,9 +155,10 @@ convention = "google"
 combine-as-imports = true
 
 [tool.bumpversion]
-current_version = "0.9.0"
+current_version = "0.10.0"
 commit = false
 tag = false
+regex = true
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
