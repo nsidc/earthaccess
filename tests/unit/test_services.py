@@ -28,6 +28,7 @@ class TestServices(VCRTestCase):
 
     def test_services(self):
         """Test DataService get function return of service metadata results."""
+        earthaccess._auth.authenticated = False
         query = earthaccess.services.DataService().parameters(
             concept_id="S2004184019-POCLOUD"
         )
@@ -49,6 +50,7 @@ class TestServices(VCRTestCase):
             cloud_hosted=True,
             temporal=("2024-02-27T00:00:00Z", "2024-02-29T00:00:00Z"),
         )
+        earthaccess._auth.authenticated = False
         results = datasets[0].services()
 
         self.assertTrue(
