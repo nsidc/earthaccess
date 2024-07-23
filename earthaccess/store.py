@@ -218,7 +218,7 @@ class Store(object):
         """
         return self.get_s3_filesystem(daac, concept_id, provider, endpoint)
 
-    def get_s3fs_filesystem(
+    def get_s3_filesystem(
         self,
         daac: Optional[str] = None,
         concept_id: Optional[str] = None,
@@ -381,10 +381,10 @@ class Store(object):
                 endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
                 if endpoint is not None:
                     logger.info(f"using endpoint: {endpoint}")
-                    s3_fs = self.get_s3fs_session(endpoint=endpoint)
+                    s3_fs = self.get_s3_filesystem(endpoint=endpoint)
                 else:
                     logger.info(f"using provider: {provider}")
-                    s3_fs = self.get_s3fs_session(provider=provider)
+                    s3_fs = self.get_s3_filesystem(provider=provider)
             else:
                 access = "on_prem"
                 s3_fs = None
@@ -437,7 +437,7 @@ class Store(object):
         url_mapping: Mapping[str, None] = {url: None for url in granules}
         if self.in_region and granules[0].startswith("s3"):
             if provider is not None:
-                s3_fs = self.get_s3fs_session(provider=provider)
+                s3_fs = self.get_s3_filesystem(provider=provider)
                 if s3_fs is not None:
                     try:
                         fileset = _open_files(
@@ -551,7 +551,7 @@ class Store(object):
             )
         if self.in_region and data_links[0].startswith("s3"):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
-            s3_fs = self.get_s3fs_session(provider=provider)
+            s3_fs = self.get_s3_filesystem(provider=provider)
             # TODO: make this parallel or concurrent
             for file in data_links:
                 s3_fs.get(file, str(local_path))
@@ -594,10 +594,10 @@ class Store(object):
                 logger.info(
                     f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}"
                 )
-                s3_fs = self.get_s3fs_session(endpoint=endpoint)
+                s3_fs = self.get_s3_filesystem(endpoint=endpoint)
             else:
                 logger.info(f"Accessing cloud dataset using provider: {provider}")
-                s3_fs = self.get_s3fs_session(provider=provider)
+                s3_fs = self.get_s3_filesystem(provider=provider)
 
             local_path.mkdir(parents=True, exist_ok=True)
 

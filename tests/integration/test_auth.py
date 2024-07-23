@@ -109,9 +109,9 @@ def test_get_s3_credentials_lowercase_location(location):
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
-def test_get_s3fs_session_lowercase_location(location):
+def test_get_s3_filesystem_lowercase_location(location):
     activate_environment()
     earthaccess.login(strategy="environment")
-    fs = earthaccess.get_s3fs_session(**location)
+    fs = earthaccess.get_s3_filesystem(**location)
     assert isinstance(fs, s3fs.S3FileSystem)
     assert all(fs.storage_options[key] for key in ["key", "secret", "token"])

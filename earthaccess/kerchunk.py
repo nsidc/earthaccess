@@ -39,7 +39,7 @@ def consolidate_metadata(
         ) from e
 
     if access == "direct":
-        fs = earthaccess.get_s3fs_session(provider=granules[0]["meta"]["provider-id"])
+        fs = earthaccess.get_s3_filesystem(provider=granules[0]["meta"]["provider-id"])
     else:
         fs = earthaccess.get_fsspec_https_session()
 
