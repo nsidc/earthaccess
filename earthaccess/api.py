@@ -341,7 +341,7 @@ def get_s3fs_session(
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
 
     Returns:
-        An authenticated s3fs session valid for 1 hour.
+        An `s3fs.S3FileSystem` authenticated for reading in-region in us-west-2 for 1 hour.
     """
     return get_s3_filesystem(daac, provider, results)
 
