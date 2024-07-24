@@ -214,7 +214,7 @@ class Store(object):
            endpoint: pass the URL for the credentials directly
 
         Returns:
-           a s3fs file instance
+           An `s3fs.S3FileSystem` authenticated for reading in-region in us-west-2 for 1 hour.
         """
         return self.get_s3_filesystem(daac, concept_id, provider, endpoint)
 
