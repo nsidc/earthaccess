@@ -351,7 +351,7 @@ def get_s3_filesystem(
     provider: Optional[str] = None,
     results: Optional[DataGranule] = None,
 ) -> s3fs.S3FileSystem:
-    """Returns a fsspec s3fs file session for direct access when we are in us-west-2.
+    """Return an `s3fs.S3FileSystem` for direct access when running within the AWS us-west-2 region.
 
     Parameters:
         daac: Any DAAC short name e.g. NSIDC, GES_DISC

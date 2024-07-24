@@ -225,7 +225,7 @@ class Store(object):
         provider: Optional[str] = None,
         endpoint: Optional[str] = None,
     ) -> s3fs.S3FileSystem:
-        """Returns a s3fs instance for a given cloud provider / DAAC.
+        """Return an `s3fs.S3FileSystem` instance for a given cloud provider / DAAC.
 
         Parameters:
             daac: any of the DAACs, e.g. NSIDC, PODAAC
