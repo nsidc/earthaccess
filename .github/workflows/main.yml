@@ -1,7 +1,7 @@
-steps:
-  - name: Login to WB
-    env:
-      WB_USERNAME: ${{ secrets.WB_USERNAME }}
-      WB_PASSWORD: ${{ secrets.WB_PASSWORD }}
-    run: |
-      # Your login command or script here
+- name: Test
+  env:
+    EDL_USERNAME: ${{ secrets.WB_USERNAME }}
+    EDL_PASSWORD: ${{ secrets.WB_PASSWORD }}
+  run: |
+    poetry run bash scripts/integration-test.sh
+
