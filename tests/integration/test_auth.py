@@ -79,7 +79,7 @@ def test_auth_can_create_authenticated_requests_sessions():
     assertions.assertTrue("Bearer" in session.headers["Authorization"])
 
 
-@pytest.mark.parametrize("daac", [daac for daac in earthaccess.daac.DAACS])
+@pytest.mark.parametrize("daac", earthaccess.daac.DAACS)
 def test_auth_can_fetch_s3_credentials(daac):
     activate_environment()
     auth = earthaccess.login(strategy="environment")
@@ -87,8 +87,8 @@ def test_auth_can_fetch_s3_credentials(daac):
     try:
         logger.info(f"Testing S3 credentials for {daac['short-name']}")
         credentials = earthaccess.get_s3_credentials(daac["short-name"])
-        assertions.assertIsInstance(credentials, dict)
-        assertions.assertTrue("accessKeyId" in credentials)
+        assert isinstance(credentials, dict)
+        assert "accessKeyId" in credentials
     except Exception as e:
         logger.error(
             f"An error occured while trying to fetch S3 credentials for {daac['short-name']}: {e}"
