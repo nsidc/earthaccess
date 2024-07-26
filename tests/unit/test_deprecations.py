@@ -49,6 +49,7 @@ def test_deprecation_warning_for_api():
         assert issubclass(w[0].category, DeprecationWarning)
         assert "Use get_s3_filesystem instead" in str(w[0].message)
 
+
 def test_deprecation_warning_for_store(auth):
     store = Store(auth)
     with warnings.catch_warnings(record=True) as w:
@@ -60,5 +61,3 @@ def test_deprecation_warning_for_store(auth):
         # Verify some things
         assert issubclass(w[0].category, DeprecationWarning)
         assert "Use get_s3_filesystem instead" in str(w[0].message)
-            
-    
