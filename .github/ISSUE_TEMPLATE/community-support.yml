@@ -5,3 +5,8 @@ body:
     attributes:
       value: |
         For community-driven support and discussion, please visit our [Q&A page](https://github.com/nsidc/earthaccess/discussions/categories/q-a).
+  - type: textarea
+    attributes:
+      label: Describe your question or topic
+      description: Please provide as much detail as possible
+      placeholder: Start typing...
