@@ -48,8 +48,8 @@ body:
         - **OS**: Ubuntu 20.04
         - **Python**: 3.11.2
       value: |
-        - OS: 
-        - Python: 
+        - OS:
+        - Python:
       render: markdown
     validations:
       required: true

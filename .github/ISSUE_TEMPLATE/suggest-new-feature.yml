@@ -1,3 +1,12 @@
 name: 💡 Suggest a new feature
-description: >
-  Have an idea for a new feature or enhancement? Share it with us! [Suggest a new feature](: https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
+description: Have an idea for a new feature or enhancement? Share it with us!
+body:
+  - type: markdown
+    attributes:
+      value: |
+        To suggest a new feature, please visit our [Ideas discussion board](https://github.com/nsidc/earthaccess/discussions/new?category=ideas) and share your idea with us!
+  - type: textarea
+    attributes:
+      label: Describe your idea
+      description: Please provide as much detail as possible
+      placeholder: Start typing...
