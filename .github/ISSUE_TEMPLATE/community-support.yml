@@ -1,5 +1,5 @@
 name: 🌟 Community Support
-description: General questions, discussions, or topics that don't fit into a specific bug report or feature request. Not for reporting bugs or errors - use the Bug category for those.Need guidance on using a feature, clarifying a concept, or have general questions?
+description: General questions, discussions, or topics. Not for bugs/errors (use Bug category). Need guidance on features, concepts, or have questions?
 body:
   - type: markdown
     attributes:
