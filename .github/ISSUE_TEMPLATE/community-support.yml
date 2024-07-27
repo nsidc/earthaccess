@@ -1,2 +1,7 @@
-name : 🌟 Community Support
-description : General questions, discussions, or topics that don't fit into a specific bug report or feature request. Not for reporting bugs or errors - use the Bug category for those.Need guidance on using a feature, clarifying a concept, or have general questions? [Visit our Q&A page](https://github.com/nsidc/earthaccess/discussions/categories/q-a) for community-driven support and discussion. Ideal for seeking help with implementation, understanding functionality, or resolving uncertainties.
+name: 🌟 Community Support
+description: General questions, discussions, or topics that don't fit into a specific bug report or feature request. Not for reporting bugs or errors - use the Bug category for those.Need guidance on using a feature, clarifying a concept, or have general questions?
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For community-driven support and discussion, please visit our [Q&A page](https://github.com/nsidc/earthaccess/discussions/categories/q-a).
