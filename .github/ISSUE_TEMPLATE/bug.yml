@@ -1,9 +1,6 @@
 name: 🐞 Bug
 description: >
-  A bug is an issue that meets one of the following criteria:
-  - The behavior of the application differs from the documentation
-  - The documentation contains errors or omissions
-  - Other unexpected behavior
+  A bug is an issue that differs from documentation or has unexpected behavior.
 title: "[BUG] {{ title }}"
 labels:
   - Bug
