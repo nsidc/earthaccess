@@ -2,7 +2,10 @@ import json
 import uuid
 from typing import Any, Dict, List, Optional, Union
 
+import earthaccess
+
 from .formatters import _repr_granule_html
+from .services import DataService
 
 
 class CustomDict(dict):
@@ -177,6 +180,23 @@ class DataCollection(CustomDict):
         if "DirectDistributionInformation" in self["umm"]:
             return self["umm"]["DirectDistributionInformation"]
         return {}
+
+    def services(self) -> Dict[Any, List[Dict[str, Any]]]:
+        """Returns:
+        A list of services available for the collection.
+        """
+        services = self.get("meta", {}).get("associations", {}).get("services", [])
+
+        parsed = {}
+        for service in services:
+            if earthaccess.__auth__.authenticated:
+                query = DataService(auth=earthaccess.__auth__).parameters(
+                    concept_id=service
+                )
+            else:
+                query = DataService().parameters(concept_id=service)
+            parsed[service] = query.get(query.hits())
+        return parsed
 
     def __repr__(self) -> str:
         return json.dumps(
