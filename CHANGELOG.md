@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+- Changed auth strategy to use `find_or_create_token` endpoint ([#484](https://github.com/nsidc/earthaccess/issues/484)) ([**@fwfichtner**](https://github.com/fwfichtner)
 - Deprecate `earthaccess.get_s3fs_session` and `Store.get_s3fs_session`. Use
   `earthaccess.get_s3_filesystem` and `Store.get_s3_filesystem`, respectively,
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))([**@Sherwin-14**](https://github.com/Sherwin-14))
