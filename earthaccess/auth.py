@@ -73,7 +73,7 @@ class Auth(object):
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
-        self.token: dict | None = None
+        self.token: Optional[Mapping[str, str]] = None
         self._set_earthdata_system(PROD)
 
     def login(
@@ -126,7 +126,7 @@ class Auth(object):
         )
         self._apps_url = f"https://{self.system.edl_hostname}/application_search"
 
-    @deprecated("Refresh tokens has been deprecated and is not necessary anymore.")
+    @deprecated("No replacement, as tokens are now refreshed automatically.")
     def refresh_tokens(self) -> bool:
         return self.authenticated
 
@@ -266,10 +266,12 @@ class Auth(object):
             self.username = username
             self.password = password
 
-            self.token = token_resp.json()
+            token = token_resp.json()
             logger.debug(
-                f"Using token with expiration date: {self.token['expiration_date']}"
+                f"Using token with expiration date: {token['expiration_date']}"
             )
+            self.token = token
+            self.authenticated = True
             self.authenticated = True
 
         return self.authenticated
