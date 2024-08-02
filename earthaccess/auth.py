@@ -6,7 +6,7 @@ import platform
 import shutil
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 from urllib.parse import urlparse
 
 import requests  # type: ignore
@@ -128,6 +128,11 @@ class Auth(object):
 
     @deprecated("No replacement, as tokens are now refreshed automatically.")
     def refresh_tokens(self) -> bool:
+        """Refresh CMR tokens.
+
+        Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
+        This method renews the tokens to make sure we can query the collections allowed to our EDL user.
+        """
         return self.authenticated
 
     def get_s3_credentials(
@@ -202,7 +207,7 @@ class Auth(object):
             class Session instance with Auth and bearer token headers
         """
         session = SessionWithHeaderRedirection()
-        if bearer_token and self.authenticated:
+        if bearer_token and self.token:
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
             session.headers.update(
