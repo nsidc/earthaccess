@@ -17,13 +17,11 @@ class TestCreateAuth(unittest.TestCase):
     def test_auth_gets_proper_credentials(self, user_input, user_password):
         user_input.return_value = "user"
         user_password.return_value = "password"
-        json_response = [
-            {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
-            {"access_token": "EDL-token-2", "expiration_date": "12/16/2021"},
-        ]
+        json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
+
         responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/tokens",
+            responses.POST,
+            "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
             json=json_response,
             status=200,
         )
@@ -41,7 +39,7 @@ class TestCreateAuth(unittest.TestCase):
         self.assertEqual(auth.authenticated, False)
         auth.login(strategy="interactive")
         self.assertEqual(auth.authenticated, True)
-        self.assertTrue(auth.token in json_response)
+        self.assertEqual(auth.token, json_response)
 
         # test that we are creating a session with the proper headers
         self.assertTrue("User-Agent" in headers)
@@ -56,9 +54,9 @@ class TestCreateAuth(unittest.TestCase):
         json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
 
         responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/tokens",
-            json=[],
+            responses.POST,
+            "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
+            json=json_response,
             status=200,
         )
         responses.add(
@@ -67,12 +65,7 @@ class TestCreateAuth(unittest.TestCase):
             json={},
             status=200,
         )
-        responses.add(
-            responses.POST,
-            "https://urs.earthdata.nasa.gov/api/users/token",
-            json=json_response,
-            status=200,
-        )
+
         # Test
         auth = Auth()
         auth.login(strategy="interactive")
@@ -89,20 +82,14 @@ class TestCreateAuth(unittest.TestCase):
         json_response = {"error": "wrong credentials"}
 
         responses.add(
-            responses.GET,
-            "https://urs.earthdata.nasa.gov/api/users/tokens",
+            responses.POST,
+            "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
             json=json_response,
             status=401,
         )
         responses.add(
             responses.GET,
             "https://urs.earthdata.nasa.gov/profile",
-            json=json_response,
-            status=401,
-        )
-        responses.add(
-            responses.POST,
-            "https://urs.earthdata.nasa.gov/api/users/token",
             json=json_response,
             status=401,
         )
