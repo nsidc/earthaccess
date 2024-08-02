@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 
 import requests  # type: ignore
 from tinynetrc import Netrc
+from typing_extensions import deprecated
 
 from .daac import DAACS
 from .system import PROD, System
@@ -124,6 +125,10 @@ class Auth(object):
             f"https://{self.system.edl_hostname}/users/earthaccess/unaccepted_eulas"
         )
         self._apps_url = f"https://{self.system.edl_hostname}/application_search"
+
+    @deprecated("Refresh tokens has been deprecated and is not necessary anymore.")
+    def refresh_tokens(self) -> bool:
+        return self.authenticated
 
     def get_s3_credentials(
         self,
