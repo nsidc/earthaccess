@@ -277,7 +277,6 @@ class Auth(object):
             )
             self.token = token
             self.authenticated = True
-            self.authenticated = True
 
         return self.authenticated
 
