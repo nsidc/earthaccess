@@ -3,6 +3,7 @@ import os
 import random
 import shutil
 import unittest
+from collections import TypedDict
 from pathlib import Path
 
 import earthaccess
@@ -14,27 +15,40 @@ from .sample import get_sample_granules
 logger = logging.getLogger(__name__)
 
 
-daacs_list = [
+class TestParam(TypedDict):
+    daac_name: str
+
+    # How many of the top collections we will test, e.g. top 3 collections
+    top_n_collections: int
+
+    # How many granules we will query
+    granules_count: int
+
+    # How many granules we will randomly select from the query
+    granules_sample_size: int
+
+    # The maximum allowed granule size; if larger we'll try to find another one
+    granules_max_size_mb: int
+
+
+daacs_list: list[TestParam] = [
     {
         "short_name": "NSIDC",
-        "collections_count": 50,
-        "collections_sample_size": 3,
+        "top_n_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
         "short_name": "GES_DISC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "top_n_collections": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 130,
     },
     {
         "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "top_n_collections": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
