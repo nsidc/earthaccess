@@ -27,13 +27,15 @@ def get_sample_granules(
     Attempt to find only granules smaller or equal to max_granule_size. May return a
     sample smaller than sample_size.
     """
+    granules_set = set(granules)
+
     sample = []
     total_size = 0
     max_tries = sample_size * 2
     tries = 0
 
     while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
+        g = random.sample(granules_set, 1)[0]
         if g.size() > max_granule_size:
             logger.debug(
                 f"Granule {g['meta']['concept-id']} exceded max size: {g.size()}."
@@ -45,7 +47,10 @@ def get_sample_granules(
             logger.debug(
                 f"Adding granule to random sample: {g['meta']['concept-id']} size: {g.size()}"
             )
+
             sample.append(g)
+            granules_set = granules_set - g
+
             total_size += g.size()
             if len(sample) >= sample_size:
                 break
