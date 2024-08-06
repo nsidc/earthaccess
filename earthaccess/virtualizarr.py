@@ -1,47 +1,17 @@
 from __future__ import annotations
 
-import fsspec
-import xarray as xr
+from typing import TYPE_CHECKING
 
 import earthaccess
 
-
-def _parse_dmr(
-    fs: fsspec.AbstractFileSystem,
-    data_path: str,
-    dmr_path: str = None
-) -> xr.Dataset:
-    """
-    Parse a granule's DMR++ file and return a virtual xarray dataset
-
-    Parameters
-    ----------
-    granule : earthaccess.results.DataGranule
-        The granule to parse
-        fs : fsspec.AbstractFileSystem
-        The file system to use to open the DMR++
-
-    Returns
-    ----------
-    xr.Dataset
-    The virtual dataset (with virtualizarr ManifestArrays)
-
-    Raises
-    ----------
-    Exception
-    If the DMR++ file is not found or if there is an error parsing the DMR++
-    """
-    from virtualizarr.readers.dmrpp import DMRParser
-
-    dmr_path = data_path + ".dmrpp" if dmr_path is None else dmr_path
-    with fs.open(dmr_path) as f:
-        parser = DMRParser(f.read(), data_filepath=data_path)
-    return parser.parse()
+if TYPE_CHECKING:
+    import xarray as xr
 
 
 def open_virtual_mfdataset(
     granules: list[earthaccess.results.DataGranule],
     access: str = "indirect",
+    load: bool = True,
     preprocess: callable | None = None,
     parallel: bool = True,
     **xr_combine_nested_kwargs,
@@ -55,6 +25,12 @@ def open_virtual_mfdataset(
         The granules to open
     access : str
         The access method to use. One of "direct" or "indirect". Direct is for S3/cloud access, indirect is for HTTPS access.
+    load: bool
+        When true, creates a lazy loaded, numpy/dask backed xarray dataset with indexes. When false a virtual xarray dataset is created with ManifestArrays. This virtual dataset cannot load data and is used to create zarr reference files. See https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets
+    preprocess : callable
+        A function to apply to each virtual dataset before combining
+    parallel : bool
+        Whether to open the virtual datasets in parallel (using dask.delayed)
     xr_combine_nested_kwargs : dict
         Keyword arguments for xarray.combine_nested.
         See https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html
@@ -64,19 +40,39 @@ def open_virtual_mfdataset(
     xr.Dataset
         The virtual dataset
     """
+    import xarray as xr
+
+    import virtualizarr as vz
+
     if access == "direct":
         fs = earthaccess.get_s3fs_session(results=granules)
+        fs.storage_options["anon"] = False
     else:
         fs = earthaccess.get_fsspec_https_session()
     if parallel:
-        # wrap _parse_dmr and preprocess with delayed
+        # wrap _open_virtual_dataset and preprocess with delayed
         import dask
-        open_ = dask.delayed(_parse_dmr)
+
+        open_ = dask.delayed(vz.open_virtual_dataset)
         if preprocess is not None:
             preprocess = dask.delayed(preprocess)
     else:
-        open_ = _parse_dmr
-    vdatasets = [open_(fs=fs, data_path=g.data_links(access=access)[0]) for g in granules]
+        open_ = vz.open_virtual_dataset
+    data_paths: list[str] = []
+    vdatasets = []
+    for g in granules:
+        data_paths.append(g.data_links(access=access)[0])
+        vdatasets.append(
+            open_(
+                filepath=g.data_links(access=access)[0] + ".dmrpp",
+                filetype="dmrpp",
+                reader_options={"storage_options": fs.storage_options},
+            )
+        )
+    # Rename paths to match granule s3/https paths
+    vdatasets = [
+        vds.virtualize.rename_paths(data_paths[i]) for i, vds in enumerate(vdatasets)
+    ]
     if preprocess is not None:
         vdatasets = [preprocess(ds) for ds in vdatasets]
     if parallel:
@@ -85,11 +81,23 @@ def open_virtual_mfdataset(
         vds = vdatasets[0]
     else:
         vds = xr.combine_nested(vdatasets, **xr_combine_nested_kwargs)
+    if load:
+        options = fs.storage_options.copy()
+        refs = vds.virtualize.to_kerchunk(filepath=None, format="dict")
+        options["fo"] = refs
+        return xr.open_dataset(
+            "reference://",
+            engine="zarr",
+            chunks={},
+            backend_kwargs={"storage_options": options, "consolidated": False},
+        )
     return vds
 
 
 def open_virtual_dataset(
-    granule: earthaccess.results.DataGranule, access: str = "indirect"
+    granule: earthaccess.results.DataGranule,
+    access: str = "indirect",
+    load: bool = True,
 ) -> xr.Dataset:
     """
     Open a granule as a single virtual xarray Dataset
@@ -100,6 +108,10 @@ def open_virtual_dataset(
         The granule to open
     access : str
         The access method to use. One of "direct" or "indirect". Direct is for S3/cloud access, indirect is for HTTPS access.
+    load: bool
+        When true, creates a numpy/dask backed xarray dataset. When false a virtual xarray dataset is created with ManifestArrays
+        This virtual dataset cannot load data and is used to create zarr reference files. See https://virtualizarr.readthedocs.io/en/latest/
+        for more information on virtual xarray datasets
 
     Returns
     ----------
@@ -107,6 +119,5 @@ def open_virtual_dataset(
         The virtual dataset
     """
     return open_virtual_mfdataset(
-        granules=[granule], access=access, parallel=False, preprocess=None
+        granules=[granule], access=access, load=load, parallel=False, preprocess=None
     )
-
