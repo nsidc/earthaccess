@@ -7,7 +7,16 @@ import requests
 THIS_DIR = Path(__file__).parent
 
 
-def top_collections(*, provider: str, num: int = 100) -> list[str]:
+def top_collections(
+    *,
+    provider: str,
+    num: int = 100,
+) -> list[str]:
+    if num > 2000:
+        raise RuntimeError(
+            "Paging not supported, can only get up to 2000 top collections"
+        )
+
     response = requests.post(
         "https://cmr.earthdata.nasa.gov/search/collections.json",
         data={
@@ -18,7 +27,7 @@ def top_collections(*, provider: str, num: int = 100) -> list[str]:
             "include_has_granules": True,
             "include_tags": "edsc.*,opensearch.granule.osdd",
             "page_num": 1,
-            "page_size": 100,
+            "page_size": num,
             "sort_key[]": "-usage_score",
         },
     )
@@ -29,6 +38,8 @@ def top_collections(*, provider: str, num: int = 100) -> list[str]:
 
 
 def main():
+    # TODO: Can we query CMR for all providers? Then cache the top collections for all
+    # providers?
     for provider in ["NSIDC_ECS"]:
         collection_ids = top_collections(provider="NSIDC_ECS")
 
