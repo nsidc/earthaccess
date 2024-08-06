@@ -1,8 +1,19 @@
 import logging
 import random
+from pathlib import Path
 from typing import Union
 
 logger = logging.getLogger(__name__)
+
+INTEGRATION_TEST_DIR = Path(__file__).parent
+INTEGRATION_TEST_POPULAR_COLLECTIONS_DIR = INTEGRATION_TEST_DIR / "popular_collections"
+
+
+def top_collections_for_daac(provider: str, num: int) -> list[str]:
+    top_collections_file = INTEGRATION_TEST_POPULAR_COLLECTIONS_DIR / f"{provider}.txt"
+    collections = top_collections_file.read_text()
+
+    return collections[:num]
 
 
 def get_sample_granules(
