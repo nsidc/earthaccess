@@ -14,8 +14,7 @@ REDACTED_STRING = "REDACTED"
 
 
 def unique_results(results):
-    """
-    When we invoke a search request multiple times we want to ensure that we don't
+    """When we invoke a search request multiple times we want to ensure that we don't
     get the same results back. This is a one shot test as the results are preserved
     by VCR but still useful.
     """
@@ -120,10 +119,9 @@ class TestResults(VCRTestCase):
         )
 
     def test_get_more_than_2000(self):
-        """
-        If we execute a get with a limit of more than 2000
+        """If we execute a get with a limit of more than 2000
         then we expect multiple invocations of a cmr granule search and
-        to not fetch back more results than we ask for
+        to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(short_name="MOD02QKM", count=3000)
 
@@ -133,10 +131,9 @@ class TestResults(VCRTestCase):
         self.assertTrue(unique_results(granules))
 
     def test_get(self):
-        """
-        If we execute a get with no arguments then we expect
+        """If we execute a get with no arguments then we expect
         to get the maximum no. of granules from a single CMR call (2000)
-        in a single request
+        in a single request.
         """
         granules = earthaccess.search_data(short_name="MOD02QKM", count=2000)
 
@@ -146,10 +143,9 @@ class TestResults(VCRTestCase):
         self.assertTrue(unique_results(granules))
 
     def test_get_all_less_than_2k(self):
-        """
-        If we execute a get_all then we expect multiple
+        """If we execute a get_all then we expect multiple
         invocations of a cmr granule search and
-        to not fetch back more results than we ask for
+        to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(
             short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000
@@ -161,10 +157,9 @@ class TestResults(VCRTestCase):
         self.assertTrue(unique_results(granules))
 
     def test_get_all_more_than_2k(self):
-        """
-        If we execute a get_all then we expect multiple
+        """If we execute a get_all then we expect multiple
         invocations of a cmr granule search and
-        to not fetch back more results than we ask for
+        to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(
             short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
@@ -182,10 +177,9 @@ class TestResults(VCRTestCase):
         self.assertTrue(unique_results(granules))
 
     def test_collections_less_than_2k(self):
-        """
-        If we execute a get_all then we expect multiple
+        """If we execute a get_all then we expect multiple
         invocations of a cmr granule search and
-        to not fetch back more results than we ask for
+        to not fetch back more results than we ask for.
         """
         query = DataCollections().daac("PODAAC").cloud_hosted(True)
         collections = query.get(20)
@@ -197,10 +191,9 @@ class TestResults(VCRTestCase):
         self.assert_is_using_search_after(self.cassette)
 
     def test_collections_more_than_2k(self):
-        """
-        If we execute a get_all then we expect multiple
+        """If we execute a get_all then we expect multiple
         invocations of a cmr granule search and
-        to not fetch back more results than we ask for
+        to not fetch back more results than we ask for.
         """
         query = DataCollections()
         collections = query.get(3000)

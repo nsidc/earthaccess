@@ -1,7 +1,9 @@
+import logging
+
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Optional, Union
+from typing_extensions import Any, Dict, List, Optional, Union, deprecated
 
 import earthaccess
 
@@ -11,6 +13,8 @@ from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .system import PROD, System
 from .utils import _validation as validate
+
+logger = logging.getLogger(__name__)
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
@@ -64,8 +68,8 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         ```
     """
     if not validate.valid_dataset_parameters(**kwargs):
-        print(
-            "Warning: a valid set of parameters is needed to search for datasets on CMR"
+        logger.warning(
+            "A valid set of parameters is needed to search for datasets on CMR"
         )
         return []
     if earthaccess.__auth__.authenticated:
@@ -73,7 +77,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     else:
         query = DataCollections().parameters(**kwargs)
     datasets_found = query.hits()
-    print(f"Datasets found: {datasets_found}")
+    logger.info(f"Datasets found: {datasets_found}")
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -120,7 +124,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     else:
         query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
-    print(f"Granules found: {granules_found}")
+    logger.info(f"Granules found: {granules_found}")
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -199,8 +203,9 @@ def download(
     try:
         results = earthaccess.__store__.get(granules, local_path, provider, threads)
     except AttributeError as err:
-        print(err)
-        print("You must call earthaccess.login() before you can download data")
+        logger.error(
+            f"{err}: You must call earthaccess.login() before you can download data"
+        )
         return []
     return results
 
@@ -265,7 +270,7 @@ def collection_query() -> CollectionQuery:
 
 
 def granule_query() -> GranuleQuery:
-    """Returns a query builder instance for data granules
+    """Returns a query builder instance for data granules.
 
     Returns:
         a query builder instance for data granules.
@@ -320,12 +325,33 @@ def get_requests_https_session() -> requests.Session:
     return session
 
 
+@deprecated("Use get_s3_filesystem instead")
 def get_s3fs_session(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
     results: Optional[DataGranule] = None,
 ) -> s3fs.S3FileSystem:
     """Returns a fsspec s3fs file session for direct access when we are in us-west-2.
+
+    Parameters:
+        daac: Any DAAC short name e.g. NSIDC, GES_DISC
+        provider: Each DAAC can have a cloud provider.
+            If the DAAC is specified, there is no need to use provider.
+        results: A list of results from search_data().
+            `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
+
+    Returns:
+        An `s3fs.S3FileSystem` authenticated for reading in-region in us-west-2 for 1 hour.
+    """
+    return get_s3_filesystem(daac, provider, results)
+
+
+def get_s3_filesystem(
+    daac: Optional[str] = None,
+    provider: Optional[str] = None,
+    results: Optional[DataGranule] = None,
+) -> s3fs.S3FileSystem:
+    """Return an `s3fs.S3FileSystem` for direct access when running within the AWS us-west-2 region.
 
     Parameters:
         daac: Any DAAC short name e.g. NSIDC, GES_DISC
@@ -342,9 +368,9 @@ def get_s3fs_session(
     if results is not None:
         endpoint = results[0].get_s3_credentials_endpoint()
         if endpoint is not None:
-            session = earthaccess.__store__.get_s3fs_session(endpoint=endpoint)
+            session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
             return session
-    session = earthaccess.__store__.get_s3fs_session(daac=daac, provider=provider)
+    session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
     return session
 
 

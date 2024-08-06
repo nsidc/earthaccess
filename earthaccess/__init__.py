@@ -10,6 +10,7 @@ from .api import (
     get_fsspec_https_session,
     get_requests_https_session,
     get_s3_credentials,
+    get_s3_filesystem,
     get_s3fs_session,
     granule_query,
     login,
@@ -35,6 +36,7 @@ __all__ = [
     "get_fsspec_https_session",
     "get_s3fs_session",
     "get_s3_credentials",
+    "get_s3_filesystem",
     "get_edl_token",
     "granule_query",
     "collection_query",
@@ -65,8 +67,7 @@ _lock = threading.Lock()
 
 
 def __getattr__(name):  # type: ignore
-    """
-    Module-level getattr to handle automatic authentication when accessing
+    """Module-level getattr to handle automatic authentication when accessing
     `earthaccess.__auth__` and `earthaccess.__store__`.
 
     Other unhandled attributes raise as `AttributeError` as expected.

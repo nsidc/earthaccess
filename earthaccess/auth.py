@@ -25,8 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 class SessionWithHeaderRedirection(requests.Session):
-    """
-    Requests removes auth headers if the redirect happens outside the
+    """Requests removes auth headers if the redirect happens outside the
     original req domain.
     """
 
@@ -48,9 +47,8 @@ class SessionWithHeaderRedirection(requests.Session):
         if username and password:
             self.auth = (username, password)
 
-    # Overrides from the library to keep headers when redirected to or from
-    # the NASA auth host.
     def rebuild_auth(self, prepared_request: Any, response: Any) -> None:
+        """Overrides from the library to keep headers when redirected to or from the NASA auth host."""
         headers = prepared_request.headers
         url = prepared_request.url
 
@@ -94,7 +92,7 @@ class Auth(object):
                 * **"environment"**:
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
-            system (Env): the EDL endpoint to log in to Earthdata, defaults to PROD
+            system: the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
             An instance of Auth.
@@ -133,6 +131,7 @@ class Auth(object):
 
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
+
         Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
         This method renews the tokens to make sure we can query the collections allowed to our EDL user.
         """
@@ -177,7 +176,7 @@ class Auth(object):
                     )
                     return True
                 else:
-                    print(resp_tokens)
+                    logger.info(resp_tokens)
                     return False
 
         return False
@@ -189,6 +188,7 @@ class Auth(object):
         endpoint: Optional[str] = None,
     ) -> Dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider.
+
         The easier way is to use the DAAC short name; provider is optional if we know it.
 
         Parameters:
@@ -222,10 +222,10 @@ class Auth(object):
                         cumulus_resp.url, allow_redirects=True, timeout=15
                     )
                     if not (auth_resp.ok):
-                        print(
+                        logger.error(
                             f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
                         )
-                        print(
+                        logger.error(
                             f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
                         )
                         return {}
@@ -235,10 +235,12 @@ class Auth(object):
             else:
                 # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
                 # does not have cloud collections yet
-                print(f"Credentials for the cloud provider {daac} are not available")
+                logger.info(
+                    f"Credentials for the cloud provider {daac} are not available"
+                )
                 return {}
         else:
-            print("We need to authenticate with EDL first")
+            logger.info("We need to authenticate with EDL first")
             return {}
 
     def get_session(self, bearer_token: bool = True) -> requests.Session:
@@ -266,7 +268,7 @@ class Auth(object):
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
-                print("Persisting credentials to .netrc")
+                logger.info("Persisting credentials to .netrc")
                 self._persist_user_credentials(username, password)
         return authenticated
 
@@ -307,7 +309,7 @@ class Auth(object):
             token_resp = self._get_user_tokens(username, password)
 
             if not (token_resp.ok):  # type: ignore
-                print(
+                logger.info(
                     f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
                 )
                 return False
@@ -376,7 +378,7 @@ class Auth(object):
             netrc_path.touch(exist_ok=True)
             netrc_path.chmod(0o600)
         except Exception as e:
-            print(e)
+            logger.error(e)
             return False
         my_netrc = Netrc(str(netrc_path))
         my_netrc[self.system.edl_hostname] = {

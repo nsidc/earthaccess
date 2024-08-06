@@ -1,10 +1,13 @@
 # package imports
+import logging
 import unittest
 from unittest import mock
 
 import pytest
 import responses
 from earthaccess import Auth
+
+logger = logging.getLogger(__name__)
 
 
 class TestCreateAuth(unittest.TestCase):
@@ -107,7 +110,6 @@ class TestCreateAuth(unittest.TestCase):
         auth = Auth()
         auth.login(strategy="interactive")
         with pytest.raises(Exception) as e_info:
-            print(e_info)
             self.assertEqual(auth.authenticated, False)
             self.assertEqual(e_info, Exception)
             self.assertEqual(auth.password, "password")
