@@ -16,13 +16,11 @@ from earthaccess.store import Store
 def auth(user_input, user_password):
     user_input.return_value = "user"
     user_password.return_value = "password"
-    json_response = [
-        {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
-        {"access_token": "EDL-token-2", "expiration_date": "12/16/2021"},
-    ]
+    json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
+
     responses.add(
-        responses.GET,
-        "https://urs.earthdata.nasa.gov/api/users/tokens",
+        responses.POST,
+        "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
         json=json_response,
         status=200,
     )

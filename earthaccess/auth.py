@@ -6,11 +6,12 @@ import platform
 import shutil
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 from urllib.parse import urlparse
 
 import requests  # type: ignore
 from tinynetrc import Netrc
+from typing_extensions import deprecated
 
 from .daac import DAACS
 from .system import PROD, System
@@ -72,7 +73,7 @@ class Auth(object):
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
-        self.tokens: List = []
+        self.token: Optional[Mapping[str, str]] = None
         self._set_earthdata_system(PROD)
 
     def login(
@@ -116,12 +117,8 @@ class Auth(object):
         self.system = system
 
         # Maybe all these predefined URLs should be in a constants.py file
-        self.EDL_GET_TOKENS_URL = f"https://{self.system.edl_hostname}/api/users/tokens"
-        self.EDL_GENERATE_TOKENS_URL = (
-            f"https://{self.system.edl_hostname}/api/users/token"
-        )
-        self.EDL_REVOKE_TOKEN = (
-            f"https://{self.system.edl_hostname}/api/users/revoke_token"
+        self.EDL_FIND_OR_CREATE_TOKEN_URL = (
+            f"https://{self.system.edl_hostname}/api/users/find_or_create_token"
         )
 
         self._eula_url = (
@@ -129,57 +126,14 @@ class Auth(object):
         )
         self._apps_url = f"https://{self.system.edl_hostname}/application_search"
 
+    @deprecated("No replacement, as tokens are now refreshed automatically.")
     def refresh_tokens(self) -> bool:
         """Refresh CMR tokens.
 
         Tokens are used to do authenticated queries on CMR for restricted and early access datasets.
         This method renews the tokens to make sure we can query the collections allowed to our EDL user.
         """
-        if len(self.tokens) == 0:
-            resp_tokens = self._generate_user_token(
-                username=self.username, password=self.password
-            )
-            if resp_tokens.ok:
-                self.token = resp_tokens.json()
-                self.tokens = [self.token]
-                logger.debug(
-                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
-                )
-                return True
-            else:
-                return False
-        if len(self.tokens) == 1:
-            resp_tokens = self._generate_user_token(
-                username=self.username, password=self.password
-            )
-            if resp_tokens.ok:
-                self.token = resp_tokens.json()
-                self.tokens.extend(self.token)
-                logger.debug(
-                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
-                )
-                return True
-            else:
-                return False
-
-        if len(self.tokens) == 2:
-            resp_revoked = self._revoke_user_token(self.token["access_token"])
-            if resp_revoked:
-                resp_tokens = self._generate_user_token(
-                    username=self.username, password=self.password
-                )
-                if resp_tokens.ok:
-                    self.token = resp_tokens.json()
-                    self.tokens[0] = self.token
-                    logger.debug(
-                        f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
-                    )
-                    return True
-                else:
-                    logger.info(resp_tokens)
-                    return False
-
-        return False
+        return self.authenticated
 
     def get_s3_credentials(
         self,
@@ -253,7 +207,7 @@ class Auth(object):
             class Session instance with Auth and bearer token headers
         """
         session = SessionWithHeaderRedirection()
-        if bearer_token and self.authenticated:
+        if bearer_token and self.token:
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
             session.headers.update(
@@ -306,7 +260,7 @@ class Auth(object):
         self, username: Optional[str], password: Optional[str]
     ) -> bool:
         if username is not None and password is not None:
-            token_resp = self._get_user_tokens(username, password)
+            token_resp = self._find_or_create_token(username, password)
 
             if not (token_resp.ok):  # type: ignore
                 logger.info(
@@ -317,59 +271,25 @@ class Auth(object):
             self.username = username
             self.password = password
 
-            self.tokens = token_resp.json()
+            token = token_resp.json()
+            logger.debug(
+                f"Using token with expiration date: {token['expiration_date']}"
+            )
+            self.token = token
             self.authenticated = True
-
-            if len(self.tokens) == 0:
-                self.refresh_tokens()
-                logger.debug(
-                    f"earthaccess generated a token for CMR with expiration on: {self.token['expiration_date']}"
-                )
-                self.token = self.tokens[0]
-            elif len(self.tokens) > 0:
-                self.token = self.tokens[0]
-                logger.debug(
-                    f"Using token with expiration date: {self.token['expiration_date']}"
-                )
 
         return self.authenticated
 
-    def _get_user_tokens(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password)
-        auth_resp = session.get(
-            self.EDL_GET_TOKENS_URL,
-            headers={
-                "Accept": "application/json",
-            },
-            timeout=10,
-        )
-        return auth_resp
-
-    def _generate_user_token(self, username: str, password: str) -> Any:
+    def _find_or_create_token(self, username: str, password: str) -> Any:
         session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.post(
-            self.EDL_GENERATE_TOKENS_URL,
+            self.EDL_FIND_OR_CREATE_TOKEN_URL,
             headers={
                 "Accept": "application/json",
             },
             timeout=10,
         )
         return auth_resp
-
-    def _revoke_user_token(self, token: str) -> bool:
-        if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password)
-            auth_resp = session.post(
-                self.EDL_REVOKE_TOKEN,
-                params={"token": token},
-                headers={
-                    "Accept": "application/json",
-                },
-                timeout=10,
-            )
-            return auth_resp.ok
-        else:
-            return False
 
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34
