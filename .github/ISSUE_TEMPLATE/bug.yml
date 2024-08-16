@@ -31,8 +31,8 @@ body:
   - type: textarea
     attributes:
       label: Steps To Reproduce
-      description: Steps to reproduce the behavior.
-      placeholder: |
+      description: |
+        Steps to Reproduce
         1. In this environment...
         2. With this config...
         3. Run '...'
