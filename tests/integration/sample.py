@@ -35,7 +35,7 @@ def get_sample_granules(
     tries = 0
 
     while tries <= max_tries:
-        g = random.sample(granules_set, 1)[0]
+        g = random.sample(list(granules_set), 1)[0]
         if g.size() > max_granule_size:
             logger.debug(
                 f"Granule {g['meta']['concept-id']} exceded max size: {g.size()}."
@@ -49,7 +49,7 @@ def get_sample_granules(
             )
 
             sample.append(g)
-            granules_set = granules_set - g
+            granules_set.remove(g)
 
             total_size += g.size()
             if len(sample) >= sample_size:
