@@ -3,8 +3,17 @@
 from pathlib import Path
 
 import requests
+from earthaccess.daac import DAACS
 
 THIS_DIR = Path(__file__).parent
+
+# TODO: Can we query CMR for all providers, instead of relying on hard-coded names in a DAAC list?
+#   For example, using this URL: "https://cmr.earthdata.nasa.gov/ingest/providers"
+all_providers = [
+    provider
+    for daac_info in DAACS
+    for provider in set(daac_info["cloud-providers"] + daac_info["on-prem-providers"])
+]
 
 
 def top_collections(
@@ -38,10 +47,8 @@ def top_collections(
 
 
 def main():
-    # TODO: Can we query CMR for all providers? Then cache the top collections for all
-    # providers?
-    for provider in ["NSIDC_ECS"]:
-        collection_ids = top_collections(provider="NSIDC_ECS")
+    for provider in all_providers:
+        collection_ids = top_collections(provider=provider)
 
         output = THIS_DIR / f"{provider}.txt"
         with output.open("w") as f:
