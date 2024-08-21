@@ -36,20 +36,20 @@ daacs_list: list[TestParam] = [
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
-    # {
-    #     "provider_name": "GES_DISC",
-    #     "top_n_collections": 2,
-    #     "granules_count": 100,
-    #     "granules_sample_size": 2,
-    #     "granules_max_size_mb": 130,
-    # },
-    # {
-    #     "provider_name": "LPDAAC",
-    #     "top_n_collections": 2,
-    #     "granules_count": 100,
-    #     "granules_sample_size": 2,
-    #     "granules_max_size_mb": 100,
-    # },
+    {
+        "provider_name": "GES_DISC",
+        "n_for_top_collections": 2,
+        "granules_count": 100,
+        "granules_sample_size": 2,
+        "granules_max_size_mb": 130,
+    },
+    {
+        "provider_name": "LPDAAC_ECS",
+        "n_for_top_collections": 2,
+        "granules_count": 100,
+        "granules_sample_size": 2,
+        "granules_max_size_mb": 100,
+    },
 ]
 
 
