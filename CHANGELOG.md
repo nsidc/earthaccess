@@ -8,6 +8,7 @@
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))([**@Sherwin-14**](https://github.com/Sherwin-14))
 - Added Issue Templates([#281](https://github.com/nsidc/earthaccess/issues/281))([**@Sherwin-14**](https://github.com/Sherwin-14))
 
+- Fixed earthaccess.download() ignoring errors ([#581])(https://github.com/nsidc/earthaccess/issues/581) ([**@Sherwin-14**](https://github.com/Sherwin-14))
 
 
 ## [v0.10.0] 2024-07-19
