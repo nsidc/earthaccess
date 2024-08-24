@@ -50,12 +50,15 @@ def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
+    fail_fast: bool = True
 ) -> List[fsspec.AbstractFileSystem]:
     def multi_thread_open(data: tuple) -> EarthAccessFile:
         urls, granule = data
         return EarthAccessFile(fs.open(urls), granule)
+    
+    exception_behavior = "immediate" if fail_fast else "deferred"
 
-    fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads)
+    fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads,exception_behaviour=exception_behavior)
     return fileset
 
 
@@ -417,6 +420,7 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
         threads: Optional[int] = 8,
+        fail_fast: bool = True
     ) -> List[Any]:
         fileset: List = []
 
@@ -444,6 +448,7 @@ class Store(object):
                             url_mapping,
                             fs=s3_fs,
                             threads=threads,
+                            fail_fast = fail_fast
                         )
                     except Exception as e:
                         raise RuntimeError(
@@ -541,6 +546,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        fail_fast: bool = True
     ) -> List[str]:
         data_links = granules
         downloaded_files: List = []
@@ -562,7 +568,7 @@ class Store(object):
 
         else:
             # if we are not in AWS
-            return self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(data_links, local_path, threads,fail_fast=fail_fast)
 
     @_get.register
     def _get_granules(
@@ -571,6 +577,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        fail_fast: bool = True
     ) -> List[str]:
         data_links: List = []
         downloaded_files: List = []
@@ -611,7 +618,7 @@ class Store(object):
         else:
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
-            return self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(data_links, local_path, threads,fail_fast=fail_fast)
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
@@ -649,7 +656,7 @@ class Store(object):
         return str(path)
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Path, threads: int = 8
+        self, urls: List[str], directory: Path, threads: int = 8,fail_fast: bool = True
     ) -> List[Any]:
         """Downloads a list of URLS into the data directory.
 
@@ -671,11 +678,15 @@ class Store(object):
         directory.mkdir(parents=True, exist_ok=True)
 
         arguments = [(url, directory) for url in urls]
+
+        exception_behavior = "immediate" if fail_fast else "deferred"
+
         results = pqdm(
             arguments,
             self._download_file,
             n_jobs=threads,
             argument_type="args",
+            exception_behaviour=exception_behavior
         )
         return results
 
@@ -683,11 +694,12 @@ class Store(object):
         self,
         url_mapping: Mapping[str, Union[DataGranule, None]],
         threads: Optional[int] = 8,
+        fail_fast: bool = True
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
         if https_fs is not None:
             try:
-                fileset = _open_files(url_mapping, https_fs, threads)
+                fileset = _open_files(url_mapping, https_fs, threads,fail_fast=fail_fast)
             except Exception:
                 logger.exception(
                     "An exception occurred while trying to access remote files via HTTPS"
