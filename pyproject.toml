@@ -52,6 +52,7 @@ numpy = [
 dask = { version = ">=2022.1.0", optional = true }
 importlib-resources = ">=6.3.2"
 typing_extensions = ">=4.10.0"
+virtualizarr = {version = "^1.0.0", python = ">=3.10,<4.0"}
 
 [tool.poetry.extras]
 kerchunk = ["kerchunk", "dask"]
