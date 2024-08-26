@@ -142,6 +142,8 @@ stubPath = "./stubs"
 [tool.ruff]
 line-length = 88
 src = ["earthaccess", "stubs", "tests"]
+# HACK: Don't lint or format Jupyter Notebooks for now.
+extend-exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
 extend-select = ["I", "T20", "D", "G"]
