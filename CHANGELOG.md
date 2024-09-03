@@ -7,6 +7,7 @@
   `earthaccess.get_s3_filesystem` and `Store.get_s3_filesystem`, respectively,
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))([**@Sherwin-14**](https://github.com/Sherwin-14))
 - Added Issue Templates([#281](https://github.com/nsidc/earthaccess/issues/281))([**@Sherwin-14**](https://github.com/Sherwin-14))
+- Removed Broken Link "Introduction to NASA earthaccess" ([#779](https://github.com/nsidc/earthaccess/issues/779))([**@Sherwin-14**](https://github.com/Sherwin-14))
 
 
 
