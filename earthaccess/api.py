@@ -205,6 +205,7 @@ def download(
     local_path: Optional[str],
     provider: Optional[str] = None,
     threads: int = 8,
+    fail_fast: bool = True,
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
@@ -230,7 +231,9 @@ def download(
     elif isinstance(granules, str):
         granules = [granules]
     try:
-        results = earthaccess.__store__.get(granules, local_path, provider, threads)
+        results = earthaccess.__store__.get(
+            granules, local_path, provider, threads, fail_fast=fail_fast
+        )
     except AttributeError as err:
         logger.error(
             f"{err}: You must call earthaccess.login() before you can download data"
@@ -242,6 +245,7 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    fail_fast: bool = True,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -255,7 +259,9 @@ def open(
         A list of "file pointers" to remote (i.e. s3 or https) files.
     """
     provider = _normalize_location(provider)
-    results = earthaccess.__store__.open(granules=granules, provider=provider)
+    results = earthaccess.__store__.open(
+        granules=granules, provider=provider, fail_fast=fail_fast
+    )
     return results
 
 

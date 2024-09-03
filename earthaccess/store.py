@@ -354,7 +354,7 @@ class Store(object):
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
         if len(granules):
-            return self._open(granules, provider)
+            return self._open(granules, provider, fail_fast=fail_fast)
         return []
 
     @singledispatchmethod
@@ -362,6 +362,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        fail_fast: bool = True,
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -401,9 +402,7 @@ class Store(object):
             if s3_fs is not None:
                 try:
                     fileset = _open_files(
-                        url_mapping,
-                        fs=s3_fs,
-                        threads=threads,
+                        url_mapping, fs=s3_fs, threads=threads, fail_fast=fail_fast
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -412,11 +411,15 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     ) from e
             else:
-                fileset = self._open_urls_https(url_mapping, threads=threads)
+                fileset = self._open_urls_https(
+                    url_mapping, threads=threads, fail_fast=fail_fast
+                )
             return fileset
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(url_mapping, threads=threads)
+            fileset = self._open_urls_https(
+                url_mapping, threads=threads, fail_fast=fail_fast
+            )
             return fileset
 
     @_open.register
@@ -469,7 +472,7 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(url_mapping, threads)
+            fileset = self._open_urls_https(url_mapping, threads, fail_fast=fail_fast)
             return fileset
 
     def get(
@@ -478,6 +481,7 @@ class Store(object):
         local_path: Union[Path, str, None] = None,
         provider: Optional[str] = None,
         threads: int = 8,
+        fail_fast: bool = True,
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -506,7 +510,9 @@ class Store(object):
             local_path = Path(local_path)
 
         if len(granules):
-            files = self._get(granules, local_path, provider, threads)
+            files = self._get(
+                granules, local_path, provider, threads, fail_fast=fail_fast
+            )
             return files
         else:
             raise ValueError("List of URLs or DataGranule instances expected")
@@ -518,6 +524,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        fail_fast: bool = True,
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -694,7 +701,7 @@ class Store(object):
             self._download_file,
             n_jobs=threads,
             argument_type="args",
-            exception_behaviour=exception_behavior,
+                exception_behaviour=exception_behavior,
         )
         return results
 
