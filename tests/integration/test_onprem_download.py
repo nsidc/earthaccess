@@ -1,50 +1,56 @@
-# package imports
 import logging
 import os
-import random
 import shutil
 import unittest
 from pathlib import Path
+from typing import TypedDict
 
 import earthaccess
 import pytest
-from earthaccess import Auth, DataCollections, DataGranules, Store
+from earthaccess import Auth, DataGranules, Store
+
+from .sample import get_sample_granules
 
 logger = logging.getLogger(__name__)
 
 
-daacs_list = [
+class TestParam(TypedDict):
+    provider_name: str
+
+    # How many of the top collections we will test, e.g. top 3 collections
+    n_for_top_collections: int
+
+    # How many granules we will query
+    granules_count: int
+
+    # How many granules we will randomly select from the query
+    granules_sample_size: int
+
+    # The maximum allowed granule size; if larger we'll try to find another one
+    granules_max_size_mb: int
+
+
+daacs_list: list[TestParam] = [
     {
-        "short_name": "NSIDC",
-        "collections_count": 50,
-        "collections_sample_size": 3,
+        "provider_name": "NSIDC_ECS",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "GES_DISC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "provider_name": "GES_DISC",
+        "n_for_top_collections": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 130,
     },
     {
-        "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "provider_name": "LPDAAC_ECS",
+        "n_for_top_collections": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
-    },
-    {
-        "short_name": "ORNLDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 3,
-        "granules_count": 100,
-        "granules_sample_size": 2,
-        "granules_max_size_mb": 50,
     },
 ]
 
@@ -63,31 +69,25 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 store = Store(auth)
 
 
-def get_sample_granules(granules, sample_size, max_granule_size):
-    """Returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size.
-    """
-    files_to_download = []
-    total_size = 0
-    max_tries = sample_size * 2
-    tries = 0
+def top_collections_for_provider(provider: str, *, n: int) -> list[str]:
+    """Return the top collections for this provider.
 
-    while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
-        if g.size() > max_granule_size:
-            # print(f"G: {g['meta']['concept-id']} exceded max size: {g.size()}")
-            tries += 1
-            continue
-        else:
-            # print(f"Adding : {g['meta']['concept-id']} size: {g.size()}")
-            files_to_download.append(g)
-            total_size += g.size()
-            if len(files_to_download) >= sample_size:
-                break
-    return files_to_download, round(total_size, 2)
+    Local cache is used as the source for this list. Run
+    `./popular_collections/generate.py` to refresh it!
+
+    TODO: Skip / exclude collections that have a EULA; filter them out in this function
+    or use a pytest skip/xfail mark?
+    """
+    popular_collections_dir = Path(__file__).parent / "popular_collections"
+    popular_collections_file = popular_collections_dir / f"{provider}.txt"
+    with open(popular_collections_file) as f:
+        popular_collections = f.read().splitlines()
+
+    return popular_collections[:n]
 
 
 def supported_collection(data_links):
+    """What is the purpose of this?"""
     for url in data_links:
         if "podaac-tools.jpl.nasa.gov/drive" in url:
             return False
@@ -96,24 +96,21 @@ def supported_collection(data_links):
 
 @pytest.mark.parametrize("daac", daacs_list)
 def test_earthaccess_can_download_onprem_collection_granules(daac):
-    """Tests that we can download cloud collections using HTTPS links."""
-    daac_shortname = daac["short_name"]
-    collections_count = daac["collections_count"]
-    collections_sample_size = daac["collections_sample_size"]
+    """Tests that we can download on-premises collections using HTTPS links."""
+    provider = daac["provider_name"]
+    n_for_top_collections = daac["n_for_top_collections"]
+
     granules_count = daac["granules_count"]
     granules_sample_size = daac["granules_sample_size"]
     granules_max_size = daac["granules_max_size_mb"]
 
-    collection_query = DataCollections().data_center(daac_shortname).cloud_hosted(False)
-    hits = collection_query.hits()
-    logger.info(f"Cloud hosted collections for {daac_shortname}: {hits}")
-    collections = collection_query.get(collections_count)
-    assertions.assertGreater(len(collections), collections_sample_size)
-    # We sample n cloud hosted collections from the results
-    random_collections = random.sample(collections, collections_sample_size)
-    logger.info(f"Sampled {len(random_collections)} collections")
-    for collection in random_collections:
-        concept_id = collection.concept_id()
+    top_collections = top_collections_for_provider(
+        provider,
+        n=n_for_top_collections,
+    )
+    logger.info(f"On-premises collections for {provider}: {len(top_collections)}")
+
+    for concept_id in top_collections:
         granule_query = DataGranules().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
@@ -125,7 +122,10 @@ def test_earthaccess_can_download_onprem_collection_granules(daac):
             continue
         local_path = f"./tests/integration/data/{concept_id}"
         granules_to_download, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
+            granules,
+            granules_sample_size,
+            granules_max_size,
+            round_ndigits=2,
         )
         if len(granules_to_download) == 0:
             logger.debug(
