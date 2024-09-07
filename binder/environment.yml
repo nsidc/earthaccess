@@ -18,3 +18,7 @@ dependencies:
   - hvplot
   - holoviews
   - panel
+
+  - pip
+  - pip:
+      - "."
