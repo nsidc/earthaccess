@@ -185,6 +185,15 @@ wheels = [
 ]
 
 [[package]]
+name = "argcomplete"
+version = "3.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/75/33/a3d23a2e9ac78f9eaf1fce7490fee430d43ca7d42c65adabbb36a2b28ff6/argcomplete-3.5.0.tar.gz", hash = "sha256:4349400469dccfb7950bb60334a680c58d88699bff6159df61251878dc6bf74b", size = 82237 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/41/e8/ba56bcc0d48170c0fc5a7f389488eddce47f98ed976a24ae62db402f33ae/argcomplete-3.5.0-py3-none-any.whl", hash = "sha256:d4bcf3ff544f51e16e54228a7ac7f486ed70ebf2ecfe49a63a91171c76bf029b", size = 43475 },
+]
+
+[[package]]
 name = "argon2-cffi"
 version = "23.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -551,6 +560,18 @@ wheels = [
 ]
 
 [[package]]
+name = "colorlog"
+version = "6.8.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/db/38/2992ff192eaa7dd5a793f8b6570d6bbe887c4fbbf7e72702eb0a693a01c8/colorlog-6.8.2.tar.gz", hash = "sha256:3e3e079a41feb5a1b64f978b5ea4f46040a94f11f0e8bbb8261e3dbbeca64d44", size = 16529 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f3/18/3e867ab37a24fdf073c1617b9c7830e06ec270b1ea4694a624038fc40a03/colorlog-6.8.2-py3-none-any.whl", hash = "sha256:4dcbb62368e2800cb3c5abd348da7e53f6c362dda502ec27c560b2e58a66bd33", size = 11357 },
+]
+
+[[package]]
 name = "comm"
 version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
@@ -817,6 +838,7 @@ dependencies = [
 [package.optional-dependencies]
 dev = [
     { name = "bump-my-version" },
+    { name = "nox" },
     { name = "pre-commit" },
     { name = "ruff" },
     { name = "uv" },
@@ -877,7 +899,8 @@ requires-dist = [
     { name = "mkdocs-redirects", marker = "extra == 'docs'", specifier = ">=1.2.1" },
     { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.19.0" },
     { name = "multimethod", specifier = ">=1.8" },
-    { name = "mypy", marker = "extra == 'test'", specifier = ">=0.812" },
+    { name = "mypy", marker = "extra == 'test'", specifier = ">=1.11.2" },
+    { name = "nox", marker = "extra == 'dev'" },
     { name = "numpy", marker = "python_full_version < '3.12'", specifier = ">=1.24.0" },
     { name = "numpy", marker = "python_full_version >= '3.12'", specifier = ">=1.26.0" },
     { name = "pqdm", specifier = ">=0.1" },
@@ -2391,6 +2414,22 @@ wheels = [
 ]
 
 [[package]]
+name = "nox"
+version = "2024.4.15"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "argcomplete" },
+    { name = "colorlog" },
+    { name = "packaging" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "virtualenv" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1e/86/b86fc26784d2f63d038b4efc9e18d4d807ec025569da66c6d032b8f717df/nox-2024.4.15.tar.gz", hash = "sha256:ecf6700199cdfa9e5ea0a41ff5e6ef4641d09508eda6edb89d9987864115817f", size = 4000608 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a4/28/2897c06b54cd99f41ca9e5cc7433211a085903a71aaed1cb1a1dc138d53c/nox-2024.4.15-py3-none-any.whl", hash = "sha256:6492236efa15a460ecb98e7b67562a28b70da006ab0be164e8821177577c0565", size = 60719 },
+]
+
+[[package]]
 name = "numcodecs"
 version = "0.12.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2669,11 +2708,11 @@ wheels = [
 
 [[package]]
 name = "platformdirs"
-version = "4.2.2"
+version = "4.3.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f5/52/0763d1d976d5c262df53ddda8d8d4719eedf9594d046f117c25a27261a19/platformdirs-4.2.2.tar.gz", hash = "sha256:38b7b51f512eed9e84a22788b4bce1de17c0adb134d6becb09836e37d8654cd3", size = 20916 }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/b1/0d84052c168ca3a712ca01be2b8f55af8a3d5b644e02276e02c3a0ac2b90/platformdirs-4.3.1.tar.gz", hash = "sha256:63b79589009fa8159973601dd4563143396b35c5f93a58b36f9049ff046949b1", size = 21236 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/68/13/2aa1f0e1364feb2c9ef45302f387ac0bd81484e9c9a4c5688a322fbdfd08/platformdirs-4.2.2-py3-none-any.whl", hash = "sha256:2d7a1657e36a80ea911db832a8a6ece5ee53d8de21edd5cc5879af6530b1bfee", size = 18146 },
+    { url = "https://files.pythonhosted.org/packages/3a/7c/48b1ead4d3bea269c28e93be8762d82e2dba67a04ef9c051a3b4a82e1101/platformdirs-4.3.1-py3-none-any.whl", hash = "sha256:facaa5a3c57aa1e053e3da7b49e0cc31fe0113ca42a4659d5c2e98e545624afe", size = 18269 },
 ]
 
 [[package]]
@@ -3953,16 +3992,16 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "20.26.3"
+version = "20.26.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib" },
     { name = "filelock" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/68/60/db9f95e6ad456f1872486769c55628c7901fb4de5a72c2f7bdd912abf0c1/virtualenv-20.26.3.tar.gz", hash = "sha256:4c43a2a236279d9ea36a0d76f98d84bd6ca94ac4e0f4a3b9d46d05e10fea542a", size = 9057588 }
+sdist = { url = "https://files.pythonhosted.org/packages/84/8a/134f65c3d6066153b84fc176c58877acd8165ed0b79a149ff50502597284/virtualenv-20.26.4.tar.gz", hash = "sha256:c17f4e0f3e6036e9f26700446f85c76ab11df65ff6d8a9cbfad9f71aabfcf23c", size = 9385017 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/07/4d/410156100224c5e2f0011d435e477b57aed9576fc7fe137abcf14ec16e11/virtualenv-20.26.3-py3-none-any.whl", hash = "sha256:8cc4a31139e796e9a7de2cd5cf2489de1217193116a8fd42328f1bd65f434589", size = 5684792 },
+    { url = "https://files.pythonhosted.org/packages/5d/ea/12f774a18b55754c730c8383dad8f10d7b87397d1cb6b2b944c87381bb3b/virtualenv-20.26.4-py3-none-any.whl", hash = "sha256:48f2695d9809277003f30776d155615ffc11328e6a0a8c1f0ec80188d7874a55", size = 6013327 },
 ]
 
 [[package]]

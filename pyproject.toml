@@ -64,9 +64,9 @@ dev = [
   "uv >=0.4.7",
 ]
 test = [
-  "mypy >=0.812",
-  "pytest >=6.0",
-  "pytest-cov >=2.8",
+  "mypy >=1.11.2",
+  "pytest >=8.3",
+  "pytest-cov >=5.0",
   "pytest-watch >=4.2",
   "python-magic >=0.4",
   "responses >=0.14",
