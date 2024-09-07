@@ -58,6 +58,7 @@ kerchunk = [
 ]
 dev = [
   "bump-my-version >=0.10.0",
+  "nox",
   "pre-commit >=2.4",
   "ruff >=0.6.3",
   "uv >=0.4.7",

@@ -8,14 +8,15 @@ import nox
 DIR = Path(__file__).parent.resolve()
 
 nox.needs_version = ">=2024.3.2"
-nox.options.sessions = ["typecheck", "test"]
+nox.options.sessions = ["typecheck", "test_unit"]
 nox.options.default_venv_backend = "uv|virtualenv"
 
 
 @nox.session
 def typecheck(session: nox.Session) -> None:
+    """Typecheck with mypy."""
     session.install("--editable", ".[test]")
-    session.run("mypy", ".")
+    session.run("mypy")
 
 
 @nox.session
