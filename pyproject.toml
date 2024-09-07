@@ -46,8 +46,8 @@ dependencies = [
   "multimethod >=1.8",
   "importlib-resources >=6.3.2",
   "typing_extensions >=4.10.0",
-  "numpy >=1.24.0;python<3.12",
-  "numpy >=1.26.0;python>=3.12",
+  "numpy >=1.24.0; python_version < '3.12'",
+  "numpy >=1.26.0; python_version >= '3.12'",
 ]
 
 ## Optional dependencies; can be opted-in with extra specifications below
@@ -97,8 +97,8 @@ docs = [
   "xarray >=2023.01",
   "matplotlib >=3.3",
   "h5netcdf >=0.11",
-  "pyproj >=3.5.0;python<3.12",
-  "pyproj >=3.6.1;python>=3.12",
+  "pyproj >=3.5.0; python_version < '3.12'",
+  "pyproj >=3.6.1; python_version >= '3.12'",
   # The following error occurs when building the docs, so we must explicitly
   # include lxml-html-clean as a dev dependency until mkdocs-jupyter is updated:
   #
