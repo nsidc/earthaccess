@@ -1,16 +1,18 @@
-[tool.poetry]
+[project]
 name = "earthaccess"
 version = "0.10.0"
 repository = "https://github.com/nsidc/earthaccess"
 documentation = "https://earthaccess.readthedocs.io"
 description = "Client library for NASA Earthdata APIs"
-authors = ["earthaccess contributors"]
+authors = [
+  {name = "earthaccess contributors"}
+]
 maintainers = [
-    "Luis Lopez <betolin@gmail.com>",
-    "Joseph H. Kennedy <jhkennedy@alaska.edu>",
-    "James Bourbeau <james@coiled.io>",
-    "Matt Fisher <mfisher87@gmail.com>",
-    "Chuck Daniels <chuck@developmentseed.org>"
+    {name = "Luis Lopez", email = "betolin@gmail.com"},
+    {name = "Joseph H. Kennedy", email = "jhkennedy@alaska.edu"},
+    {name = "James Bourbeau", email = "james@coiled.io"},
+    {name = "Matt Fisher", email = "mfisher87@gmail.com"},
+    {name = "Chuck Daniels", email = "chuck@developmentseed.org"},
 ]
 license = "MIT"
 readme = "README.md"
@@ -33,9 +35,6 @@ classifiers = [
 
 requires-python = ">=3.9"
 
-# NOTE: Minimum dependencies are tested with the packages defined in the
-# `ci/environment-mindeps.yaml` conda environment. When updating minimum dependencies
-# here, make sure to also update `ci/environment-mindeps.yaml`.
 dependencies = [
   "python-cmr >=0.10.0",
   "pqdm >=0.1",
@@ -46,16 +45,12 @@ dependencies = [
   "multimethod >=1.8",
   "importlib-resources >=6.3.2",
   "typing_extensions >=4.10.0",
+  # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12
+  # support
   "numpy >=1.24.0; python_version < '3.12'",
   "numpy >=1.26.0; python_version >= '3.12'",
 ]
 
-## Optional dependencies; can be opted-in with extra specifications below
-## This is so verbose because Poetry requires it: https://python-poetry.org/docs/pyproject#extras
-## If we switch to PEP621 specification, we can specify extras (called
-## "optional" under PEP621) with versions in one line:
-#https://peps.python.org/pep-0621/#example
-# kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12 support
 [project.optional-dependencies]
 kerchunk = [
   "kerchunk",
@@ -64,7 +59,8 @@ kerchunk = [
 dev = [
   "bump-my-version >=0.10.0",
   "pre-commit >=2.4",
-  "ruff >=0.4.2",
+  "ruff >=0.6.3",
+  "uv >=0.4.7",
 ]
 test = [
   "mypy >=0.812",
@@ -112,8 +108,8 @@ docs = [
 
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
 [tool.pytest]
 filterwarnings = ["error::UserWarning"]
@@ -192,5 +188,5 @@ search   = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
 replace  = 'date-released: "{now:%Y-%m-%d}"'
 
 [tool.codespell]
-skip = 'poetry.lock,*.ipynb,*.yml,*.yaml,./tests'
+skip = 'uv.lock,*.ipynb,*.yml,*.yaml,./tests'
 ignore-words = ".codespellignore"
