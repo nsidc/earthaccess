@@ -58,8 +58,8 @@ dependencies = [
 # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12 support
 [project.optional-dependencies]
 kerchunk = [
-  "kerchunk >=2022.1.0",
-  "dask >=0.1.2",
+  "kerchunk",
+  "dask",
 ]
 dev = [
   "bump-my-version >=0.10.0",
