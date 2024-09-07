@@ -115,6 +115,8 @@ build-backend = "hatchling.build"
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
+python_version = "3.9"
+files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
 # TODO: incrementally work towards strict mode (currently too many errors)
