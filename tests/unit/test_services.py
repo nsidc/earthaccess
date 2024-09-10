@@ -65,7 +65,7 @@ class TestServices(VCRTestCase):
             == "https://opendap.earthdata.nasa.gov/"
         )
         self.assertTrue(
-            results["S2606110201-XYZ_PROV"][0]["umm"]["Name"] == "harmony-gdal-adapter"
+            results["S2606110201-XYZ_PROV"][0]["umm"]["Name"] == "Harmony GDAL Adapter (HGA)"
         )
         self.assertTrue(results["S2164732315-XYZ_PROV"][0]["umm"]["Type"] == "Harmony")
 
