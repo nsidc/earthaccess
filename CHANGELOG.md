@@ -8,7 +8,7 @@
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))([**@Sherwin-14**](https://github.com/Sherwin-14))
 - Added Issue Templates([#281](https://github.com/nsidc/earthaccess/issues/281))([**@Sherwin-14**](https://github.com/Sherwin-14))
 - Removed Broken Link "Introduction to NASA earthaccess" ([#779](https://github.com/nsidc/earthaccess/issues/779))([**@Sherwin-14**](https://github.com/Sherwin-14))
-
+- List the services that are available for a dataset ([#447](https://github.com/nsidc/earthaccess/issues/447))([**@nikki-t**](https://github.com/nikki-t))
 
 
 ## [v0.10.0] 2024-07-19

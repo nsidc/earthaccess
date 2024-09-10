@@ -29,6 +29,10 @@ class TestServices(VCRTestCase):
 
         return before_record_response
 
+    def _get_vcr_kwargs(self, **kwargs):
+        kwargs["decode_compressed_response"] = True
+        return kwargs
+
     def _get_vcr(self, **kwargs):
         myvcr = super(TestServices, self)._get_vcr(
             filter_headers=["Authorization"],
