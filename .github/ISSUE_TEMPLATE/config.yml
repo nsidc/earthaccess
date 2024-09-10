@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🌟 Community support
+    url: https://github.com/nsidc/earthaccess/discussions/categories/q-a
+    about: Explore this section to ask questions, share insights, and connect with others about Earthdata access and usage.
+  - name: 💡 Suggest a new feature
+    url: https://github.com/nsidc/earthaccess/discussions/new?category=ideas
+    about: Got a brilliant idea? Share your innovative suggestions to help us make amazing improvements!

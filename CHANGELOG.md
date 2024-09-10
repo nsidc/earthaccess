@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased
+### Unreleased
+
+- Automatically refresh EDL token and deprecate the `Auth.refresh_tokens` method with no replacement, as there is no longer a need to explicitly refresh ([#484](https://github.com/nsidc/earthaccess/issues/484)) ([**@fwfichtner**](https://github.com/fwfichtner))
+- Deprecate `earthaccess.get_s3fs_session` and `Store.get_s3fs_session`. Use
+  `earthaccess.get_s3_filesystem` and `Store.get_s3_filesystem`, respectively,
+  instead ([#766](https://github.com/nsidc/earthaccess/issues/766))([**@Sherwin-14**](https://github.com/Sherwin-14))
+- Added Issue Templates([#281](https://github.com/nsidc/earthaccess/issues/281))([**@Sherwin-14**](https://github.com/Sherwin-14))
+- Removed Broken Link "Introduction to NASA earthaccess" ([#779](https://github.com/nsidc/earthaccess/issues/779))([**@Sherwin-14**](https://github.com/Sherwin-14))
+
+
 
 ## [v0.10.0] 2024-07-19
 
@@ -17,6 +26,7 @@
   ([#584](https://github.com/nsidc/earthaccess/pull/584))
   ([**@danielfromearth**](https://github.com/danielfromearth),[**@chuckwondo**](https://github.com/chuckwondo),
    [**@jhkennedy**](https://github.com/jhkennedy),[**@mfisher87**](https://github.com/mfisher87))
+
 
 ### Added
 

@@ -17,13 +17,10 @@ class TestUatEnvironmentArgument:
     )
     def test_uat_login_when_uat_selected(self):
         """Test the correct env is queried based on what's selected at login-time."""
-        json_response = [
-            {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"},
-            {"access_token": "EDL-token-2", "expiration_date": "12/16/2021"},
-        ]
+        json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
         responses.add(
-            responses.GET,
-            "https://uat.urs.earthdata.nasa.gov/api/users/tokens",
+            responses.POST,
+            "https://uat.urs.earthdata.nasa.gov/api/users/find_or_create_token",
             json=json_response,
             status=200,
         )
