@@ -29,18 +29,15 @@ class TestServices(VCRTestCase):
 
         return before_record_response
 
-    def _get_vcr_kwargs(self, **kwargs):
-        kwargs["decode_compressed_response"] = True
-        return kwargs
-
     def _get_vcr(self, **kwargs):
-        myvcr = super(TestServices, self)._get_vcr(
+        return super()._get_vcr(
+            **kwargs,
+            before_record_response=self.scrub_access_token("access_token", "token"),
+            cassette_library_dir="tests/integration/fixtures/vcr_cassettes",
+            decode_compressed_response=True,
             filter_headers=["Authorization"],
             filter_post_data_parameters=["access_token"],
-            before_record_response=self.scrub_access_token("access_token", "token"),
         )
-        myvcr.cassette_library_dir = "tests/integration/fixtures/vcr_cassettes"
-        return myvcr
 
     def test_services(self):
         """Test that a list of services can be retrieved."""
@@ -50,20 +47,19 @@ class TestServices(VCRTestCase):
             temporal=("2024-02-27T00:00:00Z", "2024-02-29T00:00:00Z"),
         )
 
-        dataset_services = {}
-        for dataset in datasets:
-            dataset_services[dataset["umm"]["ShortName"]] = dataset.services()
-        actual_response = dataset_services
+        dataset_services = {
+            dataset["umm"]["ShortName"]: dataset.services() for dataset in datasets
+        }
 
-        self.assertEqual(list(actual_response.keys())[0], "MUR-JPL-L4-GLOB-v4.1")
+        self.assertEqual(list(dataset_services.keys())[0], "MUR-JPL-L4-GLOB-v4.1")
         self.assertEqual(
-            actual_response["MUR-JPL-L4-GLOB-v4.1"]["S2606110201-XYZ_PROV"][0]["umm"][
+            dataset_services["MUR-JPL-L4-GLOB-v4.1"]["S2606110201-XYZ_PROV"][0]["umm"][
                 "LongName"
             ],
             "Harmony GDAL Adapter (HGA)",
         )
         self.assertEqual(
-            actual_response["MUR-JPL-L4-GLOB-v4.1"]["S2839491596-XYZ_PROV"][0]["umm"][
+            dataset_services["MUR-JPL-L4-GLOB-v4.1"]["S2839491596-XYZ_PROV"][0]["umm"][
                 "URL"
             ]["Description"],
             "https://harmony.earthdata.nasa.gov",
