@@ -17,6 +17,7 @@ from .api import (
     open,
     search_data,
     search_datasets,
+    search_services,
 )
 from .auth import Auth
 from .kerchunk import consolidate_metadata
@@ -32,6 +33,7 @@ __all__ = [
     "login",
     "search_datasets",
     "search_data",
+    "search_services",
     "get_requests_https_session",
     "get_fsspec_https_session",
     "get_s3fs_session",

@@ -33,10 +33,7 @@ class TestServices(VCRTestCase):
     def test_services(self):
         """Test DataService get function return of service metadata results."""
         earthaccess._auth.authenticated = False
-        query = earthaccess.services.DataService().parameters(
-            concept_id="S2004184019-POCLOUD"
-        )
-        actual = query.get(query.hits())
+        actual = earthaccess.search_services(concept_id="S2004184019-POCLOUD")
 
         self.assertTrue(actual[0]["umm"]["Type"] == "OPeNDAP")
         self.assertTrue(
