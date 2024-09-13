@@ -1,6 +1,6 @@
 # Documentation for `Collection Services`
 
-::: earthaccess.services.DataService
+::: earthaccess.DataServices
     options:
       inherited_members: true
     show_root_heading: true
