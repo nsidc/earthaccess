@@ -33,6 +33,12 @@ jobs:
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
           poetry self add setuptools
+      - name: Set up mypy cache
+        uses: actions/cache@v4
+        id: mypy-cache
+        with:
+          path: .mypy_cache
+          key: mypy-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
       - name: Set up cache
         uses: actions/cache@v4
         id: cache
@@ -44,12 +50,12 @@ jobs:
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
       - name: Install Dependencies
         if: ${{ !env.ACT }}
-        run: poetry install
+        run: poetry install --quiet
       - name: Install Dependencies
         if: ${{ env.ACT }}
         # When using `act` to run the workflow locally, the `poetry install` command
         # may fail due to network issues when running multiple Docker containers.
-        run: poetry install || poetry install || poetry install
+        run: poetry install --quiet || poetry install --quiet || poetry install --quiet
       - name: Test
         run: poetry run bash scripts/test.sh
       - name: Upload coverage
