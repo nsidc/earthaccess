@@ -1,6 +1,6 @@
 from typing import Any, List, Optional
 
-from requests import session
+import requests
 
 from cmr import ServiceQuery
 
@@ -23,14 +23,17 @@ class DataServices(ServiceQuery):
         e.g. restricted datasets.
 
         Parameters:
-            auth (Optional[Auth], optional): An authenticated `Auth` instance.
+            auth: An authenticated `Auth` instance.
         """
         super().__init__(*args, **kwargs)
         self._debug = False
-        self.session = session()
-        if auth is not None and auth.authenticated:
-            # To search, we need the new bearer tokens from NASA Earthdata
-            self.session = auth.get_session(bearer_token=True)
+
+        # To search, we need the new bearer tokens from NASA Earthdata
+        self.session = (
+            auth.get_session(bearer_token=True)
+            if auth is not None and auth.authenticated
+            else requests.sessions.Session()
+        )
 
     def get(self, limit: int = 2000) -> List:
         """Get all service results up to some limit.
