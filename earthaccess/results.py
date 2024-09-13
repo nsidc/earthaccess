@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional, Union
 import earthaccess
 
 from .formatters import _repr_granule_html
-from .services import DataService
+from .services import DataServices
 
 
 class CustomDict(dict):
@@ -182,21 +182,14 @@ class DataCollection(CustomDict):
         return {}
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
-        """Returns:
-        A list of services available for the collection.
-        """
+        """Return list of services available for this collection."""
         services = self.get("meta", {}).get("associations", {}).get("services", [])
+        queries = (
+            DataServices(auth=earthaccess.__auth__).parameters(concept_id=service)
+            for service in services
+        )
 
-        parsed = {}
-        for service in services:
-            if earthaccess.__auth__.authenticated:
-                query = DataService(auth=earthaccess.__auth__).parameters(
-                    concept_id=service
-                )
-            else:
-                query = DataService().parameters(concept_id=service)
-            parsed[service] = query.get(query.hits())
-        return parsed
+        return {service: query.get_all() for service, query in zip(services, queries)}
 
     def __repr__(self) -> str:
         return json.dumps(

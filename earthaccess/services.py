@@ -8,7 +8,7 @@ from .auth import Auth
 from .utils import _search as search
 
 
-class DataService(ServiceQuery):
+class DataServices(ServiceQuery):
     """A Service client for NASA CMR that returns data on collection services.
 
     API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#service
