@@ -1,5 +1,5 @@
 name: Install earthaccess Python package
-description: Install earthaccess Python package and testing dependencies'
+description: Install earthaccess Python package and testing dependencies
 
 inputs:
   python-version:
