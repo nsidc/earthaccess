@@ -38,7 +38,7 @@ Python, in the `.venv` directory:
 
 ```bash
 python -m venv .venv
-. .venv/bin/activate
+source .venv/bin/activate
 ```
 
 Install _earthaccess_ in editable mode with optional development dependencies:
