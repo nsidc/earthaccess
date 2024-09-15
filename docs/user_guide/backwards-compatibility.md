@@ -15,7 +15,7 @@ We use [Semantic Versioning (SemVer)](https://semver.org/) to tell users what to
 
 ### Versioning
 
-We will follow SemVer. All version changes will consider [this](https://example.com/our-public-api) to be the public API documentation for the purposes of deciding whether a change is breaking or non-breaking.
+We will follow SemVer. All version changes will consider [this](https://example.com/our-public-api) to be the public [API](user-reference/api/api) documentation for the purposes of deciding whether a change is breaking or non-breaking.
 
 ### Release Communication
 
@@ -36,6 +36,10 @@ We will follow SemVer. All version changes will consider [this](https://example.
 3. Our maintenance team will always welcome outside contributions towards this goal.
 
 4. Please use a [GitHub Issue](https://github.com/nsidc/earthaccess/issues) to communicate about this work.
+
+## Our Python and dependency support policy
+
+Our project follows the SPEC0 dependency deprecation policy, which outlines the guidelines for deprecating and removing dependencies from our codebase.
 
 ## Migration guides
 
