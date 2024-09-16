@@ -39,7 +39,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 
 ## Our Python and dependency support policy
 
-Our project follows the SPEC0 dependency deprecation policy, which outlines the guidelines for deprecating and removing dependencies from our codebase.
+Our project follows the [SPEC0](https://scientific-python.org/specs/spec-0000/) dependency version deprecation policy, which outlines the guidelines for upgrading dependencies of _earthaccess_.
 
 ## Migration guides
 
