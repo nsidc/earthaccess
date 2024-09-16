@@ -22,7 +22,9 @@
 - Support Service queries
   ([#447](https://github.com/nsidc/earthaccess/issues/447))
   ([**@nikki-t**](https://github.com/nikki-t),
-  [**@chuckwondo**](https://github.com/chuckwondo))
+  [**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87),
+  [**@betolink**](https://github.com/betolink))
 
 ### Fixed
 
