@@ -13,6 +13,9 @@
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))
   ([**@Sherwin-14**](https://github.com/Sherwin-14),
   [**@chuckwondo**](https://github.com/chuckwondo))
+- Use built-in `assert` statement in integration tests
+  ([#743](https://github.com/nsidc/earthaccess/issues/743))
+  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Added
 
@@ -25,6 +28,9 @@
   [**@chuckwondo**](https://github.com/chuckwondo),
   [**@mfisher87**](https://github.com/mfisher87),
   [**@betolink**](https://github.com/betolink))
+- Support use of `NETRC` environment variable to override default `.netrc` file
+  location ([#480](https://github.com/nsidc/earthaccess/issues/480))
+  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 - Added example PR links to pull request template
   ([#756](https://github.com/nsidc/earthaccess/issues/756))
@@ -44,6 +50,12 @@
 - Restore automation for tidying notebooks used in documentation
   ([#788](https://github.com/nsidc/earthaccess/issues/788))
   ([**@itcarroll**](https://github.com/itcarroll))
+- Remove the base class on `EarthAccessFile` to fix method resolution
+  ([#610](https://github.com/nsidc/earthaccess/issues/610))
+  ([**@itcarroll**](https://github.com/itcarroll))
+- Integration tests no longer clobber existing `.netrc` file
+  ([#806](https://github.com/nsidc/earthaccess/issues/806))
+  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Removed
 
