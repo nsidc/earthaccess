@@ -110,7 +110,7 @@ build-backend = "poetry.core.masonry.api"
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-mypy_path = ["earthaccess", "tests", "stubs"]
+files = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
 # TODO: incrementally work towards strict mode (currently too many errors)
 # strict = true

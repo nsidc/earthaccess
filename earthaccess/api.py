@@ -6,6 +6,7 @@ from fsspec import AbstractFileSystem
 from typing_extensions import Any, Dict, List, Optional, Union, deprecated
 
 import earthaccess
+from earthaccess.services import DataServices
 
 from .auth import Auth
 from .results import DataCollection, DataGranule
@@ -128,6 +129,34 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     if count > 0:
         return query.get(count)
     return query.get_all()
+
+
+def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
+    """Search the NASA CMR for Services matching criteria.
+
+    See <https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#service>.
+
+    Parameters:
+        count:
+            maximum number of services to fetch (if less than 1, all services
+            matching specified criteria are fetched [default])
+        kwargs:
+            keyword arguments accepted by the CMR for searching services
+
+    Returns:
+        list of services (possibly empty) matching specified criteria, in UMM
+        JSON format
+
+    Examples:
+        ```python
+        services = search_services(provider="POCLOUD", keyword="COG")
+        ```
+    """
+    query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
+    hits = query.hits()
+    logger.info(f"Services found: {hits}")
+
+    return query.get(hits if count < 1 else min(count, hits))
 
 
 def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
