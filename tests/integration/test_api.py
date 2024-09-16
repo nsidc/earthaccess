@@ -1,21 +1,11 @@
-# package imports
 import logging
 import os
-import unittest
 from pathlib import Path
 
 import earthaccess
 import pytest
 
 logger = logging.getLogger(__name__)
-assertions = unittest.TestCase("__init__")
-
-
-assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
-assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
-
-logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
-logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 
 dataset_valid_params = [
@@ -42,36 +32,36 @@ granules_valid_params = [
 ]
 
 
-def test_auth_returns_valid_auth_class():
+def test_auth_returns_valid_auth_class(mock_env):
     auth = earthaccess.login(strategy="environment")
-    assertions.assertIsInstance(auth, earthaccess.Auth)
-    assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
-    assertions.assertTrue(earthaccess.__auth__.authenticated)
+    assert isinstance(auth, earthaccess.Auth)
+    assert isinstance(earthaccess.__auth__, earthaccess.Auth)
+    assert earthaccess.__auth__.authenticated
 
 
-def test_dataset_search_returns_none_with_no_parameters():
+def test_dataset_search_returns_none_with_no_parameters(mock_env):
     results = earthaccess.search_datasets()
-    assertions.assertIsInstance(results, list)
-    assertions.assertTrue(len(results) == 0)
+    assert isinstance(results, list)
+    assert len(results) == 0
 
 
 @pytest.mark.parametrize("kwargs", dataset_valid_params)
-def test_dataset_search_returns_valid_results(kwargs):
+def test_dataset_search_returns_valid_results(mock_env, kwargs):
     results = earthaccess.search_datasets(**kwargs)
-    assertions.assertIsInstance(results, list)
-    assertions.assertIsInstance(results[0], dict)
+    assert isinstance(results, list)
+    assert isinstance(results[0], dict)
 
 
 @pytest.mark.parametrize("kwargs", granules_valid_params)
-def test_granules_search_returns_valid_results(kwargs):
+def test_granules_search_returns_valid_results(mock_env, kwargs):
     results = earthaccess.search_data(count=10, **kwargs)
-    assertions.assertIsInstance(results, list)
-    assertions.assertTrue(len(results) <= 10)
+    assert isinstance(results, list)
+    assert len(results) <= 10
 
 
 @pytest.mark.parametrize("selection", [0, slice(None)])
 @pytest.mark.parametrize("use_url", [True, False])
-def test_download(tmp_path, selection, use_url):
+def test_download(mock_env, tmp_path, selection, use_url):
     results = earthaccess.search_data(
         count=2,
         short_name="ATL08",
@@ -80,15 +70,15 @@ def test_download(tmp_path, selection, use_url):
     )
     if use_url:
         # Download via file URL string instead of DataGranule object
-        results = [r.data_links(access="indirect") for r in results]
-        results = sum(results, start=[])  # flatten to a list of strings
+        results = [link for r in results for link in r.data_links(access="indirect")]
     result = results[selection]
     files = earthaccess.download(result, str(tmp_path))
-    assertions.assertIsInstance(files, list)
+    assert isinstance(files, list)
     assert all(Path(f).exists() for f in files)
 
 
-def test_auth_environ():
+def test_auth_environ(mock_env):
+    earthaccess.login(strategy="environment")
     environ = earthaccess.auth_environ()
     assert environ == {
         "EARTHDATA_USERNAME": os.environ["EARTHDATA_USERNAME"],

@@ -1,7 +1,10 @@
 name: Integration Tests
 
 on:
-  pull_request:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
   push:
     branches:
       - main
@@ -30,14 +33,33 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Fetch user permission
+        id: permission
+        uses: actions-cool/check-user-permission@v2
+        with:
+          require: write
+          username: ${{ github.triggering_actor }}
+      - name: Check user permission
+        if: steps.permission.outputs.require-result == 'false'
+        # If the triggering actor does not have write permission (i.e., this is a
+        # PR from a fork), then we exit, otherwise most of the integration tests will
+        # fail because they require access to secrets.  In this case, a maintainer
+        # will need to make sure the PR looks safe, and if so, manually re-run the
+        # failed actions.
+        run: |
+          echo "User ${{ github.triggering_actor }} does not have permission to run integration tests."
+          echo "Current permission level is ${{ steps.permission.outputs.user-permission }}."
+          echo "Job originally triggered by ${{ github.actor }}."
+          exit 1
+      - name: Checkout source
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Get full python version
         id: full-python-version
-        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+        run: echo version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))") >> $GITHUB_OUTPUT
       - name: Install poetry
         uses: abatilo/actions-poetry@v3
       - name: Configure poetry
@@ -56,12 +78,12 @@ jobs:
         run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
       - name: Install Dependencies
         if: ${{ !env.ACT }}
-        run: poetry install
+        run: poetry install --quiet --extras kerchunk
       - name: Install Dependencies
         if: ${{ env.ACT }}
         # When using `act` to run the workflow locally, the `poetry install` command
         # may fail due to network issues when running multiple Docker containers.
-        run: poetry install || poetry install || poetry install
+        run: poetry install --quiet --extras kerchunk || poetry install --quiet --extras kerchunk || poetry install --quiet --extras kerchunk
       - name: Test
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}

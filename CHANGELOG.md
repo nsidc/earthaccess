@@ -13,6 +13,9 @@
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))
   ([**@Sherwin-14**](https://github.com/Sherwin-14),
   [**@chuckwondo**](https://github.com/chuckwondo))
+- Use built-in `assert` statement in integration tests
+  ([#743](https://github.com/nsidc/earthaccess/issues/743))
+  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Added
 
@@ -25,12 +28,18 @@
   [**@chuckwondo**](https://github.com/chuckwondo),
   [**@mfisher87**](https://github.com/mfisher87),
   [**@betolink**](https://github.com/betolink))
+- Support use of `NETRC` environment variable to override default `.netrc` file
+  location ([#480](https://github.com/nsidc/earthaccess/issues/480))
+  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Fixed
 
 - Removed Broken Link "Introduction to NASA earthaccess"
   ([#779](https://github.com/nsidc/earthaccess/issues/779))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
+- Integration tests no longer clobber existing `.netrc` file
+  ([#806](https://github.com/nsidc/earthaccess/issues/806))
+  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 ## [0.10.0] 2024-07-19
 

@@ -21,7 +21,7 @@ from .api import (
 )
 from .auth import Auth
 from .kerchunk import consolidate_metadata
-from .search import DataCollections, DataGranules
+from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
 from .system import PROD, UAT
@@ -46,7 +46,9 @@ __all__ = [
     "download",
     "auth_environ",
     # search.py
+    "DataGranule",
     "DataGranules",
+    "DataCollection",
     "DataCollections",
     "DataServices",
     # auth.py

@@ -1,6 +1,4 @@
 import logging
-import os
-import unittest
 from pathlib import Path
 
 import earthaccess
@@ -11,29 +9,20 @@ kerchunk = pytest.importorskip("kerchunk")
 pytest.importorskip("dask")
 
 logger = logging.getLogger(__name__)
-assertions = unittest.TestCase("__init__")
-
-assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
-assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
-
-logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
-logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 
 @pytest.fixture(scope="module")
 def granules():
-    granules = earthaccess.search_data(
+    return earthaccess.search_data(
         count=2,
         short_name="SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205",
         cloud_hosted=True,
     )
-    return granules
 
 
 @pytest.mark.parametrize("protocol", ["", "file://"])
 def test_consolidate_metadata_outfile(tmp_path, granules, protocol):
     outfile = f"{protocol}{tmp_path / 'metadata.json'}"
-    assert not Path(outfile).exists()
     result = earthaccess.consolidate_metadata(
         granules,
         outfile=outfile,
@@ -44,7 +33,7 @@ def test_consolidate_metadata_outfile(tmp_path, granules, protocol):
     assert result == outfile
 
 
-def test_consolidate_metadata_memory(tmp_path, granules):
+def test_consolidate_metadata_memory(granules):
     result = earthaccess.consolidate_metadata(
         granules,
         access="indirect",
@@ -61,10 +50,7 @@ def test_consolidate_metadata(tmp_path, granules, output):
     expected = xr.open_mfdataset(earthaccess.open(granules))
 
     # Open with kerchunk consolidated metadata file
-    if output == "file":
-        kwargs = {"outfile": tmp_path / "metadata.json"}
-    else:
-        kwargs = {}
+    kwargs = {"outfile": tmp_path / "metadata.json"} if output == "file" else {}
     metadata = earthaccess.consolidate_metadata(
         granules, access="indirect", kerchunk_options={"concat_dims": "Time"}, **kwargs
     )
