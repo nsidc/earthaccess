@@ -82,6 +82,7 @@ nav:
       - "Using authenticated sessions to access data": "howto/edl.ipynb"
       - "Download data from on-prem location": "howto/onprem.md"
       - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
+      - "Search for services": "howto/search-services.md"
   - TUTORIALS:
       - "Accessing remote NASA data with fsspec": "tutorials/file-access.ipynb"
       - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
@@ -94,6 +95,7 @@ nav:
           - Collections:
               - "Collection Queries": "user-reference/collections/collections-query.md"
               - "Collection Results": "user-reference/collections/collections.md"
+              - "Collection Services": "user-reference/collections/collections-services.md"
           - Granules:
               - "Granule Queries": "user-reference/granules/granules-query.md"
               - "Granule Results": "user-reference/granules/granules.md"

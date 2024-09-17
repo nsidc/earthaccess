@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "earthaccess"
-version = "0.9.0"
+version = "0.10.0"
 repository = "https://github.com/nsidc/earthaccess"
 documentation = "https://earthaccess.readthedocs.io"
 description = "Client library for NASA Earthdata APIs"
@@ -110,7 +110,7 @@ build-backend = "poetry.core.masonry.api"
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-mypy_path = ["earthaccess", "tests", "stubs"]
+files = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
 # TODO: incrementally work towards strict mode (currently too many errors)
 # strict = true
@@ -142,6 +142,8 @@ stubPath = "./stubs"
 [tool.ruff]
 line-length = 88
 src = ["earthaccess", "stubs", "tests"]
+# HACK: Don't lint or format Jupyter Notebooks for now.
+extend-exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
 extend-select = ["I", "T20", "D", "G"]
@@ -155,9 +157,10 @@ convention = "google"
 combine-as-imports = true
 
 [tool.bumpversion]
-current_version = "0.9.0"
+current_version = "0.10.0"
 commit = false
 tag = false
+regex = true
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"

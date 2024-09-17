@@ -56,7 +56,7 @@ def redact_key_values(keys_to_redact):
 
 class TestResults(VCRTestCase):
     def _get_vcr(self, **kwargs):
-        myvcr = super(TestResults, self)._get_vcr(**kwargs)
+        myvcr = super()._get_vcr(**kwargs)
         myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
         myvcr.decode_compressed_response = True
         # Header matching is not set by default, we need that to test the
