@@ -33,6 +33,10 @@ environment for each run.
 
 ## Manual development environment setup
 
+While `nox` is the fastest way to get started, you may soon find that you need a full
+development environment, for example to test in a REPL. This development environment
+also includes `nox`.
+
 Create and activate a virtual environment with `venv`, which comes by default with
 Python, in the `.venv` directory:
 
