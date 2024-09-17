@@ -10,11 +10,13 @@ Please note that we have a [code of conduct](./code-of-conduct.md). Please follo
 
 ## First Steps to contribute
 
-- Read the documentation!
-- Fork this repo and set up development environment (see
-  [development environment documentation](./development.md) for details)
-- Run the unit tests successfully in `main` branch:
-    - `make test`
+First, read the documentation!
+
+When you feel comfortable, fork this repository and set up your development environment.
+Don't forget to run our suite of checks (see [development environment
+documentation](./development.md) for details)!
+
+## Sharing your work with us on GitHub
 
 From here, you might want to fix and issue or bug, or add a new feature.  Jump to the
 relevant section to proceed.
