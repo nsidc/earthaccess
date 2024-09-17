@@ -8,4 +8,4 @@ dependencies:
 
   - pip
   - pip:
-      - --editable .[dev,docs]
+      - --editable .[dev,test,docs]

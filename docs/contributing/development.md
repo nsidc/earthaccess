@@ -47,6 +47,15 @@ Install _earthaccess_ in editable mode with optional development dependencies:
 pip install --editable .[dev,test,docs]
 ```
 
+??? note "For conda users"
+
+    For your convenience, there is a `environment-dev.yml` file at the root of this
+    repository. You can create a dev environment quickly with:
+
+    ```bash
+    conda env create --file environment-dev.yml
+    ```
+
 ## Managing Dependencies
 
 If you need to add a new dependency, edit `pyproject.toml` and insert the dependency in
