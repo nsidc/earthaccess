@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
 [project]
 name = "earthaccess"
 version = "0.10.0"
@@ -107,10 +111,6 @@ docs = [
   "lxml-html-clean >=0.1.1",
 ]
 
-
-[build-system]
-requires = ["hatchling", "hatch-vcs"]
-build-backend = "hatchling.build"
 
 [tool.pytest]
 filterwarnings = ["error::UserWarning"]
