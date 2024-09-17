@@ -35,9 +35,6 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Checkout source
-        if: ${{ github.event_name != 'pull_request_target' }}
-        uses: actions/checkout@v4
       - name: Fetch user permission
         if: ${{ github.event_name == 'pull_request_target' }}
         id: permission
@@ -57,17 +54,14 @@ jobs:
           echo "A maintainer must perform a security review and re-run this build, if the code is safe."
           exit 1
       - name: Checkout source
-        if: ${{ github.event_name == 'pull_request_target' }}
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Get full python version
         id: full-python-version
-        run: echo version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))") >> $GITHUB_OUTPUT
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Install poetry
         uses: abatilo/actions-poetry@v3
       - name: Configure poetry
