@@ -48,7 +48,7 @@ source .venv/bin/activate
 Install _earthaccess_ in editable mode with optional development dependencies:
 
 ```bash
-pip install --editable .[dev,test,docs]
+pip install --editable ".[dev,test,docs]"
 ```
 
 ??? note "For conda users"
