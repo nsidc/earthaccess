@@ -1,0 +1,23 @@
+name: Install earthaccess Python package
+description: Install earthaccess Python package and testing dependencies
+
+inputs:
+  python-version:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+
+    - name: Display full python version
+      shell: bash
+      id: full-python-version
+      run: echo "{version}=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
+
+    - name: Install package and test dependencies
+      shell: bash
+      run: pip install .[test]

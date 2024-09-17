@@ -2,12 +2,10 @@ name: Unit Tests
 
 on:
   push:
+    branches:
+      - main
   pull_request:
     types: [opened, synchronize]
-
-defaults:
-  run:
-    shell: bash -l {0}
 
 jobs:
   unit-tests:
@@ -19,45 +17,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+
+      - uses: ./.github/actions/install-pkg
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Get full python version
-        id: full-python-version
-        run: echo "version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
-      - name: Install poetry
-        uses: abatilo/actions-poetry@v3
-      - name: Configure poetry
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-          poetry self add setuptools
-      - name: Set up mypy cache
-        uses: actions/cache@v4
-        id: mypy-cache
-        with:
-          path: .mypy_cache
-          key: mypy-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
-      - name: Set up cache
-        uses: actions/cache@v4
-        id: cache
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
-      - name: Ensure cache is healthy
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: poetry run pip --version >/dev/null 2>&1 || rm -rf .venv
-      - name: Install Dependencies
-        if: ${{ !env.ACT }}
-        run: poetry install --quiet
-      - name: Install Dependencies
-        if: ${{ env.ACT }}
-        # When using `act` to run the workflow locally, the `poetry install` command
-        # may fail due to network issues when running multiple Docker containers.
-        run: poetry install --quiet || poetry install --quiet || poetry install --quiet
+
+      - name: Typecheck
+        run: mypy
+
       - name: Test
-        run: poetry run bash scripts/test.sh
+        run: pytest tests/unit --cov=earthaccess --cov=tests --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
+
       - name: Upload coverage
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
