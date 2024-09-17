@@ -72,6 +72,7 @@ nav:
       - "Authentication": "user_guide/authenticate.md"
       - "Search": "user_guide/search.md"
       - "Access": "user_guide/access.md"
+      - "Backwards Compatibility": "user_guide/backwards-compatibility.md"
   - HOW-TO:
       - "Authenticate with Earthdata Login": "howto/authenticate.md"
       - "Search NASA datasets using filters": "howto/search-collections.md"
