@@ -19,7 +19,7 @@ We will follow SemVer. All version changes will consider [this](https://example.
 
 ### Release Communication
 
-1. We will announce releases on the following channels: ___
+1. We will announce releases on the following channel: [Github Releases](https://github.com/nsidc/earthaccess/releases)
 2. Release announcements will include a prominent notification of breaking changes, including migration instructions.
 
 ### CHANGELOG
