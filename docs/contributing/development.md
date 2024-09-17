@@ -53,11 +53,11 @@ pip install --editable .[dev,test,docs]
 
 ??? note "For conda users"
 
-    For your convenience, there is a `environment-dev.yml` file at the root of this
+    For your convenience, there is a `environment.yml` file at the root of this
     repository. You can create a dev environment quickly with:
 
     ```bash
-    conda env create --file environment-dev.yml
+    conda env create --file environment.yml
     ```
 
 ## Managing Dependencies
