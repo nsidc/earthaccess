@@ -31,6 +31,9 @@
 - Removed Broken Link "Introduction to NASA earthaccess"
   ([#779](https://github.com/nsidc/earthaccess/issues/779))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
+- Restore automation for tidying notebooks used in documentation
+  ([#788](https://github.com/nsidc/earthaccess/issues/788))
+  ([**@itcarroll**](https://github.com/itcarroll))
 
 ## [0.10.0] 2024-07-19
 
