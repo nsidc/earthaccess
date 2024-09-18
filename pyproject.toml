@@ -79,38 +79,38 @@ test = [
   "vcrpy >=6.0.1",
 ]
 docs = [
-  "cftime >=1.6.4",
-  "dask >=2024.9.0",
-  "jupyterlab >=3",
-  "ipywidgets >=7.7.0",
-  "widgetsnbextension >=3.6.0",
-  # Prevent install of 1.6.0 because the module mkdocs.tests
-  # is no longer exported, which causes mkdocs-jupyter to
-  # break with a ModuleNotFoundError.
-  # for notebook integrations and documentation examples
-  "mkdocs >=1.2,!=1.6.0",
-  "mkdocs-material >=7.1,<10.0",
-  "mkdocs-redirects >=1.2.1",
-  "markdown-callouts >=0.2.0",
-  "markdown-include >=0.6",
-  "mkdocs-jupyter >=0.19.0",
-  "mkdocstrings[python] >=0.19.0",
-  "pymdown-extensions >=9.2",
-  "pygments >=2.11.1",
-  "xarray >=2023.01",
-  "matplotlib >=3.3",
-  "h5netcdf >=0.11",
-  "pyproj >=3.5.0; python_version < '3.12'",
-  "pyproj >=3.6.1; python_version >= '3.12'",
-  # The following error occurs when building the docs, so we must explicitly
-  # include lxml-html-clean as a dev dependency until mkdocs-jupyter is updated:
-  #
-  #   ImportError: lxml.html.clean module is now a separate project lxml_html_clean.
-  #   Install lxml[html_clean] or lxml_html_clean directly.
-  #
-  # See https://github.com/danielfrg/mkdocs-jupyter/issues/200
-  # See https://github.com/danielfrg/mkdocs-jupyter/issues/197
-  "lxml-html-clean >=0.1.1",
+    "jupyterlab >=3",
+    "ipywidgets >=7.7.0",
+    "widgetsnbextension >=3.6.0",
+    # Prevent install of 1.6.0 because the module mkdocs.tests
+    # is no longer exported, which causes mkdocs-jupyter to
+    # break with a ModuleNotFoundError.
+    # for notebook integrations and documentation examples
+    "mkdocs >=1.2,!=1.6.0",
+    "mkdocs-material >=7.1,<10.0",
+    "mkdocs-redirects >=1.2.1",
+    "markdown-callouts >=0.2.0",
+    "markdown-include >=0.6",
+    "mkdocs-jupyter >=0.19.0",
+    "mkdocstrings[python] >=0.19.0",
+    "pymdown-extensions >=9.2",
+    "pygments >=2.11.1",
+    "xarray >=2023.01",
+    "matplotlib >=3.3",
+    "h5netcdf >=0.11",
+    "pyproj >=3.5.0; python_version < '3.12'",
+    "pyproj >=3.6.1; python_version >= '3.12'",
+    # The following error occurs when building the docs, so we must explicitly
+    # include lxml-html-clean as a dev dependency until mkdocs-jupyter is updated:
+    #
+    #   ImportError: lxml.html.clean module is now a separate project lxml_html_clean.
+    #   Install lxml[html_clean] or lxml_html_clean directly.
+    #
+    # See https://github.com/danielfrg/mkdocs-jupyter/issues/200
+    # See https://github.com/danielfrg/mkdocs-jupyter/issues/197
+    "lxml-html-clean >=0.1.1",
+    "dask>=2024.8.0",
+    "cftime>=1.6.4",
 ]
 
 
