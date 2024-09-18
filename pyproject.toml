@@ -157,12 +157,15 @@ src = ["earthaccess", "stubs", "tests"]
 extend-select = ["I", "T20", "D", "G"]
 ignore = ["D1", "D205", "D401", "D417", "G004"]
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
-
 [tool.ruff.lint.isort]
 combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+# Allow `print` and `pprint` in notebooks
+"*.ipynb" = ["T201", "T203"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.bumpversion]
 current_version = "0.10.0"
