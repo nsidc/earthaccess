@@ -8,7 +8,7 @@ import nox
 DIR = Path(__file__).parent.resolve()
 
 nox.needs_version = ">=2024.3.2"
-nox.options.sessions = ["typecheck", "test_unit"]
+nox.options.sessions = ["typecheck", "tests"]
 nox.options.default_venv_backend = "uv|virtualenv"
 
 
@@ -20,7 +20,7 @@ def typecheck(session: nox.Session) -> None:
 
 
 @nox.session
-def test_unit(session: nox.Session) -> None:
+def tests(session: nox.Session) -> None:
     """Run the unit tests."""
     session.install("--editable", ".[test]")
     session.run("pytest", "tests/unit", *session.posargs)
