@@ -79,6 +79,8 @@ test = [
   "vcrpy >=6.0.1",
 ]
 docs = [
+  "cftime >=1.6.4",
+  "dask >=2024.9.0",
   "jupyterlab >=3",
   "ipywidgets >=7.7.0",
   "widgetsnbextension >=3.6.0",
@@ -150,8 +152,6 @@ stubPath = "./stubs"
 [tool.ruff]
 line-length = 88
 src = ["earthaccess", "stubs", "tests"]
-# HACK: Don't lint or format Jupyter Notebooks for now.
-extend-exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
 extend-select = ["I", "T20", "D", "G"]
