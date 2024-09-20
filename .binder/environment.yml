@@ -2,23 +2,18 @@ name: earthaccess
 channels:
   - conda-forge
 dependencies:
-  - python=3.9
-  - xarray>=0.19
-  - dask>=2022.1
-  - rioxarray>=0.3
-  - matplotlib-base>=3.3
-  - cartopy>=0.18.0
-  - ipyleaflet>=0.15
-  - netcdf4>=1.5
-  - h5netcdf>=0.11
-  - h5py>=3.2
-  - geopandas>=0.9
-  - zarr>=2.9.5
-  - jupyterlab>=3
-  - hvplot
-  - holoviews
-  - panel
+  - python
+  - dask>=2022.1  # kerchunk
+  - h5netcdf>=0.11  # SSL notebook
+  - h5py>=3.2  # in lock but not anywhere else
+  - holoviews  # emit-earthaccess notebook
+  - hvplot  # emit-earthaccess notebook
+  - matplotlib-base>=3.3  # SSL notebook, docs
+  - netcdf4>=1.5  # h5netcdf used in docs
+  - panel  # emit-earthaccess notebook
+  - xarray>=0.19    # EDL, SSL notebooks, docs
+  - zarr>=2.9.5  # in lock but not anywhere else
 
   - pip
   - pip:
-      - "."
+      - ".[notebooks]"
