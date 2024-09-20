@@ -35,7 +35,8 @@ created the PR as a non-draft, don't worry, you can still change it to a draft u
       [GitHub docs - Linking a pull request to an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 - [ ] Update `CHANGELOG.md` with details about your change in a section titled
       `## Unreleased`. If such a section does not exist, please create one. Follow
-      [Common Changelog](https://common-changelog.org/) for your additions.[Click on this to see an example PR](https://github.com/nsidc/earthaccess/pull/763#event-14296896566)
+      [Common Changelog](https://common-changelog.org/) for your additions.
+      Example PRs: [#763](https://github.com/nsidc/earthaccess/pull/763)
 - [ ] Update the documentation and/or the `README.md` with details of changes to the
       earthaccess interface, if any. Consider new environment variables, function names,
       decorators, etc.
