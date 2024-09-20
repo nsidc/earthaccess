@@ -26,6 +26,13 @@
   [**@mfisher87**](https://github.com/mfisher87),
   [**@betolink**](https://github.com/betolink))
 
+- Added example PR links to pull request template
+  ([#756](https://github.com/nsidc/earthaccess/issues/756))
+  [**@Sherwin-14**](https://github.com/betolink),
+  [**@mfisher87**](https://github.com/mfisher87)
+
+
+
 ### Fixed
 
 - Removed Broken Link "Introduction to NASA earthaccess"
