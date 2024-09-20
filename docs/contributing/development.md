@@ -33,19 +33,20 @@ environment for each run.
 
 ## Manual development environment setup
 
-While `nox` is the fastest way to get started, you may soon find that you need a full
-development environment, for example to test in a REPL. This development environment
-also includes `nox`.
+While `nox` is the fastest way to get started, you will likely need a full
+development environment for making code contributions, for example to test in a
+REPL, or to resolve references in your favorite IDE.  This development
+environment also includes `nox`.
 
-Create and activate a virtual environment with `venv`, which comes by default with
-Python, in the `.venv` directory:
+Create and activate a virtual environment with `venv`, which comes by default
+with Python, in the `.venv` directory:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-Install _earthaccess_ in editable mode with optional development dependencies:
+Install `earthaccess` in editable mode with optional development dependencies:
 
 ```bash
 pip install --editable ".[dev,test,docs]"
@@ -53,8 +54,8 @@ pip install --editable ".[dev,test,docs]"
 
 ??? note "For conda users"
 
-    For your convenience, there is a `environment.yml` file at the root of this
-    repository. You can create a dev environment quickly with:
+    For your convenience, there is an `environment.yml` file at the root of this
+    repository, allowing you to create a conda environment quickly, as follows:
 
     ```bash
     conda env create --file environment.yml
@@ -62,6 +63,6 @@ pip install --editable ".[dev,test,docs]"
 
 ## Managing Dependencies
 
-If you need to add a new dependency, edit `pyproject.toml` and insert the dependency in
-the correct location (either in the `dependencies` array or
-`[project.optional-dependencies]`.
+If you need to add a new dependency, edit `pyproject.toml` and insert the
+dependency in the correct location (either in the `dependencies` array or under
+`[project.optional-dependencies]`).

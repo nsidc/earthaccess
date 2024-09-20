@@ -9,3 +9,7 @@ dependencies:
   - pip
   - pip:
       - --editable .[dev,test,docs]
+variables:
+  # Allow pip installs when conda environment is active
+  PIP_REQUIRE_VENV: 0
+  PIP_REQUIRE_VIRTUALENV: 0
