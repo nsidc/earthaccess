@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Changed
+
 - Automatically refresh EDL token and deprecate the `Auth.refresh_tokens` method
   with no replacement, as there is no longer a need to explicitly refresh
   ([#484](https://github.com/nsidc/earthaccess/issues/484))
@@ -30,8 +31,6 @@
   [**@Sherwin-14**](https://github.com/betolink),
   [**@mfisher87**](https://github.com/mfisher87)
 
-
-
 ### Fixed
 
 - Removed Broken Link "Introduction to NASA earthaccess"
@@ -39,6 +38,7 @@
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
 
 ### Removed
+
 - `binder/` directory as we no longer need a special [binder](https://mybinder.org)
   environment with the top-level `environment.yml` introduce in
   [#733](https://github.com/nsidc/earthaccess/issues/733)
