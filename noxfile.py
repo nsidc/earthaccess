@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import shutil
 from pathlib import Path
 
@@ -24,6 +25,21 @@ def tests(session: nox.Session) -> None:
     """Run the unit tests."""
     session.install("--editable", ".[test]")
     session.run("pytest", "tests/unit", *session.posargs)
+
+
+@nox.session(name="integration-tests")
+def integration_tests(session: nox.Session) -> None:
+    """Run the integration tests."""
+    session.install("--editable", ".[test]")
+    session.run(
+        "scripts/integration-test.sh",
+        *session.posargs,
+        env=dict(
+            EARTHDATA_USERNAME=os.environ["EARTHDATA_USERNAME"],
+            EARTHDATA_PASSWORD=os.environ["EARTHDATA_PASSWORD"],
+        ),
+        external=True,
+    )
 
 
 @nox.session
