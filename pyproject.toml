@@ -10,7 +10,7 @@ authors = [
   {name = "earthaccess contributors"}
 ]
 maintainers = [
-    {name = "Luis Lopez", email = "betolin@gmail.com"},
+    {name = "Luis Lopez", email = "betolink@gmail.com"},
     {name = "Joseph H. Kennedy", email = "jhkennedy@alaska.edu"},
     {name = "James Bourbeau", email = "james@coiled.io"},
     {name = "Matt Fisher", email = "mfisher87@gmail.com"},
