@@ -47,6 +47,7 @@ jobs:
 
     steps:
       - name: Fetch user permission
+        if: github.event_name == 'pull_request_target'
         id: permission
         uses: actions-cool/check-user-permission@v2
         with:
@@ -54,7 +55,11 @@ jobs:
           username: ${{ github.triggering_actor }}
 
       - name: Check user permission
-        if: ${{ steps.permission.outputs.require-result == 'false' }}
+        # The name of the output require-result is a bit confusing, but when its value
+        # is 'false', it means that the triggering actor does NOT have the required
+        # permission.
+        if: github.event_name == 'pull_request_target' && steps.permission.outputs.require-result == 'false'
+
         # If the triggering actor does not have write permission (i.e., this is a
         # PR from a fork), then we exit, otherwise most of the integration tests will
         # fail because they require access to secrets.  In this case, a maintainer
