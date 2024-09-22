@@ -9,7 +9,7 @@ import s3fs
 logger = logging.getLogger(__name__)
 
 
-def test_auth_can_read_earthdata_env_variables(mock_env):
+def test_auth_can_read_earthdata_env_variables():
     auth = earthaccess.login(strategy="environment")
     logger.info(f"Current username: {auth.username}")
     logger.info(f"earthaccess version: {earthaccess.__version__}")
@@ -29,14 +29,14 @@ def test_auth_throws_exception_if_netrc_is_not_present(mock_missing_netrc):
         earthaccess.login(strategy="netrc")
 
 
-def test_auth_populates_attrs(mock_env):
+def test_auth_populates_attrs():
     auth = earthaccess.login(strategy="environment")
     assert isinstance(auth, earthaccess.Auth)
     assert isinstance(earthaccess.__auth__, earthaccess.Auth)
     assert earthaccess.__auth__.authenticated
 
 
-def test_auth_can_create_authenticated_requests_sessions(mock_env):
+def test_auth_can_create_authenticated_requests_sessions():
     session = earthaccess.get_requests_https_session()
     assert "Authorization" in session.headers
     assert "Bearer" in session.headers["Authorization"]  # type: ignore
@@ -45,7 +45,7 @@ def test_auth_can_create_authenticated_requests_sessions(mock_env):
 @pytest.mark.parametrize(
     "daac", [daac for daac in earthaccess.daac.DAACS if daac["s3-credentials"]]
 )
-def test_auth_can_fetch_s3_credentials(mock_env, daac):
+def test_auth_can_fetch_s3_credentials(daac):
     auth = earthaccess.login(strategy="environment")
     assert auth.authenticated
 
@@ -59,7 +59,7 @@ def test_auth_can_fetch_s3_credentials(mock_env, daac):
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
-def test_get_s3_credentials_lowercase_location(mock_env, location):
+def test_get_s3_credentials_lowercase_location(location):
     earthaccess.login(strategy="environment")
     creds = earthaccess.get_s3_credentials(**location)
 
@@ -71,7 +71,7 @@ def test_get_s3_credentials_lowercase_location(mock_env, location):
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
-def test_get_s3_filesystem_lowercase_location(mock_env, location):
+def test_get_s3_filesystem_lowercase_location(location):
     earthaccess.login(strategy="environment")
     fs = earthaccess.get_s3_filesystem(**location)
 

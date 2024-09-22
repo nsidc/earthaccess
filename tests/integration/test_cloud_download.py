@@ -77,7 +77,7 @@ def get_sample_granules(granules, sample_size, max_granule_size):
 
 
 @pytest.mark.parametrize("daac", daac_list)
-def test_earthaccess_can_download_cloud_collection_granules(mock_env, tmp_path, daac):
+def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
     """Tests that we can download cloud collections using HTTPS links."""
     daac_shortname = daac["short_name"]
     collections_count = daac["collections_count"]
@@ -139,7 +139,7 @@ def test_earthaccess_can_download_cloud_collection_granules(mock_env, tmp_path, 
             )
 
 
-def test_multi_file_granule(mock_env, tmp_path):
+def test_multi_file_granule(tmp_path):
     # Ensure granules that contain multiple files are handled correctly
     granules = earthaccess.search_data(short_name="HLSL30", count=1)
     assert len(granules) == 1

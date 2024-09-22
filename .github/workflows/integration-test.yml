@@ -83,8 +83,6 @@ jobs:
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
-          EARTHACCESS_TEST_USERNAME: ${{ secrets.EDL_USERNAME }}
-          EARTHACCESS_TEST_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: ./scripts/integration-test.sh
 
       - name: Upload coverage report

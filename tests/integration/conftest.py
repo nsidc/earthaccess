@@ -36,14 +36,6 @@ def pytest_sessionfinish(session, exitstatus):
 
 
 @pytest.fixture
-def mock_env(monkeypatch):
-    earthaccess.__auth__ = earthaccess.Auth()
-    # the original comes from github secrets
-    monkeypatch.setenv("EARTHDATA_USERNAME", os.getenv("EARTHACCESS_TEST_USERNAME", ""))
-    monkeypatch.setenv("EARTHDATA_PASSWORD", os.getenv("EARTHACCESS_TEST_PASSWORD", ""))
-
-
-@pytest.fixture
 def mock_missing_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     netrc_path = tmp_path / ".netrc"
     monkeypatch.setenv("NETRC", str(netrc_path))
@@ -51,12 +43,14 @@ def mock_missing_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("EARTHDATA_PASSWORD")
     # Currently, due to there being only a single, global, module-level auth
     # value, tests using different auth strategies interfere with each other,
-    # so here we are deleting the auth attribute so that it doesn't interfere.
-    monkeypatch.delattr(earthaccess, "__auth__", raising=False)
+    # so here we are monkeypatching a new, unauthenticated Auth object.
+    auth = earthaccess.Auth()
+    monkeypatch.setattr(earthaccess, "_auth", auth)
+    monkeypatch.setattr(earthaccess, "__auth__", auth)
 
 
 @pytest.fixture
-def mock_netrc(mock_env, tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
+def mock_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     netrc = tmp_path / ".netrc"
     monkeypatch.setenv("NETRC", str(netrc))
 

@@ -32,28 +32,28 @@ granules_valid_params = [
 ]
 
 
-def test_auth_returns_valid_auth_class(mock_env):
+def test_auth_returns_valid_auth_class():
     auth = earthaccess.login(strategy="environment")
     assert isinstance(auth, earthaccess.Auth)
     assert isinstance(earthaccess.__auth__, earthaccess.Auth)
     assert earthaccess.__auth__.authenticated
 
 
-def test_dataset_search_returns_none_with_no_parameters(mock_env):
+def test_dataset_search_returns_none_with_no_parameters():
     results = earthaccess.search_datasets()
     assert isinstance(results, list)
     assert len(results) == 0
 
 
 @pytest.mark.parametrize("kwargs", dataset_valid_params)
-def test_dataset_search_returns_valid_results(mock_env, kwargs):
+def test_dataset_search_returns_valid_results(kwargs):
     results = earthaccess.search_datasets(**kwargs)
     assert isinstance(results, list)
     assert isinstance(results[0], dict)
 
 
 @pytest.mark.parametrize("kwargs", granules_valid_params)
-def test_granules_search_returns_valid_results(mock_env, kwargs):
+def test_granules_search_returns_valid_results(kwargs):
     results = earthaccess.search_data(count=10, **kwargs)
     assert isinstance(results, list)
     assert len(results) <= 10
@@ -61,7 +61,7 @@ def test_granules_search_returns_valid_results(mock_env, kwargs):
 
 @pytest.mark.parametrize("selection", [0, slice(None)])
 @pytest.mark.parametrize("use_url", [True, False])
-def test_download(mock_env, tmp_path, selection, use_url):
+def test_download(tmp_path, selection, use_url):
     results = earthaccess.search_data(
         count=2,
         short_name="ATL08",
@@ -77,7 +77,7 @@ def test_download(mock_env, tmp_path, selection, use_url):
     assert all(Path(f).exists() for f in files)
 
 
-def test_auth_environ(mock_env):
+def test_auth_environ():
     earthaccess.login(strategy="environment")
     environ = earthaccess.auth_environ()
     assert environ == {

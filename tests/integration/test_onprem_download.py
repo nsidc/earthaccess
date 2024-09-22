@@ -78,7 +78,7 @@ def supported_collection(data_links):
 
 
 @pytest.mark.parametrize("daac", daacs_list)
-def test_earthaccess_can_download_onprem_collection_granules(mock_env, tmp_path, daac):
+def test_earthaccess_can_download_onprem_collection_granules(tmp_path, daac):
     """Tests that we can download cloud collections using HTTPS links."""
     daac_shortname = daac["short_name"]
     collections_count = daac["collections_count"]
