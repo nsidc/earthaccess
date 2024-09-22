@@ -5,9 +5,6 @@ import earthaccess
 import pytest
 from fsspec.core import strip_protocol
 
-kerchunk = pytest.importorskip("kerchunk")
-pytest.importorskip("dask")
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,7 +42,12 @@ def test_consolidate_metadata_memory(granules):
 
 @pytest.mark.parametrize("output", ["file", "memory"])
 def test_consolidate_metadata(tmp_path, granules, output):
-    xr = pytest.importorskip("xarray")
+    # We import here because xarray is installed only when the kerchunk extra is
+    # installed, and when type checking is run, kerchunk (and thus xarray) is
+    # not installed, so mypy barfs when this is a top-level import.  Further,
+    # mypy complains even when imported here, but here we can mark it to ignore.
+    import xarray as xr  # type: ignore
+
     # Open directly with `earthaccess.open`
     expected = xr.open_mfdataset(earthaccess.open(granules))
 
