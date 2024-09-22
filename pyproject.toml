@@ -47,10 +47,6 @@ dependencies = [
   "multimethod >=1.8",
   "importlib-resources >=6.3.2",
   "typing_extensions >=4.10.0",
-  # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12
-  # support
-  "numpy >=1.24.0; python_version < '3.12'",
-  "numpy >=1.26.0; python_version >= '3.12'",
 ]
 
 [project.urls]
@@ -63,6 +59,12 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 kerchunk = [
   "kerchunk",
   "dask",
+  "h5py",
+  "h5netcdf",
+  "xarray",
+  # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12
+  "numpy >=1.24.0; python_version < '3.12'",
+  "numpy >=1.26.0; python_version >= '3.12'",
 ]
 dev = [
   "bump-my-version >=0.10.0",
