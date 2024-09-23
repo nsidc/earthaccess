@@ -39,8 +39,8 @@
 
 ### Removed
 
-- `binder/` directory as we no longer need a special [binder](https://mybinder.org)
-  environment with the top-level `environment.yml` introduce in
+- Remove `binder/` directory, as we no longer need a special [binder](https://mybinder.org)
+  environment with the top-level `environment.yml` introduced in
   [#733](https://github.com/nsidc/earthaccess/issues/733)
   ([@jhkennedy](https://github.com/jhkennedy))
 
