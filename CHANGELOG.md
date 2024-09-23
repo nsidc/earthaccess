@@ -31,13 +31,18 @@
   [**@Sherwin-14**](https://github.com/betolink),
   [**@mfisher87**](https://github.com/mfisher87)
 
-
-
 ### Fixed
 
 - Removed Broken Link "Introduction to NASA earthaccess"
   ([#779](https://github.com/nsidc/earthaccess/issues/779))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
+
+### Removed
+
+- Remove `binder/` directory, as we no longer need a special [binder](https://mybinder.org)
+  environment with the top-level `environment.yml` introduced in
+  [#733](https://github.com/nsidc/earthaccess/issues/733)
+  ([@jhkennedy](https://github.com/jhkennedy))
 
 ## [0.10.0] 2024-07-19
 
