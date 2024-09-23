@@ -30,7 +30,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version-file: pyproject.toml
+          python-version: 3.9
 
       - name: Install minimum-compatible dependencies
         run: uv sync --resolution lowest-direct --extra test

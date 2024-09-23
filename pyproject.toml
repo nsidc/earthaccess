@@ -59,7 +59,7 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 kerchunk = [
   "kerchunk",
   "dask",
-  "h5py",
+  "h5py >=3.0",
   "h5netcdf",
   "xarray",
   # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12
