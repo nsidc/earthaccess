@@ -36,6 +36,9 @@
 - Removed Broken Link "Introduction to NASA earthaccess"
   ([#779](https://github.com/nsidc/earthaccess/issues/779))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
+* Remove the base class on `EarthAccessFile` to fix method resolution
+  ([#610](https://github.com/nsidc/earthaccess/issues/610))
+  ([**@itcarroll**](https://github.com/itcarroll))
 
 ### Removed
 
