@@ -1,14 +1,13 @@
-name: earthaccess-dev
+name: earthaccess
 channels:
   - conda-forge
 dependencies:
   # This environment bootstraps pip, the actual dev environment
   # is installed and managed with pip
-  - python=3.10
-
+  - python
   - pip
   - pip:
-      - --editable .[dev,test,docs]
+      - --editable ".[dev,test,docs]"
 variables:
   # Allow pip installs when conda environment is active
   PIP_REQUIRE_VENV: 0

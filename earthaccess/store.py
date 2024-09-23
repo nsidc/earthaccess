@@ -26,8 +26,22 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
-    def __init__(self, f: fsspec.AbstractFileSystem, granule: DataGranule) -> None:
+class EarthAccessFile:
+    """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
+
+    def __init__(
+        self, f: fsspec.spec.AbstractBufferedFile, granule: DataGranule
+    ) -> None:
+        """EarthAccessFile connects an Earthdata search result with an open file-like object.
+
+        No methods exist on the class, which passes all attribute and method calls
+        directly to the file-like object given during initialization. An instance of
+        this class can be treated like that file-like object itself.
+
+        Parameters:
+            f: a file-like object
+            granule: a granule search result
+        """
         self.f = f
         self.granule = granule
 
@@ -43,14 +57,14 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         )
 
     def __repr__(self) -> str:
-        return str(self.f)
+        return repr(self.f)
 
 
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
-) -> List[fsspec.AbstractFileSystem]:
+) -> List[EarthAccessFile]:
     def multi_thread_open(data: tuple) -> EarthAccessFile:
         urls, granule = data
         return EarthAccessFile(fs.open(urls), granule)
@@ -322,17 +336,17 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-    ) -> List[Any]:
-        """Returns a list of fsspec file-like objects that can be used to access files
+    ) -> List[EarthAccessFile]:
+        """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or list of URLs,
-                e.g. s3://some-granule
-            provider: an option
+            granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
+                If a list of URLs is passed, we need to specify the data provider.
+            provider: e.g. POCLOUD, NSIDC_CPRD, etc.
 
         Returns:
-            A list of s3fs "file pointers" to s3 files.
+            A list of "file pointers" to remote (i.e. s3 or https) files.
         """
         if len(granules):
             return self._open(granules, provider)
@@ -344,17 +358,6 @@ class Store(object):
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
     ) -> List[Any]:
-        """Returns a list of fsspec file-like objects that can be used to access files
-        hosted on S3 or HTTPS by third party libraries like xarray.
-
-        Parameters:
-            granules: a list of granules(DataGranule) instances or list of URLs,
-                e.g. s3://some-granule
-            provider: an option
-
-        Returns:
-            A list of s3fs "file pointers" to s3 files.
-        """
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
     @_open.register
