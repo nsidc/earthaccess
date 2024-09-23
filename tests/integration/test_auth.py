@@ -6,6 +6,7 @@ import unittest
 
 import earthaccess
 import pytest
+import requests
 import s3fs
 
 logger = logging.getLogger(__name__)
@@ -79,21 +80,18 @@ def test_auth_can_create_authenticated_requests_sessions():
     assertions.assertTrue("Bearer" in session.headers["Authorization"])
 
 
-def test_auth_can_fetch_s3_credentials():
+@pytest.mark.parametrize("daac", earthaccess.daac.DAACS)
+def test_auth_can_fetch_s3_credentials(daac):
     activate_environment()
     auth = earthaccess.login(strategy="environment")
-    assertions.assertTrue(auth.authenticated)
-    for daac in earthaccess.daac.DAACS:
-        if len(daac["s3-credentials"]) > 0:
-            try:
-                logger.info(f"Testing S3 credentials for {daac['short-name']}")
-                credentials = earthaccess.get_s3_credentials(daac["short-name"])
-                assertions.assertIsInstance(credentials, dict)
-                assertions.assertTrue("accessKeyId" in credentials)
-            except Exception as e:
-                logger.error(
-                    f"An error occured while trying to fetch S3 credentials for {daac['short-name']}: {e}"
-                )
+    assert auth.authenticated
+    try:
+        credentials = earthaccess.get_s3_credentials(daac["short-name"])
+    except requests.RequestException as e:
+        logger.error(f"Failed to fetch S3 credentials: {e}")
+    else:
+        assert isinstance(credentials, dict)
+        assert "accessKeyId" in credentials
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
@@ -109,9 +107,9 @@ def test_get_s3_credentials_lowercase_location(location):
 
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
-def test_get_s3fs_session_lowercase_location(location):
+def test_get_s3_filesystem_lowercase_location(location):
     activate_environment()
     earthaccess.login(strategy="environment")
-    fs = earthaccess.get_s3fs_session(**location)
+    fs = earthaccess.get_s3_filesystem(**location)
     assert isinstance(fs, s3fs.S3FileSystem)
     assert all(fs.storage_options[key] for key in ["key", "secret", "token"])

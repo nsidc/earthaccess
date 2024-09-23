@@ -44,15 +44,9 @@ main: This is the main branch, which is consistently tested and prepared for rel
 
 ## Continuous Integration & Delivery
 
-The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`. Here we briefly summarize the functions of the files in the `./ci/` directory.
+The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`.
 
-`environment-dev.yml` - The environment configuration file specifies dependencies for Python development.
-
-`environment-mindeps.yaml`- Specifies an environment with the minimum supported dependency versions to detect backwards-incompatible code.
 
 ## Continuous Documentation
 
 [ReadTheDocs](https://readthedocs.org/projects/earthaccess/) is used to generate and host [our documentation website](https://earthaccess.readthedocs.io/) as well as the preview for documentation changes made in pull requests. This service uses a configuration file in the root of the project, `.readthedocs.yml`.
-
-
-

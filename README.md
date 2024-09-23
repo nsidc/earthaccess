@@ -54,12 +54,35 @@ To install `earthaccess` go to your terminal and install it using `pip`:
 pip install earthaccess
 ```
 
-Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start/) to learn how to install and see a simple example of using `earthaccess`.
+
+### How to access NASA Earth Science data
+
+With _earthaccess_, data is 3 steps away!
+
+```python
+import earthaccess
+
+# 1. Login
+earthaccess.login()
+
+# 2. Search
+results = earthaccess.search_data(
+    short_name='ATL06',  # ATLAS/ICESat-2 L3A Land Ice Height
+    bounding_box=(-10, 20, 10, 50),  # Only include files in area of interest...
+    temporal=("1999-02", "2019-03"),  # ...and time period of interest.
+    count=10
+)
+
+# 3. Access
+files = earthaccess.download(results, "/tmp/my-download-folder")
+```
+
+Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start/) for more details.
 
 
 ## Compatibility
 
-Only **Python 3.8+** is supported.
+The _minimum_ supported Python version is **3.9**.
 
 
 ## How to Contribute to `earthaccess`

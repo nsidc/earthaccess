@@ -10,24 +10,12 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.10"
-  jobs:
-    post_create_environment:
-      # Install poetry
-      - asdf plugin add poetry
-      # HACK: As of ~2024-05-07, poetry "latest" is not installable with
-      # asdf ("Version 1.8.3 does not exist") because the latest tagged version
-      # of poetry is not yet released. Should we avoid using "latest" from here
-      # on, or change it back once 1.8.3 is released?
-      - asdf install poetry 1.8.2
-      - asdf global poetry 1.8.2
-      # Tell poetry to not use a virtual environment
-      - poetry config virtualenvs.create false
-    post_install:
-      # Install dependencies with 'docs' dependency group
-      # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
-      - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry install
-      - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry env info
-      - pip freeze
 
 mkdocs:
   configuration: mkdocs.yml
+
+python:
+  install:
+    - path: "."
+      extra_requirements:
+        - docs

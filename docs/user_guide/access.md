@@ -6,8 +6,9 @@
 
     We are reorganizing and updating the documentation, so not all pages are complete.  If you are looking for information about accessing data using earthaccess see the
     HOW-TO pages below.
-    [How-to download data](/howto/onprem.md)
-    [Getting Started Tutorial](/tutorials/getting-started.ipynb)
+
+    * [Quick start](../quick-start.md)
+    * [How-to download data](../howto/onprem.md)
 
 ## Downloading data
 

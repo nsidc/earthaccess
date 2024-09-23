@@ -16,7 +16,7 @@ results = earthaccess.search_data(
 ### **Searching for data**
 
 Once we have selected our dataset we can search for the data granules using *doi*, *short_name* or *concept_id*.
-If we are not sure or we don't know how to search for a particular dataset, we can start with the ["Introducing NASA earthaccess"](https://nsidc.github.io/earthaccess/tutorials/demo/#querying-for-datasets) tutorial or through the [NASA Earthdata Search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended [API documentation](https://earthaccess.readthedocs.io/en/latest/user-reference/api/api/).
+If we are not sure or we don't know how to search for a particular dataset, we can start with the [NASA Earthdata Search portal](https://search.earthdata.nasa.gov/). For a complete list of search parameters we can use visit the extended [API documentation](https://earthaccess.readthedocs.io/en/latest/user-reference/api/api/).
 
 ```python
 
@@ -32,5 +32,3 @@ results = earthaccess.search_data(
 ```
 
 Now that we have our results we can do multiple things: We can iterate over them to get HTTP (or S3) links, we can download the files to a local folder, or we can open these files and stream their content directly to other libraries e.g. xarray.
-
-
