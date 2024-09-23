@@ -13,9 +13,6 @@
   instead ([#766](https://github.com/nsidc/earthaccess/issues/766))
   ([**@Sherwin-14**](https://github.com/Sherwin-14),
   [**@chuckwondo**](https://github.com/chuckwondo))
-- Use built-in `assert` statement in integration tests
-  ([#743](https://github.com/nsidc/earthaccess/issues/743))
-  ([**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Added
 
