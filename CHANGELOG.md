@@ -26,6 +26,13 @@
   [**@mfisher87**](https://github.com/mfisher87),
   [**@betolink**](https://github.com/betolink))
 
+- Added example PR links to pull request template
+  ([#756](https://github.com/nsidc/earthaccess/issues/756))
+  [**@Sherwin-14**](https://github.com/betolink),
+  [**@mfisher87**](https://github.com/mfisher87)
+
+
+
 ### Fixed
 
 - Removed Broken Link "Introduction to NASA earthaccess"
@@ -68,6 +75,10 @@
 - Add support for Python 3.12
   ([#457](https://github.com/nsidc/earthaccess/issues/457))
   ([**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87))
+- Added documentation for the backwards compatibility
+  ([#471](https://github.com/nsidc/earthaccess/issues/471))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),
   [**@mfisher87**](https://github.com/mfisher87))
 
 ### Removed
