@@ -63,11 +63,11 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
-    threads: Optional[int] = 8,
+    threads: int = 8,
 ) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple) -> EarthAccessFile:
-        urls, granule = data
-        return EarthAccessFile(fs.open(urls), granule)
+        url, granule = data
+        return EarthAccessFile(fs.open(url), granule)  # type: ignore
 
     fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads)
     return fileset
@@ -365,7 +365,7 @@ class Store(object):
         self,
         granules: List[DataGranule],
         provider: Optional[str] = None,
-        threads: Optional[int] = 8,
+        threads: int = 8,
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -419,7 +419,7 @@ class Store(object):
         self,
         granules: List[str],
         provider: Optional[str] = None,
-        threads: Optional[int] = 8,
+        threads: int = 8,
     ) -> List[Any]:
         fileset: List = []
 
@@ -685,14 +685,14 @@ class Store(object):
     def _open_urls_https(
         self,
         url_mapping: Mapping[str, Union[DataGranule, None]],
-        threads: Optional[int] = 8,
+        threads: int = 8,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
-        if https_fs is not None:
-            try:
-                fileset = _open_files(url_mapping, https_fs, threads)
-            except Exception:
-                logger.exception(
-                    "An exception occurred while trying to access remote files via HTTPS"
-                )
-        return fileset
+
+        try:
+            return _open_files(url_mapping, https_fs, threads)
+        except Exception:
+            logger.exception(
+                "An exception occurred while trying to access remote files via HTTPS"
+            )
+            raise
