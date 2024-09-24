@@ -49,7 +49,7 @@ def test_consolidate_metadata(tmp_path, granules, output):
     import xarray as xr  # type: ignore
 
     # Open directly with `earthaccess.open`
-    expected = xr.open_mfdataset(earthaccess.open(granules))
+    expected = xr.open_mfdataset(earthaccess.open(granules), engine="h5netcdf")
 
     # Open with kerchunk consolidated metadata file
     kwargs = {"outfile": tmp_path / "metadata.json"} if output == "file" else {}
