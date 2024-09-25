@@ -15,7 +15,9 @@
   [**@chuckwondo**](https://github.com/chuckwondo))
 
 ### Added
-
+- Support setting proxy from environment variables for request session
+  ([#501](https://github.com/nsidc/earthaccess/issues/501))
+  ([**@Isotr0py**](https://github.com/Isotr0py))
 - Added Issue Templates
   ([#281](https://github.com/nsidc/earthaccess/issues/281))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
