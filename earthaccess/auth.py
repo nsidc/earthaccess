@@ -45,6 +45,12 @@ class SessionWithHeaderRedirection(requests.Session):
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
 
+        proxy = {
+            "http": os.getenv("HTTP_PROXY", ""),
+            "https": os.getenv("HTTPS_PROXY", ""),
+        }
+        self.proxies.update({k: v for k, v in proxy.items() if v})
+
         if username and password:
             self.auth = (username, password)
 
