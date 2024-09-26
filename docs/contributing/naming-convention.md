@@ -22,6 +22,3 @@ This document outlines the naming conventions for our project. These conventions
 
 1. **Test File and Function Names**: Test files and functions should start with `test_`.
 2. **Additional Guidelines**: For additional guidelines, please refer to the [pytest documentation](https://docs.pytest.org/en/stable/explanation/goodpractices.html#conventions-for-python-test-discovery).
-
-!!! note "Test File Naming Convention"
-    We do not use the _test.py suffix for test files
