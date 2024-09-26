@@ -34,20 +34,6 @@ daacs_list = [
         "granules_sample_size": 2,
         "granules_max_size_mb": 130,
     },
-    #
-    # ORNLDAAC no longer has any on-prem collections.  This returns 0 collections:
-    # https://cmr.earthdata.nasa.gov/search/collections?data_center=ORNL_DAAC&cloud_hosted=false
-    # The following is commented out because the test in this file will now always fail
-    # because there are no longer any on-prem collections.
-    #
-    # {
-    #     "short_name": "ORNLDAAC",
-    #     "collections_count": 100,
-    #     "collections_sample_size": 2,
-    #     "granules_count": 100,
-    #     "granules_sample_size": 2,
-    #     "granules_max_size_mb": 50,
-    # },
 ]
 
 
