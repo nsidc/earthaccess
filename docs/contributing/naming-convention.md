@@ -8,7 +8,7 @@ This document outlines the naming conventions for our project. These conventions
 
 #### Python Code
 
-  **Style**: We follow the official Python Enhancement Proposal 8 [PEP8]((https://peps.python.org/pep-0008/#package-and-module-names) ) guidelines for naming conventions.
+* **Style**: We follow Python Enhancement Proposal 8 ([PEP8](https://peps.python.org/pep-0008/#package-and-module-names)) guidelines for naming conventions.
 
 #### Jupyter Notebooks
 
