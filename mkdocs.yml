@@ -101,6 +101,7 @@ nav:
               - "Granule Queries": "user-reference/granules/granules-query.md"
               - "Granule Results": "user-reference/granules/granules.md"
           - Store:
+              - "EarthAccessFile": "user-reference/store/earthaccessfile.md"
               - "Store": "user-reference/store/store.md"
           - Auth:
               - "Auth": "user-reference/auth/auth.md"
