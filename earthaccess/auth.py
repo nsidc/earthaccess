@@ -4,6 +4,7 @@ import logging
 import os
 import platform
 import shutil
+from functools import lru_cache
 from netrc import NetrcParseError
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional
@@ -44,12 +45,6 @@ class SessionWithHeaderRedirection(requests.Session):
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
-
-        proxy = {
-            "http": os.getenv("HTTP_PROXY", ""),
-            "https": os.getenv("HTTPS_PROXY", ""),
-        }
-        self.proxies.update({k: v for k, v in proxy.items() if v})
 
         if username and password:
             self.auth = (username, password)
@@ -203,6 +198,7 @@ class Auth(object):
             logger.info("We need to authenticate with EDL first")
             return {}
 
+    @lru_cache
     def get_session(self, bearer_token: bool = True) -> requests.Session:
         """Returns a new request session instance.
 
@@ -213,6 +209,13 @@ class Auth(object):
             class Session instance with Auth and bearer token headers
         """
         session = SessionWithHeaderRedirection()
+
+        proxy = {
+            "http": os.getenv("HTTP_PROXY", ""),
+            "https": os.getenv("HTTPS_PROXY", ""),
+        }
+        session.proxies.update({k: v for k, v in proxy.items() if v})
+
         if bearer_token and self.token:
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
