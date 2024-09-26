@@ -28,8 +28,13 @@
 
 - Added example PR links to pull request template
   ([#756](https://github.com/nsidc/earthaccess/issues/756))
-  [**@Sherwin-14**](https://github.com/betolink),
+  [**@Sherwin-14**](https://github.com/Sherwin-14),
   [**@mfisher87**](https://github.com/mfisher87)
+
+- Added Contributing Naming Convention document
+ ([#532](https://github.com/nsidc/earthaccess/issues/532))
+ [**@Sherwin-14**](https://github.com/Sherwin-14),
+ [**@mfisher87**](https://github.com/mfisher87)
 
 ### Fixed
 
