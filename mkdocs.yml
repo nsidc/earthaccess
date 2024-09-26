@@ -66,7 +66,7 @@ nav:
       - "Our meet-ups": "contributing/our-meet-ups.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
-      - "Contributing Naming Convention": "contributing/naming-convention.md"
+      - "Contributing naming convention": "contributing/naming-convention.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"
