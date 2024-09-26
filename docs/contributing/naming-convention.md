@@ -12,7 +12,7 @@ This document outlines the naming conventions for our project. These conventions
 
 #### Jupyter Notebooks
 
- **File Names**: File names should start with an underscore (_). Please use underscores instead of hyphens.
+* **File names**: Please use underscores (`_`) instead of hyphens (`-`).
 
 #### Documentation
 
