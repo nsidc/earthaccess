@@ -16,8 +16,7 @@
 
 ### Added
 
-- Added Issue Templates
-  ([#281](https://github.com/nsidc/earthaccess/issues/281))
+- Add Issue Templates ([#281](https://github.com/nsidc/earthaccess/issues/281))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
 - Support Service queries
   ([#447](https://github.com/nsidc/earthaccess/issues/447))
@@ -28,20 +27,26 @@
 - Support use of `NETRC` environment variable to override default `.netrc` file
   location ([#480](https://github.com/nsidc/earthaccess/issues/480))
   ([**@chuckwondo**](https://github.com/chuckwondo))
-
-- Added example PR links to pull request template
+- Add example PR links to pull request template
   ([#756](https://github.com/nsidc/earthaccess/issues/756))
-  [**@Sherwin-14**](https://github.com/Sherwin-14),
-  [**@mfisher87**](https://github.com/mfisher87)
-
-- Added Contributing Naming Convention document
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),
+  [**@mfisher87**](https://github.com/mfisher87))
+- Add Contributing Naming Convention document
  ([#532](https://github.com/nsidc/earthaccess/issues/532))
- [**@Sherwin-14**](https://github.com/Sherwin-14),
- [**@mfisher87**](https://github.com/mfisher87)
+ ([**@Sherwin-14**](https://github.com/Sherwin-14),
+ [**@mfisher87**](https://github.com/mfisher87))
+
+### Removed
+
+- Remove `binder/` directory, as we no longer need a special
+  [binder](https://mybinder.org) environment with the top-level
+  `environment.yml` introduced in
+  [#733](https://github.com/nsidc/earthaccess/issues/733)
+  ([@jhkennedy](https://github.com/jhkennedy))
 
 ### Fixed
 
-- Removed Broken Link "Introduction to NASA earthaccess"
+- Remove broken link "Introduction to NASA earthaccess"
   ([#779](https://github.com/nsidc/earthaccess/issues/779))
   ([**@Sherwin-14**](https://github.com/Sherwin-14))
 - Restore automation for tidying notebooks used in documentation
@@ -53,13 +58,6 @@
 - Integration tests no longer clobber existing `.netrc` file
   ([#806](https://github.com/nsidc/earthaccess/issues/806))
   ([**@chuckwondo**](https://github.com/chuckwondo))
-
-### Removed
-
-- Remove `binder/` directory, as we no longer need a special [binder](https://mybinder.org)
-  environment with the top-level `environment.yml` introduced in
-  [#733](https://github.com/nsidc/earthaccess/issues/733)
-  ([@jhkennedy](https://github.com/jhkennedy))
 
 ## [0.10.0] 2024-07-19
 
