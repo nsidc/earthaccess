@@ -16,7 +16,7 @@ This document outlines the naming conventions for our project. These conventions
 
 #### Documentation
 
- **Directory and File Names**: Directory and file names should use hyphens (-) instead of underscores.
+* **Directory and file names**: Directory names and Markdown file names should use hyphens (`-`) instead of underscores (`_`).
 
 #### Tests
 
