@@ -1,0 +1,52 @@
+name: Integration Tests PR Comment
+
+on:
+  workflow_run:
+    workflows: [Integration Tests]
+    types: [completed]
+
+jobs:
+  integration-tests-pr-comment:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request_target' &&
+      github.event.workflow_run.conclusion == 'failure'
+    steps:
+      - name: Fetch user permission
+        id: permission
+        uses: actions-cool/check-user-permission@v2
+        with:
+          require: write
+          username: ${{ github.triggering_actor }}
+
+      - name: Add PR comment when user does not have write permission
+        # The name of the output require-result is a bit confusing, but when its value
+        # is 'false', it means that the triggering actor does NOT have the required
+        # permission.
+        if: steps.permission.outputs.require-result == 'false'
+
+        # If the triggering actor does not have write permission, then we want to add
+        # a PR comment indicating a security review is required because we know that
+        # the integration tests "failed" due to lack of permission (i.e., they were
+        # actually "aborted" without running any tests).
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { number, html_url } = (await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              commit_sha: context.sha,
+              owner: "${{ github.event.workflow_run.head_repository.owner.login }}",
+              repo: "${{ github.event.workflow_run.head_repository.name }}",
+            })).data[0] ?? {};
+
+            if (number) {
+              github.rest.issues.createComment({
+                issue_number: number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "User [${{ github.triggering_actor }}](${{ github.event.workflow_run.head_repository.owner.html_url }})"
+                  + " does not have permission to run integration tests. A maintainer must perform a security review of the"
+                  + ` [code changes in this pull request](${html_url}/files) and re-run the`
+                  + " [failed integration tests jobs](${{ github.event.workflow_run.html_url }}),"
+                  + " if the code is deemed safe.",
+              });
+            }
