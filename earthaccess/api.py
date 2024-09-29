@@ -3,7 +3,7 @@ import logging
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Optional, Union, deprecated
+from typing_extensions import Any, Dict, List, Optional, Union, deprecated, Mapping
 
 import earthaccess
 from earthaccess.services import DataServices
@@ -205,7 +205,7 @@ def download(
     local_path: Optional[str],
     provider: Optional[str] = None,
     threads: int = 8,
-    fail_fast: bool = True,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
@@ -226,14 +226,19 @@ def download(
         Exception: A file download failed.
     """
     provider = _normalize_location(provider)
+    pqdm_kwargs = {
+        "exception_behavior": "immediate",
+        "n_jobs": threads,
+        **(pqdm_kwargs or {}),
+    }
     if isinstance(granules, DataGranule):
         granules = [granules]
     elif isinstance(granules, str):
         granules = [granules]
     try:
         results = earthaccess.__store__.get(
-            granules, local_path, provider, threads, fail_fast=fail_fast
-        )
+            granules, local_path, provider, threads, pqdm_kwargs
+        )    
     except AttributeError as err:
         logger.error(
             f"{err}: You must call earthaccess.login() before you can download data"
@@ -245,7 +250,7 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
-    fail_fast: bool = True,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -259,8 +264,13 @@ def open(
         A list of "file pointers" to remote (i.e. s3 or https) files.
     """
     provider = _normalize_location(provider)
+    pqdm_kwargs = {
+        "exception_behavior": "immediate",
+        "n_jobs": threads,
+        **(pqdm_kwargs or {}),
+    }
     results = earthaccess.__store__.open(
-        granules=granules, provider=provider, fail_fast=fail_fast
+        granules=granules, provider=provider, pqdm_kwargs=pqdm_kwargs
     )
     return results
 
