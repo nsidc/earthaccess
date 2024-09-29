@@ -3,7 +3,7 @@ import logging
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Optional, Union, deprecated, Mapping
+from typing_extensions import Any, Dict, List, Mapping, Optional, Union, deprecated
 
 import earthaccess
 from earthaccess.services import DataServices
@@ -238,7 +238,7 @@ def download(
     try:
         results = earthaccess.__store__.get(
             granules, local_path, provider, threads, pqdm_kwargs
-        )    
+        )
     except AttributeError as err:
         logger.error(
             f"{err}: You must call earthaccess.login() before you can download data"
