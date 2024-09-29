@@ -47,6 +47,11 @@
 - Remove the base class on `EarthAccessFile` to fix method resolution
   ([#610](https://github.com/nsidc/earthaccess/issues/610))
   ([**@itcarroll**](https://github.com/itcarroll))
+- Fixed earthaccess.download() ignoring errors
+  ([#581](https://github.com/nsidc/earthaccess/issues/581))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14)),
+  ([**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87)
 
 ### Removed
 
