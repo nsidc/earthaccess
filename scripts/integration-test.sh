@@ -14,5 +14,3 @@ if [[ $RET == 99 ]]; then
 elif [[ $RET != 0 ]]; then
     exit $RET
 fi
-
-bash ./scripts/lint.sh

@@ -44,11 +44,8 @@ main: This is the main branch, which is consistently tested and prepared for rel
 
 ## Continuous Integration & Delivery
 
-The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`. Here we briefly summarize the functions of the files in the `./ci/` directory.
+The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`.
 
-`environment-dev.yml` - The environment configuration file specifies dependencies for Python development.
-
-`environment-mindeps.yaml`- Specifies an environment with the minimum supported dependency versions to detect backwards-incompatible code.
 
 ## Continuous Documentation
 

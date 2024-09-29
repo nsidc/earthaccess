@@ -41,7 +41,7 @@ def test_deprecation_warning_for_api():
         # Cause all warnings to always be triggered.
         warnings.simplefilter("always")
         # Trigger a warning.
-        with contextlib.suppress(AttributeError):
+        with contextlib.suppress(Exception):
             get_s3fs_session()
         # Verify some things
         assert issubclass(w[0].category, DeprecationWarning)

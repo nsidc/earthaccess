@@ -7,7 +7,7 @@
     We are reorganizing and updating the documentation, so not all pages are complete.  If you are looking for information about accessing data using earthaccess see the
     HOW-TO pages below.
 
-    * [Quick start](../../quick-start/)
+    * [Quick start](../quick-start.md)
     * [How-to download data](../howto/onprem.md)
 
 ## Downloading data

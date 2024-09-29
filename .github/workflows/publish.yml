@@ -5,13 +5,32 @@ on:
 
 jobs:
   build:
+    name: Build package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: verify version matches git tag
         run: scripts/verify_tag.sh
-      - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v2.0
+
+      - uses: hynek/build-and-inspect-python-package@v2
+
+  publish:
+    name: Publish to PyPI
+    needs: ["build"]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
         with:
-          python_version: "3.9"
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          name: Packages
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        # NOTE: This is not the current best practice. Instead, we should use
+        # "trusted publishing":
+        # https://github.com/pypa/gh-action-pypi-publish?tab=readme-ov-file#trusted-publishing
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}

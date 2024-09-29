@@ -6,11 +6,12 @@ from fsspec import AbstractFileSystem
 from typing_extensions import Any, Dict, List, Optional, Union, deprecated, Mapping
 
 import earthaccess
+from earthaccess.services import DataServices
 
 from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
-from .store import Store
+from .store import EarthAccessFile, Store
 from .system import PROD, System
 from .utils import _validation as validate
 
@@ -130,6 +131,34 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     return query.get_all()
 
 
+def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
+    """Search the NASA CMR for Services matching criteria.
+
+    See <https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#service>.
+
+    Parameters:
+        count:
+            maximum number of services to fetch (if less than 1, all services
+            matching specified criteria are fetched [default])
+        kwargs:
+            keyword arguments accepted by the CMR for searching services
+
+    Returns:
+        list of services (possibly empty) matching specified criteria, in UMM
+        JSON format
+
+    Examples:
+        ```python
+        services = search_services(provider="POCLOUD", keyword="COG")
+        ```
+    """
+    query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
+    hits = query.hits()
+    logger.info(f"Services found: {hits}")
+
+    return query.get(hits if count < 1 else min(count, hits))
+
+
 def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
@@ -222,8 +251,8 @@ def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-) -> List[AbstractFileSystem]:
-    """Returns a list of fsspec file-like objects that can be used to access files
+) -> List[EarthAccessFile]:
+    """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
 
     Parameters:
@@ -232,7 +261,7 @@ def open(
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
 
     Returns:
-        a list of s3fs "file pointers" to s3 files.
+        A list of "file pointers" to remote (i.e. s3 or https) files.
     """
     provider = _normalize_location(provider)
     pqdm_kwargs = {

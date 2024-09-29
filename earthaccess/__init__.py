@@ -17,10 +17,12 @@ from .api import (
     open,
     search_data,
     search_datasets,
+    search_services,
 )
 from .auth import Auth
 from .kerchunk import consolidate_metadata
 from .search import DataCollections, DataGranules
+from .services import DataServices
 from .store import Store
 from .system import PROD, UAT
 
@@ -31,6 +33,7 @@ __all__ = [
     "login",
     "search_datasets",
     "search_data",
+    "search_services",
     "get_requests_https_session",
     "get_fsspec_https_session",
     "get_s3fs_session",
@@ -45,6 +48,7 @@ __all__ = [
     # search.py
     "DataGranules",
     "DataCollections",
+    "DataServices",
     # auth.py
     "Auth",
     # store.py
@@ -70,26 +74,24 @@ def __getattr__(name):  # type: ignore
     """
     global _auth, _store
 
-    if name == "__auth__" or name == "__store__":
-        with _lock:
-            if not _auth.authenticated:
-                for strategy in ["environment", "netrc"]:
-                    try:
-                        _auth.login(strategy=strategy)
-                    except Exception as e:
-                        logger.debug(
-                            f"An error occurred during automatic authentication with {strategy=}: {str(e)}"
-                        )
-                        continue
-                    else:
-                        if not _auth.authenticated:
-                            continue
-                        else:
-                            _store = Store(_auth)
-                            logger.debug(
-                                f"Automatic authentication with {strategy=} was successful"
-                            )
-                            break
-            return _auth if name == "__auth__" else _store
-    else:
+    if name not in ["__auth__", "__store__"]:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+    with _lock:
+        if not _auth.authenticated:
+            for strategy in ["environment", "netrc"]:
+                try:
+                    _auth.login(strategy=strategy)
+
+                    if _auth.authenticated:
+                        _store = Store(_auth)
+                        logger.debug(
+                            f"Automatic authentication with {strategy=} was successful"
+                        )
+                        break
+                except Exception as e:
+                    logger.debug(
+                        f"An error occurred during automatic authentication with {strategy=}: {str(e)}"
+                    )
+
+        return _auth if name == "__auth__" else _store
