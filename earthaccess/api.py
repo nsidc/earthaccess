@@ -266,7 +266,6 @@ def open(
     provider = _normalize_location(provider)
     pqdm_kwargs = {
         "exception_behavior": "immediate",
-        "n_jobs": threads,
         **(pqdm_kwargs or {}),
     }
     results = earthaccess.__store__.open(
