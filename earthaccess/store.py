@@ -71,10 +71,7 @@ def _open_files(
         return EarthAccessFile(fs.open(urls), granule) # type: ignore   
 
     fileset = pqdm(
-        url_mapping.items(),
-        multi_thread_open,
-        n_jobs=threads,
-        **pqdm_kwargs
+        url_mapping.items(), multi_thread_open, n_jobs=threads, **pqdm_kwargs
     )
     return fileset
 
@@ -356,7 +353,7 @@ class Store(object):
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
         if len(granules):
-            return self._open(granules, provider,**pqdm_kwargs)
+            return self._open(granules, provider, pqdm_kwargs)
         return []
 
     @singledispatchmethod
@@ -410,13 +407,13 @@ class Store(object):
                 else:
                     logger.info(f"using provider: {provider}")
                     s3_fs = self.get_s3_filesystem(provider=provider)
-                    
+
             url_mapping = _get_url_granule_mapping(granules, access)
             if s3_fs is not None:
                 try:
                     fileset = _open_files(
-                        url_mapping, fs=s3_fs, threads=threads, **pqdm_kwargs
-                    )    
+                        url_mapping, fs=s3_fs, threads=threads, pqdm_kwargs=pqdm_kwargs
+                    )
                 except Exception as e:
                     raise RuntimeError(
                         "An exception occurred while trying to access remote files on S3. "
@@ -425,13 +422,13 @@ class Store(object):
                     ) from e
             else:
                 fileset = self._open_urls_https(
-                    url_mapping, threads=threads, **pqdm_kwargs
+                    url_mapping, threads=threads, pqdm_kwargs=pqdm_kwargs
                 )
             return fileset
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
             fileset = self._open_urls_https(
-                url_mapping, threads=threads, **pqdm_kwargs
+                url_mapping, threads=threads, pqdm_kwargs=pqdm_kwargs
             )
             return fileset
 
@@ -466,7 +463,10 @@ class Store(object):
                 if s3_fs is not None:
                     try:
                         fileset = _open_files(
-                            url_mapping, fs=s3_fs, threads=threads, **pqdm_kwargs
+                            url_mapping,
+                            fs=s3_fs,
+                            threads=threads,
+                            pqdm_kwargs=pqdm_kwargs,
                         )
                     except Exception as e:
                         raise RuntimeError(
@@ -486,7 +486,7 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(url_mapping, threads,**pqdm_kwargs)
+            fileset = self._open_urls_https(url_mapping, threads, pqdm_kwargs)
             return fileset
 
     def get(
@@ -523,16 +523,8 @@ class Store(object):
         elif isinstance(local_path, str):
             local_path = Path(local_path)
 
-        pqdm_kwargs = {
-            "exception_behavior": "immediate",
-            "n_jobs": threads,
-            **pqdm_kwargs,
-        }    
-
         if len(granules):
-            files = self._get(
-                granules, local_path, provider, threads, **pqdm_kwargs
-            )
+            files = self._get(granules, local_path, provider, threads, pqdm_kwargs)
             return files
         else:
             raise ValueError("List of URLs or DataGranule instances expected")
@@ -597,8 +589,8 @@ class Store(object):
         else:
             # if we are not in AWS
             return self._download_onprem_granules(
-                data_links, local_path, threads, **pqdm_kwargs
-            )    
+                data_links, local_path, threads, pqdm_kwargs
+            )
 
     @_get.register
     def _get_granules(
@@ -649,7 +641,7 @@ class Store(object):
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
             return self._download_onprem_granules(
-                data_links, local_path, threads, **pqdm_kwargs
+                data_links, local_path, threads, pqdm_kwargs
             )
 
     def _download_file(self, url: str, directory: Path) -> str:
@@ -688,7 +680,11 @@ class Store(object):
         return str(path)
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Path, threads: int = 8, pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        self,
+        urls: List[str],
+        directory: Path,
+        threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         """Downloads a list of URLS into the data directory.
 
@@ -719,7 +715,6 @@ class Store(object):
             self._download_file,
             n_jobs=threads,
             argument_type="args",
-            exception_behaviour=exception_behavior,
             **pqdm_kwargs
         )
         return results
@@ -732,7 +727,7 @@ class Store(object):
         https_fs = self.get_fsspec_session()
 
         try:
-            return _open_files(url_mapping, https_fs, threads,**pqdm_kwargs)
+            return _open_files(url_mapping, https_fs, threads, **pqdm_kwargs)
         except Exception:
             logger.exception(
                 "An exception occurred while trying to access remote files via HTTPS"

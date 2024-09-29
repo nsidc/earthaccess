@@ -68,12 +68,30 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   [@betolink](https://github.com/betolink))
 - Add example PR links to pull request template
   ([#756](https://github.com/nsidc/earthaccess/issues/756))
-  ([@Sherwin-14](https://github.com/Sherwin-14),
-  [@mfisher87](https://github.com/mfisher87))
-- Add Contributing Naming Convention document
-  ([#532](https://github.com/nsidc/earthaccess/issues/532))
-  ([@Sherwin-14](https://github.com/Sherwin-14),
-  [@mfisher87](https://github.com/mfisher87))
+  [**@Sherwin-14**](https://github.com/Sherwin-14),
+  [**@mfisher87**](https://github.com/mfisher87)
+
+- Added Contributing Naming Convention document
+ ([#532](https://github.com/nsidc/earthaccess/issues/532))
+ [**@Sherwin-14**](https://github.com/Sherwin-14),
+ [**@mfisher87**](https://github.com/mfisher87)
+
+### Fixed
+
+- Removed Broken Link "Introduction to NASA earthaccess"
+  ([#779](https://github.com/nsidc/earthaccess/issues/779))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14))
+- Restore automation for tidying notebooks used in documentation
+  ([#788](https://github.com/nsidc/earthaccess/issues/788))
+  ([**@itcarroll**](https://github.com/itcarroll))
+- Remove the base class on `EarthAccessFile` to fix method resolution
+  ([#610](https://github.com/nsidc/earthaccess/issues/610))
+  ([**@itcarroll**](https://github.com/itcarroll))
+- Fixed earthaccess.download() ignoring errors
+  ([#581](https://github.com/nsidc/earthaccess/issues/581))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14)),
+  ([**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87)
 
 ### Removed
 
