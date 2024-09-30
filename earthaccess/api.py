@@ -3,6 +3,7 @@ import logging
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
+from fsspec.spec import AbstractBufferedFile
 from typing_extensions import Any, Dict, List, Optional, Union, deprecated
 
 import earthaccess
@@ -11,7 +12,7 @@ from earthaccess.services import DataServices
 from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
-from .store import EarthAccessFile, Store
+from .store import Store
 from .system import PROD, System
 from .utils import _validation as validate
 
@@ -242,7 +243,7 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
-) -> List[EarthAccessFile]:
+) -> List[AbstractBufferedFile]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
 

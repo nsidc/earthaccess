@@ -1,13 +1,14 @@
-# package imports
 import os
+import pickle
 import unittest
 
+import earthaccess
 import fsspec
 import pytest
 import responses
 import s3fs
 from earthaccess import Auth, Store
-from earthaccess.store import EarthAccessFile
+from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -129,10 +130,30 @@ class TestStoreSessions(unittest.TestCase):
         return None
 
 
-def test_earthaccess_file_getattr():
-    fs = fsspec.filesystem("memory")
-    with fs.open("/foo", "wb") as f:
-        earthaccess_file = EarthAccessFile(f, granule="foo")
-        assert f.tell() == earthaccess_file.tell()
-    # cleanup
-    fs.store.clear()
+class TestStoreOpen(VCRTestCase):
+    def _get_vcr(self, **kwargs):
+        myvcr = super()._get_vcr(**kwargs)
+        myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
+        return myvcr
+
+    def test_round_trip_granules_pickle(self):
+        granules = earthaccess.search_data(
+            short_name="VIIRSJ1_L3m_CHL",
+            granule_name="*.9km.*",
+            count=1,
+        )
+        open_files = earthaccess.open(granules)
+        serialized = pickle.dumps(open_files)
+        assert open_files == pickle.loads(serialized)
+
+    def test_round_trip_urls_pickle(self):
+        granules = earthaccess.search_data(
+            short_name="VIIRSJ1_L3m_CHL",
+            granule_name="*.9km.*",
+            count=1,
+        )
+        urls = [i.data_links(access="on_prem")[0] for i in granules]
+        open_files = earthaccess.open(urls)
+        serialized = pickle.dumps(open_files)
+        assert open_files == pickle.loads(serialized)
+        # TODO make the test attempt to change region

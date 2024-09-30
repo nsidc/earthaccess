@@ -5,11 +5,11 @@ import traceback
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
-from pickle import dumps, loads
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
 
 import fsspec
+import fsspec.implementations.http as httpfs
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
@@ -26,71 +26,82 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile:
-    """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
-
+class EarthaccessMixin:
+    # doc: explain explicit mapping
     def __init__(
-        self, f: fsspec.spec.AbstractBufferedFile, granule: DataGranule
-    ) -> None:
-        """EarthAccessFile connects an Earthdata search result with an open file-like object.
-
-        No methods exist on the class, which passes all attribute and method calls
-        directly to the file-like object given during initialization. An instance of
-        this class can be treated like that file-like object itself.
-
-        Parameters:
-            f: a file-like object
-            granule: a granule search result
-        """
-        self.f = f
+        self,
+        f: fsspec.spec.AbstractBufferedFile,
+        granule: Union[DataGranule, None],
+    ):
+        self.__dict__.update(f.__dict__)
         self.granule = granule
 
-    def __getattr__(self, method: str) -> Any:
-        return getattr(self.f, method)
-
-    def __reduce__(self) -> Any:
+    def __reduce__(self) -> fsspec.spec.AbstractBufferedFile:
         return make_instance, (
-            type(self.f),
+            type(self),
             self.granule,
             earthaccess.__auth__,
-            dumps(self.f),
+            *super().__reduce__(),
         )
 
-    def __repr__(self) -> str:
-        return repr(self.f)
+
+class EarthaccessS3File(EarthaccessMixin, s3fs.S3File):
+    pass
+
+
+class EarthaccessHTTPFile(EarthaccessMixin, httpfs.HTTPFile):
+    pass
+
+
+class EarthaccessHTTPStreamFile(EarthaccessMixin, httpfs.HTTPStreamFile):
+    pass
+
+
+earthaccess_file_type = {
+    s3fs.S3File: EarthaccessS3File,
+    httpfs.HTTPFile: EarthaccessHTTPFile,
+    httpfs.HTTPStreamFile: EarthaccessHTTPStreamFile,
+}
 
 
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
-) -> List[EarthAccessFile]:
-    def multi_thread_open(data: tuple) -> EarthAccessFile:
-        urls, granule = data
-        return EarthAccessFile(fs.open(urls), granule)
+) -> List[fsspec.spec.AbstractBufferedFile]:
+    def multi_thread_open(data: Tuple) -> fsspec.spec.AbstractBufferedFile:
+        url, granule = data
+        f = fs.open(url)
+        cls = earthaccess_file_type[type(f)]
+        return cls(f, granule)
 
     fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads)
     return fileset
 
 
 def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, data: Any
-) -> EarthAccessFile:
+    cls: type,
+    granule: DataGranule,
+    auth: Auth,
+    fun: Callable,
+    fun_args: Tuple,
+) -> fsspec.spec.AbstractBufferedFile:
+    """Callable that re-creates an object from its serialized (pickled) self."""
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
         earthaccess.__auth__ = auth
         earthaccess.login()
 
-    # When sending EarthAccessFiles between processes, it's possible that
-    # we will need to switch between s3 <--> https protocols.
-    if (earthaccess.__store__.in_region and cls is not s3fs.S3File) or (
-        not earthaccess.__store__.in_region and cls is s3fs.S3File
-    ):
+    # When sending an AbstractBufferedFile between processes, it's possible that
+    # we will need to switch between s3 <--> https protocols. We will re-open if we
+    # could use s3 AND the current filesystem does not (OR the converse); an XOR.
+    if earthaccess.__store__.in_region != (cls is EarthaccessS3File):
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
-        return EarthAccessFile(earthaccess.open([granule])[0], granule)
+        return earthaccess.open([granule])[0]
+    # Otherwise, use fun and fun_args from super().__reduce__()
     else:
-        return EarthAccessFile(loads(data), granule)
+        return cls(fun(*fun_args), granule)
 
 
 def _get_url_granule_mapping(
@@ -336,7 +347,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-    ) -> List[EarthAccessFile]:
+    ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
