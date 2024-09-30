@@ -137,6 +137,7 @@ class TestStoreOpen(VCRTestCase):
         return myvcr
 
     def test_round_trip_granules_pickle(self):
+        earthaccess.login(strategy="netrc")
         granules = earthaccess.search_data(
             short_name="VIIRSJ1_L3m_CHL",
             granule_name="*.9km.*",
@@ -147,6 +148,7 @@ class TestStoreOpen(VCRTestCase):
         assert open_files == pickle.loads(serialized)
 
     def test_round_trip_urls_pickle(self):
+        earthaccess.login(strategy="netrc")
         granules = earthaccess.search_data(
             short_name="VIIRSJ1_L3m_CHL",
             granule_name="*.9km.*",
