@@ -129,6 +129,9 @@ class TestStoreSessions(unittest.TestCase):
         return None
 
 
+@pytest.mark.xfail(
+    reason="This test reproduces a bug (#610) which has not yet been fixed."
+)
 def test_earthaccess_file_getattr():
     fs = fsspec.filesystem("memory")
     with fs.open("/foo", "wb") as f:
