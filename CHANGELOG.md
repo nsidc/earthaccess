@@ -44,9 +44,6 @@
 - Restore automation for tidying notebooks used in documentation
   ([#788](https://github.com/nsidc/earthaccess/issues/788))
   ([**@itcarroll**](https://github.com/itcarroll))
-- Remove the base class on `EarthAccessFile` to fix method resolution
-  ([#610](https://github.com/nsidc/earthaccess/issues/610))
-  ([**@itcarroll**](https://github.com/itcarroll))
 
 ### Removed
 
