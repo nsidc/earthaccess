@@ -11,7 +11,7 @@ from earthaccess.services import DataServices
 from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
-from .store import EarthAccessFile, Store
+from .store import Store
 from .system import PROD, System
 from .utils import _validation as validate
 
