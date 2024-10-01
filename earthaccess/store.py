@@ -26,7 +26,7 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile:
+class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -64,7 +64,7 @@ def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: Optional[int] = 8,
-) -> List[EarthAccessFile]:
+) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple) -> EarthAccessFile:
         urls, granule = data
         return EarthAccessFile(fs.open(urls), granule)
@@ -336,7 +336,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-    ) -> List[EarthAccessFile]:
+    ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
