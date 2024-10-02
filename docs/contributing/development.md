@@ -2,8 +2,11 @@
 
 ## Getting the code
 
-1. Fork [nsidc/earthaccess](https://github.com/nsidc/earthaccess)
-1. Clone your fork (`git clone git@github.com:{my-username}/earthaccess`)
+1. Fork [nsidc/earthaccess](https://github.com/nsidc/earthaccess/fork)
+1. Clone your fork
+   ```bash
+   git clone git@github.com:{my-username}/earthaccess
+   ```
 
 In order to develop new features or fix bugs etc. we need to set up a virtual
 environment and install the library locally.
@@ -24,8 +27,8 @@ specific jobs:
 ```console
 $ nox -s typecheck              # Typecheck only
 $ nox -s tests                  # Python tests
-$ nox -s build_docs -- --serve  # Build and serve the docs
-$ nox -s build_pkg              # Make an SDist and wheel
+$ nox -s serve_docs             # build and serve the docs
+$ nox -s build_pkg              # Make an SDist and Wheel
 ```
 
 Nox handles everything for you, including setting up a temporary virtual
@@ -36,33 +39,86 @@ environment for each run.
 While `nox` is the fastest way to get started, you will likely need a full
 development environment for making code contributions, for example to test in a
 REPL, or to resolve references in your favorite IDE.  This development
-environment also includes `nox`.
+environment also includes `nox`. You can create it with `venv`, `conda`, or `mamba`.
 
-Create and activate a virtual environment with `venv`, which comes by default
-with Python, in the `.venv` directory:
+=== "`venv`"
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
+    `venv` is a virtual environment manager that's built into Python.
 
-Install `earthaccess` in editable mode with optional development dependencies:
-
-```bash
-pip install --editable ".[dev,test,docs]"
-```
-
-??? note "For conda users"
-
-    For your convenience, there is an `environment.yml` file at the root of this
-    repository, allowing you to create a conda environment quickly, as follows:
+    Create and activate the development environment with:
 
     ```bash
-    conda env create --file environment.yml
+    python -m venv .venv
+    source .venv/bin/activate
     ```
+
+    Then install `earthaccess` into the environment in editable mode with the optional development dependencies:
+
+    ```bash
+    pip install --editable ".[dev,test,docs]"
+    ```
+
+
+=== "`conda`/`mamba`"
+
+    `conda` and `mamba` are open-source package and environment managers that are language and platform agnostic.
+    `mamba` is a newer and faster re-implementation of `conda` -- you can use either `conda` or `mamba`
+    in the commands below.
+
+    Create and activate the development environment with:
+
+    ```bash
+    mamba env update -f environment.yml
+    mamba activate earthaccess
+    ```
+
+    This will update (or create if missing) the `earthaccess` environment and active it. The `earthaccess` package will
+    be installed into the environment in editable mode with the optional development dependencies.
 
 ## Managing Dependencies
 
 If you need to add a new dependency, edit `pyproject.toml` and insert the
 dependency in the correct location (either in the `dependencies` array or under
 `[project.optional-dependencies]`).
+
+## Usage of Pre-Commit
+
+To maintain code quality, we use pre-commit for automated checks before committing changes. We recommend you install
+and configure pre-commit so you can format and lint as you go instead of waiting for CI/CD check failures and
+having to make significant changes to get the checks to pass.
+
+To set up pre-commit, follow these steps:
+
+- `pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
+- `pre-commit install` to enable it to run automatically
+- `pre-commit run -a`  to run it manually
+
+We have included type stubs for the untyped `python-cmr` library, which we intend to eventually upstream.
+Since `python-cmr` exposes the `cmr` package, the stubs appear under `stubs/cmr`.
+
+
+## Documentation
+
+To work on documentation locally, we provide a script that will automatically re-render the docs when you make changes:
+
+```
+nox -s serve_docs
+```
+
+MkDocs does not support incremental rebuilds and will execute every Jupyter Notebook every time it builds a new
+version of the site, which can be quite slow. To speed up the build, you can pass MkDocs these options:
+
+```
+nox -s serve_docs -- --dirty --no-strict
+```
+
+!!! warning
+
+    Our mkdocs setup has a known limitation: the hot reloader won't auto-reload when changing docstrings.
+    To see updates, manually rebuild and re-serve docs. We're working to improve the developer experience and
+    appreciate your patience.
+
+### Documentation Style
+
+To ensure that our code is well-documented and easy to understand, we use [Google-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) to document
+all functions, classes, and methods in this library.

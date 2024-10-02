@@ -8,7 +8,7 @@ This page offers guidance to project maintainers regarding our setup procedures,
 
 If you are interested in becoming a maintainer, you can join our community. Maintainers have several important responsibilities, so please read on to understand the role.
 
-Also, if you're interested in helping managing issues with labels and interacting with incoming requests, you can have a "triager" role!
+Also, if you're interested in helping manage issues with labels and interacting with incoming requests, you can have a "triager" role!
 
 To get permissions, please start by participating on GitHub by answering questions, reviewing PRs, or contributing code or documentation. Once you're feeling comfortable, you can ask any of our maintainers for permissions by `@`ing them on GitHub.
 
