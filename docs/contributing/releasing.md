@@ -4,7 +4,7 @@
 > we agree we're ready for v1.0.0, we will not increment the major version.
 
 1. Ensure all desired features are merged to `main` branch and `CHANGELOG.md` is
-   updated. **Do not** edit the `[Unreleased]` header in the CHANGELOG -- the next step
+   updated. **Do not** edit the `Unreleased` header in the CHANGELOG -- the next step
    will automatically update it.
 1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
    increase the minor version (`1.2.3` to `1.3.0`):
