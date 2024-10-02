@@ -14,6 +14,11 @@
    ```
 
    Add, commit, and push the files changed by `bump-my-version`.
+
+   !!! note
+
+       The files managed by `bump-my-version` are configured in `pyproject.toml`.
+
 1. Push a tag on the new commit containing the version number, prefixed with `v`, e.g.
    `v1.3.0`.
 
