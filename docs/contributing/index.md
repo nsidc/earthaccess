@@ -40,7 +40,7 @@ relevant tab to proceed.
     The small the pull request, the easier it is to  review and test, and the more likely it is to be successful.
 
     For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
-    or [coming to a "hack day"](our-meet-ups.md) and descibing your contribution so we can help guide and/or collaborate
+    or [coming to a "hack day"](our-meet-ups.md) and describing your contribution so we can help guide and/or collaborate
     on the work.
 
 === "Fixing an Issue or Bug"
@@ -82,7 +82,7 @@ When you're ready to submit your pull request, first open a draft pull request a
 
 - You've included an explanation of what you did and why in the pull request
 - All unit tests run successfully in your branch
-- Your code is linted and formated correctly
+- Your code is linted and formatted correctly
 - The documentation and `CHANGELOG.md` has been updated appropriately
 
 Then you can mark the pull request as ready for review!
