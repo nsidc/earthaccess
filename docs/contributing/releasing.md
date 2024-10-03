@@ -51,7 +51,7 @@
         - Zenodo will create a new DOI.
         - GitHub Actions will publish a PyPI release.
 
-1. Once the package is visible on PyPI, check it's installable with 
+1. Once the package is visible on PyPI, check it's installable with
    ```
    python -m pip install earthaccess==vX.Y.Z
    ```

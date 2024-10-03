@@ -25,7 +25,7 @@ You can also directly [open a pull request](#steps-to-a-pull-request) after you'
 If you're not sure what to do, _don't worry_, and just pick whichever suites you best.
 
 !!! note
-  
+
     We have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
 
 ## Steps to a Pull Request
