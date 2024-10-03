@@ -55,7 +55,7 @@ environment also includes `nox`. You can create it with `venv`, `conda`, or `mam
     Then install `earthaccess` into the environment in editable mode with the optional development dependencies:
 
     ```bash
-    pip install --editable ".[dev,test,docs]"
+    python -m pip install --editable ".[dev,test,docs]"
     ```
 
 
@@ -89,7 +89,7 @@ having to make significant changes to get the checks to pass.
 
 To set up pre-commit, follow these steps:
 
-- `pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
+- `python -m pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
 - `pre-commit install` to enable it to run automatically
 - `pre-commit run -a`  to run it manually
 
