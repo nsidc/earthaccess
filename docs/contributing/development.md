@@ -27,7 +27,7 @@ specific jobs:
 ```console
 $ nox -s typecheck              # Typecheck only
 $ nox -s tests                  # Python tests
-$ nox -s serve_docs             # build and serve the docs
+$ nox -s serve_docs             # Build and serve the docs
 $ nox -s build_pkg              # Make an SDist and Wheel
 ```
 
