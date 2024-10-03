@@ -468,8 +468,8 @@ class DataGranules(GranuleQuery):
             RuntimeError: The CMR query failed.
         """
         response = get_results(self.session, self, limit)
-
-        cloud = self._is_cloud_hosted(response[0])
+        if response:
+            cloud = self._is_cloud_hosted(response[0])
 
         return [DataGranule(granule, cloud_hosted=cloud) for granule in response]
 
