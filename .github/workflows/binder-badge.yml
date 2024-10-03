@@ -6,6 +6,6 @@ jobs:
   badge:
     runs-on: ubuntu-latest
     steps:
-      - uses: manics/action-binderbadge@main
+      - uses: manics/action-binderbadge@v3.0.0
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
