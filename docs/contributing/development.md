@@ -81,7 +81,7 @@ If you need to add a new dependency, edit `pyproject.toml` and insert the
 dependency in the correct location (either in the `dependencies` array or under
 `[project.optional-dependencies]`).
 
-## Usage of Pre-Commit
+## Usage of pre-commit
 
 To maintain code quality, we use pre-commit for automated checks before committing changes. We recommend you install
 and configure pre-commit so you can format and lint as you go instead of waiting for CI/CD check failures and
