@@ -28,11 +28,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Fixed
 
+
 - Integration tests no longer clobber existing `.netrc` file
   ([#806](https://github.com/nsidc/earthaccess/issues/806))
   (@chuckwondo)
 - Return an empty list instead of raising an `IndexError` when searches find no results.
-  ([#839](https://github.com/nsidc/earthaccess/pull/839))
+  ([#526](https://github.com/nsidc/earthaccess/issues/526))
   ([@jhkennedy](https://github.com/jhkennedy))
 
 ## [0.11.0] 2024-10-01
