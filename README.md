@@ -51,7 +51,7 @@ During several workshops organized by NASA Openscapes, the need to provide easy-
 To install `earthaccess` go to your terminal and install it using `pip`:
 
 ```
-pip install earthaccess
+python -m pip install earthaccess
 ```
 
 

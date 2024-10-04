@@ -1,99 +1,88 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make
-with the community and maintainers via
-[a GitHub issue](https://github.com/nsidc/earthaccess/issues),
-[a GitHub Discussion](https://github.com/nsidc/earthaccess/discussions),
-or [any other method](our-meet-ups.md).
+Thank you for your interest in contributing to _earthaccess_! We're excited for your contribution,
+whether you're finding bugs, adding new features, fixing anything broken, or improving documentation.
 
-Please note that we have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
+When contributing we recommend:
 
-## First Steps to contribute
+- reading the contributing guide all the way though once before starting
+- searching through issues, discussions, and pull requests to see if your contribution has already been discussed
+  so you don't duplicate work
 
-First, read the documentation!
+Then, you can:
 
-When you feel comfortable, fork this repository and set up your development environment.
-Don't forget to run our suite of checks (see [development environment
-documentation](./development.md) for details)!
+- Open [a GitHub issue](https://github.com/nsidc/earthaccess/issues) to report a bug, unexpected behavior, a stumbling block in our documentation, or any
+  other problem.
+- Open [a Q&A GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/categories/new?category=q-a) to ask
+  questions, share insights, or connect with others about Earth data access (broadly)
+- Open [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas) to suggest
+  new features or improvements, and find collaborators and coordinate the work
+- Join [a "hack day"](our-meet-ups.md) to meet other users/developers/maintainers and get help on, or give help to,
+  anything related to Earth data access
 
-## Sharing your work with us on GitHub
+You can also directly [open a pull request](#steps-to-a-pull-request) after you've reviewed this whole contributing guide.
 
-From here, you might want to fix and issue or bug, or add a new feature.  Jump to the
-relevant section to proceed.
+If you're not sure what to do, _don't worry_, and just pick whichever suits you best. The community will help you out!
 
-### Fixing an Issue or Bug
+!!! note
 
-- Create a GitHub issue with a
-  [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example),
-  a.k.a Minimal Complete Verifiable Example (MCVE), Minimal Working Example (MWE),
-  SSCCE (Short, Self Contained, Complete Example), or "reprex".
-- Create a branch to resolve your issue
-- Run the unit tests successfully in your branch
-- Create one or more new tests to demonstrate the bug and observe them fail
-- Update the relevant code to fix the issue
-- Successfully run your new unit tests
+    We have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
 
-Once you've completed these steps, you are ready to submit your contribution.
+## Steps to a Pull Request
 
-### Contributing a New Feature
+First, [fork this repository](https://github.com/nsidc/earthaccess/fork) and set up your [development environment](./development.md).
 
-- Create an issue and discuss the feature's scope and its fit for this package with the team
-- Create a branch for your new feature in your fork
-- Run the unit tests successfully in your branch
-- Write the code to implement your new feature in a backwards compatible manner
-- Create at least one test that exercises your feature and run the test suite as you go
+From here, you might want to fix and issue or bug, or add a new feature. Jump to the
+relevant tab to proceed.
 
-Once you've completed these steps, you are ready to submit your contribution.
+!!! tip
 
+    The smaller the pull request, the easier it is to review and test, and the more likely it is to be successful. For more details, check out this [helpful YouTube video by the author of pre-commit](https://www.youtube.com/watch?v=Gu6XrmfwivI).
 
-### Contributing to Documentation
+    For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
+    or [coming to a "hack day"](our-meet-ups.md) and describing your contribution so we can help guide and/or collaborate
+    on the work.
 
-#### Documentation Style
+=== "Fixing an Issue or Bug"
 
-To ensure that our code is well-documented and easy to understand, we use [Google-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) to document all functions, classes, and methods in this library.
+    - Create a [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example), a.k.a. a Minimal Complete Verifiable Example (MCVE),
+      a Minimal Working Example (MWE), an SSCCE (Short, Self Contained, Complete Example), or a "reprex",
+      and include it in [a GitHub issue](https://github.com/nsidc/earthaccess/issues) (recommended) or in your pull request.
+    - Create a branch to resolve your issue
+    - Run the existing unit tests successfully in your branch
+    - Create one or more new tests to demonstrate the bug and observe them fail
+    - Update the relevant code to fix the issue
+    - Successfully run your new unit tests
+    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit)
+    - Describe your changes in the `CHANGELOG.md`
 
-#### Locally rendering the documentation
+=== "Contributing a New Feature"
 
-To work on documentation locally, we provide a script that will automatically re-render the docs when you make changes:
+    - We recommend you create [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
+      describing the feature's scope and its fit for this package with the team.
+    - Create a branch for your new feature in your fork
+    - Run the unit tests successfully in your branch
+    - Write the code to implement your new feature in a backwards compatible manner. If breaking changes are necessary, discuss your strategy with the team first.
+    - Create at least one test that exercises your feature and run the test suite
+    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit)
+    - Describe your changes in the `CHANGELOG.md`
 
-```
-./scripts/docs-live.sh
-```
+=== "Contributing to Documentation"
 
-If you encounter any issues while setting up the documentation using the provided steps, please refer to our [tutorial]( https://www.youtube.com/watch?v=mNjlMZ4F3So) for additional guidance.
+    - Create a branch for your documentation changes in your fork
+    - Update the documentation [following our style guide](development.md#documentation)
+    - Preview the documentation [by rendering it locally](development.md#documentation). If you're not comfortable with this step, we'd rather you skip it and open a PR anyway! Our GitHub automations will generate a documentation preview. Please mark your PR as a draft until you've checked the preview and it looks OK. Don't hesitate to reach out for help!
+    - Describe your changes in the `CHANGELOG.md`
 
-##### Caveats and considerations
-
-Our mkdocs setup has a known limitation: the hot reloader won't auto-reload when changing docstrings. To see updates, manually rebuild and re-serve docs. We're working to improve the developer experience and appreciate your patience.
-
+Once you've completed these steps, you are ready to submit your pull request.
 
 ## Submitting your contribution
 
-- Run all unit tests successfully in your branch
-- Lint and format your code.  See below.
-- Update the documentation and CHANGELOG.md
-- Submit the fix to the problem as a pull request
-- Include an explanation of what you did and why in the pull request
+When you're ready to submit your pull request, first open a draft pull request and confirm that:
 
-### Please format and lint as you go
+- You've included an explanation of what you did and why in the pull request
+- All unit tests run successfully in your branch
+- Your code is linted and formatted correctly
+- The documentation and `CHANGELOG.md` has been updated appropriately
 
-
-#### Usage of Pre-Commit
-
-To maintain code quality, we use pre-commit for automated checks before committing changes. Install and configure pre-commit to ensure high-quality contributions.
-
-To set up pre-commit, follow these steps:
-
-- `pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
-- `pre-commit install` to enable it to run automatically
-- `pre-commit run -a`  to run it manually
-
-
-We have included type stubs for the untyped `python-cmr` library, which we intend to eventually upstream.  Since `python-cmr` exposes the `cmr` package, the stubs appear under `stubs/cmr`.
-
-## Pull Request process
-
-Fork the repository using the "Fork" button on the [repository
-homepage](https://github.com/nsidc/earthaccess), create a branch with your changes in the fork, then open
-a draft pull request from your fork. Starting a pull request provides additional instructions and requirements, and
-there is no harm in starting a draft pull request while still developing.
+Then you can mark the pull request as ready for review! 🎉

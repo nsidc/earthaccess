@@ -1,7 +1,9 @@
 # Release process
 
-> :memo: The versioning scheme we use is [SemVer](http://semver.org/). Note that until
-> we agree we're ready for v1.0.0, we will not increment the major version.
+!!! info
+
+    The versioning scheme we use is [SemVer](http://semver.org/). Note that until
+    we agree we're ready for v1.0.0, we will not increment the major version.
 
 1. Ensure all desired features are merged to `main` branch and `CHANGELOG.md` is
    updated. **Do not** edit the `Unreleased` header in the CHANGELOG -- the next step
@@ -49,8 +51,10 @@
         - Zenodo will create a new DOI.
         - GitHub Actions will publish a PyPI release.
 
-1. Once the package is visible on PyPI, check it's installable with `pip install
-   earthaccess==vX.Y.Z`.
+1. Once the package is visible on PyPI, check it's installable with
+   ```
+   python -m pip install earthaccess==vX.Y.Z
+   ```
 
 1. After the package is released on PyPI, follow the
    [conda-forge maintainer process](https://conda-forge.org/docs/maintainer/) to release
@@ -58,7 +62,7 @@
 
     !!! note
 
-        :memo: `earthaccess` is published to conda-forge through the
+        `earthaccess` is published to conda-forge through the
         [earthdata-feedstock](https://github.com/conda-forge/earthdata-feedstock), as
         this project was renamed early in its life. The conda package is named
         `earthaccess`.
