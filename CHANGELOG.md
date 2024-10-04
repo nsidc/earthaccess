@@ -8,9 +8,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ## [Unreleased]
 
 ### Fixed
+
 - Return an empty list instead of raising an `IndexError` when searches find no results.
-  ([#839](https://github.com/nsidc/earthaccess/pull/839))
-  ([**@jhkennedy**](https://github.com/jhkennedy))
+  ([#526](https://github.com/nsidc/earthaccess/issues/526))
+  ([@jhkennedy](https://github.com/jhkennedy))
 
 ## [v0.11.0] 2024-10-01
 
