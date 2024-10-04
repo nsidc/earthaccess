@@ -2,8 +2,8 @@
 
 ## Getting the code
 
-1. Fork [nsidc/earthaccess](https://github.com/nsidc/earthaccess/fork)
-1. Clone your fork
+1. [Fork nsidc/earthaccess](https://github.com/nsidc/earthaccess/fork)
+1. Clone your fork:
    ```bash
    git clone git@github.com:{my-username}/earthaccess
    ```
@@ -90,8 +90,10 @@ having to make significant changes to get the checks to pass.
 To set up pre-commit, follow these steps:
 
 - `python -m pip install pre-commit` ([official installation docs](https://pre-commit.com/#install))
-- `pre-commit install` to enable it to run automatically
+- `pre-commit install` to enable it to run automatically for each commit
 - `pre-commit run -a`  to run it manually
+
+## Type stubs
 
 We have included type stubs for the untyped `python-cmr` library, which we intend to eventually upstream.
 Since `python-cmr` exposes the `cmr` package, the stubs appear under `stubs/cmr`.

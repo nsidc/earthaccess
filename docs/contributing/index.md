@@ -17,12 +17,12 @@ Then, you can:
   questions, share insights, or connect with others about Earth data access (broadly)
 - Open [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas) to suggest
   new features or improvements, and find collaborators and coordinate the work
-- Join [a "hack day"](our-meet-ups.md) to meat other users/developers/maintainers and get help on, or give help to,
+- Join [a "hack day"](our-meet-ups.md) to meet other users/developers/maintainers and get help on, or give help to,
   anything related to Earth data access
 
 You can also directly [open a pull request](#steps-to-a-pull-request) after you've reviewed this whole contributing guide.
 
-If you're not sure what to do, _don't worry_, and just pick whichever suites you best.
+If you're not sure what to do, _don't worry_, and just pick whichever suits you best. The community will help you out!
 
 !!! note
 
@@ -37,7 +37,7 @@ relevant tab to proceed.
 
 !!! tip
 
-    The small the pull request, the easier it is to  review and test, and the more likely it is to be successful.
+    The smaller the pull request, the easier it is to review and test, and the more likely it is to be successful. For more details, check out this [helpful YouTube video by the author of pre-commit](https://www.youtube.com/watch?v=Gu6XrmfwivI).
 
     For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
     or [coming to a "hack day"](our-meet-ups.md) and describing your contribution so we can help guide and/or collaborate
@@ -49,30 +49,30 @@ relevant tab to proceed.
       a Minimal Working Example (MWE), an SSCCE (Short, Self Contained, Complete Example), or a "reprex",
       and include it in [a GitHub issue](https://github.com/nsidc/earthaccess/issues) (recommended) or in your pull request.
     - Create a branch to resolve your issue
-    - Run the unit tests successfully in your branch
+    - Run the existing unit tests successfully in your branch
     - Create one or more new tests to demonstrate the bug and observe them fail
     - Update the relevant code to fix the issue
     - Successfully run your new unit tests
     - Lint and format your code with [Pre-Commit](development.md#usage-of-pre-commit)
-    - Described your changes in the `CHANGELOG.md`
+    - Describe your changes in the `CHANGELOG.md`
 
 === "Contributing a New Feature"
 
     - We recommend you create [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
-      describing the feature's scope and it's fit for this package with the team
+      describing the feature's scope and its fit for this package with the team.
     - Create a branch for your new feature in your fork
     - Run the unit tests successfully in your branch
-    - Write the code to implement your new feature in a backwards compatible manner
+    - Write the code to implement your new feature in a backwards compatible manner. If breaking changes are necessary, discuss your strategy with the team first.
     - Create at least one test that exercises your feature and run the test suite
-    - Lint and format your code with [Pre-Commit](development.md#usage-of-pre-commit)
-    - Described your changes in the `CHANGELOG.md`
+    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit)
+    - Describe your changes in the `CHANGELOG.md`
 
 === "Contributing to Documentation"
 
     - Create a branch for your documentation changes in your fork
     - Update the documentation [following our style guide](development.md#documentation)
-    - Preview the documentation [by rendering it locally](development.md#documentation)
-    - Described your changes in the `CHANGELOG.md`
+    - Preview the documentation [by rendering it locally](development.md#documentation). If you're not comfortable with this step, we'd rather you skip it and open a PR anyway! Our GitHub automations will generate a documentation preview. Please mark your PR as a draft until you've checked the preview and it looks OK. Don't hesitate to reach out for help!
+    - Describe your changes in the `CHANGELOG.md`
 
 Once you've completed these steps, you are ready to submit your pull request.
 
@@ -85,4 +85,4 @@ When you're ready to submit your pull request, first open a draft pull request a
 - Your code is linted and formatted correctly
 - The documentation and `CHANGELOG.md` has been updated appropriately
 
-Then you can mark the pull request as ready for review!
+Then you can mark the pull request as ready for review! :tada: 
