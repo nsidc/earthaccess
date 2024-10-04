@@ -53,7 +53,7 @@ relevant tab to proceed.
     - Create one or more new tests to demonstrate the bug and observe them fail
     - Update the relevant code to fix the issue
     - Successfully run your new unit tests
-    - Lint and format your code with [Pre-Commit](development.md#usage-of-pre-commit)
+    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit)
     - Describe your changes in the `CHANGELOG.md`
 
 === "Contributing a New Feature"
