@@ -35,9 +35,15 @@ jobs:
           SEARCH_QUERY: 'repo:${{ github.repository }} is:issue created:${{ env.last_month }} -reason:"not planned"'
 
       - name: Create issue
+        id: create_issue
         uses: peter-evans/create-issue-from-file@v5
         with:
           title: "Monthly issue metrics report: ${{ env.last_month }}"
           labels: metrics
           token: ${{ secrets.GITHUB_TOKEN }}
           content-filepath: ./issue_metrics.md
+
+      - name: Close Issue
+        run: gh issue close "${{steps.create_issue.outputs.issue-number}}" --reason "not planned"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
