@@ -85,4 +85,4 @@ When you're ready to submit your pull request, first open a draft pull request a
 - Your code is linted and formatted correctly
 - The documentation and `CHANGELOG.md` has been updated appropriately
 
-Then you can mark the pull request as ready for review! :tada: 
+Then you can mark the pull request as ready for review! :tada:
