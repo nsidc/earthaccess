@@ -65,7 +65,7 @@ def _open_files(
     fs: fsspec.AbstractFileSystem,
     threads: int = 8,
 ) -> List[fsspec.spec.AbstractBufferedFile]:
-    def multi_thread_open(data: tuple) -> EarthAccessFile:
+    def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
         return EarthAccessFile(fs.open(url), granule)  # type: ignore
 
