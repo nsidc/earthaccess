@@ -20,19 +20,28 @@ If you don't have pipx (pip for applications), then you can install with
 pip is reasonable). If you use macOS, then pipx and nox are both in brew, use
 `brew install pipx nox`.
 
-To use, run `nox`. This will typecheck and test using every installed version of
-Python on your system, skipping ones that are not installed. You can also run
-specific jobs:
+To use, run `nox` without any arguments.  This will run type checks and unit
+tests using the installed version of Python on your system.
+
+You can also run individual tasks (_sessions_ in `nox` parlance, hence the `-s`
+option below), like so:
 
 ```console
-$ nox -s typecheck              # Typecheck only
-$ nox -s tests                  # Python tests
-$ nox -s serve_docs             # Build and serve the docs
-$ nox -s build_pkg              # Make an SDist and Wheel
+nox -s typecheck              # Run typechecks
+nox -s tests                  # Run unit tests
+nox -s integration-tests      # Run integration tests (see note below)
+nox -s serve_docs             # Build and serve the docs
+nox -s build_pkg              # Build an SDist and Wheel
 ```
 
 Nox handles everything for you, including setting up a temporary virtual
 environment for each run.
+
+**NOTE:** In order to run integration tests locally, you must set the
+environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` to your
+username and password, respectively, of your
+[NASA Earthdata](https://urs.earthdata.nasa.gov/) account (registration is
+free).
 
 ## Manual development environment setup
 

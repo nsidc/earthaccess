@@ -1,90 +1,54 @@
-# package imports
 import logging
-import os
-import pathlib
-import unittest
 
 import earthaccess
+import earthaccess.daac
 import pytest
 import requests
 import s3fs
 
 logger = logging.getLogger(__name__)
-assertions = unittest.TestCase("__init__")
-
-NETRC_PATH = pathlib.Path.home() / pathlib.Path(".netrc")
-
-
-def activate_environment():
-    earthaccess.__auth__ = earthaccess.Auth()
-    # the original comes from github secrets
-    os.environ["EARTHDATA_USERNAME"] = os.getenv("EARTHACCESS_TEST_USERNAME", "")
-    os.environ["EARTHDATA_PASSWORD"] = os.getenv("EARTHACCESS_TEST_PASSWORD", "")
-
-
-def activate_netrc():
-    activate_environment()
-    username = os.environ["EARTHDATA_USERNAME"]
-    password = os.environ["EARTHDATA_PASSWORD"]
-
-    with open(NETRC_PATH, "w") as f:
-        f.write(
-            f"machine urs.earthdata.nasa.gov login {username} password {password}\n"
-        )
-        NETRC_PATH.chmod(0o600)
-
-
-def delete_netrc():
-    if NETRC_PATH.exists():
-        NETRC_PATH.unlink()
 
 
 def test_auth_can_read_earthdata_env_variables():
-    activate_environment()
     auth = earthaccess.login(strategy="environment")
     logger.info(f"Current username: {auth.username}")
     logger.info(f"earthaccess version: {earthaccess.__version__}")
 
-    assertions.assertIsInstance(auth, earthaccess.Auth)
-    assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
-    assertions.assertTrue(earthaccess.__auth__.authenticated)
+    assert isinstance(auth, earthaccess.Auth)
+    assert isinstance(earthaccess.__auth__, earthaccess.Auth)
+    assert earthaccess.__auth__.authenticated
 
 
-def test_auth_can_read_from_netrc_file():
-    activate_netrc()
+def test_auth_can_read_from_netrc_file(mock_netrc):
     auth = earthaccess.login(strategy="netrc")
-    assertions.assertTrue(auth.authenticated)
-    delete_netrc()
+    assert auth.authenticated
 
 
-def test_auth_throws_exception_if_netrc_is_not_present():
-    activate_environment()
-    delete_netrc()
-    with pytest.raises(Exception):
+def test_auth_throws_exception_if_netrc_is_not_present(mock_missing_netrc):
+    with pytest.raises(FileNotFoundError):
         earthaccess.login(strategy="netrc")
-        assertions.assertRaises(FileNotFoundError)
 
 
 def test_auth_populates_attrs():
-    activate_environment()
     auth = earthaccess.login(strategy="environment")
-    assertions.assertIsInstance(auth, earthaccess.Auth)
-    assertions.assertIsInstance(earthaccess.__auth__, earthaccess.Auth)
-    assertions.assertTrue(earthaccess.__auth__.authenticated)
+    assert isinstance(auth, earthaccess.Auth)
+    assert isinstance(earthaccess.__auth__, earthaccess.Auth)
+    assert earthaccess.__auth__.authenticated
 
 
 def test_auth_can_create_authenticated_requests_sessions():
-    activate_environment()
     session = earthaccess.get_requests_https_session()
-    assertions.assertTrue("Authorization" in session.headers)
-    assertions.assertTrue("Bearer" in session.headers["Authorization"])
+    assert "Authorization" in session.headers
+    assert "Bearer" in session.headers["Authorization"]  # type: ignore
 
 
-@pytest.mark.parametrize("daac", earthaccess.daac.DAACS)
+@pytest.mark.parametrize(
+    "daac", [daac for daac in earthaccess.daac.DAACS if daac["s3-credentials"]]
+)
 def test_auth_can_fetch_s3_credentials(daac):
-    activate_environment()
     auth = earthaccess.login(strategy="environment")
     assert auth.authenticated
+
     try:
         credentials = earthaccess.get_s3_credentials(daac["short-name"])
     except requests.RequestException as e:
@@ -96,9 +60,9 @@ def test_auth_can_fetch_s3_credentials(daac):
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
 def test_get_s3_credentials_lowercase_location(location):
-    activate_environment()
     earthaccess.login(strategy="environment")
     creds = earthaccess.get_s3_credentials(**location)
+
     assert creds
     assert all(
         creds[key]
@@ -108,8 +72,8 @@ def test_get_s3_credentials_lowercase_location(location):
 
 @pytest.mark.parametrize("location", ({"daac": "podaac"}, {"provider": "pocloud"}))
 def test_get_s3_filesystem_lowercase_location(location):
-    activate_environment()
     earthaccess.login(strategy="environment")
     fs = earthaccess.get_s3_filesystem(**location)
+
     assert isinstance(fs, s3fs.S3FileSystem)
     assert all(fs.storage_options[key] for key in ["key", "secret", "token"])
