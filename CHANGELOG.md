@@ -15,6 +15,9 @@
   (@chuckwondo)
 - Add `nox` session for running integration tests locally
   ([#815](https://github.com/nsidc/earthaccess/issues/815)) (@chuckwondo)
+- Auto-add comment to PR that requires maintainer to review and re-run
+  integration tests ([#824](https://github.com/nsidc/earthaccess/issues/824))
+  (@chuckwondo)
 
 ### Removed
 
