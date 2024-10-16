@@ -96,6 +96,17 @@ class TestResults(VCRTestCase):
 
         return myvcr
 
+    def test_no_results(self):
+        """If we search for a collection that doesn't exist, we should get no results."""
+        granules = earthaccess.search_data(
+            # STAC collection name; correct short name is OPERA_L3_DSWX-HLS_V1
+            # Example discussed in: https://github.com/nsidc/earthaccess/pull/839
+            short_name="OPERA_L3_DSWX-HLS_V1_1.0",
+            bounding_box=(-95.19, 30.59, -94.99, 30.79),
+            temporal=("2024-04-30", "2024-05-31"),
+        )
+        assert len(granules) == 0
+
     def test_data_links(self):
         granules = earthaccess.search_data(
             short_name="SEA_SURFACE_HEIGHT_ALT_GRIDS_L4_2SATS_5DAY_6THDEG_V_JPL2205",
