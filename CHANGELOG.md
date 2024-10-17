@@ -1,31 +1,40 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Common Changelog](https://common-changelog.org/)
+and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unreleased]
 
 ### Changed
 
 - Use built-in `assert` statements instead of `unittest` assertions in
   integration tests ([#743](https://github.com/nsidc/earthaccess/issues/743))
-  (@chuckwondo)
+  ([@chuckwondo](https://github.com/chuckwondo))
 
 ### Added
 
 - Add support for `NETRC` environment variable to override default `.netrc` file
   location ([#480](https://github.com/nsidc/earthaccess/issues/480))
-  (@chuckwondo)
+  ([@chuckwondo](https://github.com/chuckwondo))
 - Add `nox` session for running integration tests locally
-  ([#815](https://github.com/nsidc/earthaccess/issues/815)) (@chuckwondo)
+  ([#815](https://github.com/nsidc/earthaccess/issues/815)) ([@chuckwondo](https://github.com/chuckwondo))
 - Auto-add comment to PR that requires maintainer to review and re-run
   integration tests ([#824](https://github.com/nsidc/earthaccess/issues/824))
-  (@chuckwondo)
+  ([@chuckwondo](https://github.com/chuckwondo))
 
 ### Removed
 
 ### Fixed
 
+
 - Integration tests no longer clobber existing `.netrc` file
   ([#806](https://github.com/nsidc/earthaccess/issues/806))
   (@chuckwondo)
+- Return an empty list instead of raising an `IndexError` when searches find no results.
+  ([#526](https://github.com/nsidc/earthaccess/issues/526))
+  ([@jhkennedy](https://github.com/jhkennedy))
 
 ## [0.11.0] 2024-10-01
 
