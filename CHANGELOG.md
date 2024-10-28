@@ -87,11 +87,11 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Remove the base class on `EarthAccessFile` to fix method resolution
   ([#610](https://github.com/nsidc/earthaccess/issues/610))
   ([**@itcarroll**](https://github.com/itcarroll))
-- Fixed earthaccess.download() ignoring errors
+- Fix `earthaccess.download` to not ignore errors by default
   ([#581](https://github.com/nsidc/earthaccess/issues/581))
-  ([**@Sherwin-14**](https://github.com/Sherwin-14)),
-  ([**@chuckwondo**](https://github.com/chuckwondo),
-  [**@mfisher87**](https://github.com/mfisher87)
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),
+  [**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87))
 
 ### Removed
 
