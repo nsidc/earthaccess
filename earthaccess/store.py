@@ -68,7 +68,12 @@ def _open_files(
 ) -> List[fsspec.AbstractFileSystem]:
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         urls, granule = data
-        return EarthAccessFile(fs.open(urls), granule) # type: ignore   
+        return EarthAccessFile(fs.open(urls), granule)  # type: ignore
+
+    pqdm_kwargs = {
+        "exception_behavior": "immediate",
+        **(pqdm_kwargs or {}),
+    }
 
     fileset = pqdm(
         url_mapping.items(), multi_thread_open, n_jobs=threads, **pqdm_kwargs
@@ -348,6 +353,9 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -371,7 +379,6 @@ class Store(object):
         granules: List[DataGranule],
         provider: Optional[str] = None,
         threads: int = 8,
-        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -397,22 +404,14 @@ class Store(object):
             else:
                 access = "on_prem"
                 s3_fs = None
-                access = "direct"
-                provider = granules[0]["meta"]["provider-id"]
-                # if the data has its own S3 credentials endpoint, we will use it
-                endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
-                if endpoint is not None:
-                    logger.info(f"using endpoint: {endpoint}")
-                    s3_fs = self.get_s3_filesystem(endpoint=endpoint)
-                else:
-                    logger.info(f"using provider: {provider}")
-                    s3_fs = self.get_s3_filesystem(provider=provider)
 
             url_mapping = _get_url_granule_mapping(granules, access)
             if s3_fs is not None:
                 try:
                     fileset = _open_files(
-                        url_mapping, fs=s3_fs, threads=threads, pqdm_kwargs=pqdm_kwargs
+                        url_mapping,
+                        fs=s3_fs,
+                        threads=threads,
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -421,15 +420,11 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     ) from e
             else:
-                fileset = self._open_urls_https(
-                    url_mapping, threads=threads, pqdm_kwargs=pqdm_kwargs
-                )
+                fileset = self._open_urls_https(url_mapping, threads=threads)
             return fileset
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(
-                url_mapping, threads=threads, pqdm_kwargs=pqdm_kwargs
-            )
+            fileset = self._open_urls_https(url_mapping, threads=threads)
             return fileset
 
     @_open.register
@@ -512,6 +507,9 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             List of downloaded files
@@ -553,6 +551,9 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             None
@@ -693,9 +694,9 @@ class Store(object):
             directory: local directory to store the downloaded files
             threads: parallel number of threads to use to download the files;
                 adjust as necessary, default = 8
-            fail_fast: if set to True, the download process will stop immediately
-            upon encountering the first error. If set to False, errors will be
-            deferred, allowing the download of remaining files to continue.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             A list of local filepaths to which the files were downloaded.
@@ -715,7 +716,7 @@ class Store(object):
             self._download_file,
             n_jobs=threads,
             argument_type="args",
-            **pqdm_kwargs
+            **pqdm_kwargs,
         )
         return results
 
@@ -723,11 +724,12 @@ class Store(object):
         self,
         url_mapping: Mapping[str, Union[DataGranule, None]],
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
 
         try:
-            return _open_files(url_mapping, https_fs, threads, **pqdm_kwargs)
+            return _open_files(url_mapping, https_fs, threads, pqdm_kwargs)
         except Exception:
             logger.exception(
                 "An exception occurred while trying to access remote files via HTTPS"

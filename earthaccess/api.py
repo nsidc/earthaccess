@@ -218,6 +218,9 @@ def download(
         local_path: local directory to store the remote data granules
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+            See pqdm documentation for available options. Default is to use immediate exception behavior
+            and the number of jobs specified by the `threads` parameter.
 
     Returns:
         List of downloaded files
@@ -226,6 +229,7 @@ def download(
         Exception: A file download failed.
     """
     provider = _normalize_location(provider)
+    pqdm_kwargs = dict(pqdm_kwargs) if pqdm_kwargs is not None else {}
     pqdm_kwargs = {
         "exception_behavior": "immediate",
         "n_jobs": threads,
@@ -259,6 +263,9 @@ def open(
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+        pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+            See pqdm documentation for available options. Default is to use immediate exception behavior
+            and the number of jobs specified by the `threads` parameter.
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
