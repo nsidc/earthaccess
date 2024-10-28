@@ -229,7 +229,6 @@ def download(
         Exception: A file download failed.
     """
     provider = _normalize_location(provider)
-    pqdm_kwargs = dict(pqdm_kwargs) if pqdm_kwargs is not None else {}
     pqdm_kwargs = {
         "exception_behavior": "immediate",
         "n_jobs": threads,
