@@ -63,12 +63,12 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
-    threads: Optional[int] = 8,
+    threads: int = 8,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-) -> List[fsspec.AbstractFileSystem]:
+) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
-        urls, granule = data
-        return EarthAccessFile(fs.open(urls), granule)  # type: ignore
+        url, granule = data
+        return EarthAccessFile(fs.open(url), granule)  # type: ignore
 
     pqdm_kwargs = {
         "exception_behavior": "immediate",
@@ -346,7 +346,7 @@ class Store(object):
         provider: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
-        """Returns a list of fsspec file-like objects that can be used to access files
+        """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
         Parameters:
