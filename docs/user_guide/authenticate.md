@@ -1,18 +1,12 @@
 # Authentication
 
 You can use `earthaccess` to search for datasets and data without needing to login.  However, to access (download or stream) NASA Earth science data, whether from one of the NASA
-Distributed Active Archive Centers (DAACs) or from the cloud, you need
+Distributed Active Archive Centers (DAACs) or from NASA Earthdata Cloud, you need
 an Earthdata Login.  You can register for a a free Earthdata Login (EDL) account [here](https://urs.earthdata.nasa.gov/).  
 
-Once you have an Earthdata Login, the `earthaccess.login` method manages Earthdata Login and cloud credentials, when you are working with cloud-hosted data.  `earthaccess.login` offers three methods of logging in (or authenticating) using EDL: a manual login method, where you enter EDL username and password manually; and two automatic login methods using EDL credentials stored in a `.netrc` file or in environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`.  By default, `earthaccess.login()` will look for a `.netrc` or environment variables first.  If neither of these are found, it will prompt you to enter your username and password.  The three methods are described in detail below.  
+Once you have an Earthdata Login, the `earthaccess.login` method manages Earthdata Login, and cloud credentials when you are working with cloud-hosted data.
 
-!!! note "This Page is a Work in Progress"
-
-    We are reorganizing and updating the documentation, so not all pages are complete.  If you are looking for information about authenticating using earthaccess see the
-    How-Tos and Tutorials in links below.
-
-    * [Quick start](../quick-start.md)
-    * [How-To Authenticate with earthaccess](../howto/authenticate.md)
+`earthaccess.login` offers three methods of logging in (or authenticating) using EDL: [a manual login method](#login-manually), where you enter EDL username and password manually; and two automatic login methods using EDL credentials stored in a [`.netrc`](#login-using-a-netrc) file or in [environment variables](#login-using-environment-variables).  By default, `earthaccess.login()` will look for a `.netrc` or environment variables first.  If neither of these are found, it will prompt you to enter your username and password.  The three methods are described in detail below.  
 
 
 ## Login Manually
