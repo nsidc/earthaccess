@@ -35,17 +35,78 @@ Setting `strategy=interactive` will force a manual login.
 
 ### Creating a `.netrc` file
 
-#### Manually creating a `.netrc` file
-
-[Need Linux, MacOS and Windows option]
-
 #### Using `earthaccess.login` to create a `.netrc` file
 
-[Need Linux, MacOS and Windows option]
+You can use `earthaccess.login` to create a `.netrc` for you.
+```
+earthaccess.login(persist=True)
+```
+You will then be prompted for your Earthdata Login username and password.  A `.netrc` (or `_netrc`) file will be created automatically.
+
+#### Manually creating a `.netrc` file for Earthdata Login Credentials
+
+=== "MacOS"
+    Type the following on your command line, replacing `<username>` and `<password>` with your
+    Earthdata Login credentials.
+    
+    ```
+    echo "machine urs.earthdata.nasa.gov login <username> password <password>" >> $HOME/.netrc
+    chmod 600 $HOME/.netrc
+    ```
+
+=== "Linux"
+    Type the following on your command line, replacing `<username>` and `<password>` with your
+    Earthdata Login credentials.
+    
+    ```
+    echo "machine urs.earthdata.nasa.gov login <username> password <password>" >> $HOME/.netrc
+    chmod 600 $HOME/.netrc
+    ```
+
+=== "Windows"
+    In a `CMD` session, create a `%HOME%` environment variable.  The following line
+    creates `%HOME%` from the path in `%USERPROFILE%`, which looks something like
+    `C:\Users\"username"`.
+    ```
+    setx HOME %USERPROFILE%
+    ```
+    You now need to create a `_netrc` file in `%HOME%`.
+    ```
+    echo "machine urs.earthdata.nasa.gov login <username> password <password>" >> %HOME%\_netrc
+    ```
 
 ## Login using environment variables
 
-[Need Linux, MacOS and Windows option]
+Alternatively, Earthdata Login credentials can be created as environment variables EARTHDATA_USERNAME and EARTHDATA_PASSWORD.
+
+=== "MacOS"
+    If you want to set the environment variables for the current shell session, type the following on the command line.
+    ```
+    export EARTHDATA_USERNAME="username"
+    export EARTHDATA_PASSWORD="password"
+    ```
+    If you want to set these environmental variables permanently, add these two lines to your `.profile` file.
+    
+
+=== "Linux"
+    If you want to set the environment variables for the current shell session, type the following on the command line.
+    ```
+    export EARTHDATA_USERNAME="username"
+    export EARTHDATA_PASSWORD="password"
+    ```
+    If you want to set these environmental variables permanently, add these two lines to your `.bashrc` file.
+
+=== "Windows"
+    To set the environment variables for the current `CMD` session, type the following:
+    ```
+    setx EARTHDATA_USERNAME "username"
+    setx EARTHDATA_PASSWORD "password"
+    ```
+    To set these environmental variables permanantly  
+    1. Open the start menu.  
+    2. Search for the "Advanced System Settings" control panel and click on it.  
+    3. Click on the "Environment Variables" button toward the bottom of the screen.  
+    4. Follow the prompts to add the variable to the user table.  
 
 
 ## Accessing different endpoints
@@ -61,4 +122,23 @@ import earthaccess
 
 earthaccess.login(system=earthaccess.UAT)
 
+```
+
+## Using `earthaccess` to get credentials
+
+`earthaccess.login` is a very convenient way to manage and provide Earthdata Login credentials.  `earthaccess.login` can also be used to obtain S3 credentials to access NASA Earthdata Cloud.  If you use `earthaccess` to access data in the cloud, you do not have to use this option, `earthaccess` handles this.  However, if you are using other packages, such as `h5coro`, `earthaccess` can save a lot of time.
+
+```
+import earthaccess
+import xarray as xr
+import h5coro
+
+auth = earthaccess.login()
+s3_credentials = auth.get_s3_credentials(daac="NSIDC")
+
+s3url_atl23 = 'nsidc-cumulus-prod-protected/ATLAS/ATL23/001/2023/03/' \
+                '01/ATL23_20230401000000_10761801_001_01.h5'
+ds = xr.open_dataset(s3url_atl23, engine='h5coro', 
+                     group='/mid_latitude/beam_1', 
+                     credentials=s3_credentials)
 ```
