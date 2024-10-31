@@ -304,8 +304,7 @@ class DataGranule(CustomDict):
         return s3_links
 
     def data_links(
-        self, access: Optional[str] = None, in_region: bool = False
-    ) -> List[str]:
+        self, access: Optional[str] = None) -> List[str]:
         """Placeholder.
 
         Returns the data links from a granule.
@@ -313,40 +312,29 @@ class DataGranule(CustomDict):
         Parameters:
             access: direct or external.
                 Direct means in-region access for cloud-hosted collections.
-            in_region: True if we are running in us-west-2.
-                It is meant for the store class.
 
         Returns:
             The data links for the requested access type.
         """
         https_links = self._filter_related_links("GET DATA")
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
-        if in_region:
-            # we are in us-west-2
-            if self.cloud_hosted and access in (None, "direct"):
-                # this is a cloud collection, and we didn't specify the access type
-                # default to S3 links
-                if len(s3_links) == 0 and len(https_links) > 0:
-                    # This is guessing the S3 links for some cloud collections that for
-                    # some reason only offered HTTPS links
-                    return self._derive_s3_link(https_links)
-                else:
-                    # we have the s3 links so we return those
-                    return s3_links
+
+        # we assume, perhaps incorrectly, that we are in us-west-2
+        if self.cloud_hosted and access in (None, "direct"):
+            # this is a cloud collection, and we didn't specify the access type
+            # default to S3 links
+            if len(s3_links) == 0 and len(https_links) > 0:
+                # This is guessing the S3 links for some cloud collections that for
+                # some reason only offered HTTPS links
+                return self._derive_s3_link(https_links)
             else:
-                # Even though we are in us-west-2, the user wants the HTTPS links used in-region.
-                # They are S3 signed links from TEA.
-                # <https://github.com/asfadmin/thin-egress-app>
-                return https_links
-        else:
-            # we are not in-region
-            if access == "direct":
-                # maybe the user wants to collect S3 links and use them later
-                # from the cloud
+                # we have the s3 links so we return those
                 return s3_links
-            else:
-                # we are not in us-west-2, even cloud collections have HTTPS links
-                return https_links
+        else:
+            # Even though we are in us-west-2, the user wants the HTTPS links used in-region.
+            # They are S3 signed links from TEA.
+            # <https://github.com/asfadmin/thin-egress-app>
+            return https_links
 
     def dataviz_links(self) -> List[str]:
         """Placeholder.

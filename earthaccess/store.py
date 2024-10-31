@@ -524,25 +524,33 @@ class Store(object):
     ) -> List[str]:
         data_links = granules
         downloaded_files: List = []
-        if provider is None and self.in_region and "cumulus" in data_links[0]:
+        if provider is None and "cumulus" in data_links[0]:
             raise ValueError(
                 "earthaccess can't yet guess the provider for cloud collections, "
                 "we need to use one from earthaccess.list_cloud_providers()"
             )
-        if self.in_region and data_links[0].startswith("s3"):
+        if data_links[0].startswith("s3"):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3_filesystem(provider=provider)
-            # TODO: make this parallel or concurrent
-            for file in data_links:
-                s3_fs.get(file, str(local_path))
-                file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
-            return downloaded_files
 
-        else:
-            # if we are not in AWS
-            return self._download_onprem_granules(data_links, local_path, threads)
+            try:
+                # TODO: make this parallel or concurrent
+                for file in data_links:
+                    s3_fs.get(file, str(local_path))
+                    file_name = local_path / Path(file).name
+                    logger.info(f"Downloaded: {file_name}")
+                    downloaded_files.append(file_name)
+                return downloaded_files
+            except Exception as e:
+                warnings.warn(
+                    "\nAn exception occurred while trying to access remote files on S3:"
+                    f"{e}\n\n"
+                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                    "Attempting on_prem access..."
+                )
+
+        # if we are not in AWS
+        return self._download_onprem_granules(data_links, local_path, threads)
 
     @_get.register
     def _get_granules(
@@ -557,11 +565,10 @@ class Store(object):
         provider = granules[0]["meta"]["provider-id"]
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
-        access = "direct" if (cloud_hosted and self.in_region) else "external"
+        access = "direct" if cloud_hosted else "external"
         data_links = list(
-            # we are not in-region
             chain.from_iterable(
-                granule.data_links(access=access, in_region=self.in_region)
+                granule.data_links(access=access)
                 for granule in granules
             )
         )
@@ -581,17 +588,25 @@ class Store(object):
 
             local_path.mkdir(parents=True, exist_ok=True)
 
-            # TODO: make this async
-            for file in data_links:
-                s3_fs.get(file, str(local_path))
-                file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
-            return downloaded_files
-        else:
-            # if the data are cloud-based, but we are not in AWS,
-            # it will be downloaded as if it was on prem
-            return self._download_onprem_granules(data_links, local_path, threads)
+            try:
+                # TODO: make this async
+                for file in data_links:
+                    s3_fs.get(file, str(local_path))
+                    file_name = local_path / Path(file).name
+                    logger.info(f"Downloaded: {file_name}")
+                    downloaded_files.append(file_name)
+                return downloaded_files
+            except Exception as e:
+                warnings.warn(
+                    "\nAn exception occurred while trying to access remote files on S3:"
+                    f"{e}\n\n"
+                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                    "Attempting on_prem access..."
+                )
+
+        # if the data are cloud-based, but we are not in AWS,
+        # it will be downloaded as if it was on prem
+        return self._download_onprem_granules(data_links, local_path, threads)
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.

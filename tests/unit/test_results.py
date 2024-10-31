@@ -118,16 +118,6 @@ class TestResults(VCRTestCase):
         # `access` specified
         assert g.data_links(access="direct")[0].startswith("s3://")
         assert g.data_links(access="external")[0].startswith("https://")
-        # `in_region` specified
-        assert g.data_links(in_region=True)[0].startswith("s3://")
-        assert g.data_links(in_region=False)[0].startswith("https://")
-        # When `access` and `in_region` are both specified, `access` takes priority
-        assert g.data_links(access="direct", in_region=True)[0].startswith("s3://")
-        assert g.data_links(access="direct", in_region=False)[0].startswith("s3://")
-        assert g.data_links(access="external", in_region=True)[0].startswith("https://")
-        assert g.data_links(access="external", in_region=False)[0].startswith(
-            "https://"
-        )
 
     def test_get_more_than_2000(self):
         """If we execute a get with a limit of more than 2000
