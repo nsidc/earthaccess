@@ -8,6 +8,7 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
+import warnings
 
 import fsspec
 import requests
@@ -81,16 +82,15 @@ def make_instance(
         earthaccess.__auth__ = auth
         earthaccess.login()
 
-    # When sending EarthAccessFiles between processes, it's possible that
-    # we will need to switch between s3 <--> https protocols.
-    if (earthaccess.__store__.in_region and cls is not s3fs.S3File) or (
-        not earthaccess.__store__.in_region and cls is s3fs.S3File
-    ):
-        # NOTE: This uses the first data_link listed in the granule. That's not
-        #       guaranteed to be the right one.
-        return EarthAccessFile(earthaccess.open([granule])[0], granule)
-    else:
-        return EarthAccessFile(loads(data), granule)
+    if cls is s3fs.S3File:
+        try:
+            return EarthAccessFile(loads(data), granule)
+        except:
+            print("s3fs direct access failed. Attempting to use HTTPS")
+        
+    # NOTE: This uses the first data_link listed in the granule. That's not
+    #       guaranteed to be the right one.
+    return EarthAccessFile(earthaccess.open([granule])[0], granule)
 
 
 def _get_url_granule_mapping(
@@ -130,7 +130,6 @@ class Store(object):
         else:
             logger.warning("The current session is not authenticated with NASA")
             self.auth = None
-        self.in_region = self._running_in_us_west_2()
 
     def _derive_concept_provider(self, concept_id: Optional[str] = None) -> str:
         if concept_id is not None:
@@ -154,27 +153,6 @@ class Store(object):
                 return link["URL"]
         return None
 
-    def _running_in_us_west_2(self) -> bool:
-        session = self.auth.get_session()
-        try:
-            # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
-            token_ = session.put(
-                "http://169.254.169.254/latest/api/token",
-                headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
-                timeout=1,
-            )
-            resp = session.get(
-                "http://169.254.169.254/latest/meta-data/placement/region",
-                timeout=1,
-                headers={"X-aws-ec2-metadata-token": token_.text},
-            )
-        except Exception:
-            return False
-
-        if resp.status_code == 200 and b"us-west-2" == resp.content:
-            # On AWS, in region us-west-2
-            return True
-        return False
 
     def set_requests_session(
         self, url: str, method: str = "get", bearer_token: bool = False
@@ -376,43 +354,41 @@ class Store(object):
                 "A valid Earthdata login instance is required to retrieve credentials"
             )
 
-        if self.in_region:
-            if granules[0].cloud_hosted:
-                access = "direct"
-                provider = granules[0]["meta"]["provider-id"]
-                # if the data has its own S3 credentials endpoint, we will use it
-                endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
-                if endpoint is not None:
-                    logger.info(f"using endpoint: {endpoint}")
-                    s3_fs = self.get_s3_filesystem(endpoint=endpoint)
-                else:
-                    logger.info(f"using provider: {provider}")
-                    s3_fs = self.get_s3_filesystem(provider=provider)
+        if granules[0].cloud_hosted:
+            access = "direct"
+            provider = granules[0]["meta"]["provider-id"]
+            # if the data has its own S3 credentials endpoint, we will use it
+            endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
+            if endpoint is not None:
+                logger.info(f"using endpoint: {endpoint}")
+                s3_fs = self.get_s3_filesystem(endpoint=endpoint)
             else:
-                access = "on_prem"
-                s3_fs = None
-
-            url_mapping = _get_url_granule_mapping(granules, access)
-            if s3_fs is not None:
-                try:
-                    fileset = _open_files(
-                        url_mapping,
-                        fs=s3_fs,
-                        threads=threads,
-                    )
-                except Exception as e:
-                    raise RuntimeError(
-                        "An exception occurred while trying to access remote files on S3. "
-                        "This may be caused by trying to access the data outside the us-west-2 region."
-                        f"Exception: {traceback.format_exc()}"
-                    ) from e
-            else:
-                fileset = self._open_urls_https(url_mapping, threads=threads)
-            return fileset
+                logger.info(f"using provider: {provider}")
+                s3_fs = self.get_s3_filesystem(provider=provider)
         else:
-            url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(url_mapping, threads=threads)
-            return fileset
+            access = "on_prem"
+            s3_fs = None
+
+        url_mapping = _get_url_granule_mapping(granules, access)
+        if s3_fs:
+            try:
+                return _open_files(
+                    url_mapping,
+                    fs=s3_fs,
+                    threads=threads,
+                )
+            except Exception as e:
+                warnings.warn(
+                    "\nAn exception occurred while trying to access remote files on S3:"
+                    f"{e}\n\n"
+                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                    "Attempting on_prem access..."
+                )
+                access = "on_prem"
+                url_mapping = _get_url_granule_mapping(granules, access)
+
+        fileset = self._open_urls_https(url_mapping, threads=threads)
+        return fileset
 
     @_open.register
     def _open_urls(
@@ -438,7 +414,8 @@ class Store(object):
             )
 
         url_mapping: Mapping[str, None] = {url: None for url in granules}
-        if self.in_region and granules[0].startswith("s3"):
+
+        if granules[0].startswith("s3"):
             if provider is not None:
                 s3_fs = self.get_s3_filesystem(provider=provider)
                 if s3_fs is not None:
@@ -450,7 +427,7 @@ class Store(object):
                         )
                     except Exception as e:
                         raise RuntimeError(
-                            "An exception occurred while trying to access remote files on S3. "
+                            "An exception occurred while trying to access remote files on S3."
                             "This may be caused by trying to access the data outside the us-west-2 region."
                             f"Exception: {traceback.format_exc()}"
                         ) from e

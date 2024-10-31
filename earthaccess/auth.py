@@ -178,6 +178,8 @@ class Auth(object):
                 auth_url = self._get_cloud_auth_url(
                     daac_shortname=daac, provider=provider
                 )
+                if not auth_url:
+                    raise Exception(f'auth_url not found using daac: "{daac}" and provider: "{provider}"')
             else:
                 auth_url = endpoint
             if auth_url.startswith("https://"):
