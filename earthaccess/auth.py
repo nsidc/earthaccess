@@ -179,6 +179,7 @@ class Auth(object):
                     daac_shortname=daac, provider=provider
                 )
                 if not auth_url:
+                    # Display possible typos in a helpfull error
                     raise Exception(f'auth_url not found using daac: "{daac}" and provider: "{provider}"')
             else:
                 auth_url = endpoint
