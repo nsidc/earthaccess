@@ -935,3 +935,11 @@ class DataGranules(GranuleQuery):
             )
 
         return self
+
+    def load(self):
+        # TODO - Handle paging (get all)
+        self._granules = self.get()
+
+    @property
+    def granules(self):
+        return self._granules
