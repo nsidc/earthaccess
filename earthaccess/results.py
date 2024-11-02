@@ -311,7 +311,7 @@ class DataGranule(CustomDict):
 
         Parameters:
             access: direct or external.
-                Direct means in-region access for cloud-hosted collections.
+                Direct means in-region access for cloud-hosted collections. 
 
         Returns:
             The data links for the requested access type.
@@ -320,7 +320,7 @@ class DataGranule(CustomDict):
         s3_links = self._filter_related_links("GET DATA VIA DIRECT ACCESS")
 
         # we assume, perhaps incorrectly, that we are in us-west-2
-        if self.cloud_hosted and access in (None, "direct"):
+        if self.cloud_hosted and access == "direct":
             # this is a cloud collection, and we didn't specify the access type
             # default to S3 links
             if len(s3_links) == 0 and len(https_links) > 0:

@@ -75,8 +75,24 @@ def _open_files(
 
 
 def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, data: Any
+    cls: Any, granule: DataGranule, auth: Auth, data: Any, out_of_region_handling: Optional[str] = "raise"
 ) -> EarthAccessFile:
+    """
+    Creates an EarthAccessFile instance
+    
+    Parameters:
+        cls: the datatype of a file system, such as s3fs.S3File
+        granule: a granule search result
+        auth: earthaccess.auth.Auth object
+        data: dumped buffered file data
+        out_of_region_handling: "raise" to raise an Exception if attempting out of region access or
+                                "handle" (or anything else) to attempt using a granule's first 
+                                data link upon faliure
+
+    Return: An EarthAccessFile object
+
+    """
+    
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
         earthaccess.__auth__ = auth
@@ -85,8 +101,20 @@ def make_instance(
     if cls is s3fs.S3File:
         try:
             return EarthAccessFile(loads(data), granule)
-        except:
-            print("s3fs direct access failed. Attempting to use HTTPS")
+        except Exception as e:
+            if out_of_region_handling == "raise":
+                raise Exception(
+                    "\nAn exception occurred while trying to access remote files on S3:"
+                    f"{e}\n\n"
+                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                )
+            else:
+                warnings.warn(
+                    "\nAn exception occurred while trying to access remote files on S3:"
+                    f"{e}\n\n"
+                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                    "Attempting on_prem access..."
+                )
         
     # NOTE: This uses the first data_link listed in the granule. That's not
     #       guaranteed to be the right one.
@@ -314,6 +342,8 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -322,6 +352,9 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+            threads: number of threads for multithreaded opening
+            out_of_region_handling: "raise" to raise an Exception if attempting out-of-region access or
+                                    "handle" (or anything else) to attempt using HTTPS upon faliure
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -335,6 +368,8 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -343,7 +378,9 @@ class Store(object):
         self,
         granules: List[DataGranule],
         provider: Optional[str] = None,
-        threads: int = 8,
+        threads: Optional[int] = 8,
+        out_of_region_handling: Optional[str] = "raise",
+        access: Optional[str] = "direct",
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -354,8 +391,7 @@ class Store(object):
                 "A valid Earthdata login instance is required to retrieve credentials"
             )
 
-        if granules[0].cloud_hosted:
-            access = "direct"
+        if granules[0].cloud_hosted and access == "direct":
             provider = granules[0]["meta"]["provider-id"]
             # if the data has its own S3 credentials endpoint, we will use it
             endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
@@ -378,14 +414,21 @@ class Store(object):
                     threads=threads,
                 )
             except Exception as e:
-                warnings.warn(
-                    "\nAn exception occurred while trying to access remote files on S3:"
-                    f"{e}\n\n"
-                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
-                    "Attempting on_prem access..."
-                )
-                access = "on_prem"
-                url_mapping = _get_url_granule_mapping(granules, access)
+                if out_of_region_handling == "raise":
+                    raise RuntimeError(
+                        "An exception occurred while trying to access remote files on S3."
+                        "This may be caused by trying to access the data outside the us-west-2 region."
+                        f"Exception: {traceback.format_exc()}"
+                    ) from e
+                else:
+                    warnings.warn(
+                        "\nAn exception occurred while trying to access remote files on S3:"
+                        f"{e}\n\n"
+                        "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                        "Attempting on_prem access..."
+                    )
+                    access = "on_prem"
+                    url_mapping = _get_url_granule_mapping(granules, access)
 
         fileset = self._open_urls_https(url_mapping, threads=threads)
         return fileset
@@ -396,6 +439,7 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
         threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[Any]:
         fileset: List = []
 
@@ -426,11 +470,19 @@ class Store(object):
                             threads=threads,
                         )
                     except Exception as e:
-                        raise RuntimeError(
-                            "An exception occurred while trying to access remote files on S3."
-                            "This may be caused by trying to access the data outside the us-west-2 region."
-                            f"Exception: {traceback.format_exc()}"
-                        ) from e
+                        if out_of_region_handling == "raise":
+                            raise RuntimeError(
+                                "An exception occurred while trying to access remote files on S3."
+                                "This may be caused by trying to access the data outside the us-west-2 region."
+                                f"Exception: {traceback.format_exc()}"
+                            ) from e
+                        else:
+                            warnings.warn(
+                                "\nAn exception occurred while trying to access remote files on S3:"
+                                f"{e}\n\n"
+                                "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                                "Attempting on_prem access..."
+                            )
                 else:
                     logger.info(f"Provider {provider} has no valid cloud credentials")
                 return fileset
@@ -438,13 +490,8 @@ class Store(object):
                 raise ValueError(
                     "earthaccess cannot derive the DAAC provider from URLs only, a provider is needed e.g. POCLOUD"
                 )
-        else:
-            if granules[0].startswith("s3"):
-                raise ValueError(
-                    "We cannot open S3 links when we are not in-region, try using HTTPS links"
-                )
-            fileset = self._open_urls_https(url_mapping, threads)
-            return fileset
+        fileset = self._open_urls_https(url_mapping, threads)
+        return fileset
 
     def get(
         self,
@@ -452,6 +499,7 @@ class Store(object):
         local_path: Union[Path, str, None] = None,
         provider: Optional[str] = None,
         threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -468,6 +516,8 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            out_of_region_handling: "raise" to raise an Exception if attempting out-of-region access or
+                        "handle" (or anything else) to attempt using HTTPS upon faliure
 
         Returns:
             List of downloaded files
@@ -492,6 +542,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -508,6 +559,8 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            out_of_region_handling: "raise" to raise an Exception if attempting out-of-region access or
+                        "handle" (or anything else) to attempt using HTTPS upon faliure
 
         Returns:
             None
@@ -521,6 +574,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[str]:
         data_links = granules
         downloaded_files: List = []
@@ -542,12 +596,19 @@ class Store(object):
                     downloaded_files.append(file_name)
                 return downloaded_files
             except Exception as e:
-                warnings.warn(
-                    "\nAn exception occurred while trying to access remote files on S3:"
-                    f"{e}\n\n"
-                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
-                    "Attempting on_prem access..."
-                )
+                if out_of_region_handling == "raise":
+                    raise RuntimeError(
+                        "An exception occurred while trying to access remote files on S3."
+                        "This may be caused by trying to access the data outside the us-west-2 region."
+                        f"Exception: {traceback.format_exc()}"
+                    ) from e
+                else:
+                    warnings.warn(
+                        "\nAn exception occurred while trying to access remote files on S3:"
+                        f"{e}\n\n"
+                        "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                        "Attempting on_prem access..."
+                    )
 
         # if we are not in AWS
         return self._download_onprem_granules(data_links, local_path, threads)
@@ -559,6 +620,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        out_of_region_handling: Optional[str] = "raise",
     ) -> List[str]:
         data_links: List = []
         downloaded_files: List = []
@@ -597,12 +659,19 @@ class Store(object):
                     downloaded_files.append(file_name)
                 return downloaded_files
             except Exception as e:
-                warnings.warn(
-                    "\nAn exception occurred while trying to access remote files on S3:"
-                    f"{e}\n\n"
-                    "This may be caused by trying to access the data outside the us-west-2 region.\n"
-                    "Attempting on_prem access..."
-                )
+                if out_of_region_handling == "raise":
+                    raise RuntimeError(
+                        "An exception occurred while trying to access remote files on S3."
+                        "This may be caused by trying to access the data outside the us-west-2 region."
+                        f"Exception: {traceback.format_exc()}"
+                    ) from e
+                else:
+                    warnings.warn(
+                        "\nAn exception occurred while trying to access remote files on S3:"
+                        f"{e}\n\n"
+                        "This may be caused by trying to access the data outside the us-west-2 region.\n"
+                        "Attempting on_prem access..."
+                    )
 
         # if the data are cloud-based, but we are not in AWS,
         # it will be downloaded as if it was on prem
