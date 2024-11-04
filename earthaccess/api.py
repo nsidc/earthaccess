@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 import requests
 import s3fs
@@ -202,9 +203,10 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
 
 def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
-    local_path: Optional[str],
+    local_path: Optional[Union[Path, str]] = None,
     provider: Optional[str] = None,
     threads: int = 8,
+    *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
@@ -215,7 +217,11 @@ def download(
 
     Parameters:
         granules: a granule, list of granules, a granule link (HTTP), or a list of granule links (HTTP)
-        local_path: local directory to store the remote data granules
+        local_path: Local directory to store the remote data granules.  If not
+            supplied, defaults to a subdirectory of the current working directory
+            of the form `data/YYYY-MM-DD-UUID`, where `YYYY-MM-DD` is the year,
+            month, and day of the current date, and `UUID` is the last 6 digits
+            of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
@@ -228,31 +234,29 @@ def download(
     Raises:
         Exception: A file download failed.
     """
-    provider = _normalize_location(provider)
-    pqdm_kwargs = {
-        "exception_behavior": "immediate",
-        "n_jobs": threads,
-        **(pqdm_kwargs or {}),
-    }
+    provider = _normalize_location(str(provider))
+
     if isinstance(granules, DataGranule):
         granules = [granules]
     elif isinstance(granules, str):
         granules = [granules]
+
     try:
-        results = earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs
+        return earthaccess.__store__.get(
+            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
         )
     except AttributeError as err:
         logger.error(
             f"{err}: You must call earthaccess.login() before you can download data"
         )
-        return []
-    return results
+
+    return []
 
 
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
@@ -269,15 +273,11 @@ def open(
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
     """
-    provider = _normalize_location(provider)
-    pqdm_kwargs = {
-        "exception_behavior": "immediate",
-        **(pqdm_kwargs or {}),
-    }
-    results = earthaccess.__store__.open(
-        granules=granules, provider=provider, pqdm_kwargs=pqdm_kwargs
+    return earthaccess.__store__.open(
+        granules=granules,
+        provider=_normalize_location(provider),
+        pqdm_kwargs=pqdm_kwargs,
     )
-    return results
 
 
 def get_s3_credentials(
