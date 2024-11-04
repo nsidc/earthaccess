@@ -5,7 +5,7 @@ However, to access (download or stream) NASA Earth science data, whether from on
 Distributed Active Archive Centers (DAACs) or from NASA Earthdata Cloud, you need
 an Earthdata Login account.  You can register for a free Earthdata Login (EDL) account [here](https://urs.earthdata.nasa.gov/).  
 
-Once you have an Earthdata Login, the `earthaccess.login` method manages Earthdata Login, and cloud credentials when you are working with cloud-hosted data.
+Once you have an Earthdata Login account, you may use the `earthaccess.login` method to manage Earthdata Login credentials and, when you are working with cloud-hosted data, cloud credentials.
 
 `earthaccess.login` offers three methods of logging in (or authenticating) using EDL: [a manual login method](#login-manually), where you enter EDL username and password manually; and two automatic login methods using EDL credentials stored in a [`.netrc`](#login-using-a-netrc) file or in [environment variables](#login-using-environment-variables).  By default, `earthaccess.login()` will look for a `.netrc` or environment variables first.  If neither of these are found, it will prompt you to enter your username and password.  The three methods are described in detail below.  
 
