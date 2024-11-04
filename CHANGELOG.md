@@ -7,6 +7,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+- Fix `earthaccess.download` to not ignore errors by default
+  ([#581](https://github.com/nsidc/earthaccess/issues/581))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),
+  [**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87))
+
 ### Changed
 
 - Use built-in `assert` statements instead of `unittest` assertions in

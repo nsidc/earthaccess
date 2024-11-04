@@ -64,12 +64,20 @@ def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     threads: int = 8,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
         return EarthAccessFile(fs.open(url), granule)  # type: ignore
 
-    fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads)
+    pqdm_kwargs = {
+        "exception_behavior": "immediate",
+        **(pqdm_kwargs or {}),
+    }
+
+    fileset = pqdm(
+        url_mapping.items(), multi_thread_open, n_jobs=threads, **pqdm_kwargs
+    )
     return fileset
 
 
@@ -336,6 +344,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -344,12 +353,15 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
         if len(granules):
-            return self._open(granules, provider)
+            return self._open(granules, provider, pqdm_kwargs)
         return []
 
     @singledispatchmethod
@@ -357,6 +369,7 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -420,6 +433,7 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
 
@@ -447,6 +461,7 @@ class Store(object):
                             url_mapping,
                             fs=s3_fs,
                             threads=threads,
+                            pqdm_kwargs=pqdm_kwargs,
                         )
                     except Exception as e:
                         raise RuntimeError(
@@ -466,7 +481,7 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(url_mapping, threads)
+            fileset = self._open_urls_https(url_mapping, threads, pqdm_kwargs)
             return fileset
 
     def get(
@@ -475,6 +490,7 @@ class Store(object):
         local_path: Union[Path, str, None] = None,
         provider: Optional[str] = None,
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -491,6 +507,9 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             List of downloaded files
@@ -503,7 +522,7 @@ class Store(object):
             local_path = Path(local_path)
 
         if len(granules):
-            files = self._get(granules, local_path, provider, threads)
+            files = self._get(granules, local_path, provider, threads, pqdm_kwargs)
             return files
         else:
             raise ValueError("List of URLs or DataGranule instances expected")
@@ -515,6 +534,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -531,6 +551,9 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             None
@@ -544,6 +567,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         data_links = granules
         downloaded_files: List = []
@@ -565,7 +589,9 @@ class Store(object):
 
         else:
             # if we are not in AWS
-            return self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(
+                data_links, local_path, threads, pqdm_kwargs
+            )
 
     @_get.register
     def _get_granules(
@@ -574,6 +600,7 @@ class Store(object):
         local_path: Path,
         provider: Optional[str] = None,
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         data_links: List = []
         downloaded_files: List = []
@@ -614,7 +641,9 @@ class Store(object):
         else:
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
-            return self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(
+                data_links, local_path, threads, pqdm_kwargs
+            )
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
@@ -652,7 +681,11 @@ class Store(object):
         return str(path)
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Path, threads: int = 8
+        self,
+        urls: List[str],
+        directory: Path,
+        threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         """Downloads a list of URLS into the data directory.
 
@@ -661,6 +694,9 @@ class Store(object):
             directory: local directory to store the downloaded files
             threads: parallel number of threads to use to download the files;
                 adjust as necessary, default = 8
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             A list of local filepaths to which the files were downloaded.
@@ -674,11 +710,13 @@ class Store(object):
         directory.mkdir(parents=True, exist_ok=True)
 
         arguments = [(url, directory) for url in urls]
+
         results = pqdm(
             arguments,
             self._download_file,
             n_jobs=threads,
             argument_type="args",
+            **pqdm_kwargs,
         )
         return results
 
@@ -686,11 +724,12 @@ class Store(object):
         self,
         url_mapping: Mapping[str, Union[DataGranule, None]],
         threads: int = 8,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
 
         try:
-            return _open_files(url_mapping, https_fs, threads)
+            return _open_files(url_mapping, https_fs, threads, pqdm_kwargs)
         except Exception:
             logger.exception(
                 "An exception occurred while trying to access remote files via HTTPS"

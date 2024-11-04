@@ -3,7 +3,7 @@ import logging
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Optional, Union, deprecated
+from typing_extensions import Any, Dict, List, Mapping, Optional, Union, deprecated
 
 import earthaccess
 from earthaccess.services import DataServices
@@ -205,6 +205,7 @@ def download(
     local_path: Optional[str],
     provider: Optional[str] = None,
     threads: int = 8,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
@@ -217,6 +218,9 @@ def download(
         local_path: local directory to store the remote data granules
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+            See pqdm documentation for available options. Default is to use immediate exception behavior
+            and the number of jobs specified by the `threads` parameter.
 
     Returns:
         List of downloaded files
@@ -225,12 +229,19 @@ def download(
         Exception: A file download failed.
     """
     provider = _normalize_location(provider)
+    pqdm_kwargs = {
+        "exception_behavior": "immediate",
+        "n_jobs": threads,
+        **(pqdm_kwargs or {}),
+    }
     if isinstance(granules, DataGranule):
         granules = [granules]
     elif isinstance(granules, str):
         granules = [granules]
     try:
-        results = earthaccess.__store__.get(granules, local_path, provider, threads)
+        results = earthaccess.__store__.get(
+            granules, local_path, provider, threads, pqdm_kwargs
+        )
     except AttributeError as err:
         logger.error(
             f"{err}: You must call earthaccess.login() before you can download data"
@@ -242,6 +253,7 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -250,12 +262,21 @@ def open(
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+        pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+            See pqdm documentation for available options. Default is to use immediate exception behavior
+            and the number of jobs specified by the `threads` parameter.
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
     """
     provider = _normalize_location(provider)
-    results = earthaccess.__store__.open(granules=granules, provider=provider)
+    pqdm_kwargs = {
+        "exception_behavior": "immediate",
+        **(pqdm_kwargs or {}),
+    }
+    results = earthaccess.__store__.open(
+        granules=granules, provider=provider, pqdm_kwargs=pqdm_kwargs
+    )
     return results
 
 
