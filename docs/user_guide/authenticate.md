@@ -113,7 +113,7 @@ Alternatively, Earthdata Login credentials can be created as environment variabl
 
 ## Accessing different endpoints
 
-### Earthdata User Acceptance Testing (UAT) environment
+### Earthdata User Acceptance Testing (UAT) endpoint
 
 If your EDL account is authorized to access the User Acceptance Testing (UAT) system,
 you can set earthaccess to work with its EDL and CMR endpoints
