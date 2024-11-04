@@ -19,7 +19,7 @@ By default, `earthaccess.login()` will look for a `.netrc` or environment variab
 
 ## Login Manually
 
-If you have not created a `.netrc` file or `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`, you can use the following approach to login.
+If you have not created a `.netrc` file or `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables, you can use the following approach to login.
 
 ```
 >>> import earthaccess
