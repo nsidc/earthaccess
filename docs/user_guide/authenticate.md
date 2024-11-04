@@ -126,7 +126,7 @@ earthaccess.login(system=earthaccess.UAT)
 
 ```
 
-## Using `earthaccess` to get credentials
+## Using `earthaccess` to get S3 credentials
 
 `earthaccess.login` is a very convenient way to manage and provide Earthdata Login credentials.  `earthaccess.login` can also be used to obtain S3 credentials to access NASA Earthdata Cloud.  If you use `earthaccess` to access data in the cloud, you do not have to use this option, `earthaccess` handles this.  However, if you are using other packages, such as `h5coro`, `earthaccess` can save a lot of time.
 
