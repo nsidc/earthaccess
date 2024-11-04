@@ -4,7 +4,7 @@ import earthaccess
 import pytest
 
 
-def test_download(monkeypatch):
+def test_download_immediate_failure(monkeypatch):
     earthaccess.login()
 
     results = earthaccess.search_data(
