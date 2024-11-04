@@ -1,5 +1,6 @@
 import os
 import pathlib
+from warnings import warn
 
 import earthaccess
 import pytest
@@ -22,6 +23,9 @@ def pytest_sessionfinish(session, exitstatus):
     ratio will change depending on which tests are executed! E.g. executing integration
     tests and unit tests at the same time allows more tests to fail than executing
     integration tests alone.
+
+    NOTE: The return exit code can be customized with the `EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE`
+    environment variable.
     """
     if exitstatus != pytest.ExitCode.TESTS_FAILED:
         # Exit status 1 in PyTest indicates "Tests were collected and run but some of
@@ -30,9 +34,15 @@ def pytest_sessionfinish(session, exitstatus):
         # want to defer to original pytest behavior.
         return
 
+
     failure_rate = (100.0 * session.testsfailed) / session.testscollected
     if failure_rate <= ACCEPTABLE_FAILURE_RATE:
-        session.exitstatus = 99
+        warn(
+            '\nWARNING: The integration test suite has been allowed to pass because the '
+            'failure rate was less than a hardcoded threshold. For more details see:\n'
+            'tests/integration/conftest.py.'
+        )
+        session.exitstatus = os.environ.get('EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE', 99)
 
 
 @pytest.fixture
