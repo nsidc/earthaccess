@@ -9,6 +9,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
+- Refactored our development guide to clarify development environment setup and how to run tests
+  ([@jhkennedy](https://github.com/jhkennedy))
 - Use built-in `assert` statements instead of `unittest` assertions in
   integration tests ([#743](https://github.com/nsidc/earthaccess/issues/743))
   ([@chuckwondo](https://github.com/chuckwondo))
