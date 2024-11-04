@@ -24,7 +24,7 @@ def typecheck(session: nox.Session) -> None:
 def tests(session: nox.Session) -> None:
     """Run the unit tests."""
     session.install("--editable", ".[test]")
-    session.run("pytest", "tests/unit", *session.posargs)
+    session.run("pytest", "tests/unit", "-rxXs", *session.posargs)
 
 
 @nox.session(name="integration-tests")

@@ -130,7 +130,7 @@ class TestStoreSessions(unittest.TestCase):
 
 
 @pytest.mark.xfail(
-    reason="This test reproduces a bug (#610) which has not yet been fixed."
+    reason="Expected failure: Reproduces a bug (#610) that has not yet been fixed."
 )
 def test_earthaccess_file_getattr():
     fs = fsspec.filesystem("memory")

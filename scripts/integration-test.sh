@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -x
-pytest tests/integration --cov=earthaccess --cov-report=term-missing "${@}" --capture=no --tb=native --log-cli-level=INFO
+pytest tests/integration -rxXs --cov=earthaccess --cov-report=term-missing "${@}" --capture=no --tb=native --log-cli-level=INFO
 RET=$?
 set +x
 
