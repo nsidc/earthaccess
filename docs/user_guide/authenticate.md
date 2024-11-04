@@ -2,7 +2,7 @@
 
 You can use `earthaccess` to search for datasets and data without needing to login.  However, to access (download or stream) NASA Earth science data, whether from one of the NASA
 Distributed Active Archive Centers (DAACs) or from NASA Earthdata Cloud, you need
-an Earthdata Login.  You can register for a a free Earthdata Login (EDL) account [here](https://urs.earthdata.nasa.gov/).  
+an Earthdata Login account.  You can register for a free Earthdata Login (EDL) account [here](https://urs.earthdata.nasa.gov/).  
 
 Once you have an Earthdata Login, the `earthaccess.login` method manages Earthdata Login, and cloud credentials when you are working with cloud-hosted data.
 
