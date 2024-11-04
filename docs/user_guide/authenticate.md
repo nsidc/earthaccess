@@ -7,7 +7,13 @@ an Earthdata Login account.  You can register for a free Earthdata Login (EDL) a
 
 Once you have an Earthdata Login account, you may use the `earthaccess.login` method to manage Earthdata Login credentials and, when you are working with cloud-hosted data, cloud credentials.
 
-`earthaccess.login` offers three methods of logging in (or authenticating) using EDL: [a manual login method](#login-manually), where you enter EDL username and password manually; and two automatic login methods using EDL credentials stored in a [`.netrc`](#login-using-a-netrc) file or in [environment variables](#login-using-environment-variables).  By default, `earthaccess.login()` will look for a `.netrc` or environment variables first.  If neither of these are found, it will prompt you to enter your username and password.  The three methods are described in detail below.  
+`earthaccess.login` offers three methods of logging in (or authenticating) using EDL:
+
+* [a manual login method](#login-manually), where you enter EDL username and password manually
+* an automatic login method using EDL credentials stored in a [`.netrc`](#login-using-a-netrc) file
+* an automatic login method using EDL credentials stored in [environment variables](#login-using-environment-variables).
+
+By default, `earthaccess.login()` will look for a `.netrc` or environment variables first.  If neither of these are found, it will prompt you to enter your username and password.  The three methods are described in detail below.  
 
 `earthaccess.login` can also be used to login to [different endpoints](#accessing-different-endpoints) and [get S3 credentials](#using-earthaccess-to-get-credentials).
 
