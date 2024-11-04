@@ -79,7 +79,7 @@ You will then be prompted for your Earthdata Login username and password.  A `.n
 
 ## Login using environment variables
 
-Alternatively, Earthdata Login credentials can be created as environment variables EARTHDATA_USERNAME and EARTHDATA_PASSWORD.
+Alternatively, Earthdata Login credentials can be created as environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`.
 
 === "MacOS"
     If you want to set the environment variables for the current shell session, type the following on the command line.
