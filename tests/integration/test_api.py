@@ -1,6 +1,7 @@
 import logging
 import os
 from pathlib import Path
+from unittest.mock import patch
 
 import earthaccess
 import pytest
@@ -75,6 +76,51 @@ def test_download(tmp_path, selection, use_url):
     files = earthaccess.download(result, str(tmp_path))
     assert isinstance(files, list)
     assert all(Path(f).exists() for f in files)
+
+
+def fail_to_download_file(*args, **kwargs):
+    raise IOError("Download failed")
+
+
+def test_download_immediate_failure(tmp_path: Path):
+    results = earthaccess.search_data(
+        short_name="ATL06",
+        bounding_box=(-10, 20, 10, 50),
+        temporal=("1999-02", "2019-03"),
+        count=3,
+    )
+
+    with patch.object(earthaccess.__store__, "_download_file", fail_to_download_file):
+        with pytest.raises(IOError, match="Download failed"):
+            # By default, we set pqdm exception_behavior to "immediate" so that
+            # it simply propagates the first download error it encounters, halting
+            # any further downloads.
+            earthaccess.download(results, tmp_path, pqdm_kwargs=dict(disable=True))
+
+
+def test_download_deferred_failure(tmp_path: Path):
+    count = 3
+    results = earthaccess.search_data(
+        short_name="ATL06",
+        bounding_box=(-10, 20, 10, 50),
+        temporal=("1999-02", "2019-03"),
+        count=count,
+    )
+
+    with patch.object(earthaccess.__store__, "_download_file", fail_to_download_file):
+        # With "deferred" exceptions, pqdm catches all exceptions, then at the end
+        # raises a single generic Exception, passing the sequence of caught exceptions
+        # as arguments to the Exception constructor.
+        with pytest.raises(Exception) as exc_info:
+            earthaccess.download(
+                results,
+                tmp_path,
+                pqdm_kwargs=dict(exception_behaviour="deferred", disable=True),
+            )
+
+    errors = exc_info.value.args
+    assert len(errors) == count
+    assert all(isinstance(e, IOError) and str(e) == "Download failed" for e in errors)
 
 
 def test_auth_environ():
