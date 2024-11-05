@@ -32,13 +32,12 @@ jobs:
     # To prevent this, this condition ensures that integration tests are run
     # in only ONE of the following cases:
     #
-    #   1. The event is NOT a pull_request.  This covers the case when the event
-    #      is a pull_request_target (i.e., a PR from a fork), as well as all
-    #      other cases listed in the "on" block at the top of this file.
+    #   1. The event is NOT a pull_request (it's a pull_request_target) and the base
+    #      repo and the head repo are different (i.e., the PR is from a fork).
     #   2. The event IS a pull_request AND the base repo and head repo are the
     #      same (i.e., the PR is NOT from a fork).
     #
-    if: github.event_name != 'pull_request' || github.event.pull_request.base.repo.full_name == github.event.pull_request.head.repo.full_name
+    if: (github.event_name == 'pull_request') == (github.event.pull_request.base.repo.full_name == github.event.pull_request.head.repo.full_name)
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -78,17 +77,14 @@ jobs:
           # a known, problematic issue: https://github.com/actions/checkout/issues/518
           # It seems that ideally, we want github.event.pull_request.merge_commit_sha,
           # but that it is not reliable, and can sometimes be a null values.  It
-          # appears that this is the most reasonable way to ensure that we are pulling
-          # the same code that triggered things, based upon this particular comment:
+          # appears that the most reasonable way to ensure that we are pulling the same
+          # code that triggered things is shown in this issue comment:
           # https://github.com/actions/checkout/issues/518#issuecomment-1661941548
-          # ref: "refs/pull/${{ github.event.number }}/merge"
+          # However, attempts to get that working resulted in getting an empty
+          # github.event.number, so we're resorting to this simpler approach, which
+          # is apparently less than ideal, but seems to be the best we can muster at
+          # this point.
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 2
-
-      # - name: Sanity check
-      #   # Continuing from previous comment in checkout step above.
-      #   run: |
-      #     [[ "$(git rev-parse 'HEAD~2')" == "${{ github.event.pull_request.head.sha }}" ]]
 
       - name: Install package with dependencies
         uses: ./.github/actions/install-pkg
