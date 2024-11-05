@@ -81,13 +81,14 @@ jobs:
           # appears that this is the most reasonable way to ensure that we are pulling
           # the same code that triggered things, based upon this particular comment:
           # https://github.com/actions/checkout/issues/518#issuecomment-1661941548
-          ref: "refs/pull/${{ github.event.number }}/merge"
+          # ref: "refs/pull/${{ github.event.number }}/merge"
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
 
-      - name: Sanity check
-        # Continuing from previous comment in checkout step above.
-        run: |
-          [[ "$(git rev-parse 'HEAD~2')" == "${{ github.event.pull_request.head.sha }}" ]]
+      # - name: Sanity check
+      #   # Continuing from previous comment in checkout step above.
+      #   run: |
+      #     [[ "$(git rev-parse 'HEAD~2')" == "${{ github.event.pull_request.head.sha }}" ]]
 
       - name: Install package with dependencies
         uses: ./.github/actions/install-pkg
