@@ -74,7 +74,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
         with:
-          ref: "${{ github.event.pull_request.merge_commit_sha }}"
+          ref: refs/pull/${{ github.event.number }}/merge
 
       - name: Install package with dependencies
         uses: ./.github/actions/install-pkg
