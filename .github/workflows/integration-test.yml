@@ -45,7 +45,7 @@ jobs:
     #   2. The event IS a pull_request AND the base repo IS the head repo
     #      (i.e., the PR is not from a fork).
     #
-    if: (github.event_name == 'pull_request') == (github.event.pull_request.base.repo.full_name == github.event.pull_request.head.repo.full_name)
+    if: (github.event_name != 'pull_request') == github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     strategy:
       matrix:
