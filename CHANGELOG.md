@@ -7,12 +7,6 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
-- Fix `earthaccess.download` to not ignore errors by default
-  ([#581](https://github.com/nsidc/earthaccess/issues/581))
-  ([**@Sherwin-14**](https://github.com/Sherwin-14),
-  [**@chuckwondo**](https://github.com/chuckwondo),
-  [**@mfisher87**](https://github.com/mfisher87))
-
 ### Changed
 
 - Use built-in `assert` statements instead of `unittest` assertions in
@@ -25,16 +19,23 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   location ([#480](https://github.com/nsidc/earthaccess/issues/480))
   ([@chuckwondo](https://github.com/chuckwondo))
 - Add `nox` session for running integration tests locally
-  ([#815](https://github.com/nsidc/earthaccess/issues/815)) ([@chuckwondo](https://github.com/chuckwondo))
+  ([#815](https://github.com/nsidc/earthaccess/issues/815); [@chuckwondo](https://github.com/chuckwondo) and ([#872](https://github.com/nsidc/earthaccess/issues/872); [@jhkennedy](https://github.com/jhkennedy))
 - Auto-add comment to PR that requires maintainer to review and re-run
   integration tests ([#824](https://github.com/nsidc/earthaccess/issues/824))
   ([@chuckwondo](https://github.com/chuckwondo))
 
 ### Removed
 
+- The `scripts/integration-test.sh` script has been removed in favor of the `integration-tests` nox session.
+  ([#872](https://github.com/nsidc/earthaccess/issues/872)) ([@jhkennedy](https://github.com/jhkennedy))
+
 ### Fixed
 
-
+- `earthaccess.download` will not ignore errors by default
+  ([#581](https://github.com/nsidc/earthaccess/issues/581))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),
+  [**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87))
 - Integration tests no longer clobber existing `.netrc` file
   ([#806](https://github.com/nsidc/earthaccess/issues/806))
   (@chuckwondo)
