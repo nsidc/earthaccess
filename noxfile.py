@@ -31,6 +31,7 @@ def tests(session: nox.Session) -> None:
         *session.posargs,
     )
 
+
 @nox.session(name="test-min-deps", python="3.9", venv_backend="uv")
 def test_min_deps(session: nox.Session) -> None:
     """Run the unit tests using the lowest compatible version of all direct dependencies."""
@@ -41,7 +42,6 @@ def test_min_deps(session: nox.Session) -> None:
         "-rxXs",  # Show provided reason in summary for (x)fail, (X)pass, and (s)kipped tests
         *session.posargs,
     )
-
 
 
 @nox.session(name="integration-tests")

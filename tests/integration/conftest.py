@@ -34,14 +34,13 @@ def pytest_sessionfinish(session, exitstatus):
         # want to defer to original pytest behavior.
         return
 
-
     failure_rate = (100.0 * session.testsfailed) / session.testscollected
     if failure_rate <= ACCEPTABLE_FAILURE_RATE:
-        status_code = os.environ.get('EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE', 99)
+        status_code = os.environ.get("EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE", 99)
         warn(
-            f'\nWARNING: The integration test suite has returned {status_code} because the '
-            'failure rate was less than a hardcoded threshold. For more details see:\n'
-            'tests/integration/conftest.py.'
+            f"\nWARNING: The integration test suite has returned {status_code} because the "
+            "failure rate was less than a hardcoded threshold. For more details see:\n"
+            "tests/integration/conftest.py."
         )
         session.exitstatus = status_code
 
