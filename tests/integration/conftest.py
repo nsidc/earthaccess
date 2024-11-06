@@ -40,7 +40,7 @@ def pytest_sessionfinish(session, exitstatus):
         warn(
             f"\nWARNING: The integration test suite has returned {status_code} because the "
             "failure rate was less than a hardcoded threshold. For more details see:\n"
-            "tests/integration/conftest.py."
+            "`pytest_sessionfinish` in tests/integration/conftest.py."
         )
         session.exitstatus = status_code
 
