@@ -21,22 +21,10 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4.1.1
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          version: "0.4.7"
-          enable-cache: true
-
       - name: Setup nox
         uses: wntrblm/nox@2024.10.09
         with:
           python-version: 3.9
-
-      - name: Install minimum-compatible dependencies
-        run: uv sync --resolution lowest-direct --extra test
-
-      - name: Install earthaccess
-        run: uv pip install --no-deps .
 
       - name: Test
         run: nox -s test-min-deps -- --verbose --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
