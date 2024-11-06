@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   build:
@@ -44,6 +45,9 @@ jobs:
           content-filepath: ./issue_metrics.md
 
       - name: Close Issue
-        run: gh issue close "${{steps.create_issue.outputs.issue-number}}" --reason "not planned"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue close "${{steps.create_issue.outputs.issue-number}}" \
+            --reason "not planned" \
+            --repo ${{ github.repository }}
