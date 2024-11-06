@@ -33,7 +33,7 @@ def tests(session: nox.Session) -> None:
 
 @nox.session(name="test-min-deps", python="3.9")
 def test_min_deps(session: nox.Session) -> None:
-    """Run the unit tests."""
+    """Run the unit tests using the lowest compatible version of all direct dependencies."""
     session.install("--resolution", "lowest-direct", "--editable", ".[test]")
     session.run(
         "pytest",
