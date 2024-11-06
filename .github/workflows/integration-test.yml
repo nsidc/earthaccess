@@ -2,15 +2,23 @@ name: Integration Tests
 
 on:
   pull_request:
-  pull_request_target:
-  push:
     branches:
       - main
     paths:
+      - .github/workflows/integration-test*.yml
       - earthaccess/**
+      - scripts/integration-test.sh
       - tests/**
-      - docs/**
-      - binder/**
+      - uv.lock
+  pull_request_target:
+    branches:
+      - main
+    paths:
+      - .github/workflows/integration-test*.yml
+      - earthaccess/**
+      - scripts/integration-test.sh
+      - tests/**
+      - uv.lock
 
 # When this workflow is queued, automatically cancel any previous running
 # or pending jobs from the same branch
@@ -33,11 +41,11 @@ jobs:
     # in only ONE of the following cases:
     #
     #   1. The event is NOT a pull_request (it's a pull_request_target) and the base
-    #      repo and the head repo are different (i.e., the PR is from a fork).
-    #   2. The event IS a pull_request AND the base repo and head repo are the
-    #      same (i.e., the PR is NOT from a fork).
+    #      repo is NOT the head repo (i.e., the PR is from a fork).
+    #   2. The event IS a pull_request AND the base repo IS the head repo
+    #      (i.e., the PR is not from a fork).
     #
-    if: (github.event_name != 'pull_request') && github.event.pull_request.head.repo.fork
+    if: (github.event_name == 'pull_request') == (github.event.pull_request.base.repo.full_name == github.event.pull_request.head.repo.full_name)
     runs-on: ubuntu-latest
     strategy:
       matrix:
