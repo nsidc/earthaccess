@@ -37,12 +37,13 @@ def pytest_sessionfinish(session, exitstatus):
 
     failure_rate = (100.0 * session.testsfailed) / session.testscollected
     if failure_rate <= ACCEPTABLE_FAILURE_RATE:
+        status_code = os.environ.get('EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE', 99)
         warn(
-            '\nWARNING: The integration test suite has been allowed to pass because the '
+            f'\nWARNING: The integration test suite has returned {status_code} because the '
             'failure rate was less than a hardcoded threshold. For more details see:\n'
             'tests/integration/conftest.py.'
         )
-        session.exitstatus = os.environ.get('EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE', 99)
+        session.exitstatus = status_code
 
 
 @pytest.fixture
