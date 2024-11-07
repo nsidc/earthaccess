@@ -20,28 +20,49 @@ If you don't have pipx (pip for applications), then you can install with
 pip is reasonable). If you use macOS, then pipx and nox are both in brew, use
 `brew install pipx nox`.
 
-To use, run `nox` without any arguments.  This will run type checks and unit
-tests using the installed version of Python on your system.
+To use, run `nox` without any arguments.  This will run the type check and unit
+test "sessions" (tasks) using your local (and active) Python version.
+Nox handles everything for you, including setting up a temporary virtual
+environment for each run.
+
+You can see all available sessions with `nox --list`:
+
+```
+$ nox --list
+Sessions defined in earthaccess/noxfile.py:
+
+* typecheck -> Typecheck with mypy.
+* tests -> Run the unit tests.
+- test-min-deps -> Run the unit tests using the lowest compatible version of all direct dependencies.
+- integration-tests -> Run the integration tests.
+- build-pkg -> Build a source distribution and binary distribution (wheel).
+- serve-docs -> Build the documentation and serve it.
+
+sessions marked with * are selected, sessions marked with - are skipped.
+```
 
 You can also run individual tasks (_sessions_ in `nox` parlance, hence the `-s`
 option below), like so:
 
-```console
-nox -s typecheck              # Run typechecks
-nox -s tests                  # Run unit tests
-nox -s integration-tests      # Run integration tests (see note below)
-nox -s serve_docs             # Build and serve the docs
-nox -s build_pkg              # Build an SDist and Wheel
+```bash
+nox -s integration-tests
 ```
 
-Nox handles everything for you, including setting up a temporary virtual
-environment for each run.
+and pass options to the underlying session like:
 
-**NOTE:** In order to run integration tests locally, you must set the
-environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` to your
-username and password, respectively, of your
-[NASA Earthdata](https://urs.earthdata.nasa.gov/) account (registration is
-free).
+```bash
+nox -s integration-tests -- [ARGS]
+```
+
+!!! tip
+
+    In order to run integration tests locally, you must set the
+    environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` to your
+    username and password, respectively, of your
+    [NASA Earthdata](https://urs.earthdata.nasa.gov/) account (registration is
+    free).
+
+
 
 ## Manual development environment setup
 

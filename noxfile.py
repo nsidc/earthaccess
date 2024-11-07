@@ -27,7 +27,19 @@ def tests(session: nox.Session) -> None:
     session.run(
         "pytest",
         "tests/unit",
-        "-rxXs",  # Show provided reason in summary for (x)fail, (X)pass, and (s)kipped statuses
+        "-rxXs",  # Show provided reason in summary for (x)fail, (X)pass, and (s)kipped tests
+        *session.posargs,
+    )
+
+
+@nox.session(name="test-min-deps", python="3.9", venv_backend="uv")
+def test_min_deps(session: nox.Session) -> None:
+    """Run the unit tests using the lowest compatible version of all direct dependencies."""
+    session.install("--resolution", "lowest-direct", "--editable", ".[test]")
+    session.run(
+        "pytest",
+        "tests/unit",
+        "-rxXs",  # Show provided reason in summary for (x)fail, (X)pass, and (s)kipped tests
         *session.posargs,
     )
 
@@ -37,17 +49,23 @@ def integration_tests(session: nox.Session) -> None:
     """Run the integration tests."""
     session.install("--editable", ".[test]")
     session.run(
-        "scripts/integration-test.sh",
+        "pytest",
+        "tests/integration",
+        "-rxXs",  # Show provided reason in summary for (x)fail, (X)pass, and (s)kipped tests
         *session.posargs,
         env=dict(
             EARTHDATA_USERNAME=os.environ["EARTHDATA_USERNAME"],
             EARTHDATA_PASSWORD=os.environ["EARTHDATA_PASSWORD"],
         ),
         external=True,
+        # NOTE: integration test are permitted to pass if the failure rate was less than a hardcoded threshold.
+        #       PyTest will return 99 if there were some failures, but less than the threshold. For more details, see:
+        #       `pytest_sessionfinish` in tests/integration/conftest.py
+        success_codes=[0, 99],
     )
 
 
-@nox.session
+@nox.session(name="build-pkg")
 def build_pkg(session: nox.Session) -> None:
     """Build a source distribution and binary distribution (wheel)."""
     build_path = DIR.joinpath("build")
@@ -58,7 +76,7 @@ def build_pkg(session: nox.Session) -> None:
     session.run("python", "-m", "build")
 
 
-@nox.session
+@nox.session(name="serve-docs")
 def serve_docs(session: nox.Session) -> None:
     """Build the documentation and serve it."""
     session.install("--editable", ".[docs]")
