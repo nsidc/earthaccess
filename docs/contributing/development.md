@@ -88,7 +88,7 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     ```
     `nox` handles everything for you, including setting up a temporary virtual environment for each test session.
 
-Now that you're development environment is set up, you can run the tests.
+Now that your development environment is set up, you can run the tests.
 
 ## Running tests
 
