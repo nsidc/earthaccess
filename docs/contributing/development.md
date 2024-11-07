@@ -44,7 +44,7 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
 
     `conda` and `mamba` are open-source package and environment managers that are language and platform agnostic.
     `mamba` is a newer and faster re-implementation of `conda` -- you can use either `conda` or `mamba`
-    in the commands below. See the installation instructions here (we reccomend using Miniforge):
+    in the commands below. See the installation instructions here (we recommend using Miniforge):
 
     <https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html>.
 
@@ -61,7 +61,7 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     !!! note
 
         On Sept. 23, 2024, the name of the conda environment changed from `earthaccess-dev` to `earthacess` to align with
-        community best practices. If you have an `earthaccess-dev` environment, we reccomend deleting it and creating a new one.
+        community best practices. If you have an `earthaccess-dev` environment, we recommend deleting it and creating a new one.
         From the repository root, you can do that with these commands:
 
         ```bash
@@ -81,7 +81,7 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     ```bash
     pipx run nox [NOX_ARGS]
     ```
-    or intall `nox` into an isolated environment and run it with
+    or install `nox` into an isolated environment and run it with
     ```bash
     pipx install nox
     nox [NOX_ARGS]
@@ -181,8 +181,8 @@ for a pytest in your IDE should work once you've configured it to use your devel
 !!! info "Important"
 
     Currently, our integration tests are *flakey* and a small number of random failures are expected. When the integration
-    test suite runs, it may retun a status code of 99 if the failure rate was less than an "acceptable" threshold. Since
-    any non-zero status code is considered an error, your console and/or IDE wll consider this a failure by default.
+    test suite runs, it may return a status code of 99 if the failure rate was less than an "acceptable" threshold. Since
+    any non-zero status code is considered an error, your console and/or IDE will consider this a failure by default.
     `nox`, however, knows about this special status code and will report a success. To get pytest or your IDE to match
     this behavior, you can modify the special status code to be zero with the `EARTHACCESS_ALLOWABLE_FAILURE_STATUS_CODE`
     evnironment variable:
