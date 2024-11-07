@@ -40,12 +40,16 @@ Sessions defined in earthaccess/noxfile.py:
 
 sessions marked with * are selected, sessions marked with - are skipped.
 ```
+
 You can also run individual tasks (_sessions_ in `nox` parlance, hence the `-s`
 option below), like so:
+
 ```bash
 nox -s integration-tests
 ```
+
 and pass options to the underlying session like:
+
 ```bash
 nox -s integration-tests -- [ARGS]
 ```
