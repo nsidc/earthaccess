@@ -82,7 +82,7 @@ Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick
 
 ## Compatibility
 
-The _minimum_ supported Python version is **3.9**.
+The _minimum_ supported Python version is **3.10**.
 
 
 ## How to Contribute to `earthaccess`
