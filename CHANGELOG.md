@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+- Add authentication to User Guide documentation. ([#763](https://github.com/nsidc/earthaccess/pull/763)) ([@andypbarrett](https://github.com/andypbarrett))
+	
 ### Changed
 
 - Use built-in `assert` statements instead of `unittest` assertions in
