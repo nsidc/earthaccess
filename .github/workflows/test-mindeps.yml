@@ -2,6 +2,8 @@ name: Unit test minimum dependencies
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
