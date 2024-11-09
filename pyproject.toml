@@ -26,16 +26,16 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development",
     "License :: OSI Approved :: MIT License",
 ]
 
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 dependencies = [
   "python-cmr >=0.10.0",
@@ -57,14 +57,12 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
+  "numpy >=1.26.4",
   "kerchunk",
   "dask",
-  "h5py >=3.0",
+  "h5py >=3.6.0",
   "h5netcdf",
   "xarray",
-  # kerchunk requires numpy, but numpy >=1.26.0 is required for Python 3.12
-  "numpy >=1.24.0; python_version < '3.12'",
-  "numpy >=1.26.0; python_version >= '3.12'",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -125,7 +123,7 @@ docs = [
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true

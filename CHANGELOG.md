@@ -28,6 +28,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - The `scripts/integration-test.sh` script has been removed in favor of the `integration-tests` nox session.
   ([#872](https://github.com/nsidc/earthaccess/issues/872)) ([@jhkennedy](https://github.com/jhkennedy))
+- Python 3.9 is no longer supported.
+  ([#876](https://github.com/nsidc/earthaccess/pull/876))
+  ([@mfisher87](https://github.com/mfisher87))
 
 ### Fixed
 
