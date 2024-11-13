@@ -185,8 +185,15 @@ replace  = 'version = "{new_version}"'
 
 [[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
-search   = "^## Unreleased$"
-replace  = "## [v{new_version}] {now:%Y-%m-%d}"
+regex = true
+search = "^## \\[Unreleased\\]"
+replace = "## [Unreleased]\n\n## [v{new_version}] - {now:%Y-%m-%d}"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+regex = true
+search = "\\[Unreleased\\]: (https://.+?)v{current_version}\\.\\.\\.HEAD"
+replace = "[Unreleased]: \\1v{new_version}...HEAD\n[{new_version}]: \\1v{current_version}...v{new_version}"
 
 [[tool.bumpversion.files]]
 filename = "CITATION.cff"
