@@ -1,7 +1,9 @@
-name: Test minimum dependencies
+name: Unit test minimum dependencies
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
@@ -10,11 +12,6 @@ on:
 concurrency:
   group: test-mindeps-${{ github.ref }}
   cancel-in-progress: true
-
-# Required shell entrypoint to have properly activated conda environments
-defaults:
-  run:
-    shell: bash -l {0}
 
 jobs:
   test-mindeps:
@@ -25,25 +22,19 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4.1.1
-      - name: Setup Conda Environment
-        uses: conda-incubator/setup-miniconda@v3.0.4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3.2.2
         with:
-          miniforge-variant: Mambaforge
-          miniforge-version: latest
-          use-mamba: true
-          channel-priority: strict
-          environment-file: ci/environment-mindeps.yaml
-          activate-environment: test-environment
-          auto-activate-base: false
+          enable-cache: true
 
-      - name: Install
-        run: python -m pip install --no-deps -e .
-
-      - name: mamba list
-        run: mamba list
+      - name: Setup nox
+        uses: wntrblm/nox@2024.10.09
+        with:
+          python-versions: "3.10"
 
       - name: Test
-        run: bash scripts/test.sh
+        run: nox -s test-min-deps -- --verbose --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
 
       - name: Upload coverage
         # Don't upload coverage when using the `act` tool to run the workflow locally

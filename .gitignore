@@ -2,12 +2,14 @@
 .ipynb_checkpoints
 .python-version
 .mypy_cache
+.nox/
 __pycache__
 .pytest_cache
 htmlcov
 dist
 site
 .coverage
+.coverage.*
 coverage.xml
 .netlify
 test.db

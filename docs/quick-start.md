@@ -21,7 +21,7 @@ conda install -c conda-forge earthaccess
 #### Using `pip`
 
 ```bash
-pip install earthaccess
+python -m pip install earthaccess
 ```
 
 

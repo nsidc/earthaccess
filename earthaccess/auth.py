@@ -25,6 +25,24 @@ except importlib.metadata.PackageNotFoundError:
 logger = logging.getLogger(__name__)
 
 
+def netrc_path() -> Path:
+    """Return the path of the `.netrc` file.
+
+    The path may or may not exist.
+
+    See [the `.netrc` file](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html).
+
+    Returns:
+        `Path` of the `NETRC` environment variable, if the value is non-empty;
+        otherwise, the path of the platform-specific default location:
+        `~/_netrc` on Windows systems, `~/.netrc` on non-Windows systems.
+    """
+    sys_netrc_name = "_netrc" if platform.system() == "Windows" else ".netrc"
+    env_netrc = os.environ.get("NETRC")
+
+    return Path(env_netrc) if env_netrc else Path.home() / sys_netrc_name
+
+
 class SessionWithHeaderRedirection(requests.Session):
     """Requests removes auth headers if the redirect happens outside the
     original req domain.
@@ -104,11 +122,12 @@ class Auth(object):
         if self.authenticated and (system == self.system):
             logger.debug("We are already authenticated with NASA EDL")
             return self
+
         if strategy == "interactive":
             self._interactive(persist)
-        if strategy == "netrc":
+        elif strategy == "netrc":
             self._netrc()
-        if strategy == "environment":
+        elif strategy == "environment":
             self._environment()
 
         return self
@@ -222,25 +241,29 @@ class Auth(object):
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
-                logger.info("Persisting credentials to .netrc")
                 self._persist_user_credentials(username, password)
         return authenticated
 
     def _netrc(self) -> bool:
+        netrc_loc = netrc_path()
+
         try:
-            my_netrc = Netrc()
+            my_netrc = Netrc(str(netrc_loc))
         except FileNotFoundError as err:
-            raise FileNotFoundError(f"No .netrc found in {Path.home()}") from err
+            raise FileNotFoundError(f"No .netrc found at {netrc_loc}") from err
         except NetrcParseError as err:
-            raise NetrcParseError("Unable to parse .netrc") from err
+            raise NetrcParseError(f"Unable to parse .netrc file {netrc_loc}") from err
+
         if (creds := my_netrc[self.system.edl_hostname]) is None:
             return False
 
         username = creds["login"]
         password = creds["password"]
         authenticated = self._get_credentials(username, password)
+
         if authenticated:
             logger.debug("Using .netrc file for EDL")
+
         return authenticated
 
     def _environment(self) -> bool:
@@ -293,33 +316,41 @@ class Auth(object):
 
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34
+
+        netrc_loc = netrc_path()
+        logger.info(f"Persisting credentials to {netrc_loc}")
+
         try:
-            netrc_path = Path().home().joinpath(".netrc")
-            netrc_path.touch(exist_ok=True)
-            netrc_path.chmod(0o600)
+            netrc_loc.touch(exist_ok=True)
+            netrc_loc.chmod(0o600)
         except Exception as e:
             logger.error(e)
             return False
-        my_netrc = Netrc(str(netrc_path))
+
+        my_netrc = Netrc(str(netrc_loc))
         my_netrc[self.system.edl_hostname] = {
             "login": username,
             "password": password,
         }
         my_netrc.save()
+
         urs_cookies_path = Path.home() / ".urs_cookies"
+
         if not urs_cookies_path.exists():
             urs_cookies_path.write_text("")
 
         # Create and write to .dodsrc file
         dodsrc_path = Path.home() / ".dodsrc"
+
         if not dodsrc_path.exists():
             dodsrc_contents = (
-                f"HTTP.COOKIEJAR={urs_cookies_path}\nHTTP.NETRC={netrc_path}"
+                f"HTTP.COOKIEJAR={urs_cookies_path}\nHTTP.NETRC={netrc_loc}"
             )
             dodsrc_path.write_text(dodsrc_contents)
 
         if platform.system() == "Windows":
             local_dodsrc_path = Path.cwd() / dodsrc_path.name
+
             if not local_dodsrc_path.exists():
                 shutil.copy2(dodsrc_path, local_dodsrc_path)
 

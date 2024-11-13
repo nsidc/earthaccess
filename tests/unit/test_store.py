@@ -7,6 +7,7 @@ import pytest
 import responses
 import s3fs
 from earthaccess import Auth, Store
+from earthaccess.store import EarthAccessFile
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -126,3 +127,15 @@ class TestStoreSessions(unittest.TestCase):
             store.get_s3_filesystem()
 
         return None
+
+
+@pytest.mark.xfail(
+    reason="Expected failure: Reproduces a bug (#610) that has not yet been fixed."
+)
+def test_earthaccess_file_getattr():
+    fs = fsspec.filesystem("memory")
+    with fs.open("/foo", "wb") as f:
+        earthaccess_file = EarthAccessFile(f, granule="foo")
+        assert f.tell() == earthaccess_file.tell()
+    # cleanup
+    fs.store.clear()

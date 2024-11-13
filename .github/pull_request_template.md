@@ -24,9 +24,9 @@ created the PR as a non-draft, don't worry, you can still change it to a draft u
 - [ ] Please review our
       [contributing documentation](https://earthaccess.readthedocs.io/en/latest/contributing/)
       before getting started.
-- [ ] Ensure an issue exists representing the problem being solved in this PR.
 - [ ] Populate a descriptive title. For example, instead of "Updated README.md", use a
       title such as "Add testing details to the contributor section of the README".
+      Example PRs: [#763](https://github.com/nsidc/earthaccess/pull/763)
 - [ ] Populate the body of the pull request with:
     - A clear description of the change you are proposing.
     - Links to any issues resolved by this PR with text in the PR description, for
@@ -35,6 +35,7 @@ created the PR as a non-draft, don't worry, you can still change it to a draft u
 - [ ] Update `CHANGELOG.md` with details about your change in a section titled
       `## Unreleased`. If such a section does not exist, please create one. Follow
       [Common Changelog](https://common-changelog.org/) for your additions.
+      Example PRs: [#763](https://github.com/nsidc/earthaccess/pull/763)
 - [ ] Update the documentation and/or the `README.md` with details of changes to the
       earthaccess interface, if any. Consider new environment variables, function names,
       decorators, etc.
