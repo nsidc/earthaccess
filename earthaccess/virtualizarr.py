@@ -7,6 +7,7 @@ import earthaccess
 if TYPE_CHECKING:
     import xarray as xr
 
+
 def open_virtual_mfdataset(
     granules: list[earthaccess.DataGranule],
     group: str | None = None,
@@ -161,7 +162,7 @@ def open_virtual_dataset(
         Create an xarray dataset with indexes and lazy loaded data.
 
         When true, creates a lazy loaded, numpy/dask backed xarray dataset with indexes. Note that when `load=True` all the data is now available to access but not loaded into memory. When `load=False` a virtual xarray dataset is created with ManifestArrays. This virtual dataset is a view over the underlying metadata and chunks and allows creation and concatenation of zarr reference files. This virtual dataset cannot load data on it's own and see https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets.
-    
+
 
     Returns:
     ----------

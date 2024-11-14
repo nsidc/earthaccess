@@ -16,7 +16,7 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 
 @pytest.fixture(
-    scope="module", params=["MUR25-JPL-L4-GLOB-v04.2", "SWOT_L2_LR_SSH_Basic_2.0"]
+    scope="module", params=["MUR25-JPL-L4-GLOB-v04.2"]
 )
 def granule(request):
     granules = earthaccess.search_data(

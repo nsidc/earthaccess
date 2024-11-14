@@ -64,6 +64,9 @@ kerchunk = [
   "h5netcdf",
   "xarray",
 ]
+virtualizarr = [
+  "virtualizarr @ git+https://github.com/zarr-developers/VirtualiZarr.git"
+]
 dev = [
   "bump-my-version >=0.10.0",
   "nox",
@@ -82,6 +85,7 @@ test = [
   "types-setuptools >=0.1",
   "vcrpy >=6.0.1",
   "earthaccess[kerchunk]",
+  "earthaccess[virtualizarr]",
 ]
 docs = [
     "jupyterlab >=3",
@@ -121,6 +125,9 @@ docs = [
 
 [tool.pytest]
 filterwarnings = ["error::UserWarning"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.mypy]
 python_version = "3.10"
