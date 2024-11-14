@@ -145,6 +145,7 @@ def open_virtual_mfdataset(
 
 def open_virtual_dataset(
     granule: earthaccess.DataGranule,
+    group: str | None = None,
     access: str = "indirect",
     load: bool = False,
 ) -> xr.Dataset:
@@ -156,6 +157,9 @@ def open_virtual_dataset(
     ----------
     granule : earthaccess.DataGranule
         The granule to open
+    group : str or None (default=None)
+        The group to open in the DMR++. If groups are present in the DMR++ files, this will open the specified group. If None, the root group will be opened.
+        If the DMR++ file does not have groups, this parameter is ignored.
     access : str (default="indirect")
         The access method to use. One of "direct" or "indirect". Use direct when running on AWS, use indirect when running on a local machine.
     load: bool (default=False)
@@ -186,6 +190,7 @@ def open_virtual_dataset(
     """
     return open_virtual_mfdataset(
         granules=[granule],
+        group=group,
         access=access,
         load=load,
         parallel=False,
