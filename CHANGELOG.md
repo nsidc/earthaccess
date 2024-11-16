@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.12.0] - 2024-11-13
+
 ### Changed
 
 - Use built-in `assert` statements instead of `unittest` assertions in
@@ -19,16 +21,26 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   location ([#480](https://github.com/nsidc/earthaccess/issues/480))
   ([@chuckwondo](https://github.com/chuckwondo))
 - Add `nox` session for running integration tests locally
-  ([#815](https://github.com/nsidc/earthaccess/issues/815)) ([@chuckwondo](https://github.com/chuckwondo))
+  ([#815](https://github.com/nsidc/earthaccess/issues/815); [@chuckwondo](https://github.com/chuckwondo) and ([#872](https://github.com/nsidc/earthaccess/issues/872); [@jhkennedy](https://github.com/jhkennedy))
 - Auto-add comment to PR that requires maintainer to review and re-run
   integration tests ([#824](https://github.com/nsidc/earthaccess/issues/824))
   ([@chuckwondo](https://github.com/chuckwondo))
 
 ### Removed
 
+- The `scripts/integration-test.sh` script has been removed in favor of the `integration-tests` nox session.
+  ([#872](https://github.com/nsidc/earthaccess/issues/872)) ([@jhkennedy](https://github.com/jhkennedy))
+- Python 3.9 is no longer supported.
+  ([#876](https://github.com/nsidc/earthaccess/pull/876))
+  ([@mfisher87](https://github.com/mfisher87))
+
 ### Fixed
 
-
+- `earthaccess.download` will not ignore errors by default
+  ([#581](https://github.com/nsidc/earthaccess/issues/581))
+  ([**@Sherwin-14**](https://github.com/Sherwin-14),
+  [**@chuckwondo**](https://github.com/chuckwondo),
+  [**@mfisher87**](https://github.com/mfisher87))
 - Integration tests no longer clobber existing `.netrc` file
   ([#806](https://github.com/nsidc/earthaccess/issues/806))
   (@chuckwondo)
@@ -640,7 +652,8 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/nsidc/earthaccess/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
 [0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
 [0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0

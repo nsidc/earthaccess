@@ -2,15 +2,23 @@ name: Integration Tests
 
 on:
   pull_request:
-  pull_request_target:
-  push:
     branches:
       - main
     paths:
+      - .github/workflows/integration-test*.yml
       - earthaccess/**
+      - scripts/integration-test.sh
       - tests/**
-      - docs/**
-      - binder/**
+      - uv.lock
+  pull_request_target:
+    branches:
+      - main
+    paths:
+      - .github/workflows/integration-test*.yml
+      - earthaccess/**
+      - scripts/integration-test.sh
+      - tests/**
+      - uv.lock
 
 # When this workflow is queued, automatically cancel any previous running
 # or pending jobs from the same branch
@@ -32,17 +40,16 @@ jobs:
     # To prevent this, this condition ensures that integration tests are run
     # in only ONE of the following cases:
     #
-    #   1. The event is NOT a pull_request.  This covers the case when the event
-    #      is a pull_request_target (i.e., a PR from a fork), as well as all
-    #      other cases listed in the "on" block at the top of this file.
-    #   2. The event IS a pull_request AND the base repo and head repo are the
-    #      same (i.e., the PR is NOT from a fork).
+    #   1. The event is NOT a pull_request (it's a pull_request_target) and the base
+    #      repo is NOT the head repo (i.e., the PR is from a fork).
+    #   2. The event IS a pull_request AND the base repo IS the head repo
+    #      (i.e., the PR is not from a fork).
     #
-    if: github.event_name != 'pull_request' || github.event.pull_request.base.repo.full_name == github.event.pull_request.head.repo.full_name
+    if: (github.event_name != 'pull_request') == github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
 
     steps:
@@ -73,17 +80,35 @@ jobs:
 
       - name: Checkout source
         uses: actions/checkout@v4
-
-      - name: Install package with dependencies
-        uses: ./.github/actions/install-pkg
         with:
-          python-version: ${{ matrix.python-version }}
+          # Getting the correct commit for a pull_request_target event appears to be
+          # a known, problematic issue: https://github.com/actions/checkout/issues/518
+          # It seems that ideally, we want github.event.pull_request.merge_commit_sha,
+          # but that it is not reliable, and can sometimes be a null values.  It
+          # appears that the most reasonable way to ensure that we are pulling the same
+          # code that triggered things is shown in this issue comment:
+          # https://github.com/actions/checkout/issues/518#issuecomment-1661941548
+          # However, attempts to get that working resulted in getting an empty
+          # github.event.number, so we're resorting to this simpler approach, which
+          # is apparently less than ideal, but seems to be the best we can muster at
+          # this point.
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3.2.2
+        with:
+          enable-cache: true
+
+      - name: Setup nox
+        uses: wntrblm/nox@2024.10.09
+        with:
+          python-versions: ${{ matrix.python-version }}
 
       - name: Run integration tests
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
-        run: ./scripts/integration-test.sh
+        run: nox -s integration-tests -- --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
 
       - name: Upload coverage report
         # Don't upload coverage when using the `act` tool to run the workflow locally
