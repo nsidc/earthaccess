@@ -2,13 +2,13 @@ import datetime
 import logging
 import shutil
 import traceback
+import warnings
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
-import warnings
 
 import fsspec
 import requests
@@ -81,24 +81,26 @@ def _open_files(
 
 
 def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, data: Any, out_of_region_handling: Optional[str] = "raise"
+    cls: Any,
+    granule: DataGranule,
+    auth: Auth,
+    data: Any,
+    out_of_region_handling: Optional[str] = "raise",
 ) -> EarthAccessFile:
-    """
-    Creates an EarthAccessFile instance
-    
+    """Creates an EarthAccessFile instance
+
     Parameters:
         cls: the datatype of a file system, such as s3fs.S3File
         granule: a granule search result
         auth: earthaccess.auth.Auth object
         data: dumped buffered file data
         out_of_region_handling: "raise" to raise an Exception if attempting out of region access or
-                                "handle" (or anything else) to attempt using a granule's first 
+                                "handle" (or anything else) to attempt using a granule's first
                                 data link upon faliure
 
     Return: An EarthAccessFile object
 
     """
-    
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
         earthaccess.__auth__ = auth
@@ -121,7 +123,7 @@ def make_instance(
                     "This may be caused by trying to access the data outside the us-west-2 region.\n"
                     "Attempting on_prem access..."
                 )
-        
+
     # NOTE: This uses the first data_link listed in the granule. That's not
     #       guaranteed to be the right one.
     return EarthAccessFile(earthaccess.open([granule])[0], granule)
@@ -186,7 +188,6 @@ class Store(object):
             if "/s3credentials" in link["URL"]:
                 return link["URL"]
         return None
-
 
     def set_requests_session(
         self, url: str, method: str = "get", bearer_token: bool = False
@@ -558,7 +559,9 @@ class Store(object):
             **(pqdm_kwargs or {}),
         }
 
-        return self._get(granules, Path(local_path), provider, access=access, pqdm_kwargs=pqdm_kwargs)
+        return self._get(
+            granules, Path(local_path), provider, access=access, pqdm_kwargs=pqdm_kwargs
+        )
 
     @singledispatchmethod
     def _get(
@@ -642,7 +645,9 @@ class Store(object):
                     )
 
         # if we are not in AWS
-        return self._download_onprem_granules(data_links, local_path, pqdm_kwargs=pqdm_kwargs)
+        return self._download_onprem_granules(
+            data_links, local_path, pqdm_kwargs=pqdm_kwargs
+        )
 
     @_get.register
     def _get_granules(
@@ -664,8 +669,7 @@ class Store(object):
             access = "direct" if cloud_hosted else "external"
         data_links = list(
             chain.from_iterable(
-                granule.data_links(access=access)
-                for granule in granules
+                granule.data_links(access=access) for granule in granules
             )
         )
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
@@ -709,7 +713,9 @@ class Store(object):
 
         # if the data are cloud-based, but we are not in AWS,
         # it will be downloaded as if it was on prem
-        return self._download_onprem_granules(data_links, local_path, pqdm_kwargs=pqdm_kwargs)
+        return self._download_onprem_granules(
+            data_links, local_path, pqdm_kwargs=pqdm_kwargs
+        )
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
@@ -765,7 +771,7 @@ class Store(object):
 
         Returns:
             A list of local filepaths to which the files were downloaded.
-        """        
+        """
         if urls is None:
             raise ValueError("The granules didn't provide a valid GET DATA link")
         if self.auth is None:

@@ -303,15 +303,14 @@ class DataGranule(CustomDict):
                 s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
         return s3_links
 
-    def data_links(
-        self, access: Optional[str] = None) -> List[str]:
+    def data_links(self, access: Optional[str] = None) -> List[str]:
         """Placeholder.
 
         Returns the data links from a granule.
 
         Parameters:
             access: direct or external.
-                Direct means in-region access for cloud-hosted collections. 
+                Direct means in-region access for cloud-hosted collections.
 
         Returns:
             The data links for the requested access type.

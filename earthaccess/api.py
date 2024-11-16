@@ -248,7 +248,12 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, access=access, pqdm_kwargs=pqdm_kwargs
+            granules,
+            local_path,
+            provider,
+            threads,
+            access=access,
+            pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:
         logger.error(

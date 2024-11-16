@@ -5,7 +5,6 @@ from unittest.mock import patch
 
 import earthaccess
 import pytest
-import s3fs
 
 logger = logging.getLogger(__name__)
 
@@ -98,10 +97,14 @@ def test_download_immediate_failure(tmp_path: Path, access):
         # any further downloads.
         if not access or access == "direct":
             with patch("s3fs.S3FileSystem", fail_to_download_file):
-                earthaccess.download(results, tmp_path, access=access, pqdm_kwargs=dict(disable=True))
+                earthaccess.download(
+                    results, tmp_path, access=access, pqdm_kwargs=dict(disable=True)
+                )
         elif access == "external":
             with patch("earthaccess.__store__._download_file", fail_to_download_file):
-                earthaccess.download(results, tmp_path, access=access, pqdm_kwargs=dict(disable=True))
+                earthaccess.download(
+                    results, tmp_path, access=access, pqdm_kwargs=dict(disable=True)
+                )
 
 
 @pytest.mark.parametrize("access", [None, "direct", "external"])
@@ -117,9 +120,9 @@ def test_download_deferred_failure(tmp_path: Path, access):
     with pytest.raises(Exception) as exc_info:
         # With "deferred" exceptions, pqdm catches all exceptions, then at the end
         # raises a single generic Exception, passing the sequence of caught exceptions
-        # as arguments to the Exception constructor. 
+        # as arguments to the Exception constructor.
         if not access or access == "direct":
-            with patch("s3fs.S3FileSystem", fail_to_download_file):           
+            with patch("s3fs.S3FileSystem", fail_to_download_file):
                 earthaccess.download(
                     results,
                     tmp_path,
@@ -127,7 +130,7 @@ def test_download_deferred_failure(tmp_path: Path, access):
                     pqdm_kwargs=dict(exception_behaviour="deferred", disable=True),
                 )
         elif access == "external":
-            with patch("earthaccess.__store__._download_file", fail_to_download_file):           
+            with patch("earthaccess.__store__._download_file", fail_to_download_file):
                 earthaccess.download(
                     results,
                     tmp_path,
@@ -137,7 +140,9 @@ def test_download_deferred_failure(tmp_path: Path, access):
 
         errors = exc_info.value.args
         assert len(errors) == count
-        assert all(isinstance(e, IOError) and str(e) == "Download failed" for e in errors)
+        assert all(
+            isinstance(e, IOError) and str(e) == "Download failed" for e in errors
+        )
 
 
 def test_auth_environ():

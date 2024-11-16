@@ -180,7 +180,9 @@ class Auth(object):
                 )
                 if not auth_url:
                     # Display possible typos in a helpfull error
-                    raise Exception(f'auth_url not found using daac: "{daac}" and provider: "{provider}"')
+                    raise Exception(
+                        f'auth_url not found using daac: "{daac}" and provider: "{provider}"'
+                    )
             else:
                 auth_url = endpoint
             if auth_url.startswith("https://"):

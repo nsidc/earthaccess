@@ -68,7 +68,9 @@ def mock_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
         username = os.environ["EARTHDATA_USERNAME"]
         password = os.environ["EARTHDATA_PASSWORD"]
     else:
-        raise Exception("Unable to mock a .netrc without EARTHDATA_USERNAME and EARTHDATA_PASSWORD environment variables")
+        raise Exception(
+            "Unable to mock a .netrc without EARTHDATA_USERNAME and EARTHDATA_PASSWORD environment variables"
+        )
 
     netrc.write_text(
         f"machine urs.earthdata.nasa.gov login {username} password {password}\n"
