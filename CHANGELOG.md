@@ -7,6 +7,22 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Removed
+- Remove `earthaccess.__store__.in_region` member variable. There is no accurate way to determine if what region
+  a client is running in. Better to try and raise an exception or attempt HTTPS access
+- Remove in_region specific unit tests
+
+### Added
+- add `access` argument to `api.download` and `store.get` functions. Allows you to skip direct access and immediately
+  attempt HTTPS access
+- Add `out_of_region_handling` argument to `api.download` and `store.get` functions. Defaults to `raise`, which raises
+  Exceptions if direct access fails. If `handle` is passed and direct access fails, a warning is raised that includes
+  the encountered exception, and then HTTPS access is attempted. ([#444](https://github.com/nsidc/earthaccess/issues/444))
+
+### Changed
+- Update `test_download_deferred_failure` and `test_download_immediate_failure` integration tests to test both direct an external access
+- raise exception in `conftest.py` if EarthData environment variables not found
+
 ## [v0.12.0] - 2024-11-13
 
 ### Changed
