@@ -206,6 +206,8 @@ def download(
     local_path: Optional[Union[Path, str]] = None,
     provider: Optional[str] = None,
     threads: int = 8,
+    access: Optional[str] = None,
+    out_of_region_handling: Optional[str] = "raise",
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[str]:
@@ -224,6 +226,9 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        access: "direct" to attempt direct S3 access, "external" for HTTPS
+        out_of_region_handling: "raise" to raise an Exception if attempting out-of-region access or
+            "handle" (or anything else) to attempt using HTTPS upon faliure
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -243,7 +248,7 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+            granules, local_path, provider, threads, access=access, pqdm_kwargs=pqdm_kwargs
         )
     except AttributeError as err:
         logger.error(
