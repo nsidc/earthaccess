@@ -342,7 +342,8 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-        threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         out_of_region_handling: Optional[str] = "raise",
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
@@ -369,6 +370,8 @@ class Store(object):
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
         threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         out_of_region_handling: Optional[str] = "raise",
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
@@ -378,7 +381,9 @@ class Store(object):
         self,
         granules: List[DataGranule],
         provider: Optional[str] = None,
-        threads: Optional[int] = 8,
+        threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         out_of_region_handling: Optional[str] = "raise",
         access: Optional[str] = "direct",
     ) -> List[Any]:
@@ -439,6 +444,8 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
         threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         out_of_region_handling: Optional[str] = "raise",
     ) -> List[Any]:
         fileset: List = []

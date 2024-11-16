@@ -39,8 +39,8 @@ def pytest_sessionfinish(session, exitstatus):
 def mock_missing_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     netrc_path = tmp_path / ".netrc"
     monkeypatch.setenv("NETRC", str(netrc_path))
-    monkeypatch.delenv("EARTHDATA_USERNAME")
-    monkeypatch.delenv("EARTHDATA_PASSWORD")
+    monkeypatch.delenv("EARTHDATA_USERNAME", raising=False)
+    monkeypatch.delenv("EARTHDATA_PASSWORD", raising=False)
     # Currently, due to there being only a single, global, module-level auth
     # value, tests using different auth strategies interfere with each other,
     # so here we are monkeypatching a new, unauthenticated Auth object.
@@ -54,8 +54,11 @@ def mock_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     netrc = tmp_path / ".netrc"
     monkeypatch.setenv("NETRC", str(netrc))
 
-    username = os.environ["EARTHDATA_USERNAME"]
-    password = os.environ["EARTHDATA_PASSWORD"]
+    if "EARTHDATA_USERNAME" in os.environ and "EARTHDATA_PASSWORD" in os.environ:
+        username = os.environ["EARTHDATA_USERNAME"]
+        password = os.environ["EARTHDATA_PASSWORD"]
+    else:
+        raise Exception("Unable to mock a .netrc without EARTHDATA_USERNAME and EARTHDATA_PASSWORD environment variables")
 
     netrc.write_text(
         f"machine urs.earthdata.nasa.gov login {username} password {password}\n"
