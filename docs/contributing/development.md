@@ -78,14 +78,18 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     <https://github.com/pypa/pipx?tab=readme-ov-file#install-pipx>.
 
     Once you have `pipx` installed, you can either run `nox` without installing it via:
+
     ```bash
     pipx run nox [NOX_ARGS]
     ```
+
     or install `nox` into an isolated environment and run it with
+
     ```bash
     pipx install nox
     nox [NOX_ARGS]
     ```
+
     `nox` handles everything for you, including setting up a temporary virtual environment for each test session.
 
 Now that your development environment is set up, you can run the tests.
