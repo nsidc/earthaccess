@@ -1,2 +1,9 @@
 .details .open {
 }
+
+.tabbed-content {
+  padding: 5px;
+  border: 1px lightgrey;
+  border-radius: 3px;
+  border-style: dashed;
+}
