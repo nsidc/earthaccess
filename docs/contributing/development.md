@@ -148,11 +148,14 @@ Fortunately, if you've set up a development environment you should be able to ca
 (e.g., `mypy` and `pytest`) directly, or run them via your IDE integrations. To understand how `nox` is running the
 underlying tools in each test session you can read the `noxfile.py` in the repository root, or, run all the test directly
 in your development environment like:
+
 ```bash
 nox -fb none --no-install
 ```
+
 This will force `nox` to not use an environment backend (will just use the active environment) and not attempt to install
 any packages. When `nox` runs, it will describe the commands it executes:
+
 ```
 $ nox -fb none --no-install
 nox > Running session typecheck
@@ -169,13 +172,16 @@ nox > Ran multiple sessions:
 nox > * typecheck: success
 nox > * tests: success
 ```
+
 Note these lines in particular:
+
 ```
 nox > Running session typecheck
 nox > mypy
 nox > Running session tests
 nox > pytest tests/unit -rxXs
 ```
+
 So to reproduce the typecheck session all you have to do is run `mypy` in your development environment. Similarly, reproducing
 the unit tests is running `pytest test/unit -rxXs`.
 
