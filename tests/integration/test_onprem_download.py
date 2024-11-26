@@ -1,13 +1,12 @@
 import logging
 import shutil
-from pathlib import Path
 
 import earthaccess
 import pytest
 from earthaccess import Auth, DataGranules, Store
 
 from .param import TestParam
-from .sample import get_sample_granules
+from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
@@ -35,23 +34,6 @@ daacs_list: list[TestParam] = [
         "granules_max_size_mb": 100,
     },
 ]
-
-
-def top_collections_for_provider(provider: str, *, n: int) -> list[str]:
-    """Return the top collections for this provider.
-
-    Local cache is used as the source for this list. Run
-    `./popular_collections/generate.py` to refresh it!
-
-    TODO: Skip / exclude collections that have a EULA; filter them out in this function
-    or use a pytest skip/xfail mark?
-    """
-    popular_collections_dir = Path(__file__).parent / "popular_collections"
-    popular_collections_file = popular_collections_dir / f"{provider}.txt"
-    with open(popular_collections_file) as f:
-        popular_collections = f.read().splitlines()
-
-    return popular_collections[:n]
 
 
 def supported_collection(data_links):

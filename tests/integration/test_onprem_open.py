@@ -1,36 +1,33 @@
 import logging
-import random
 
 import earthaccess
 import magic
 import pytest
-from earthaccess import Auth, DataCollections, DataGranules, Store
+from earthaccess import Auth, DataGranules, Store
 
-from .sample import get_sample_granules
+from .param import TestParam
+from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
-daacs_list = [
+daacs_list: list[TestParam] = [
     {
-        "short_name": "NSIDC",
-        "collections_count": 50,
-        "collections_sample_size": 3,
+        "provider_name": "NSIDC_ECS",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "provider_name": "LPDAAC_ECS",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "GES_DISC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "provider_name": "GES_DISC",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 130,
@@ -44,25 +41,21 @@ def supported_collection(data_links):
 
 @pytest.mark.parametrize("daac", daacs_list)
 def test_earthaccess_can_open_onprem_collection_granules(daac):
-    """Tests that we can download cloud collections using HTTPS links."""
-    daac_shortname = daac["short_name"]
-    collections_count = daac["collections_count"]
-    collections_sample_size = daac["collections_sample_size"]
+    """Tests that we can open on-prem granules using HTTPS links."""
+    provider = daac["provider_name"]
+    n_for_top_collections = daac["n_for_top_collections"]
+
     granules_count = daac["granules_count"]
     granules_sample_size = daac["granules_sample_size"]
     granules_max_size = daac["granules_max_size_mb"]
 
-    collection_query = DataCollections().data_center(daac_shortname).cloud_hosted(False)
-    hits = collection_query.hits()
-    logger.info(f"Cloud hosted collections for {daac_shortname}: {hits}")
-    collections = collection_query.get(collections_count)
-    assert len(collections) > collections_sample_size
-    # We sample n cloud hosted collections from the results
-    random_collections = random.sample(collections, collections_sample_size)
-    logger.info(f"Sampled {len(random_collections)} collections")
+    top_collections = top_collections_for_provider(
+        provider,
+        n=n_for_top_collections,
+    )
+    logger.info(f"On-premises collections for {provider}: {len(top_collections)}")
 
-    for collection in random_collections:
-        concept_id = collection.concept_id()
+    for concept_id in top_collections:
         granule_query = DataGranules().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)

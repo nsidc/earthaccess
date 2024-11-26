@@ -9,11 +9,21 @@ INTEGRATION_TEST_DIR = Path(__file__).parent
 INTEGRATION_TEST_POPULAR_COLLECTIONS_DIR = INTEGRATION_TEST_DIR / "popular_collections"
 
 
-def top_collections_for_daac(provider: str, num: int) -> list[str]:
-    top_collections_file = INTEGRATION_TEST_POPULAR_COLLECTIONS_DIR / f"{provider}.txt"
-    collections = top_collections_file.read_text()
+def top_collections_for_provider(provider: str, *, n: int) -> list[str]:
+    """Return the top collections for this provider.
 
-    return collections[:num]
+    Local cache is used as the source for this list. Run
+    `./popular_collections/generate.py` to refresh it!
+
+    TODO: Skip / exclude collections that have a EULA; filter them out in this function
+    or use a pytest skip/xfail mark?
+    """
+    popular_collections_file = (
+        INTEGRATION_TEST_POPULAR_COLLECTIONS_DIR / f"{provider}.txt"
+    )
+    popular_collections = popular_collections_file.read_text().split("\n")
+
+    return [c for c in popular_collections[:n] if not c.startswith("#")]
 
 
 def get_sample_granules(
