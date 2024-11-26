@@ -1,6 +1,5 @@
 import os
 import pathlib
-from warnings import warn
 
 import earthaccess
 import pytest
