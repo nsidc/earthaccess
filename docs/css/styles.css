@@ -4,6 +4,6 @@
 .tabbed-set {
   padding: 5px;
   border: 1px lightgrey;
-  border-radius: 3px;
-  border-style: dashed;
+  border-radius: 2px;
+  border-style: solid;
 }
