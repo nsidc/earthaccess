@@ -44,13 +44,12 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     python -m pip install --editable ".[dev,test,docs]"
     ```
 
-
 === "`conda`/`mamba`"
 
     `conda` and `mamba` are open-source package and environment managers that are language and platform agnostic.
     `mamba` is a newer and faster re-implementation of `conda` -- you can use either `conda` or `mamba`
     in the commands below.
-    
+
     After you have followed [the `conda`/`mamba` installation instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) (we recommend Miniforge), you can create and activate the development environment with:
 
     ```bash
