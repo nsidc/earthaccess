@@ -1,6 +1,15 @@
 name: Integration Tests
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/integration-test*.yml
+      - earthaccess/**
+      - scripts/integration-test.sh
+      - tests/**
+      - uv.lock
   pull_request:
     branches:
       - main
