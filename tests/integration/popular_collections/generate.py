@@ -12,7 +12,9 @@ THIS_DIR = Path(__file__).parent
 all_providers = [
     provider
     for daac_info in DAACS
-    for provider in set(daac_info["cloud-providers"] + daac_info["on-prem-providers"])
+    for provider in set(
+        list(daac_info["cloud-providers"]) + list(daac_info["on-prem-providers"])
+    )
 ]
 
 
