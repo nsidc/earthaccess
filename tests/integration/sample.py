@@ -30,7 +30,7 @@ def get_sample_granules(
     granules: list,
     sample_size: int,
     max_granule_size: Union[int, float],
-    round_ndigits: int = None,
+    round_ndigits: int | None = None,
 ):
     """Return a list of randomly-sampled granules and their size in MB.
 
