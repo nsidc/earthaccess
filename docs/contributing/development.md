@@ -7,7 +7,7 @@
    ```bash
    git clone git@github.com:{my-username}/earthaccess
    ```
-1. We recommend using a feature when developing new features, fixing bugs, updating docs, etc. It's best to give the branch
+1. We recommend creating a feature branch when developing new features, fixing bugs, updating docs, etc. It's best to give the branch
 a descriptive name For example, if you're updating the contributing docs, you might create a branch called `update-contributing-docs`:
    ```bash
    git switch -c update-contributing-docs
