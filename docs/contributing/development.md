@@ -7,8 +7,13 @@
    ```bash
    git clone git@github.com:{my-username}/earthaccess
    ```
+1. We recommend using a feature when developing new features, fixing bugs, updating docs, etc. It's best to give the branch
+a descriptive name For example, if you're updating the contributing docs, you might create a branch called `update-contributing-docs`:
+   ```bash
+   git switch -c update-contributing-docs
+   ```
 
-In order to develop new features or fix bugs etc. we need to set up a virtual
+Next, In order to develop new features or fix bugs etc., you'll need to set up a virtual
 environment and install the library locally.
 
 ## Development environment setup
