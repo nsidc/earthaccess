@@ -44,21 +44,19 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
 
     `conda` and `mamba` are open-source package and environment managers that are language and platform agnostic.
     `mamba` is a newer and faster re-implementation of `conda` -- you can use either `conda` or `mamba`
-    in the commands below. See the installation instructions here (we recommend using Miniforge):
-
-    <https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html>.
-
-    Once you have `conda`/`mamba` installed, you can create and activate the development environment with:
+    in the commands below.
+    
+    After you have followed [the `conda`/`mamba` installation instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) (we recommend Miniforge), you can create and activate the development environment with:
 
     ```bash
     mamba env update -f environment.yml
     mamba activate earthaccess
     ```
 
-    This will update (or create if missing) the `earthaccess` environment and active it. The `earthaccess` package will
+    This will ensure the `earthaccess` environment exists and is up-to-date, and active it. The `earthaccess` package will
     be installed into the environment in editable mode with the optional development dependencies.
 
-    !!! note
+    ??? note "2024-09-23: Conda environment name changed from `earthaccess-dev` -> `earthaccess`"
 
         On Sept. 23, 2024, the name of the conda environment changed from `earthaccess-dev` to `earthacess` to align with
         community best practices. If you have an `earthaccess-dev` environment, we recommend deleting it and creating a new one.
@@ -73,31 +71,29 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
 === "`pipx`+`nox`"
 
     `pipx` is a tool to help you install and run end-user applications written in Python and `nox` is Python application
-    that automates testing in multiple Python environments. That means, we can let `pipx` and `nox` manage the `earthaccess`
-    development environment(s) entirely without having to set one up locally. See the `pipx` installation instructions here:
-    <https://github.com/pypa/pipx?tab=readme-ov-file#install-pipx>.
-
-    Once you have `pipx` installed, you can either run `nox` without installing it via:
+    that automates testing in multiple Python environments. By using `pipx` to install `nox` and using `nox` to run common development tasks, some users can avoid the need to set up and manage a full development environment.
+    Once you have [installed `pipx` following the official instructions](https://github.com/pypa/pipx?tab=readme-ov-file#install-pipx), you can either run `nox` without installing it via:
 
     ```bash
     pipx run nox [NOX_ARGS]
     ```
 
-    or install `nox` into an isolated environment and run it with
+    or install `nox` into an isolated environment and run it with:
 
     ```bash
     pipx install nox
     nox [NOX_ARGS]
     ```
 
-    `nox` handles everything for you, including setting up a temporary virtual environment for each test session.
+    `nox` handles everything for you, including setting up a temporary virtual environment for each task (e.g. running tests, building docs, etc.) you need to run.
 
 Now that your development environment is set up, you can run the tests.
 
 ## Running tests
 
-We recommend using `nox` to run the various test "sessions" (tasks) provided by `earthaccess`. To use, run `nox` without
+We recommend using `nox` to run the various "sessions" (`nox`'s term for tasks) provided by `earthaccess`. To use, run `nox` without
 any arguments:
+
 ```bash
 nox
 ```
