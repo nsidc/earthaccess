@@ -60,13 +60,15 @@ nav:
   - "What is earthaccess?": "index.md"
   - "Quick start": "quick-start.md"
   - "Work with us":
-      - "contributing/index.md"
-      - "Development": "contributing/development.md"
-      - "Releasing": "contributing/releasing.md"
-      - "Our meet-ups": "contributing/our-meet-ups.md"
+      - "contributing/index.md" # << Link target of the parent node
+      - "Development Guide": "contributing/development.md"
+      - "Releasing Guide": "contributing/releasing.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
-      - "Contributing naming convention": "contributing/naming-convention.md"
+      - "Meet-ups": "contributing/our-meet-ups.md"
+      - "Topics":
+          - "Naming conventions": "contributing/naming-convention.md"
+          - "Integration tests": "contributing/integration-tests.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"
