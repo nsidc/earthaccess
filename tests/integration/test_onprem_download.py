@@ -1,62 +1,39 @@
 import logging
-import random
 import shutil
 
 import earthaccess
 import pytest
-from earthaccess import Auth, DataCollections, DataGranules, Store
+from earthaccess import Auth, DataGranules, Store
+
+from .param import TestParam
+from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
 
-daacs_list = [
+daacs_list: list[TestParam] = [
     {
-        "short_name": "NSIDC",
-        "collections_count": 50,
-        "collections_sample_size": 3,
+        "provider_name": "NSIDC_ECS",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "GES_DISC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "provider_name": "GES_DISC",
+        "n_for_top_collections": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 130,
     },
     {
-        "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 2,
+        "provider_name": "LPDAAC_ECS",
+        "n_for_top_collections": 2,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
 ]
-
-
-def get_sample_granules(granules, sample_size, max_granule_size):
-    """Returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size.
-    """
-    files_to_download = []
-    total_size = 0
-    max_tries = sample_size * 2
-    tries = 0
-
-    while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
-        if g.size() > max_granule_size:
-            tries += 1
-            continue
-        else:
-            files_to_download.append(g)
-            total_size += g.size()
-            if len(files_to_download) >= sample_size:
-                break
-    return files_to_download, round(total_size, 2)
 
 
 def supported_collection(data_links):
@@ -65,25 +42,21 @@ def supported_collection(data_links):
 
 @pytest.mark.parametrize("daac", daacs_list)
 def test_earthaccess_can_download_onprem_collection_granules(tmp_path, daac):
-    """Tests that we can download cloud collections using HTTPS links."""
-    daac_shortname = daac["short_name"]
-    collections_count = daac["collections_count"]
-    collections_sample_size = daac["collections_sample_size"]
+    """Tests that we can download on-premises collections using HTTPS links."""
+    provider = daac["provider_name"]
+    n_for_top_collections = daac["n_for_top_collections"]
+
     granules_count = daac["granules_count"]
     granules_sample_size = daac["granules_sample_size"]
     granules_max_size = daac["granules_max_size_mb"]
 
-    collection_query = DataCollections().data_center(daac_shortname).cloud_hosted(False)
-    hits = collection_query.hits()
-    logger.info(f"Cloud hosted collections for {daac_shortname}: {hits}")
-    collections = collection_query.get(collections_count)
-    assert len(collections) > collections_sample_size
-    # We sample n cloud hosted collections from the results
-    random_collections = random.sample(collections, collections_sample_size)
-    logger.info(f"Sampled {len(random_collections)} collections")
+    top_collections = top_collections_for_provider(
+        provider,
+        n=n_for_top_collections,
+    )
+    logger.info(f"On-premises collections for {provider}: {len(top_collections)}")
 
-    for collection in random_collections:
-        concept_id = collection.concept_id()
+    for concept_id in top_collections:
         granule_query = DataGranules().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
@@ -94,7 +67,10 @@ def test_earthaccess_can_download_onprem_collection_granules(tmp_path, daac):
             logger.warning(f"PODAAC DRIVE is not supported at the moment: {data_links}")
             continue
         granules_to_download, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
+            granules,
+            granules_sample_size,
+            granules_max_size,
+            round_ndigits=2,
         )
         if len(granules_to_download) == 0:
             logger.debug(

@@ -1,52 +1,49 @@
 import logging
-import random
 import shutil
 from pathlib import Path
 
 import earthaccess
 import pytest
-from earthaccess import Auth, DataCollections, DataGranules, Store
+from earthaccess import Auth, DataGranules, Store
+
+from .param import TestParam
+from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
 
-daac_list = [
+daac_list: list[TestParam] = [
     {
-        "short_name": "NSIDC",
-        "collections_count": 50,
-        "collections_sample_size": 3,
+        "provider_name": "NSIDC_CPRD",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "GES_DISC",
-        "collections_count": 100,
-        "collections_sample_size": 3,
+        "provider_name": "GES_DISC",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 150,
     },
     {
-        "short_name": "PODAAC",
-        "collections_count": 100,
-        "collections_sample_size": 3,
+        "provider_name": "POCLOUD",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "LPDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 3,
+        "provider_name": "LPCLOUD",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
     {
-        "short_name": "ORNLDAAC",
-        "collections_count": 100,
-        "collections_sample_size": 3,
+        "provider_name": "ORNL_CLOUD",
+        "n_for_top_collections": 3,
         "granules_count": 100,
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
@@ -54,55 +51,36 @@ daac_list = [
 ]
 
 
-def get_sample_granules(granules, sample_size, max_granule_size):
-    """Returns a list with sample granules and their size in MB if
-    the total size is less than the max_granule_size.
-    """
-    files_to_download = []
-    total_size = 0
-    max_tries = sample_size * 2
-    tries = 0
-
-    while tries <= max_tries:
-        g = random.sample(granules, 1)[0]
-        if g.size() > max_granule_size:
-            tries += 1
-            continue
-        else:
-            files_to_download.append(g)
-            total_size += g.size()
-            if len(files_to_download) >= sample_size:
-                break
-    return files_to_download, round(total_size)
-
-
 @pytest.mark.parametrize("daac", daac_list)
 def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
     """Tests that we can download cloud collections using HTTPS links."""
-    daac_shortname = daac["short_name"]
-    collections_count = daac["collections_count"]
-    collections_sample_size = daac["collections_sample_size"]
+    provider = daac["provider_name"]
+    n_for_top_collections = daac["n_for_top_collections"]
+
     granules_count = daac["granules_count"]
     granules_sample_size = daac["granules_sample_size"]
     granules_max_size = daac["granules_max_size_mb"]
 
-    collection_query = DataCollections().data_center(daac_shortname).cloud_hosted(True)
-    hits = collection_query.hits()
-    logger.info(f"Cloud hosted collections for {daac_shortname}: {hits}")
-    collections = collection_query.get(collections_count)
-    assert len(collections) > collections_sample_size
-    # We sample n cloud hosted collections from the results
-    random_collections = random.sample(collections, collections_sample_size)
+    top_collections = top_collections_for_provider(
+        provider,
+        n=n_for_top_collections,
+    )
+    logger.info(f"On-premises collections for {provider}: {len(top_collections)}")
 
-    for collection in random_collections:
-        concept_id = collection.concept_id()
+    for concept_id in top_collections:
         granule_query = DataGranules().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
-        assert isinstance(granules, list) and len(granules) > 0
-        assert isinstance(granules[0], earthaccess.DataGranule)
+
+        msg = f"AssertionError for {concept_id}"
+        assert isinstance(granules, list), msg
+        assert len(granules) > 0, msg
+        assert isinstance(granules[0], earthaccess.DataGranule), msg
+
         granules_to_download, total_size_cmr = get_sample_granules(
-            granules, granules_sample_size, granules_max_size
+            granules,
+            granules_sample_size,
+            granules_max_size,
         )
         if len(granules_to_download) == 0:
             logger.warning(
