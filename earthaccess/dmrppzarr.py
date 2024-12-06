@@ -133,7 +133,7 @@ def open_virtual_mfdataset(
             backend_kwargs={
                 "consolidated": False,
                 "storage_options": {
-                    "fo": refs,
+                    "fo": refs,  # codespell:ignore
                     "remote_protocol": fs.protocol,
                     "remote_options": fs.storage_options,  # type: ignore
                 },

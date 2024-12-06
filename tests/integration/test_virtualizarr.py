@@ -15,9 +15,7 @@ logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
 logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 
-@pytest.fixture(
-    scope="module", params=["MUR25-JPL-L4-GLOB-v04.2"]
-)
+@pytest.fixture(scope="module", params=["MUR25-JPL-L4-GLOB-v04.2"])
 def granule(request):
     granules = earthaccess.search_data(
         count=1, temporal=("2024"), short_name=request.param
@@ -26,7 +24,7 @@ def granule(request):
 
 
 def test_dmrpp(granule):
-    from virtualizarr import open_virtual_dataset
+    from virtualizarr import open_virtual_dataset  # type: ignore
 
     fs = earthaccess.get_fsspec_https_session()
     data_path = granule.data_links(access="indirect")[0]
