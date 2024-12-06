@@ -65,7 +65,7 @@ kerchunk = [
   "xarray",
 ]
 virtualizarr = [
-  "virtualizarr @ git+https://github.com/zarr-developers/VirtualiZarr.git"
+  "virtualizarr"
 ]
 dev = [
   "bump-my-version >=0.10.0",

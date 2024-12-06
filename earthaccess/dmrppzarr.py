@@ -17,7 +17,7 @@ def open_virtual_mfdataset(
     parallel: bool = True,
     **xr_combine_nested_kwargs,
 ) -> xr.Dataset:
-    """Open multiple granules as a single virtual xarray Dataset.
+    """Open multiple granules as a single virtual xarray Dataset. WARNING: This feature is current experimental and may change in the future. This feature relies on dmr++ metadata files which may not always be present for your dataset.
 
     Uses DMR++ metadata files to create a virtual xarray dataset with ManifestArrays. This virtual dataset can be used to create zarr reference files. See https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets.
 
@@ -87,9 +87,8 @@ def open_virtual_mfdataset(
         Conventions:                CF-1.7
         title:                      Daily MUR SST, Final product
     """
-    import xarray as xr
-
     import virtualizarr as vz
+    import xarray as xr
 
     if access == "direct":
         fs = earthaccess.get_s3_filesystem(results=granules[0])
@@ -104,7 +103,7 @@ def open_virtual_mfdataset(
         if preprocess is not None:
             preprocess = dask.delayed(preprocess)  # type: ignore
     else:
-        open_ = vz.open_virtual_dataset
+        open_ = vz.open_virtual_dataset  # type: ignore
     vdatasets = []
     # Get list of virtual datasets (or dask delayed objects)
     for g in granules:
@@ -149,7 +148,7 @@ def open_virtual_dataset(
     access: str = "indirect",
     load: bool = False,
 ) -> xr.Dataset:
-    """Open a granule as a single virtual xarray Dataset.
+    """Open a granule as a single virtual xarray Dataset. WARNING: This feature is current experimental and may change in the future. This feature relies on dmr++ metadata files which may not always be present for your dataset.
 
     Uses DMR++ metadata files to create a virtual xarray dataset with ManifestArrays. This virtual dataset can be used to create zarr reference files. See https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets.
 
