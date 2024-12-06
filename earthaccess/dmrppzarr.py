@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import earthaccess
 
@@ -15,7 +15,7 @@ def open_virtual_mfdataset(
     load: bool = False,
     preprocess: callable | None = None,  # type: ignore
     parallel: bool = True,
-    **xr_combine_nested_kwargs,
+    **xr_combine_nested_kwargs: Any,
 ) -> xr.Dataset:
     """Open multiple granules as a single virtual xarray Dataset. WARNING: This feature is current experimental and may change in the future. This feature relies on dmr++ metadata files which may not always be present for your dataset.
 
