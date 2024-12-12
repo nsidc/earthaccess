@@ -168,26 +168,26 @@ def open_virtual_dataset(
             When true, creates a lazy loaded, numpy/dask backed xarray dataset with indexes. Note that when `load=True` all the data is now available to access but not loaded into memory. When `load=False` a virtual xarray dataset is created with ManifestArrays. This virtual dataset is a view over the underlying metadata and chunks and allows creation and concatenation of zarr reference files. This virtual dataset cannot load data on it's own and see https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets.
 
     Returns:
-    ----------
-    xr.Dataset
+        xarray.Dataset
 
     Examples:
-    ----------
-    >>> results = earthaccess.search_data(count=2, temporal=("2023"), short_name="SWOT_L2_LR_SSH_Expert_2.0")
-    >>> vds =  earthaccess.open_virtual_dataset(results[0], access="indirect", load=False)
-    >>> vds
-    <xarray.Dataset> Size: 149MB
-    Dimensions:                                (num_lines: 9866, num_pixels: 69,
-                                                num_sides: 2)
-    Coordinates:
-        longitude                              (num_lines, num_pixels) int32 3MB ...
-        latitude                               (num_lines, num_pixels) int32 3MB ...
-        latitude_nadir                         (num_lines) int32 39kB ManifestArr...
-        longitude_nadir                        (num_lines) int32 39kB ManifestArr...
-    Dimensions without coordinates: num_lines, num_pixels, num_sides
-    Data variables: (12/98)
-        height_cor_xover_qual                  (num_lines, num_pixels) uint8 681kB ManifestArray<shape=(9866, 69), dtype=uint8, chunks=(9866, 69...
-    >>> vds.virtualize.to_kerchunk("swot_2023_ref.json", format="json")
+        ```python
+        >>> results = earthaccess.search_data(count=2, temporal=("2023"), short_name="SWOT_L2_LR_SSH_Expert_2.0")
+        >>> vds =  earthaccess.open_virtual_dataset(results[0], access="indirect", load=False)
+        >>> vds
+        <xarray.Dataset> Size: 149MB
+        Dimensions:                                (num_lines: 9866, num_pixels: 69,
+                                                    num_sides: 2)
+        Coordinates:
+            longitude                              (num_lines, num_pixels) int32 3MB ...
+            latitude                               (num_lines, num_pixels) int32 3MB ...
+            latitude_nadir                         (num_lines) int32 39kB ManifestArr...
+            longitude_nadir                        (num_lines) int32 39kB ManifestArr...
+        Dimensions without coordinates: num_lines, num_pixels, num_sides
+        Data variables: (12/98)
+            height_cor_xover_qual                  (num_lines, num_pixels) uint8 681kB ManifestArray<shape=(9866, 69), dtype=uint8, chunks=(9866, 69...
+        >>> vds.virtualize.to_kerchunk("swot_2023_ref.json", format="json")
+        ```
     """
     return open_virtual_mfdataset(
         granules=[granule],
