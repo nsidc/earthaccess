@@ -21,7 +21,7 @@ from .api import (
     search_services,
 )
 from .auth import Auth
-from .dmrppzarr import open_virtual_dataset, open_virtual_mfdataset
+from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
 from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices

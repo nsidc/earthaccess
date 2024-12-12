@@ -14,3 +14,9 @@ This library handles authentication with NASA’s OAuth2 API (EDL) and provides 
       inherited_members: true
     show_root_heading: true
     show_source: false
+
+::: earthaccess.dmrpp_zarr
+    options:
+      inherited_members: true
+    show_root_heading: true
+    show_source: false
