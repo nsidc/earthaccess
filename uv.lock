@@ -925,7 +925,7 @@ requires-dist = [
     { name = "typing-extensions", specifier = ">=4.10.0" },
     { name = "uv", marker = "extra == 'dev'", specifier = ">=0.4.7" },
     { name = "vcrpy", marker = "extra == 'test'", specifier = ">=6.0.1" },
-    { name = "virtualizarr", marker = "extra == 'virtualizarr'" },
+    { name = "virtualizarr", marker = "extra == 'virtualizarr'", specifier = ">=1.2.0" },
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
     { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
     { name = "xarray", marker = "extra == 'kerchunk'" },

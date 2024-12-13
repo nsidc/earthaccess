@@ -65,7 +65,7 @@ kerchunk = [
   "xarray",
 ]
 virtualizarr = [
-  "virtualizarr"
+  "virtualizarr >=1.2.0"
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -125,9 +125,6 @@ docs = [
 
 [tool.pytest]
 filterwarnings = ["error::UserWarning"]
-
-[tool.hatch.metadata]
-allow-direct-references = true
 
 [tool.mypy]
 python_version = "3.10"
