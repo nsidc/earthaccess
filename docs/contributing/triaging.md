@@ -1,10 +1,10 @@
-## Introduction
 
-Effective issue management is crucial for maintaining a streamlined development workflow. This document outlines the guidelines for issue labeling and management in GitHub, ensuring clarity, consistency, and efficiency. By clearly defining the roles of various labels and understanding how to link and use them, and distinguishing between discussions and issues, this guide aims to enhance the collaboration and productivity of our development team.
+With constant influx of new issues, it's quite essential to prioritize and categorize them efficiently to ensure that the most imporatnt problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized and up-to-date issue tracker.
 
 ## Labeling Issues
 
-Labeling issues effectively is crucial for maintaining clarity and organization within the project. Each label should provide clear information about the nature and status of an issue, making it easier to prioritize and address. Here’s a breakdown of how to label issues in GitHub and the purpose each label serves.
+When labeling an issue, choose the label that best describes the issue. Using labels consistently and accurately ensures that issues are easily trackable.
+
 
 ### Issue Types
 
@@ -41,7 +41,7 @@ Labeling issues effectively is crucial for maintaining clarity and organization 
 
 ## Linking Labels in GitHub Markdown
 
-When referencing a label in a GitHub issue or discussion, it is will be  useful to link to the label page to provide additional context and help others community members to quickly understand the issue's category.
+When referencing a label in a GitHub issue or discussion, it will be  useful to link to the label page to provide additional context and help other members to quickly understand the issue's category.
 
 ### Syntax
 
@@ -55,7 +55,6 @@ To link to a label in GitHub Markdown, use the following syntax:
 
 For example, to link to the "hackathon" label in the nsidc/earthaccess repository, you would use the following syntax:
 
-
 ``` 
 [hackathon](https://github.com/nsidc/earthaccess/labels/hackathon)
 ```
@@ -67,33 +66,25 @@ For example, to link to the "hackathon" label in the nsidc/earthaccess repositor
 
 This section will cover the guidelines for when to use the "Close Issue as Not Planned" label, and how to handle issues that are not planned or feasible.
 
-### Overview
-
-The "Close Issue as Not Planned" label is used to indicate that an issue is not planned or feasible to be addressed.
-
-### When to Use This Label
+### When to Use This Label?
 
 Use the "Close Issue as Not Planned" label when:
 
-- An issue is not aligned with the project's goals or priorities
-- An issue is not feasible to be addressed due to technical or resource constraints
-- An issue is a duplicate of an existing issue that has already been addressed
+- An issue is not aligned with the project's goals or priorities.
+- An issue is not feasible to be addressed due to technical or resource constraints.
+- An issue is a duplicate of an existing issue that has already been addressed.
 
-!!! tip
-    When closing an issue as not planned, keep the following best practices in mind:
+When closing an issue as not planned, keep the following best practices in mind:
 
-    * Provide a clear explanation as to why the issue is not planned or feasible
-    * Offer alternative solutions or workarounds, if possible
-    * Link to relevant documentation or resources, if applicable
+- Provide a clear explanation as to why the issue is not planned or feasible.
+- Offer alternative solutions or workarounds, if possible.
+- Link to relevant documentation or resources, if applicable.
 
-### Discussions vs Issues    
+## Discussions vs Issues    
 
 This section would cover the guidelines for when to use discussions versus issues, and how to migrate between them.
 
-### Overview
-Discussions and issues are two different features in GitHub that serve distinct purposes.
-
-### Discussions
+###  What are Discussions?
 
 Discussions are used for:
 
@@ -101,7 +92,7 @@ Discussions are used for:
 - Feature requests and feedback.
 - General questions and topics.
 
-### Issues
+###  What are Issues?
 
 Issues are used for:
 
@@ -109,20 +100,55 @@ Issues are used for:
 - Tracking progress on specific tasks or projects.
 - Requesting changes or improvements.
 
+### When to Migrate 
 
-#### When to Migrate 
+Migrate a discussion to an issue when:
 
-**Migrate a discussion to an issue when:**
+- A specific task is identified.
+- A bug or error is reported.
+- A change or improvement is requested.
 
-* Specific task or project is identified.
-* A* bug or error is reported.
-* A change or improvement is requested.
+Migrate an issue to a discussion when:
 
-**Migrate an issue to a discussion when:**
+- The issue is a feature request or idea.
+- The issue is a general question or topic.
+- The issue is not specific or actionable.
 
-* The issue is a feature request or idea
-* The issue is a general question or topic
-* The issue is not specific or actionable
+## Issue Triaging Workflow
+
+``` mermaid
+
+flowchart TD
+  %%{init: {"flowchart": {"htmlLabels": false}} }%%
+  classDef default font-size:32pt;
+  start{"`Followed 
+  issue 
+  template?`"}
+  start --NO --> close1[Close and ask to
+  follow template]
+  %% Link Color %%
+    linkStyle 0 stroke:black,stroke-width:2px,font-size:36pt;
+  start -- YES --> dupe{Is duplicate?}
+  dupe -- YES --> close2[Close and point\nto duplicate]
+  dupe -- NO --> repro{Has proper\nreproduction?}
+  repro -- NO --> close3[Label: 'needs reproduction'\nbot will auto close if no update\nhas been made in 3 days]
+  repro -- YES --> real{Is actually a bug?}
+  real -- NO --> intended{Is the intended\nbehaviour?}
+  intended -- YES --> explain[Explain and close\npoint to docs if needed]
+  intended -- NO --> open[Keep open for discussion\nRemove 'pending triage' label]
+  real -- YES --> real2["1. Remove 'pending triage' label\n2. Add related feature label if\napplicable (e.g. 'feat: ssr')\n3. Add priority and meta labels (see below)"]
+  real2 --> unusable{Does the\nbug make Vite\nunusable?}
+  unusable -- YES --> maj{Does the bug\naffect the majority\nof Vite users?}
+  maj -- YES --> p5[p5: urgent]
+  maj -- NO --> p4[p4: important]
+  unusable -- NO --> workarounds{Are there\nworkarounds for\nthe bug?}
+  workarounds -- NO --> p3[p3: minor bug]
+  workarounds -- YES --> p2[p2: edge case\nhas workaround]
+
+```
+
+
+
 
 
 
