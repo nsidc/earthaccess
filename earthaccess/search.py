@@ -937,9 +937,9 @@ class DataGranules(GranuleQuery):
 
         return self
 
-    def load(self):
+    def load(self, count: int = -1):
         # TODO - Handle paging (get all)
-        self.graunles = self.get()
+        self.granules = self.get(count)
 
     @property
     def granules(self) -> list:
@@ -959,6 +959,16 @@ class DataGranules(GranuleQuery):
 
     def __len__(self):
         return len(self.granules)
+
+    def __getitem__(self, index: int):
+        # FIXME: allow slicing
+        # if isinstance(index, slice):
+        #     return DataGranules(self.jobs[index])
+        return self.granules[index]
+
+    def __setitem__(self, index: int, granule: DataGranule):
+        self.granules[index] = granule
+        return self
 
     # FIXME: Is a granule in this results object? what do we use to tell?
     # def __contains__(self, job: Job):
