@@ -955,6 +955,20 @@ class DataGranules(GranuleQuery):
     def granules(self):
         del  self._granules
 
+    @property
+    def granule_ids(self) -> list[str]:
+        """List of granule IDs for each granule in results
+
+        Returns:
+            list: Granule ID for each granule in results
+        """
+        
+        gran_ids=[]
+        for gran in self.granules:
+            gran_ids.append(gran.granule_ID())
+
+        return gran_ids
+
     def __iter__(self):
         return iter(self.granules)
 
@@ -980,9 +994,16 @@ class DataGranules(GranuleQuery):
         return self.granules == other.granules
 
     # TODO: display methods
-    def __repr__(self):
+    def __repr__(self) -> str:
         
         if (count := len(self)) > 0:
             return f'DataGranules().parameters({self.params}).load({count})'
 
         return f'DataGranules().parameters({self.params})'
+
+    def __str__(self) -> str:
+        
+        return "Granule Count: {0} \nGranule IDs: {1}".format(
+            len(self),
+            self.granule_ids,
+        )
