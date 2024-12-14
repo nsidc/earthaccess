@@ -106,3 +106,4 @@ Temporary Items
 /.tool-versions
 
 # End of https://www.toptal.com/developers/gitignore/api/asdf
+.Rproj.user
