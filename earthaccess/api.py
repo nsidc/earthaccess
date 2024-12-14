@@ -126,8 +126,8 @@ def search_data(count: int = -1, **kwargs: Any) -> DataGranules:
     else:
         results = DataGranules().parameters(**kwargs)
 
+    logger.info(f"Granules found: {results.hits()}")
     results.load(count)
-    logger.info(f"Granules found: {len(results)}")
     return results
 
 
