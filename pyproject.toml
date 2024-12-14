@@ -64,6 +64,9 @@ kerchunk = [
   "h5netcdf",
   "xarray",
 ]
+virtualizarr = [
+  "virtualizarr >=1.2.0"
+]
 dev = [
   "bump-my-version >=0.10.0",
   "nox",
@@ -82,6 +85,7 @@ test = [
   "types-setuptools >=0.1",
   "vcrpy >=6.0.1",
   "earthaccess[kerchunk]",
+  "earthaccess[virtualizarr]",
 ]
 docs = [
     "jupyterlab >=3",

@@ -19,6 +19,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
+- Add support for opening data files with virtualizarr and NASA dmrpp with `open_virtual_dataset`
+  ([#605](https://github.com/nsidc/earthaccess/issues/605))
+  ([@ayushnag](https://github.com/ayushnag))
 - Add support for `NETRC` environment variable to override default `.netrc` file
   location ([#480](https://github.com/nsidc/earthaccess/issues/480))
   ([@chuckwondo](https://github.com/chuckwondo))
