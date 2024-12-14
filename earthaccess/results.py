@@ -211,6 +211,7 @@ class DataGranule(CustomDict):
         "TemporalExtent",
         "RelatedUrls",
         "DataGranule",
+        "GranuleUR",
     ]
 
     def __init__(
@@ -356,3 +357,12 @@ class DataGranule(CustomDict):
         """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links
+
+    def granule_ID(self) -> str:
+        """Get the granule ID
+
+        Returns:
+            str: Granule ID
+        """
+        
+        return self['umm']['GranuleUR']
