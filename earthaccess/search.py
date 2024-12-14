@@ -980,6 +980,9 @@ class DataGranules(GranuleQuery):
         return self.granules == other.granules
 
     # TODO: display methods
-    def __repr__(self) -> str:
-        reprs = ", ".join([granule.__repr__() for granule in self.granules])
-        return f'DataGranules([{reprs}])'
+    def __repr__(self):
+        
+        if (count := len(self)) > 0:
+            return f'DataGranules().parameters({self.params}).load({count})'
+
+        return f'DataGranules().parameters({self.params})'
