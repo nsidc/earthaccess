@@ -938,8 +938,9 @@ class DataGranules(GranuleQuery):
         return self
 
     def load(self, count: int = -1):
-        # TODO - Handle paging (get all)
-        self.granules = self.get(count)
+        if count > 0:
+            self.granules = self.get(count)
+        self.granules = self.get_all()
 
     @property
     def granules(self) -> list:
