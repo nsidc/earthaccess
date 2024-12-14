@@ -418,6 +418,7 @@ class DataGranules(GranuleQuery):
         if auth:
             self.mode(auth.system.cmr_base_url)
 
+        self._granules = []
         self._debug = False
 
     @override
@@ -938,8 +939,36 @@ class DataGranules(GranuleQuery):
 
     def load(self):
         # TODO - Handle paging (get all)
-        self._granules = self.get()
+        self.graunles = self.get()
 
     @property
-    def granules(self):
+    def granules(self) -> list:
+        """TODO"""
         return self._granules
+
+    @granules.setter
+    def granules(self, value: list):
+        self._granules = value
+
+    @granules.deleter
+    def granules(self):
+        del  self._granules
+
+    def __iter__(self):
+        return iter(self.granules)
+
+    def __len__(self):
+        return len(self.granules)
+
+    # FIXME: Is a granule in this results object? what do we use to tell?
+    # def __contains__(self, job: Job):
+    #     return job in self.jobs
+
+    def __eq__(self, other: 'DataGranules'):
+        # FIXME: compare query parameters too? what does it mean to be equal?
+        return self.graunles == other.granules
+
+    # TODO: display methods
+    def __repr__(self):
+        reprs = ", ".join([granule.__repr__() for granule in self.granules])
+        return f'DataGranules([{reprs}])'
