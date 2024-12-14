@@ -960,13 +960,13 @@ class DataGranules(GranuleQuery):
     def __len__(self):
         return len(self.granules)
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> DataGranule:
         # FIXME: allow slicing
         # if isinstance(index, slice):
         #     return DataGranules(self.jobs[index])
         return self.granules[index]
 
-    def __setitem__(self, index: int, granule: DataGranule):
+    def __setitem__(self, index: int, granule: DataGranule) -> 'DataGranules':
         self.granules[index] = granule
         return self
 
@@ -974,11 +974,11 @@ class DataGranules(GranuleQuery):
     # def __contains__(self, job: Job):
     #     return job in self.jobs
 
-    def __eq__(self, other: 'DataGranules'):
+    def __eq__(self, other: 'DataGranules') -> bool:
         # FIXME: compare query parameters too? what does it mean to be equal?
-        return self.graunles == other.granules
+        return self.granules == other.granules
 
     # TODO: display methods
-    def __repr__(self):
+    def __repr__(self) -> str:
         reprs = ", ".join([granule.__repr__() for granule in self.granules])
         return f'DataGranules([{reprs}])'
