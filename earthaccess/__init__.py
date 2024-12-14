@@ -21,6 +21,7 @@ from .api import (
     search_services,
 )
 from .auth import Auth
+from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
 from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
@@ -58,6 +59,9 @@ __all__ = [
     "Store",
     # kerchunk
     "consolidate_metadata",
+    # virtualizarr
+    "open_virtual_dataset",
+    "open_virtual_mfdataset",
     "PROD",
     "UAT",
 ]
