@@ -336,7 +336,10 @@ class Store(object):
         Returns:
             requests Session
         """
-        return self.auth.get_session()
+        if hasattr(self, "_http_session"):
+            return self._http_session
+        else:
+            raise AttributeError("The requests session hasn't been set up yet.")
 
     def open(
         self,
