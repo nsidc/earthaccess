@@ -672,7 +672,7 @@ class Store(object):
         path = directory / Path(local_filename)
         if not path.exists():
             try:
-                session = self.auth.get_session()
+                session = self.get_requests_session()
                 with session.get(
                     url,
                     stream=True,
