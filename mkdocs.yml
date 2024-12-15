@@ -57,7 +57,6 @@ plugins:
         - "tutorials/dask.ipynb"
         - "**/.ipynb_checkpoints/*"
 
-
 nav:
   - "What is earthaccess?": "index.md"
   - "Quick start": "quick-start.md"
@@ -69,7 +68,7 @@ nav:
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
       - "Contributing naming convention": "contributing/naming-convention.md"
-      - "Triaging Doc" : "contributing/triaging.md"
+      - "Triaging Doc": "contributing/triaging.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"
@@ -124,9 +123,10 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
-          - name: mermaid
-            class: mermaid
-            format: !!python/name:mermaid2.fence_mermaid_custom
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+
   - pymdownx.tabbed:
       alternate_style: true
 

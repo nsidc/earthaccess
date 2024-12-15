@@ -47,7 +47,7 @@ When referencing a label in a GitHub issue or discussion, it will be  useful to 
 
 To link to a label in GitHub Markdown, use the following syntax:
 
-``` 
+```
 [label name](https://github.com/username/repository/labels/label-name)
 ```
 
@@ -55,7 +55,7 @@ To link to a label in GitHub Markdown, use the following syntax:
 
 For example, to link to the "hackathon" label in the nsidc/earthaccess repository, you would use the following syntax:
 
-``` 
+```
 [hackathon](https://github.com/nsidc/earthaccess/labels/hackathon)
 ```
 
@@ -80,7 +80,7 @@ When closing an issue as not planned, keep the following best practices in mind:
 - Offer alternative solutions or workarounds, if possible.
 - Link to relevant documentation or resources, if applicable.
 
-## Discussions vs Issues    
+## Discussions vs Issues
 
 This section would cover the guidelines for when to use discussions versus issues, and how to migrate between them.
 
@@ -100,7 +100,7 @@ Issues are used for:
 - Tracking progress on specific tasks or projects.
 - Requesting changes or improvements.
 
-### When to Migrate 
+### When to Migrate
 
 Migrate a discussion to an issue when:
 
@@ -121,10 +121,10 @@ Migrate an issue to a discussion when:
 flowchart TD
   %%{init: {"flowchart": {"htmlLabels": false}} }%%
   classDef default font-size:32pt;
-  start{"`Followed 
-  issue 
+  start{"`Followed
+  issue
   template?`"}
-  start ==NO==> close1[Change 
+  start ==NO==> close1[Change
   to draft and ask to follow template]
   start == YES ==> dupe{Is duplicate?}
   dupe == YES ==> close2[Close and point to duplicate]
@@ -147,10 +147,3 @@ flowchart TD
     linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
 
 ```
-
-
-
-
-
-
-
