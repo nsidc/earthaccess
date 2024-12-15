@@ -7,6 +7,11 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- Added triaging document([#754](https://github.com/nsidc/earthaccess/issues/754))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+
 ## [v0.12.0] - 2024-11-13
 
 ### Changed
@@ -30,6 +35,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Auto-add comment to PR that requires maintainer to review and re-run
   integration tests ([#824](https://github.com/nsidc/earthaccess/issues/824))
   ([@chuckwondo](https://github.com/chuckwondo))
+
 
 ### Removed
 

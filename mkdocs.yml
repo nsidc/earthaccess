@@ -69,7 +69,7 @@ nav:
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
       - "Contributing naming convention": "contributing/naming-convention.md"
-      - "Triaging" : "contributing/triaging.md"
+      - "Triaging Doc" : "contributing/triaging.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"

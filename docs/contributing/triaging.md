@@ -127,7 +127,7 @@ flowchart TD
   start ==NO==> close1[Change 
   to draft and ask to follow template]
   start == YES ==> dupe{Is duplicate?}
-  dupe == YES ==> close2[Close and pointto duplicate]
+  dupe == YES ==> close2[Close and point to duplicate]
   dupe == NO ==> repro{Has proper reproduction?}
   repro == NO ==> close3[Label: 'needs reproduction' bot will auto close if no update has been made in 3 days]
   repro == YES ==> real{Is actually a bug?}
