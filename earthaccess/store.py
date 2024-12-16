@@ -127,7 +127,7 @@ class Store(object):
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
-            self.set_requests_session(oauth_profile)
+            self.set_requests_session(oauth_profile, bearer_token=True)
             if pre_authorize:
                 # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
