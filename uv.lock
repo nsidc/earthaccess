@@ -841,8 +841,10 @@ docs = [
     { name = "pygments" },
     { name = "pymdown-extensions" },
     { name = "pyproj" },
+    { name = "virtualizarr" },
     { name = "widgetsnbextension" },
     { name = "xarray" },
+    { name = "zarr" },
 ]
 kerchunk = [
     { name = "dask" },
@@ -870,9 +872,11 @@ test = [
     { name = "vcrpy" },
     { name = "virtualizarr" },
     { name = "xarray" },
+    { name = "zarr" },
 ]
 virtualizarr = [
     { name = "virtualizarr" },
+    { name = "zarr" },
 ]
 
 [package.metadata]
@@ -882,6 +886,7 @@ requires-dist = [
     { name = "dask", marker = "extra == 'docs'", specifier = ">=2024.8.0" },
     { name = "dask", marker = "extra == 'kerchunk'" },
     { name = "earthaccess", extras = ["kerchunk"], marker = "extra == 'test'" },
+    { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'docs'" },
     { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'test'" },
     { name = "fsspec", specifier = ">=2022.11" },
     { name = "h5netcdf", marker = "extra == 'docs'", specifier = ">=0.11" },
@@ -929,6 +934,7 @@ requires-dist = [
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
     { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
     { name = "xarray", marker = "extra == 'kerchunk'" },
+    { name = "zarr", marker = "extra == 'virtualizarr'" },
 ]
 
 [[package]]
