@@ -7,6 +7,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- Added triaging document([#754](https://github.com/nsidc/earthaccess/issues/754))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+  ([@mfisher87](https://github.com/mfisher87))
+
 ## [v0.12.0] - 2024-11-13
 
 ### Changed
