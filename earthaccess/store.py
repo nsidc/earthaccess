@@ -655,7 +655,9 @@ class Store(object):
                 data_links, local_path, pqdm_kwargs=pqdm_kwargs
             )
 
-    def _clone_session(self, original_session: SessionWithHeaderRedirection) -> SessionWithHeaderRedirection:
+    def _clone_session(
+        self, original_session: SessionWithHeaderRedirection
+    ) -> SessionWithHeaderRedirection:
         new_session = SessionWithHeaderRedirection()
         new_session.headers.update(original_session.headers)
         new_session.cookies.update(original_session.cookies)
