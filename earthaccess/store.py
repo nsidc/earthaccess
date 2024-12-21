@@ -18,7 +18,7 @@ from typing_extensions import deprecated
 
 import earthaccess
 
-from .auth import Auth
+from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -655,6 +655,13 @@ class Store(object):
                 data_links, local_path, pqdm_kwargs=pqdm_kwargs
             )
 
+    def _clone_session(self, original_session: SessionWithHeaderRedirection) -> SessionWithHeaderRedirection:
+        new_session = SessionWithHeaderRedirection()
+        new_session.headers.update(original_session.headers)
+        new_session.cookies.update(original_session.cookies)
+        new_session.auth = original_session.auth
+        return new_session
+
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
 
@@ -672,7 +679,8 @@ class Store(object):
         path = directory / Path(local_filename)
         if not path.exists():
             try:
-                session = self.get_requests_session()
+                original_session = self.get_requests_session()
+                session = self._clone_session(original_session)
                 with session.get(
                     url,
                     stream=True,
