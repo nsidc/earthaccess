@@ -668,7 +668,7 @@ class Store(object):
         Returns:
             A new session that has the same headers, cookies, and auth as the original session.
         """
-        if not hasattr(self.thread_locals, 'local_thread_session'):
+        if not hasattr(self.thread_locals, "local_thread_session"):
             local_thread_session = SessionWithHeaderRedirection()
             local_thread_session.headers.update(original_session.headers)
             local_thread_session.cookies.update(original_session.cookies)
