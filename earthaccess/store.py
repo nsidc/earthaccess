@@ -659,14 +659,17 @@ class Store(object):
 
     def _clone_session_in_local_thread(
         self, original_session: SessionWithHeaderRedirection
-    ) -> SessionWithHeaderRedirection:
-        """Creates a new session that replicates the settings of the original session.
+    ) -> None:
+        """Clone the original session and store it in the local thread context.
+
+        This method creates a new session that replicates the headers, cookies, and authentication settings
+        from the provided original session. The new session is stored in a thread-local storage.
 
         Parameters:
-            original_session: The original session object to be cloned
+            original_session (SessionWithHeaderRedirection): The session to be cloned.
 
         Returns:
-            A new session that has the same headers, cookies, and auth as the original session.
+            None
         """
         if not hasattr(self.thread_locals, "local_thread_session"):
             local_thread_session = SessionWithHeaderRedirection()
