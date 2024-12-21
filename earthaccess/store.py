@@ -658,6 +658,14 @@ class Store(object):
     def _clone_session(
         self, original_session: SessionWithHeaderRedirection
     ) -> SessionWithHeaderRedirection:
+        """Creates a new session that replicates the settings of the original session.
+
+        Parameters:
+            original_session: The original session object to be cloned
+
+        Returns:
+            A new session that has the same headers, cookies, and auth as the original session.
+        """
         new_session = SessionWithHeaderRedirection()
         new_session.headers.update(original_session.headers)
         new_session.cookies.update(original_session.cookies)
