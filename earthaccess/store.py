@@ -8,6 +8,7 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
+import threading
 
 import fsspec
 import requests
@@ -119,6 +120,7 @@ class Store(object):
         Parameters:
             auth: Auth instance to download and access data.
         """
+        self.thread_locals = threading.local()
         if auth.authenticated is True:
             self.auth = auth
             self._s3_credentials: Dict[
@@ -655,7 +657,7 @@ class Store(object):
                 data_links, local_path, pqdm_kwargs=pqdm_kwargs
             )
 
-    def _clone_session(
+    def _clone_session_in_local_thread(
         self, original_session: SessionWithHeaderRedirection
     ) -> SessionWithHeaderRedirection:
         """Creates a new session that replicates the settings of the original session.
@@ -666,11 +668,12 @@ class Store(object):
         Returns:
             A new session that has the same headers, cookies, and auth as the original session.
         """
-        new_session = SessionWithHeaderRedirection()
-        new_session.headers.update(original_session.headers)
-        new_session.cookies.update(original_session.cookies)
-        new_session.auth = original_session.auth
-        return new_session
+        if not hasattr(self.thread_locals, 'local_thread_session'):
+            local_thread_session = SessionWithHeaderRedirection()
+            local_thread_session.headers.update(original_session.headers)
+            local_thread_session.cookies.update(original_session.cookies)
+            local_thread_session.auth = original_session.auth
+            self.thread_locals.local_thread_session = local_thread_session
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
@@ -690,7 +693,8 @@ class Store(object):
         if not path.exists():
             try:
                 original_session = self.get_requests_session()
-                session = self._clone_session(original_session)
+                self._clone_session_in_local_thread(original_session)
+                session = self.thread_locals.local_thread_session
                 with session.get(
                     url,
                     stream=True,
