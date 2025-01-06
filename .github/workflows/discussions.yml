@@ -25,7 +25,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_ID: MDEwOlJlcG9zaXRvcnkzOTk4Njc1Mjk=
-          CATEGORY_ID: DIC_kwDOF9V-ic4CdYaN!
+          CATEGORY_ID: DIC_kwDOF9V-ic4CdYaN
         run: |
           gh api graphql -f query="
           mutation
