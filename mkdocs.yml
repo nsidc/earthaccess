@@ -89,6 +89,7 @@ nav:
       - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
       - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb"
       - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
+      - "Cloud optimized access to NASA data with earthaccess and virtualizarr": "tutorials/dmrpp-virtualizarr.ipynb"
   - USER REFERENCE:
       - API:
           - "Search and Access": "user-reference/api/api.md"
