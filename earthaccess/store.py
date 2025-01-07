@@ -1,6 +1,5 @@
 import datetime
 import logging
-import shutil
 import traceback
 from functools import lru_cache
 from itertools import chain
@@ -670,16 +669,13 @@ class Store(object):
         if not path.exists():
             try:
                 session = self.auth.get_session()
-                with session.get(
-                    url,
-                    stream=True,
-                    allow_redirects=True,
-                ) as r:
+                with session.get(url, stream=True, allow_redirects=True) as r:
                     r.raise_for_status()
                     with open(path, "wb") as f:
-                        # This is to cap memory usage for large files at 1MB per write to disk per thread
+                        # Cap memory usage for large files at 1MB per write to disk per thread
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        shutil.copyfileobj(r.raw, f, length=1024 * 1024)
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            f.write(chunk)
             except Exception:
                 logger.exception(f"Error while downloading the file {local_filename}")
                 raise Exception
