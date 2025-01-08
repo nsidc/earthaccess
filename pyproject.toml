@@ -65,7 +65,10 @@ kerchunk = [
   "xarray",
 ]
 virtualizarr = [
-  "virtualizarr >=1.2.0"
+  "virtualizarr >=1.2.0",
+  "dask",
+  "zarr",
+  "h5py >=3.6.0",
 ]
 dev = [
   "bump-my-version >=0.10.0",
