@@ -116,7 +116,7 @@ Migrate a discussion to an issue when:
 
 Migrate an issue to a discussion when:
 
-- The issue is a feature request or idea.
+- The issue is a nebulous idea that needs to be workshopped before it can be implemented.
 - The issue is a general question or topic.
 - The issue is not specific or actionable.
 
