@@ -93,7 +93,7 @@ This section would cover the guidelines for when to use discussions versus issue
 Discussions are used for:
 
 - Brainstorming and idea generation.
-- Feature requests and feedback.
+- Project feedback.
 - General questions and topics.
 
 ###  What are Issues?
