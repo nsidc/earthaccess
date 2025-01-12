@@ -104,7 +104,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v3.2.2
+        uses: astral-sh/setup-uv@v5.1.0
         with:
           enable-cache: true
 
@@ -122,4 +122,4 @@ jobs:
       - name: Upload coverage report
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
