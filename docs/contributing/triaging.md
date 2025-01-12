@@ -72,7 +72,7 @@ This section will cover the guidelines for when to use the "Close Issue as Not P
 
 ### When to Use This Label?
 
-Use the "Close Issue as Not Planned" label when:
+Close issues as "not planned" when:
 
 - An issue is not aligned with the project's goals or priorities.
 - An issue is not feasible to be addressed due to technical or resource constraints.
