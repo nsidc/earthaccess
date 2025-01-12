@@ -25,13 +25,11 @@ These labels describe what portion of the project they affect:
 ... etc ...
 
 
-### Requests and Feedback
+### Needs labels
 
-- **enhancement**: Use this label for requests for new features or improvements to existing functionalities.
-
-- **feedback**:  Use this label for issues where feedback is requested from the team or our community.
-
-- **help**: Use this label for issues where additional help or contributions are needed.
+- **needs: decision**: We're struggling to decide what to do and the decision committee needs to help.
+- **needs: feedback**:  Use this label for issues where feedback is requested from the team or our community.
+- **needs: help**: Use this label for issues where additional help or contributions are needed.
 
 
 ### Special Labels
