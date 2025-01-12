@@ -1,3 +1,4 @@
+# Triaging guide
 
 With constant influx of new issues, it's quite essential to prioritize and categorize them efficiently to ensure that the most imporatnt problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized and up-to-date issue tracker.
 
