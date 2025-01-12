@@ -14,11 +14,15 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 - **type: enhancement**: ...
 - **type: will not do**: ...
 
-- **dependencies**: Use this label for issues concerning dependencies.
+### Impact labels
 
-- **documentation**: Use this label for issues related to documentation.
+These labels describe what portion of the project they affect:
 
-- **library**: Use this label for issues related to core libraries or preparations for future plugin impacts.
+- **impact: breaking**: Issues that break our public API.
+- **impact: core**: Issues that affect the core Python codebase.
+- **impact: dependencies**: Use this label for issues concerning dependencies.
+- **impact: documentation**: Use this label for issues related to documentation.
+... etc ...
 
 
 ### Requests and Feedback
