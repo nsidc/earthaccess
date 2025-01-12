@@ -4,7 +4,7 @@ With constant influx of new issues, it's essential to prioritize and categorize 
 
 ## Labeling Issues
 
-When labeling an issue, choose the label that best describes the issue. Using labels consistently and accurately ensures that issues are easily trackable.
+When labeling an issue, choose the label(s) that best describes the issue. Using labels consistently and accurately ensures that issues are trackable and searchable.
 
 
 ### Issue Types
