@@ -9,7 +9,10 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 
 ### Issue Types
 
-- **bug**: Use for issues that identify bugs causing incorrect or unexpected behavior.
+- **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior.
+- **type: duplicate**: ...
+- **type: enhancement**: ...
+- **type: will not do**: ...
 
 - **dependencies**: Use this label for issues concerning dependencies.
 
