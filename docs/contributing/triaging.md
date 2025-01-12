@@ -106,6 +106,8 @@ Issues are used for:
 
 ### When to Migrate
 
+Use your best judgement when migrating between issues and discussions. Sometimes it makes more sense to open a new issue or discussion instead of migrating, for example when there are many things being discussed, but we want to create an issue or task out of just one of those things.
+
 Migrate a discussion to an issue when:
 
 - A specific task is identified.
