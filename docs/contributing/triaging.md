@@ -65,8 +65,6 @@ For example, to link to the "hackathon" label in the nsidc/earthaccess repositor
 [hackathon](https://github.com/nsidc/earthaccess/labels/hackathon)
 ```
 
-!!! tip
-    When linking to labels, it is a good practice to use the label name as the link text, as shown in the example above. This makes it clear to others what label is being referenced, and helps to avoid confusion.
 
 ## Close Issue as Not Planned
 
