@@ -68,7 +68,7 @@ For example, to link to the "hackathon" label in the nsidc/earthaccess repositor
 
 ## Close Issue as Not Planned
 
-This section will cover the guidelines for when to use the "Close Issue as Not Planned" label, and how to handle issues that are not planned or feasible.
+This section will cover the guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
 
 ### When to Use This Label?
 
