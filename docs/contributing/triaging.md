@@ -51,10 +51,10 @@ When referencing a label in a GitHub issue or discussion, it will be  useful to 
 
 ### Syntax
 
-To link to a label in GitHub Markdown, use the following syntax:
+To link to a label in GitHub Markdown, copy-and-paste the URL to the label by right-clicking [any label](https://github.com/nsidc/earthaccess/labels) and selecting "Copy Link". Then, paste that label in a GitHub issue, PR, discussion, or Markdown document:
 
 ```
-[label name](https://github.com/username/repository/labels/label-name)
+https://github.com/username/repository/labels/label-name
 ```
 
 ### Example
