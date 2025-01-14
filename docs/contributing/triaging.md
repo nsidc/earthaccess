@@ -10,10 +10,9 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 ### Issue Types
 
 - **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior.
-- **type: duplicate**: ...
-- **type: enhancement**: ...
 - **type: duplicate**: Use this label for issues that are duplicates of existing ones.
-- **type: will not do**: ...
+- **type: enhancement**: Use this label for requests for new features or improvements to existing functionalities.
+- **type: will not do**: Use this label for issues that won’t be addressed or fixed.
 
 ### Impact labels
 
@@ -46,10 +45,10 @@ https://github.com/username/repository/labels/label-name
 
 ### Example
 
-For example, to link to the "hackathon" label in the nsidc/earthaccess repository, you would use the following syntax:
+For example, to link to the "good first issue" label in the nsidc/earthaccess repository, you would use the URL:
 
 ```
-[hackathon](https://github.com/nsidc/earthaccess/labels/hackathon)
+https://github.com/nsidc/earthaccess/labels/good%20first%20issue
 ```
 
 
