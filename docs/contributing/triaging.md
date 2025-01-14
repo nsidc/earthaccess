@@ -12,6 +12,7 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 - **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior.
 - **type: duplicate**: ...
 - **type: enhancement**: ...
+- **type: duplicate**: Use this label for issues that are duplicates of existing ones.
 - **type: will not do**: ...
 
 ### Impact labels
@@ -22,27 +23,13 @@ These labels describe what portion of the project they affect:
 - **impact: core**: Issues that affect the core Python codebase.
 - **impact: dependencies**: Use this label for issues concerning dependencies.
 - **impact: documentation**: Use this label for issues related to documentation.
-... etc ...
-
+- **impact: automation**: Use this label for issues related to the CI/CD pipeline or automation
 
 ### Needs labels
 
 - **needs: decision**: We're struggling to decide what to do and the decision committee needs to help.
 - **needs: feedback**:  Use this label for issues where feedback is requested from the team or our community.
 - **needs: help**: Use this label for issues where additional help or contributions are needed.
-
-
-### Special Labels
-
-- **automation**: Use this label for issues related to the CI/CD pipeline or automation
-
-- **duplicate**: Use this label for issues that are duplicates of existing ones.
-
-- **good first issue** : Use this label to highlight issues good for newcomers who want to contribute to Earthaccess.
-
-- **hackathon**: Use this label for issues to be discussed during hackdays.
-
-- **wontfix**: Use this label for issues that won’t be addressed or fixed.
 
 
 ## Linking Labels in GitHub Markdown
