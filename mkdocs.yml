@@ -66,9 +66,10 @@ nav:
       - "Releasing": "contributing/releasing.md"
       - "Our meet-ups": "contributing/our-meet-ups.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
+      - "Triaging Guide": "contributing/triaging.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
       - "Contributing naming convention": "contributing/naming-convention.md"
-      - "Triaging Doc": "contributing/triaging.md"
+
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"
