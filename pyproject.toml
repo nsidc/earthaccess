@@ -101,6 +101,7 @@ docs = [
     "markdown-callouts >=0.2.0",
     "markdown-include >=0.6",
     "mkdocs-jupyter >=0.19.0",
+    "mkdocs-mermaid2-plugin >=1.2.1",
     "mkdocstrings[python] >=0.19.0",
     "pymdown-extensions >=9.2",
     "pygments >=2.11.1",
