@@ -30,6 +30,9 @@ These labels describe what portion of the project they affect:
 - **needs: feedback**:  Use this label for issues where feedback is requested from the team or our community.
 - **needs: help**: Use this label for issues where additional help or contributions are needed.
 
+### Special labels
+
+- **good-first-issue**: Use this label for issues that are suitable for new contributors. These issues are designed to be approachable and not overly complex, making them an ideal starting point for those looking to contribute to the project.
 
 ## Linking Labels in GitHub Markdown
 
