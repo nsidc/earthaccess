@@ -92,8 +92,8 @@ def open_virtual_mfdataset(
     import xarray as xr
 
     if access == "direct":
-        fs = earthaccess.get_s3_filesystem(results=granules[0])
-        fs.storage_options["anon"] = False  # type: ignore
+        fs = earthaccess.get_s3_filesystem(results=granules)  # type: ignore
+        fs.storage_options["anon"] = False
     else:
         fs = earthaccess.get_fsspec_https_session()
     if parallel:
@@ -114,7 +114,7 @@ def open_virtual_mfdataset(
                 filetype="dmrpp",  # type: ignore
                 group=group,
                 indexes={},
-                reader_options={"storage_options": fs.storage_options},  # type: ignore
+                reader_options={"storage_options": fs.storage_options},
             )
         )
     if preprocess is not None:
@@ -127,6 +127,7 @@ def open_virtual_mfdataset(
         vds = xr.combine_nested(vdatasets, **xr_combine_nested_kwargs)
     if load:
         refs = vds.virtualize.to_kerchunk(filepath=None, format="dict")
+        protocol = "s3" if "s3" in fs.protocol else fs.protocol
         return xr.open_dataset(
             "reference://",
             engine="zarr",
@@ -135,8 +136,8 @@ def open_virtual_mfdataset(
                 "consolidated": False,
                 "storage_options": {
                     "fo": refs,  # codespell:ignore
-                    "remote_protocol": fs.protocol,
-                    "remote_options": fs.storage_options,  # type: ignore
+                    "remote_protocol": protocol,
+                    "remote_options": fs.storage_options,
                 },
             },
         )
