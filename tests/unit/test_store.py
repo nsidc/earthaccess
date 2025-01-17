@@ -1,13 +1,18 @@
 # package imports
 import os
+import threading
 import unittest
+from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import fsspec
 import pytest
 import responses
 import s3fs
 from earthaccess import Auth, Store
+from earthaccess.auth import SessionWithHeaderRedirection
 from earthaccess.store import EarthAccessFile
+from pqdm.threads import pqdm
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -128,6 +133,76 @@ class TestStoreSessions(unittest.TestCase):
 
         return None
 
+    @responses.activate
+    def test_session_cloning_and_file_download(self):
+        # Mock URLs and their responses
+        mock_creds = {
+            "accessKeyId": "sure",
+            "secretAccessKey": "correct",
+            "sessionToken": "whynot",
+        }
+        urls = [f"https://example.com/file{i}" for i in range(1, 11)]
+        for i, url in enumerate(urls):
+            responses.add(
+                responses.GET, url, body=f"Content of file {i + 1}", status=200
+            )
+
+        # Mock authentication and store setup
+        mock_auth = MagicMock()
+        mock_auth.authenticated = True
+        mock_auth.system.edl_hostname = "urs.earthdata.nasa.gov"  # Mock hostname
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json=mock_creds,
+            status=200,
+        )
+
+        original_session = SessionWithHeaderRedirection()
+        original_session.cookies.set("sessionid", "mocked-session-id")
+        mock_auth.get_session.return_value = original_session
+
+        # Create the Store instance
+        store = Store(auth=mock_auth)
+        store.thread_locals = threading.local()  # Use real thread-local storage
+
+        # Track cloned sessions
+        cloned_sessions = set()
+
+        def mock_clone_session_in_local_thread(original_session):
+            """Mock session cloning to track cloned sessions."""
+            if not hasattr(store.thread_locals, "local_thread_session"):
+                session = SessionWithHeaderRedirection()
+                session.cookies.update(original_session.cookies)
+                cloned_sessions.add(id(session))  # Track unique sessions by ID
+                store.thread_locals.local_thread_session = session
+
+        with patch.object(
+            store,
+            "_clone_session_in_local_thread",
+            side_effect=mock_clone_session_in_local_thread,
+        ):
+            mock_directory = Path("/mock/directory")
+            downloaded_files = []
+
+            def mock_download_file(url):
+                """Mock file download to track downloaded files."""
+                # Ensure session cloning happens before downloading
+                store._clone_session_in_local_thread(original_session)
+                downloaded_files.append(url)
+                return mock_directory / f"{url.split('/')[-1]}"
+
+            with patch.object(store, "_download_file", side_effect=mock_download_file):
+                # Test multi-threaded download with 2 threads
+                pqdm(urls, store._download_file, n_jobs=2)  # type: ignore
+
+        # Verify sessions cloned
+        self.assertEqual(len(cloned_sessions), 2)  # 2 sessions, one per thread
+
+        # Verify files downloaded
+        self.assertEqual(len(downloaded_files), 10)  # 10 files downloaded
+        self.assertCountEqual(downloaded_files, urls)  # All files accounted for
+
 
 @pytest.mark.xfail(
     reason="Expected failure: Reproduces a bug (#610) that has not yet been fixed."
@@ -135,7 +210,7 @@ class TestStoreSessions(unittest.TestCase):
 def test_earthaccess_file_getattr():
     fs = fsspec.filesystem("memory")
     with fs.open("/foo", "wb") as f:
-        earthaccess_file = EarthAccessFile(f, granule="foo")
+        earthaccess_file = EarthAccessFile(f, granule="foo")  # type: ignore
         assert f.tell() == earthaccess_file.tell()
     # cleanup
     fs.store.clear()
