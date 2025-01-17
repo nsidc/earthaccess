@@ -1,6 +1,6 @@
 import datetime
 import logging
-import shutil
+import threading
 import traceback
 from functools import lru_cache
 from itertools import chain
@@ -8,7 +8,6 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
-import threading
 
 import fsspec
 import requests
@@ -185,7 +184,7 @@ class Store(object):
         return False
 
     def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = False
+        self, url: str, method: str = "get", bearer_token: bool = True
     ) -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
 
@@ -326,7 +325,7 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
+    def get_requests_session(self) -> SessionWithHeaderRedirection:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
 
         This HTTPS session can be used to download granules if we want to use a direct,
@@ -696,18 +695,17 @@ class Store(object):
         if not path.exists():
             try:
                 original_session = self.get_requests_session()
+                # This reuses the auth cookie, we make sure we only authenticate N threads instead
+                # of one per file, see #913
                 self._clone_session_in_local_thread(original_session)
                 session = self.thread_locals.local_thread_session
-                with session.get(
-                    url,
-                    stream=True,
-                    allow_redirects=True,
-                ) as r:
+                with session.get(url, stream=True, allow_redirects=True) as r:
                     r.raise_for_status()
                     with open(path, "wb") as f:
-                        # This is to cap memory usage for large files at 1MB per write to disk per thread
+                        # Cap memory usage for large files at 1MB per write to disk per thread
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        shutil.copyfileobj(r.raw, f, length=1024 * 1024)
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            f.write(chunk)
             except Exception:
                 logger.exception(f"Error while downloading the file {local_filename}")
                 raise Exception
