@@ -331,9 +331,6 @@ class Store(object):
         This HTTPS session can be used to download granules if we want to use a direct,
         lower level API.
 
-        Parameters:
-            bearer_token: if true, will be used for authenticated queries on CMR
-
         Returns:
             requests Session
         """
