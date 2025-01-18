@@ -6,7 +6,6 @@ import pytest
 from fsspec.core import strip_protocol
 
 logger = logging.getLogger(__name__)
-pytestmark = pytest.mark.skip(reason="Tests are broken.")
 
 
 @pytest.fixture(scope="module")
