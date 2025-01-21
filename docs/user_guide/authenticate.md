@@ -93,7 +93,7 @@ Alternatively, Earthdata Login credentials can be created as environment variabl
     export EARTHDATA_USERNAME="username"
     export EARTHDATA_PASSWORD="password"
     ```
-    If you want to set these environmental variables permanently, add these two lines to your `.profile` file.
+    If you want to set these environmental variables permanently, add these two lines to the appropriate configuration files for your operating system.
     
 
 === "Linux"
@@ -102,7 +102,12 @@ Alternatively, Earthdata Login credentials can be created as environment variabl
     export EARTHDATA_USERNAME="username"
     export EARTHDATA_PASSWORD="password"
     ```
-    If you want to set these environmental variables permanently, add these two lines to your `.bashrc` file.
+    If you use `bash` and would like to set these environmental variables permanently, add these two lines to your `~/.profile` file:
+    ```
+    EARTHDATA_USERNAME="username"
+    EARTHDATA_PASSWORD="password"
+    ```
+    For other shells, use the recommended method to persistently set these environment variables for whichever shell you use.
 
 === "Windows"
     To set the environment variables for the current `CMD` session, type the following:
