@@ -35,6 +35,12 @@ Setting `strategy=interactive` will force a manual login.
 
 ## Login using a `.netrc`
 
+!!! warning "Do not use this strategy on untrusted machines or with shared accounts" 
+
+    `earthaccess` does not currently support encrypted `.netrc` files.   This strategy of writing credentials in plain text to disk
+    should not be used on untrusted machines or shared user accounts.
+
+
 ### Creating a `.netrc` file
 
 #### Using `earthaccess.login` to create a `.netrc` file
