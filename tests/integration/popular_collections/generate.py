@@ -53,8 +53,7 @@ def main():
         collection_ids = top_collections(provider=provider)
 
         output = THIS_DIR / f"{provider}.txt"
-        with output.open("w") as f:
-            f.write("\n".join(collection_ids))
+        output.write_text("\n".join(collection_ids))
 
 
 if __name__ == "__main__":
