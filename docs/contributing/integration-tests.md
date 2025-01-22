@@ -3,7 +3,7 @@
 ## Testing most popular datasets
 
 Some integration tests operate on the most popular collections for each provider in CMR.
-Those collections are cached as static data in `tests/integration/popular_collections/`
+Those collection IDs are cached as static data in `tests/integration/popular_collections/`
 to give our test suite more stability. The list of most popular collections can be
 updated by running a script in the same directory.
 
