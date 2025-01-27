@@ -309,7 +309,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jmespath" },
     { name = "python-dateutil" },
-    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "platform_python_implementation == 'PyPy' or python_full_version >= '3.12'" },
+    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or platform_python_implementation == 'PyPy'" },
     { name = "urllib3", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and platform_python_implementation != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/8d/4f/11d2d314f0bdbe7ff975737d125e1a5357115afe28fcc64f13e68b05ba61/botocore-1.35.36.tar.gz", hash = "sha256:354ec1b766f0029b5d6ff0c45d1a0f9e5007b7d2f3ec89bcdd755b208c5bc797", size = 12808757 }
@@ -538,7 +538,7 @@ name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de", size = 336121 }
 wheels = [
@@ -851,8 +851,8 @@ kerchunk = [
     { name = "h5netcdf" },
     { name = "h5py" },
     { name = "kerchunk" },
-    { name = "numpy" },
     { name = "xarray" },
+    { name = "zarr" },
 ]
 test = [
     { name = "dask" },
@@ -866,7 +866,7 @@ test = [
     { name = "pytest-watch" },
     { name = "python-magic" },
     { name = "responses" },
-    { name = "types-requests", version = "2.31.0.6", source = { registry = "https://pypi.org/simple" }, marker = "platform_python_implementation == 'PyPy' or python_full_version >= '3.12'" },
+    { name = "types-requests", version = "2.31.0.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or platform_python_implementation == 'PyPy'" },
     { name = "types-requests", version = "2.32.0.20241016", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and platform_python_implementation != 'PyPy'" },
     { name = "types-setuptools" },
     { name = "vcrpy" },
@@ -875,6 +875,9 @@ test = [
     { name = "zarr" },
 ]
 virtualizarr = [
+    { name = "dask" },
+    { name = "h5py" },
+    { name = "numpy" },
     { name = "virtualizarr" },
     { name = "zarr" },
 ]
@@ -885,6 +888,7 @@ requires-dist = [
     { name = "cftime", marker = "extra == 'docs'", specifier = ">=1.6.4" },
     { name = "dask", marker = "extra == 'docs'", specifier = ">=2024.8.0" },
     { name = "dask", marker = "extra == 'kerchunk'" },
+    { name = "dask", marker = "extra == 'virtualizarr'" },
     { name = "earthaccess", extras = ["kerchunk"], marker = "extra == 'test'" },
     { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'docs'" },
     { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'test'" },
@@ -892,6 +896,7 @@ requires-dist = [
     { name = "h5netcdf", marker = "extra == 'docs'", specifier = ">=0.11" },
     { name = "h5netcdf", marker = "extra == 'kerchunk'" },
     { name = "h5py", marker = "extra == 'kerchunk'", specifier = ">=3.6.0" },
+    { name = "h5py", marker = "extra == 'virtualizarr'", specifier = ">=3.6.0" },
     { name = "importlib-resources", specifier = ">=6.3.2" },
     { name = "ipywidgets", marker = "extra == 'docs'", specifier = ">=7.7.0" },
     { name = "jupyterlab", marker = "extra == 'docs'", specifier = ">=3" },
@@ -908,7 +913,8 @@ requires-dist = [
     { name = "multimethod", specifier = ">=1.8" },
     { name = "mypy", marker = "extra == 'test'", specifier = ">=1.11.2" },
     { name = "nox", marker = "extra == 'dev'" },
-    { name = "numpy", marker = "extra == 'kerchunk'", specifier = ">=1.26.4" },
+    { name = "numpy", marker = "extra == 'test'", specifier = ">=1.26.4" },
+    { name = "numpy", marker = "extra == 'virtualizarr'", specifier = ">=1.26.4" },
     { name = "pqdm", specifier = ">=0.1" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=2.4" },
     { name = "pygments", marker = "extra == 'docs'", specifier = ">=2.11.1" },
@@ -934,7 +940,9 @@ requires-dist = [
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
     { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
     { name = "xarray", marker = "extra == 'kerchunk'" },
-    { name = "zarr", marker = "extra == 'virtualizarr'" },
+    { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=2.12.0,<3.0.0a0" },
+    { name = "zarr", marker = "extra == 'test'", specifier = ">=2.12.0,<3.0.0a0" },
+    { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=2.12.0,<3.0.0a0" },
 ]
 
 [[package]]
@@ -1267,7 +1275,7 @@ name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "platform_system == 'Darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin'" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython" },
@@ -2011,7 +2019,7 @@ version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -3374,7 +3382,7 @@ dependencies = [
     { name = "certifi" },
     { name = "charset-normalizer" },
     { name = "idna" },
-    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "platform_python_implementation == 'PyPy' or python_full_version >= '3.12'" },
+    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or platform_python_implementation == 'PyPy'" },
     { name = "urllib3", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and platform_python_implementation != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760", size = 131218 }
@@ -3389,7 +3397,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
     { name = "requests" },
-    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "platform_python_implementation == 'PyPy' or python_full_version >= '3.12'" },
+    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or platform_python_implementation == 'PyPy'" },
     { name = "urllib3", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and platform_python_implementation != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/67/24/1d67c8974daa502e860b4a5b57ad6de0d7dbc0b1160ef7148189a24a40e1/responses-0.25.3.tar.gz", hash = "sha256:617b9247abd9ae28313d57a75880422d55ec63c29d33d629697590a034358dba", size = 77798 }
@@ -3701,7 +3709,7 @@ name = "tqdm"
 version = "4.67.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e8/4f/0153c21dc5779a49a0598c445b1978126b1344bab9ee71e53e44877e14e0/tqdm-4.67.0.tar.gz", hash = "sha256:fe5a6f95e6fe0b9755e9469b77b9c3cf850048224ecaa8293d7d2d31f97d869a", size = 169739 }
 wheels = [
@@ -3739,7 +3747,7 @@ resolution-markers = [
     "python_full_version >= '3.13' and platform_python_implementation != 'PyPy'",
 ]
 dependencies = [
-    { name = "types-urllib3", marker = "platform_python_implementation == 'PyPy' or python_full_version >= '3.12'" },
+    { name = "types-urllib3", marker = "python_full_version >= '3.12' or platform_python_implementation == 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f9/b8/c1e8d39996b4929b918aba10dba5de07a8b3f4c8487bb61bb79882544e69/types-requests-2.31.0.6.tar.gz", hash = "sha256:cd74ce3b53c461f1228a9b783929ac73a666658f223e28ed29753771477b3bd0", size = 15535 }
 wheels = [
@@ -3934,7 +3942,7 @@ version = "6.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
-    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "platform_python_implementation == 'PyPy' or python_full_version >= '3.12'" },
+    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or platform_python_implementation == 'PyPy'" },
     { name = "urllib3", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and platform_python_implementation != 'PyPy'" },
     { name = "wrapt" },
     { name = "yarl" },

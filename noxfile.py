@@ -57,11 +57,6 @@ def integration_tests(session: nox.Session) -> None:
             EARTHDATA_USERNAME=os.environ["EARTHDATA_USERNAME"],
             EARTHDATA_PASSWORD=os.environ["EARTHDATA_PASSWORD"],
         ),
-        external=True,
-        # NOTE: integration test are permitted to pass if the failure rate was less than a hardcoded threshold.
-        #       PyTest will return 99 if there were some failures, but less than the threshold. For more details, see:
-        #       `pytest_sessionfinish` in tests/integration/conftest.py
-        success_codes=[0, 99],
     )
 
 

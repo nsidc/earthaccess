@@ -7,6 +7,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Fixed
+
+- `earthaccess.download` will let requests automatically decode compressed content
+  ([#887](https://github.com/nsidc/earthaccess/issues/887))
+  ([**@itcarroll**](https://github.com/itcarroll))
+
 ## [v0.12.0] - 2024-11-13
 
 ### Changed
