@@ -841,8 +841,10 @@ docs = [
     { name = "pygments" },
     { name = "pymdown-extensions" },
     { name = "pyproj" },
+    { name = "virtualizarr" },
     { name = "widgetsnbextension" },
     { name = "xarray" },
+    { name = "zarr" },
 ]
 kerchunk = [
     { name = "dask" },
@@ -888,6 +890,7 @@ requires-dist = [
     { name = "dask", marker = "extra == 'kerchunk'" },
     { name = "dask", marker = "extra == 'virtualizarr'" },
     { name = "earthaccess", extras = ["kerchunk"], marker = "extra == 'test'" },
+    { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'docs'" },
     { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'test'" },
     { name = "fsspec", specifier = ">=2022.11" },
     { name = "h5netcdf", marker = "extra == 'docs'", specifier = ">=0.11" },

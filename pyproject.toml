@@ -125,6 +125,7 @@ docs = [
     # See https://github.com/danielfrg/mkdocs-jupyter/issues/197
     "lxml-html-clean >=0.1.1",
     "dask>=2024.8.0",
+    "earthaccess[virtualizarr]",
     "cftime>=1.6.4",
 ]
 
