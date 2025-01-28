@@ -11,16 +11,16 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 - Code of conduct: "per NASA direction received on 1/22/2025, per Executive Order on 1/20/2025" [see more](https://en.wikipedia.org/wiki/Nineteen_Eighty-Four)
-- Integration tests: Test are no longer randomized! this means each fail should be reproducible, we are testing the most 
-  popular datasets from all DAACs, see files under tests/integration/popular_collections. 
+- Integration tests: Test are no longer randomized! this means each fail should be reproducible, we are testing the most
+  popular datasets from all DAACs, see files under tests/integration/popular_collections.
   ([#215](https://github.com/nsidc/earthaccess/issues/215))
   ([**@mfisher87**](https://github.com/mfisher87))
 
-### Added 
+### Added
 - VirtualiZarr: earthaccess can open archival formats (NetCDF, HDF5) as if they were Zarr by leveraging VirtualiZarr
-  In order to use this capability the collection needs to be supported by OPeNDAP and have dmrpp files. 
+  In order to use this capability the collection needs to be supported by OPeNDAP and have dmrpp files.
   <expand>
- 
+
 ### Fixed
 
 - `earthaccess.download` will let requests automatically decode compressed content
