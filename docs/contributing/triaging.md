@@ -32,7 +32,7 @@ These labels describe what portion of the project they affect:
 
 ### Special labels
 
-- **good-first-issue**: Use this label for issues that are suitable for new contributors. These issues are designed to be approachable and not overly complex, making them an ideal starting point for those looking to contribute to the project.
+- **good first issue**: Use this label for issues that are suitable for new contributors. These issues are designed to be approachable and not overly complex, making them an ideal starting point for those looking to contribute to the project.
 
 ## Linking Labels in GitHub Markdown
 
