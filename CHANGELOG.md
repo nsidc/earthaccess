@@ -18,8 +18,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Added
 - VirtualiZarr: earthaccess can open archival formats (NetCDF, HDF5) as if they were Zarr by leveraging VirtualiZarr
   In order to use this capability the collection needs to be supported by OPeNDAP and have dmrpp files.
-  See (example notebooks)[https://github.com/nsidc/earthaccess/blob/main/docs/tutorials/dmrpp-virtualizarr.ipynb]!
-  ([**@ayushnag**](https://github.com/ayushnag) and [**TomNicholas**](https://github.com/TomNicholas/))
+  See [example notebooks](https://github.com/nsidc/earthaccess/blob/main/docs/tutorials/dmrpp-virtualizarr.ipynb)!
+  ([**@ayushnag**](https://github.com/ayushnag) and [**@TomNicholas**](https://github.com/TomNicholas/))
 
 ### Fixed
 
@@ -29,7 +29,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - `earthaccess.download` now shares the authenticated session cookie among threads to avoid overloading EDL.
   ([#913](https://github.com/nsidc/earthaccess/issues/913))
-  ([**hailiangzhang**](https://github.com/hailiangzhang))
+  ([**@hailiangzhang**](https://github.com/hailiangzhang))
 
 ## [v0.12.0] - 2024-11-13
 
