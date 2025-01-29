@@ -7,11 +7,29 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.13.0] - 2025-01-28
+
+### Changed
+- Integration tests: Test are no longer randomized! this means each fail should be reproducible, we are testing the most
+  popular datasets from all DAACs, see files under tests/integration/popular_collections.
+  ([#215](https://github.com/nsidc/earthaccess/issues/215))
+  ([**@mfisher87**](https://github.com/mfisher87))
+
+### Added
+- VirtualiZarr: earthaccess can open archival formats (NetCDF, HDF5) as if they were Zarr by leveraging VirtualiZarr
+  In order to use this capability the collection needs to be supported by OPeNDAP and have dmrpp files.
+  See [example notebooks](https://github.com/nsidc/earthaccess/blob/main/docs/tutorials/dmrpp-virtualizarr.ipynb)!
+  ([**@ayushnag**](https://github.com/ayushnag) and [**@TomNicholas**](https://github.com/TomNicholas/))
+
 ### Fixed
 
 - `earthaccess.download` will let requests automatically decode compressed content
   ([#887](https://github.com/nsidc/earthaccess/issues/887))
   ([**@itcarroll**](https://github.com/itcarroll))
+
+- `earthaccess.download` now shares the authenticated session cookie among threads to avoid overloading EDL.
+  ([#913](https://github.com/nsidc/earthaccess/issues/913))
+  ([**@hailiangzhang**](https://github.com/hailiangzhang))
 
 ## [v0.12.0] - 2024-11-13
 
@@ -663,7 +681,8 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/nsidc/earthaccess/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/nsidc/earthaccess/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
 [0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
