@@ -31,7 +31,7 @@ Enter your Earthdata password:
 
 You don't need to assign the result of `earthaccess.login()` to a variable but doing so enables access to session information.  These are discussed in [Accessing Session Information]().
 
-Setting `strategy=interactive` will force a manual login.
+Setting `earthaccess.login(strategy=interactive)` will force a manual login.
 
 ## Login using a `.netrc`
 
