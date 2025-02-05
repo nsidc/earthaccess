@@ -29,7 +29,7 @@ Enter your Earthdata Login username: your_username
 Enter your Earthdata password: 
 ```
 
-You don't need to assign the result of `earthaccess.login()` to a variable but doing so enables access session information.  These are discussed in [Accessing Session Information]().
+You don't need to assign the result of `earthaccess.login()` to a variable but doing so enables access to session information.  These are discussed in [Accessing Session Information]().
 
 Setting `strategy=interactive` will force a manual login.
 
