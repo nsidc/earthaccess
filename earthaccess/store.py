@@ -354,8 +354,7 @@ class Store(object):
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
-                See pqdm documentation for available options. Default is to use immediate exception behavior
-                and the number of jobs specified by the `threads` parameter.
+                See pqdm documentation for available options. Default is to use immediate exception behavior.
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -722,8 +721,6 @@ class Store(object):
         Parameters:
             urls: list of granule URLs from an on-prem collection
             directory: local directory to store the downloaded files
-            threads: parallel number of threads to use to download the files;
-                adjust as necessary, default = 8
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
