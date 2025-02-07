@@ -291,6 +291,23 @@ class DataCollections(CollectionQuery):
         self._debug = debug
         return self
 
+    def has_granules(self, has_granules: bool = True) -> Self:
+        """Only match collections with granules.
+
+        Parameters:
+            has_granules: If `True`, only return collections with granules. If
+            `False`, only return collections without granules.
+
+        Returns:
+            self
+        """
+        if not isinstance(has_granules, bool):
+            raise TypeError("cloud_hosted must be of type bool")
+
+        self.params["has_granules"] = has_granules
+
+        return self
+
     def cloud_hosted(self, cloud_hosted: bool = True) -> Self:
         """Only match granules that are hosted in the cloud. This is valid for public
         collections.

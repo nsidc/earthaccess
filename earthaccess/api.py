@@ -49,6 +49,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
+            * **has_granules**: if true, only return collections with granules
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
