@@ -9,7 +9,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 - `search_datasets` now accepts a `has_granules` keyword argument. Use
-  `has_granules=True` to search for metadata about collections with no
+  `has_granules=False` to search for metadata about collections with no
   associated granules. The default value set in `DataCollections` remains `True`.
   ([#939](https://github.com/nsidc/earthaccess/issues/939))
   ([**@juliacollins**](https://github.com/juliacollins))
