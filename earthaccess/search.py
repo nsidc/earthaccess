@@ -302,7 +302,7 @@ class DataCollections(CollectionQuery):
             self
         """
         if not isinstance(has_granules, bool):
-            raise TypeError("cloud_hosted must be of type bool")
+            raise TypeError("has_granules must be of type bool")
 
         self.params["has_granules"] = has_granules
 
