@@ -43,7 +43,6 @@ plugins:
               ignore_init_summary: no
             merge_init_into_class: yes
             show_submodules: no
-          rendering:
             show_root_heading: false
             show_source: false
   - redirects:
