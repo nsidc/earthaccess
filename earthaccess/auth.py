@@ -102,7 +102,7 @@ class Auth(object):
         persist: bool = False,
         system: Optional[System] = None,
         *,
-        on_failure: LoginFailureBehavior,
+        on_failure: LoginFailureBehavior = "warn",
     ) -> Any:
         """Authenticate with Earthdata login.
 
