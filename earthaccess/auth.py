@@ -24,6 +24,7 @@ except importlib.metadata.PackageNotFoundError:
 
 
 logger = logging.getLogger(__name__)
+LoginFailureBehavior = Literal["error", "warn"]
 
 
 def netrc_path() -> Path:
@@ -101,7 +102,7 @@ class Auth(object):
         persist: bool = False,
         system: Optional[System] = None,
         *,
-        on_failure: Literal["warn", "error"],
+        on_failure: LoginFailureBehavior,
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -242,7 +243,7 @@ class Auth(object):
         self,
         persist_credentials: bool = False,
         *,
-        on_failure: Literal["warn", "error"] = "warn",
+        on_failure: LoginFailureBehavior = "warn",
     ) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
@@ -256,7 +257,7 @@ class Auth(object):
     def _netrc(
         self,
         *,
-        on_failure: Literal["warn", "error"],
+        on_failure: LoginFailureBehavior,
     ) -> bool:
         netrc_loc = netrc_path()
 
@@ -295,7 +296,7 @@ class Auth(object):
     def _environment(
         self,
         *,
-        on_failure: Literal["warn", "error"],
+        on_failure: LoginFailureBehavior,
     ) -> bool:
         username = os.getenv("EARTHDATA_USERNAME")
         password = os.getenv("EARTHDATA_PASSWORD")
@@ -314,7 +315,7 @@ class Auth(object):
         username: Optional[str],
         password: Optional[str],
         *,
-        on_failure: Literal["warn", "error"],
+        on_failure: LoginFailureBehavior,
     ) -> bool:
         if username is not None and password is not None:
             token_resp = self._find_or_create_token(username, password)

@@ -8,7 +8,6 @@ from typing_extensions import (
     Any,
     Dict,
     List,
-    Literal,
     Mapping,
     Optional,
     Union,
@@ -19,7 +18,7 @@ import earthaccess
 from earthaccess.exceptions import LoginStrategyUnavailable
 from earthaccess.services import DataServices
 
-from .auth import Auth
+from .auth import Auth, LoginFailureBehavior
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
@@ -175,7 +174,7 @@ def login(
     strategy: str = "all",
     persist: bool = False,
     system: System = PROD,
-    on_failure: Literal["warn", "error"] = "warn",
+    on_failure: LoginFailureBehavior = "warn",
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
