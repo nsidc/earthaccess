@@ -174,6 +174,7 @@ def login(
     strategy: str = "all",
     persist: bool = False,
     system: System = PROD,
+    *,
     on_failure: LoginFailureBehavior = "warn",
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
