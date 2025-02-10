@@ -19,6 +19,11 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
+      - name: Install package with dependencies
+        uses: ./.github/actions/install-pkg
+        with:
+          python-version: ${{ matrix.python-version }}
+
       - name: Install uv
         uses: astral-sh/setup-uv@v3.2.2
         with:
@@ -30,10 +35,10 @@ jobs:
           python-versions: ${{ matrix.python-version }}
 
       - name: Typecheck
-        run: nox -s typecheck
+        run: uv run mypy
 
       - name: Test
-        run: nox -s tests -- --verbose --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
+        run: uv run pytest tests/unit --verbose --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
 
       - name: Upload coverage
         # Don't upload coverage when using the `act` tool to run the workflow locally
