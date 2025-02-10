@@ -6,7 +6,7 @@ import platform
 import shutil
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional
 from urllib.parse import urlparse
 
 import requests  # type: ignore
@@ -24,7 +24,6 @@ except importlib.metadata.PackageNotFoundError:
 
 
 logger = logging.getLogger(__name__)
-LoginFailureBehavior = Literal["error", "warn"]
 
 
 def netrc_path() -> Path:
@@ -102,7 +101,7 @@ class Auth(object):
         persist: bool = False,
         system: Optional[System] = None,
         *,
-        on_failure: LoginFailureBehavior = "warn",
+        raise_on_failure: bool = True,
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -116,7 +115,7 @@ class Auth(object):
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
-            on_failure: Whether to print a warning or raise an error when login fails.
+            raise_on_failure: Whether to raise an error when login fails; if false, a warning will be printed
 
         Returns:
             An instance of Auth.
@@ -129,11 +128,11 @@ class Auth(object):
             return self
 
         if strategy == "interactive":
-            self._interactive(persist, on_failure=on_failure)
+            self._interactive(persist, raise_on_failure=raise_on_failure)
         elif strategy == "netrc":
-            self._netrc(on_failure=on_failure)
+            self._netrc(raise_on_failure=raise_on_failure)
         elif strategy == "environment":
-            self._environment(on_failure=on_failure)
+            self._environment(raise_on_failure=raise_on_failure)
 
         return self
 
@@ -243,11 +242,15 @@ class Auth(object):
         self,
         persist_credentials: bool = False,
         *,
-        on_failure: LoginFailureBehavior = "warn",
+        raise_on_failure: bool,
     ) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
-        authenticated = self._get_credentials(username, password, on_failure=on_failure)
+        authenticated = self._get_credentials(
+            username,
+            password,
+            raise_on_failure=raise_on_failure,
+        )
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
@@ -257,7 +260,7 @@ class Auth(object):
     def _netrc(
         self,
         *,
-        on_failure: LoginFailureBehavior,
+        raise_on_failure: bool,
     ) -> bool:
         netrc_loc = netrc_path()
 
@@ -286,7 +289,11 @@ class Auth(object):
                 f"Password not found in .netrc file {netrc_loc}"
             )
 
-        authenticated = self._get_credentials(username, password, on_failure=on_failure)
+        authenticated = self._get_credentials(
+            username,
+            password,
+            raise_on_failure=raise_on_failure,
+        )
 
         if authenticated:
             logger.debug("Using .netrc file for EDL")
@@ -296,7 +303,7 @@ class Auth(object):
     def _environment(
         self,
         *,
-        on_failure: LoginFailureBehavior,
+        raise_on_failure: bool,
     ) -> bool:
         username = os.getenv("EARTHDATA_USERNAME")
         password = os.getenv("EARTHDATA_PASSWORD")
@@ -308,25 +315,30 @@ class Auth(object):
             )
 
         logger.debug("Using environment variables for EDL")
-        return self._get_credentials(username, password, on_failure=on_failure)
+        return self._get_credentials(
+            username,
+            password,
+            raise_on_failure=raise_on_failure,
+        )
 
     def _get_credentials(
         self,
         username: Optional[str],
         password: Optional[str],
         *,
-        on_failure: LoginFailureBehavior,
+        raise_on_failure: bool,
     ) -> bool:
         if username is not None and password is not None:
             token_resp = self._find_or_create_token(username, password)
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
-                if on_failure == "warn":
+                if raise_on_failure:
+                    logger.error(msg)
+                    raise LoginAttemptFailure(msg)
+                else:
                     logger.warning(msg)
                     return False
-                elif on_failure == "error":
-                    raise LoginAttemptFailure(msg)
 
             logger.info("You're now authenticated with NASA Earthdata Login")
             self.username = username

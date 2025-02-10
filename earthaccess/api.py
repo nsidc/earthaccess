@@ -18,7 +18,7 @@ import earthaccess
 from earthaccess.exceptions import LoginStrategyUnavailable
 from earthaccess.services import DataServices
 
-from .auth import Auth, LoginFailureBehavior
+from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
@@ -175,7 +175,7 @@ def login(
     persist: bool = False,
     system: System = PROD,
     *,
-    on_failure: LoginFailureBehavior = "warn",
+    raise_on_failure: bool = True,
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
@@ -189,7 +189,7 @@ def login(
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access, defaults to PROD
-        on_failure: Whether to print a warning or raise an error when login fails.
+        raise_on_failure: Whether to raise an error when login fails; if false, a warning will be printed
 
     Returns:
         An instance of Auth.
@@ -205,7 +205,7 @@ def login(
                     strategy=strategy,
                     persist=persist,
                     system=system,
-                    on_failure=on_failure,
+                    raise_on_failure=raise_on_failure,
                 )
             except LoginStrategyUnavailable as err:
                 logger.debug(err)
@@ -219,7 +219,7 @@ def login(
             strategy=strategy,
             persist=persist,
             system=system,
-            on_failure=on_failure,
+            raise_on_failure=raise_on_failure,
         )
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
