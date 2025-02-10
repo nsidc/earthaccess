@@ -86,7 +86,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
     return query.get_all()
 
 
-def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
+def search_data(count: int = -1, **kwargs: Any) -> DataGranules:
     """Search dataset granules using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -123,14 +123,13 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
         ```
     """
     if earthaccess.__auth__.authenticated:
-        query = DataGranules(earthaccess.__auth__).parameters(**kwargs)
+        results = DataGranules(earthaccess.__auth__).parameters(**kwargs)
     else:
-        query = DataGranules().parameters(**kwargs)
-    granules_found = query.hits()
-    logger.info(f"Granules found: {granules_found}")
-    if count > 0:
-        return query.get(count)
-    return query.get_all()
+        results = DataGranules().parameters(**kwargs)
+
+    logger.info(f"Granules found: {results.hits()}")
+    results.load(count)
+    return results
 
 
 def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
