@@ -107,6 +107,7 @@ jobs:
         uses: astral-sh/setup-uv@v3.2.2
         with:
           enable-cache: true
+          cache-suffix: integration-tests-${{ matrix.python-version }}
 
       - name: Setup nox
         uses: wntrblm/nox@2024.10.09
