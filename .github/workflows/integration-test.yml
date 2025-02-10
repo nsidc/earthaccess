@@ -103,19 +103,19 @@ jobs:
           # this point.
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Setup nox
-        uses: wntrblm/nox@2024.10.09
+      - name: Install package with dependencies
+        uses: ./.github/actions/install-pkg
         with:
-          python-versions: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Run integration tests
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: |
-          nox -s integration-tests \
-            --python=${{ matrix.python-version }} \
-            -- \
+          # -rxXs: Show provided (r)eason in summary for (x)fail, (X)pass, and (s)kipped tests
+          uv run pytest tests/integration \
+            -rxXs \
             --cov=earthaccess \
             --cov-report=term-missing \
             --capture=no \
