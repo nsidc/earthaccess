@@ -37,7 +37,16 @@ repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: "0.5.5"
     hooks:
+      # Asserts that the lockfile is valid for pyproject.toml.
+      # If it fails, update the lockfile by running:
+      #
+      #   pre-commit run -a --hook-stage manual uv-lock
+      #
+      # Or, if you have `uv` installed, run `uv lock`.
       - id: uv-lock
+        args: ["--locked", "--offline"]
+      - id: uv-lock
+        stages: ["manual"]
 
   - repo: https://github.com/google/yamlfmt
     rev: v0.14.0
