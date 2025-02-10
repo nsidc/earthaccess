@@ -291,20 +291,25 @@ class DataCollections(CollectionQuery):
         self._debug = debug
         return self
 
-    def has_granules(self, has_granules: bool = True) -> Self:
-        """Only match collections with granules.
+    def has_granules(self, has_granules: bool | None = True) -> Self:
+        """Match only collections with granules, without granules, or either.
 
         Parameters:
-            has_granules: If `True`, only return collections with granules. If
-            `False`, only return collections without granules.
+            has_granules:
+                If `True`, only return collections with granules. If
+                `False`, only return collections without granules.
+                If `None`, return both types of collections.
 
         Returns:
             self
         """
-        if not isinstance(has_granules, bool):
-            raise TypeError("has_granules must be of type bool")
+        if has_granules is not None and not isinstance(has_granules, bool):
+            raise TypeError("has_granules must be of type bool or None")
 
-        self.params["has_granules"] = has_granules
+        if has_granules is None and "has_granules" in self.params:
+            del self.params["has_granules"]
+        else:
+            self.params["has_granules"] = has_granules
 
         return self
 
