@@ -189,7 +189,7 @@ def login(
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access, defaults to PROD
-        raise_on_failure: Whether to raise an error when login fails; if false, a warning will be printed
+        raise_on_failure: Whether to raise an error when login fails; if `False`, only a warning will be printed
 
     Returns:
         An instance of Auth.
