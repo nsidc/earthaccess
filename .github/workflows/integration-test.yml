@@ -113,8 +113,9 @@ jobs:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: |
-          nox -s integration-tests -- \
+          nox -s integration-tests \
             --python=${{ matrix.python-version }} \
+            -- \
             --cov=earthaccess \
             --cov-report=term-missing \
             --capture=no \
