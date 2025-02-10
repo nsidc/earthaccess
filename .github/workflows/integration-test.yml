@@ -9,7 +9,7 @@ on:
       - earthaccess/**
       - scripts/integration-test.sh
       - tests/**
-      - uv.lock
+      - pyproject.toml
   pull_request:
     branches:
       - main
@@ -18,7 +18,7 @@ on:
       - earthaccess/**
       - scripts/integration-test.sh
       - tests/**
-      - uv.lock
+      - pyproject.toml
   pull_request_target:
     branches:
       - main
@@ -27,7 +27,7 @@ on:
       - earthaccess/**
       - scripts/integration-test.sh
       - tests/**
-      - uv.lock
+      - pyproject.toml
 
 # When this workflow is queued, automatically cancel any previous running
 # or pending jobs from the same branch
@@ -103,12 +103,6 @@ jobs:
           # this point.
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3.2.2
-        with:
-          enable-cache: true
-          cache-suffix: integration-tests-${{ matrix.python-version }}
-
       - name: Setup nox
         uses: wntrblm/nox@2024.10.09
         with:
@@ -118,7 +112,14 @@ jobs:
         env:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
-        run: nox -s integration-tests -- --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
+        run: |
+          nox -s integration-tests -- \
+            --python=${{ matrix.python-version }} \
+            --cov=earthaccess \
+            --cov-report=term-missing \
+            --capture=no \
+            --tb=native \
+            --log-cli-level=INFO
 
       - name: Upload coverage report
         # Don't upload coverage when using the `act` tool to run the workflow locally
