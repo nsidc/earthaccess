@@ -4,9 +4,19 @@ from pathlib import Path
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Mapping, Optional, Union, deprecated
+from typing_extensions import (
+    Any,
+    Dict,
+    List,
+    Literal,
+    Mapping,
+    Optional,
+    Union,
+    deprecated,
+)
 
 import earthaccess
+from earthaccess.exceptions import LoginStrategyUnavailable
 from earthaccess.services import DataServices
 
 from .auth import Auth
@@ -161,7 +171,12 @@ def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
     return query.get(hits if count < 1 else min(count, hits))
 
 
-def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
+def login(
+    strategy: str = "all",
+    persist: bool = False,
+    system: System = PROD,
+    on_failure: Literal["warn", "error"] = "warn",
+) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
@@ -174,6 +189,7 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access, defaults to PROD
+        on_failure: Whether to print a warning or raise an error when login fails.
 
     Returns:
         An instance of Auth.
@@ -186,16 +202,25 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
         for strategy in ["environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
-                    strategy=strategy, persist=persist, system=system
+                    strategy=strategy,
+                    persist=persist,
+                    system=system,
+                    on_failure=on_failure,
                 )
-            except Exception:
-                pass
+            except LoginStrategyUnavailable as err:
+                logger.debug(err)
+                continue
 
             if earthaccess.__auth__.authenticated:
                 earthaccess.__store__ = Store(earthaccess.__auth__)
                 break
     else:
-        earthaccess.__auth__.login(strategy=strategy, persist=persist, system=system)
+        earthaccess.__auth__.login(
+            strategy=strategy,
+            persist=persist,
+            system=system,
+            on_failure=on_failure,
+        )
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
 

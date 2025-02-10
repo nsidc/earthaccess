@@ -6,15 +6,16 @@ import platform
 import shutil
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, List, Literal, Mapping, Optional
 from urllib.parse import urlparse
 
 import requests  # type: ignore
 from tinynetrc import Netrc
 from typing_extensions import deprecated
 
-from .daac import DAACS
-from .system import PROD, System
+from earthaccess.daac import DAACS
+from earthaccess.exceptions import LoginAttemptFailure, LoginStrategyUnavailable
+from earthaccess.system import PROD, System
 
 try:
     user_agent = f"earthaccess v{importlib.metadata.version('earthaccess')}"
@@ -99,6 +100,8 @@ class Auth(object):
         strategy: str = "netrc",
         persist: bool = False,
         system: Optional[System] = None,
+        *,
+        on_failure: Literal["warn", "error"],
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -112,6 +115,7 @@ class Auth(object):
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
+            on_failure: Whether to print a warning or raise an error when login fails.
 
         Returns:
             An instance of Auth.
@@ -124,11 +128,11 @@ class Auth(object):
             return self
 
         if strategy == "interactive":
-            self._interactive(persist)
+            self._interactive(persist, on_failure=on_failure)
         elif strategy == "netrc":
-            self._netrc()
+            self._netrc(on_failure=on_failure)
         elif strategy == "environment":
-            self._environment()
+            self._environment(on_failure=on_failure)
 
         return self
 
@@ -234,63 +238,96 @@ class Auth(object):
             )
         return session
 
-    def _interactive(self, persist_credentials: bool = False) -> bool:
+    def _interactive(
+        self,
+        persist_credentials: bool = False,
+        *,
+        on_failure: Literal["warn", "error"] = "warn",
+    ) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
-        authenticated = self._get_credentials(username, password)
+        authenticated = self._get_credentials(username, password, on_failure=on_failure)
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
                 self._persist_user_credentials(username, password)
         return authenticated
 
-    def _netrc(self) -> bool:
+    def _netrc(
+        self,
+        *,
+        on_failure: Literal["warn", "error"],
+    ) -> bool:
         netrc_loc = netrc_path()
 
         try:
             my_netrc = Netrc(str(netrc_loc))
         except FileNotFoundError as err:
-            raise FileNotFoundError(f"No .netrc found at {netrc_loc}") from err
+            raise LoginStrategyUnavailable(f"No .netrc found at {netrc_loc}") from err
         except NetrcParseError as err:
-            raise NetrcParseError(f"Unable to parse .netrc file {netrc_loc}") from err
+            raise LoginStrategyUnavailable(
+                f"Unable to parse .netrc file {netrc_loc}"
+            ) from err
 
-        if (creds := my_netrc[self.system.edl_hostname]) is None:
+        creds = my_netrc[self.system.edl_hostname]
+        if creds is None:
             return False
 
         username = creds["login"]
         password = creds["password"]
-        authenticated = self._get_credentials(username, password)
+
+        if username is None:
+            raise LoginStrategyUnavailable(
+                f"Username not found in .netrc file {netrc_loc}"
+            )
+        if password is None:
+            raise LoginStrategyUnavailable(
+                f"Password not found in .netrc file {netrc_loc}"
+            )
+
+        authenticated = self._get_credentials(username, password, on_failure=on_failure)
 
         if authenticated:
             logger.debug("Using .netrc file for EDL")
 
         return authenticated
 
-    def _environment(self) -> bool:
+    def _environment(
+        self,
+        *,
+        on_failure: Literal["warn", "error"],
+    ) -> bool:
         username = os.getenv("EARTHDATA_USERNAME")
         password = os.getenv("EARTHDATA_PASSWORD")
-        authenticated = self._get_credentials(username, password)
-        if authenticated:
-            logger.debug("Using environment variables for EDL")
-        else:
-            logger.debug(
+
+        if not username or not password:
+            raise LoginStrategyUnavailable(
                 "EARTHDATA_USERNAME and EARTHDATA_PASSWORD are not set in the current environment, try "
                 "setting them or use a different strategy (netrc, interactive)"
             )
-        return authenticated
+
+        logger.debug("Using environment variables for EDL")
+        return self._get_credentials(username, password, on_failure=on_failure)
 
     def _get_credentials(
-        self, username: Optional[str], password: Optional[str]
+        self,
+        username: Optional[str],
+        password: Optional[str],
+        *,
+        on_failure: Literal["warn", "error"],
     ) -> bool:
         if username is not None and password is not None:
             token_resp = self._find_or_create_token(username, password)
 
             if not (token_resp.ok):  # type: ignore
-                logger.info(
-                    f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
-                )
-                return False
-            logger.debug("You're now authenticated with NASA Earthdata Login")
+                msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
+                if on_failure == "warn":
+                    logger.warning(msg)
+                    return False
+                elif on_failure == "error":
+                    raise LoginAttemptFailure(msg)
+
+            logger.info("You're now authenticated with NASA Earthdata Login")
             self.username = username
             self.password = password
 
