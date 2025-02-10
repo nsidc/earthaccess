@@ -46,5 +46,5 @@ Our project follows the [SPEC0](https://scientific-python.org/specs/spec-0000/) 
 ### 0.14.0
 
 * `earthaccess.login()` will now raise an exception by default if Earthdata Login rejects credentials.
-  We recommend you adjust your code to handle this. If you'd really like to disable
+  We recommend you adjust your code to handle this. If you want to disable
   this, pass `earthaccess.login(..., raise_on_failure=False)`.
