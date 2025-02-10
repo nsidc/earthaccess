@@ -5,6 +5,7 @@ import earthaccess.daac
 import pytest
 import requests
 import s3fs
+from earthaccess.exceptions import LoginStrategyUnavailable
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +25,8 @@ def test_auth_can_read_from_netrc_file(mock_netrc):
     assert auth.authenticated
 
 
-def test_auth_throws_exception_if_netrc_is_not_present(mock_missing_netrc):
-    with pytest.raises(FileNotFoundError):
+def test_auth_strategy_unavailable_netrc_is_not_present(mock_missing_netrc):
+    with pytest.raises(LoginStrategyUnavailable):
         earthaccess.login(strategy="netrc")
 
 
