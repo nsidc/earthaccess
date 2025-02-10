@@ -59,6 +59,8 @@ def test_querybuilder_can_handle_has_granules():
     assert not query.params["has_granules"]
     query = DataCollections().has_granules(True)
     assert query.params["has_granules"]
+    query = DataCollections().has_granules(None)
+    assert "has_granules" not in query.params
 
 
 @pytest.mark.parametrize("start,end,expected", valid_single_dates)
