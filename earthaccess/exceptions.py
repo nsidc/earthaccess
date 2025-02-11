@@ -7,7 +7,9 @@ class LoginStrategyUnavailable(Exception):
     DO NOT raise this exception when a login strategy is attempted and failed, for
     example because credentials were rejected.
     """
+    pass
 
 
 class LoginAttemptFailure(Exception):
     """The login attempt failed."""
+    pass
