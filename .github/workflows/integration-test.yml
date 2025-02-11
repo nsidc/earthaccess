@@ -107,6 +107,7 @@ jobs:
         uses: ./.github/actions/install-pkg
         with:
           python-version: ${{ matrix.python-version }}
+          cache-key: integration
 
       - name: Run integration tests
         env:

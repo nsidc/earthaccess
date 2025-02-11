@@ -23,6 +23,7 @@ jobs:
         uses: ./.github/actions/install-pkg
         with:
           python-version: ${{ matrix.python-version }}
+          cache-key: unit
 
       - name: Typecheck
         run: uv run mypy
