@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.14.0] - 2025-02-11
+
 ### Added
 - `search_datasets` now accepts a `has_granules` keyword argument. Use
   `has_granules=False` to search for metadata about collections with no
@@ -689,7 +691,8 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/nsidc/earthaccess/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/nsidc/earthaccess/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/nsidc/earthaccess/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
