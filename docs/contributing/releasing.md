@@ -12,8 +12,8 @@
 1. Create a new branch to make release changes. We do not permit pushing to `main` and
    this will give the community visibility into release management activities.
 
-1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
-   increase the minor version (`1.2.3` to `1.3.0`):
+1. Use `bump-my-version` to automatically increase the version number in all needed
+   places, for example to increase the minor version (`1.2.3` to `1.3.0`):
 
     ```plain
     bump-my-version bump minor
@@ -25,8 +25,8 @@
 
         The files managed by `bump-my-version` are configured in `pyproject.toml`.
 
-1. Push a tag on the new commit containing the version number, prefixed with `v`, e.g.
-   `v1.3.0`.
+1. Push a tag on the new commit containing the version number, prefixed with `v`, for
+   example `v1.3.0`.
 
     ```plain
     git tag v1.3.0  # EXAMPLE version number
@@ -34,7 +34,7 @@
 
     !!! tip
 
-        It's a good idea to use `git log`, e.g. `git log --decorate --oneline
+        It's a good idea to use `git log`, for example `git log --decorate --oneline
         --pretty` to verify the tag is on the correct commit before pushing.
 
     ```plain
