@@ -19,7 +19,7 @@
     bump-my-version bump minor
     ```
 
-    Add, commit, and push the files changed by `bump-my-version`.
+    **Add, commit, and push the files changed by `bump-my-version`.**
 
     !!! note
 
