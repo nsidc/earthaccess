@@ -118,7 +118,7 @@ class Auth(object):
             An instance of Auth.
 
         Raises:
-            LoginAttemptFailure: If the NASA Earthdata Login services rejects
+            LoginAttemptFailure: If the NASA Earthdata Login service rejects
                 credentials.
         """
         if system is not None:

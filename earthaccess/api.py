@@ -192,7 +192,7 @@ def login(
         An instance of Auth.
 
     Raises:
-        LoginAttemptFailure: If the NASA Earthdata Login services rejects
+        LoginAttemptFailure: If the NASA Earthdata Login service rejects
             credentials.
     """
     # Set the underlying Auth object's earthdata system,
