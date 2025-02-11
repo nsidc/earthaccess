@@ -100,8 +100,6 @@ class Auth(object):
         strategy: str = "netrc",
         persist: bool = False,
         system: Optional[System] = None,
-        *,
-        raise_on_failure: bool = True,
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -115,7 +113,6 @@ class Auth(object):
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
             persist: Will persist credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
-            raise_on_failure: Whether to raise an error when login fails; if `False`, only a warning will be printed
 
         Returns:
             An instance of Auth.
@@ -128,11 +125,11 @@ class Auth(object):
             return self
 
         if strategy == "interactive":
-            self._interactive(persist, raise_on_failure=raise_on_failure)
+            self._interactive(persist)
         elif strategy == "netrc":
-            self._netrc(raise_on_failure=raise_on_failure)
+            self._netrc()
         elif strategy == "environment":
-            self._environment(raise_on_failure=raise_on_failure)
+            self._environment()
 
         return self
 
@@ -241,27 +238,17 @@ class Auth(object):
     def _interactive(
         self,
         persist_credentials: bool = False,
-        *,
-        raise_on_failure: bool,
     ) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
-        authenticated = self._get_credentials(
-            username,
-            password,
-            raise_on_failure=raise_on_failure,
-        )
+        authenticated = self._get_credentials(username, password)
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
                 self._persist_user_credentials(username, password)
         return authenticated
 
-    def _netrc(
-        self,
-        *,
-        raise_on_failure: bool,
-    ) -> bool:
+    def _netrc(self) -> bool:
         netrc_loc = netrc_path()
 
         try:
@@ -291,22 +278,14 @@ class Auth(object):
                 f"Password not found in .netrc file {netrc_loc}"
             )
 
-        authenticated = self._get_credentials(
-            username,
-            password,
-            raise_on_failure=raise_on_failure,
-        )
+        authenticated = self._get_credentials(username, password)
 
         if authenticated:
             logger.debug("Using .netrc file for EDL")
 
         return authenticated
 
-    def _environment(
-        self,
-        *,
-        raise_on_failure: bool,
-    ) -> bool:
+    def _environment(self) -> bool:
         username = os.getenv("EARTHDATA_USERNAME")
         password = os.getenv("EARTHDATA_PASSWORD")
 
@@ -317,30 +296,20 @@ class Auth(object):
             )
 
         logger.debug("Using environment variables for EDL")
-        return self._get_credentials(
-            username,
-            password,
-            raise_on_failure=raise_on_failure,
-        )
+        return self._get_credentials(username, password)
 
     def _get_credentials(
         self,
         username: Optional[str],
         password: Optional[str],
-        *,
-        raise_on_failure: bool,
     ) -> bool:
         if username is not None and password is not None:
             token_resp = self._find_or_create_token(username, password)
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
-                if raise_on_failure:
-                    logger.error(msg)
-                    raise LoginAttemptFailure(msg)
-                else:
-                    logger.warning(msg)
-                    return False
+                logger.error(msg)
+                raise LoginAttemptFailure(msg)
 
             logger.info("You're now authenticated with NASA Earthdata Login")
             self.username = username
