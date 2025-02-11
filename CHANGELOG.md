@@ -15,7 +15,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([**@juliacollins**](https://github.com/juliacollins))
 
 ### Changed
-- **Breaking**: Throw an error by default when login credentials are rejected. Pass
+- **Breaking**: earthaccess will throw an error by default when login credentials are rejected. Pass
   `earthaccess.login(..., raise_on_failure=False)` to disable and print a warning
   instead. ([#946](https://github.com/nsidc/earthaccess/pull/946))
   ([**@mfisher87**](https://github.com/mfisher87))
