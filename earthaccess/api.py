@@ -4,9 +4,18 @@ from pathlib import Path
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Mapping, Optional, Union, deprecated
+from typing_extensions import (
+    Any,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Union,
+    deprecated,
+)
 
 import earthaccess
+from earthaccess.exceptions import LoginStrategyUnavailable
 from earthaccess.services import DataServices
 
 from .auth import Auth
@@ -161,7 +170,11 @@ def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
     return query.get(hits if count < 1 else min(count, hits))
 
 
-def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
+def login(
+    strategy: str = "all",
+    persist: bool = False,
+    system: System = PROD,
+) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
@@ -177,6 +190,10 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
 
     Returns:
         An instance of Auth.
+
+    Raises:
+        LoginAttemptFailure: If the NASA Earthdata Login service rejects
+            credentials.
     """
     # Set the underlying Auth object's earthdata system,
     # before triggering the getattr function for `__auth__`.
@@ -186,16 +203,23 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
         for strategy in ["environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
-                    strategy=strategy, persist=persist, system=system
+                    strategy=strategy,
+                    persist=persist,
+                    system=system,
                 )
-            except Exception:
-                pass
+            except LoginStrategyUnavailable as err:
+                logger.debug(err)
+                continue
 
             if earthaccess.__auth__.authenticated:
                 earthaccess.__store__ = Store(earthaccess.__auth__)
                 break
     else:
-        earthaccess.__auth__.login(strategy=strategy, persist=persist, system=system)
+        earthaccess.__auth__.login(
+            strategy=strategy,
+            persist=persist,
+            system=system,
+        )
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
 

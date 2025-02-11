@@ -43,6 +43,14 @@ Our project follows the [SPEC0](https://scientific-python.org/specs/spec-0000/) 
 
 ## Migration guides
 
-Under Development 🚧
+### 0.14.0
 
-This section will contain migration guides for future releases. Check back soon for updates!
+* `earthaccess.login()` will now raise an exception if Earthdata Login rejects credentials.
+  If you want to ignore errors, which we do not recommend, use a `try` block:
+
+  ```python
+  try:
+      earthaccess.login()
+  except Exception:
+      pass
+  ```

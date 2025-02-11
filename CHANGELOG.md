@@ -7,20 +7,21 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
-### Changed
+### Added
 - `search_datasets` now accepts a `has_granules` keyword argument. Use
   `has_granules=False` to search for metadata about collections with no
   associated granules. The default value set in `DataCollections` remains `True`.
   ([#939](https://github.com/nsidc/earthaccess/issues/939))
   ([**@juliacollins**](https://github.com/juliacollins))
 
-## [v0.13.0] - 2025-01-28
-
 ### Changed
-- Integration tests: Test are no longer randomized! this means each fail should be reproducible, we are testing the most
-  popular datasets from all DAACs, see files under tests/integration/popular_collections.
-  ([#215](https://github.com/nsidc/earthaccess/issues/215))
-  ([**@mfisher87**](https://github.com/mfisher87))
+- **Breaking**: earthaccess will now raise an exception when login credentials are
+  rejected.  If you need the old behavior, please use a `try` block.
+  ([#946](https://github.com/nsidc/earthaccess/pull/946))
+  ([**@mfisher87**](https://github.com/mfisher87), [@chuckwondo](https://github.com/chuckwondo),
+  and [@jhkennedy](https://github.com/jhkennedy))
+
+## [v0.13.0] - 2025-01-28
 
 ### Added
 - VirtualiZarr: earthaccess can open archival formats (NetCDF, HDF5) as if they were Zarr by leveraging VirtualiZarr
