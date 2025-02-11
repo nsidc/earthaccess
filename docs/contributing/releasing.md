@@ -9,6 +9,9 @@
    updated. **Do not** edit the `Unreleased` header in the CHANGELOG -- the next step
    will automatically update it.
 
+1. Create a new branch to make release changes. We do not permit pushing to `main` and
+   this will give the community visibility into release management activities.
+
 1. Use `bump-my-version` to increase the version number in all needed places, e.g. to
    increase the minor version (`1.2.3` to `1.3.0`):
 
