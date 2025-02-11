@@ -116,6 +116,10 @@ class Auth(object):
 
         Returns:
             An instance of Auth.
+
+        Raises:
+            LoginAttemptFailure: If the NASA Earthdata Login services rejects
+                credentials.
         """
         if system is not None:
             self._set_earthdata_system(system)

@@ -190,6 +190,10 @@ def login(
 
     Returns:
         An instance of Auth.
+
+    Raises:
+        LoginAttemptFailure: If the NASA Earthdata Login services rejects
+            credentials.
     """
     # Set the underlying Auth object's earthdata system,
     # before triggering the getattr function for `__auth__`.
