@@ -6,8 +6,8 @@
     we agree we're ready for v1.0.0, we will not increment the major version.
 
 1. Ensure all desired features are merged to `main` branch and `CHANGELOG.md` is
-   updated. **Do not** edit the `Unreleased` header in the CHANGELOG -- the next step
-   will automatically update it.
+   updated. **Do not** edit the `Unreleased` header in the CHANGELOG -- that will be
+   handled automatically in a later step.
 
 1. Create a new branch to make release changes. We do not permit pushing to `main` and
    this will give the community visibility into release management activities.
