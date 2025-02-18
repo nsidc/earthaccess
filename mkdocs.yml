@@ -109,6 +109,7 @@ nav:
       - Glossary:
           - "NASA Glossary": "user-reference/glossary/nasa-glossary.md"
           - "Cloud Computing Terminology": "user-reference/glossary/cloud-glossary.md"
+  - "About Us": "about-us.md"
 
 markdown_extensions:
   - admonition
