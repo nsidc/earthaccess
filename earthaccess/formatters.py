@@ -21,7 +21,7 @@ def _repr_collection_html() -> str:
 def _repr_granule_html(granule: Any) -> str:
     css_styles = _load_static_files()
     css_inline = f"""<div id="{uuid4()}" style="height: 0px; display: none">
-            {''.join([f"<style>{style}</style>" for style in css_styles])}
+            {"".join([f"<style>{style}</style>" for style in css_styles])}
             </div>"""
     style = "max-height: 120px;"
     dataviz_img = "".join(

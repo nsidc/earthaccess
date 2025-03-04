@@ -235,7 +235,7 @@ class Auth(object):
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
             session.headers.update(
-                {"Authorization": f'Bearer {self.token["access_token"]}'}
+                {"Authorization": f"Bearer {self.token['access_token']}"}
             )
         return session
 

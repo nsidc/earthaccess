@@ -240,9 +240,9 @@ class DataGranule(CustomDict):
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
-        Collection: {self['umm']['CollectionReference']}
-        Spatial coverage: {self['umm']['SpatialExtent']}
-        Temporal coverage: {self['umm']['TemporalExtent']}
+        Collection: {self["umm"]["CollectionReference"]}
+        Spatial coverage: {self["umm"]["SpatialExtent"]}
+        Temporal coverage: {self["umm"]["TemporalExtent"]}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
@@ -303,7 +303,7 @@ class DataGranule(CustomDict):
             elif link.startswith("https://") and (
                 "cumulus" in link or "protected" in link
             ):
-                s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
+                s3_links.append(f"s3://{links[0].split('nasa.gov/')[1]}")
         return s3_links
 
     def data_links(
