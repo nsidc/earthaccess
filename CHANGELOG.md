@@ -7,6 +7,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Removed
+
+- Python 3.10 is no longer supported.
+  ([#966](https://github.com/nsidc/earthaccess/pull/966))
+  ([@weiji14](https://github.com/weiji14))
+
+
 ## [v0.14.0] - 2025-02-11
 
 ### Added
