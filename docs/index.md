@@ -43,7 +43,6 @@ The library is an open source community effort under an [MIT license](LICENSE.tx
 <img alt="lpdaac" src="logos/lpdaac-logo.png" width="20%" />
 <img alt="ORNLdaac" src="logos/ornl-logo.png" width="20%" />
 <img alt="obdaac" src="logos/obdaac-logo.png" width="20%" />
-<img alt="GHRC" src="logos/ghrc-logo.png" width="20%" />
 
 <img alt="Openscapes" src="logos/openscapes_hex-logo.png" width="20%" />
 <img alt="Development Seed" src="logos/devseed-logo.png" width="20%" />
