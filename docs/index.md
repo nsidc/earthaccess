@@ -5,7 +5,7 @@
 
 # Welcome
 
-`earthaccess` is a python library to **search for**, and **download** or **stream** NASA Earth science data with just a few lines of code.
+`earthaccess` is a python library to **search for** and **download** or **stream** NASA Earth science data with just a few lines of code.
 
 # Community Resources
 
@@ -33,9 +33,19 @@ The library is an open source community effort under an [MIT license](LICENSE.tx
 
 <p align="center">
 <img alt="NASA logo" src="nasa-logo.png" width="40%" />
-<img alt="ESDIS logo" src="logos/earthdata-default-7-th.jpg" width="40%" />
-<img alt="DAAC logos" src="logos/NASA-DAAC-logos-2023-2lines.png" width="75%" />
-<img alt="Openscapes" src="logos/openscapes_hex.png" width="25%" />
-<img alt="Development Seed" src="logos/devseed.png" width="25%" />
-<img alt="community" src="logos/NASA-DAAC-logos-2023-2lines.png" width="25%" />
+<img alt="ESDIS logo" src="logos/earthdata-logo.jpg" width="40%" />
+
+<img alt="NSIDC" src="nsidc-logo.png" width="20%" />
+<img alt="ASF" src="logos/asf-logo.png" width="20%" />
+<img alt="ASDC" src="logos/asdc-logo.png" width="20%" />
+<img alt="GESDISC" src="logos/gesdisc-logo.png" width="20%" />
+<img alt="podaac" src="logos/podaac-logo.png" width="20%" />
+<img alt="lpdaac" src="logos/lpdaac-logo.png" width="20%" />
+<img alt="ORNLdaac" src="logos/ornl-logo.png" width="20%" />
+<img alt="obdaac" src="logos/obdaac-logo.png" width="20%" />
+<img alt="GHRC" src="logos/ghrc-logo.png" width="20%" />
+
+<img alt="Openscapes" src="logos/openscapes_hex-logo.png" width="20%" />
+<img alt="Development Seed" src="logos/devseed-logo.png" width="20%" />
+<img alt="Coiled" src="logos/coiled-logo.png" width="20%" />
 </p>
