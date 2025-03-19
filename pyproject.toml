@@ -58,7 +58,7 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 kerchunk = [
   "kerchunk",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.8.0",
   "h5netcdf",
   "xarray",
   "zarr >=2.12.0, <3.0.0a",
@@ -68,7 +68,7 @@ virtualizarr = [
   "zarr >=2.12.0, <3.0.0a",
   "virtualizarr >=1.2.0",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.8.0",
 ]
 dev = [
   "bump-my-version >=0.10.0",
