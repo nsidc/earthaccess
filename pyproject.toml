@@ -61,11 +61,11 @@ kerchunk = [
   "h5py >=3.8.0",
   "h5netcdf",
   "xarray",
-  "zarr >=2.12.0, <3.0.0a",
+  "zarr >=2.12.0, <4.0.0a",
 ]
 virtualizarr = [
   "numpy >=1.26.4",
-  "zarr >=2.12.0, <3.0.0a",
+  "zarr >=2.12.0, <4.0.0a",
   "virtualizarr >=1.2.0",
   "dask",
   "h5py >=3.8.0",
@@ -78,7 +78,7 @@ dev = [
   "uv >=0.4.7",
 ]
 test = [
-  "zarr >=2.12.0, <3.0.0a",
+  "zarr >=2.12.0, <4.0.0a",
   "numpy >=1.26.4",
   "mypy >=1.11.2",
   "pytest >=8.3",
