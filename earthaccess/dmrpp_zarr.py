@@ -127,20 +127,8 @@ def open_virtual_mfdataset(
         vds = xr.combine_nested(vdatasets, **xr_combine_nested_kwargs)
     if load:
         refs = vds.virtualize.to_kerchunk(filepath=None, format="dict")
-        protocol = "s3" if "s3" in fs.protocol else fs.protocol
-        return xr.open_dataset(
-            "reference://",
-            engine="zarr",
-            chunks={},
-            backend_kwargs={
-                "consolidated": False,
-                "storage_options": {
-                    "fo": refs,  # codespell:ignore
-                    "remote_protocol": protocol,
-                    "remote_options": fs.storage_options,
-                },
-            },
-        )
+        return vz.translators.kerchunk.dataset_from_kerchunk_refs(refs=refs)
+
     return vds
 
 
