@@ -7,6 +7,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Changed
+
+- Support Zarr v3 in the `open_virtual_dataset` function used to read collections with
+  dmrpp files via VirtualiZarr.
+  ([#967](https://github.com/nsidc/earthaccess/pull/967))
+  ([@weiji14](https://github.com/weiji14))
+
 ### Removed
 
 - Python 3.10 is no longer supported.
