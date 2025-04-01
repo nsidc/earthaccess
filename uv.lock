@@ -872,7 +872,7 @@ requires-dist = [
     { name = "earthaccess", extras = ["kerchunk"], marker = "extra == 'test'" },
     { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'docs'" },
     { name = "earthaccess", extras = ["virtualizarr"], marker = "extra == 'test'" },
-    { name = "fsspec", specifier = ">=2022.11" },
+    { name = "fsspec", specifier = ">=2024.12.0" },
     { name = "h5netcdf", marker = "extra == 'docs'", specifier = ">=0.11" },
     { name = "h5netcdf", marker = "extra == 'kerchunk'" },
     { name = "h5py", marker = "extra == 'kerchunk'", specifier = ">=3.8.0" },
@@ -1049,11 +1049,11 @@ wheels = [
 
 [[package]]
 name = "fsspec"
-version = "2024.10.0"
+version = "2024.12.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a0/52/f16a068ebadae42526484c31f4398e62962504e5724a8ba5dc3409483df2/fsspec-2024.10.0.tar.gz", hash = "sha256:eda2d8a4116d4f2429db8550f2457da57279247dd930bb12f821b58391359493", size = 286853 }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/11/de70dee31455c546fbc88301971ec03c328f3d1138cfba14263f651e9551/fsspec-2024.12.0.tar.gz", hash = "sha256:670700c977ed2fb51e0d9f9253177ed20cbde4a3e5c0283cc5385b5870c8533f", size = 291600 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c6/b2/454d6e7f0158951d8a78c2e1eb4f69ae81beb8dca5fee9809c6c99e9d0d0/fsspec-2024.10.0-py3-none-any.whl", hash = "sha256:03b9a6785766a4de40368b88906366755e2819e758b83705c88cd7cb5fe81871", size = 179641 },
+    { url = "https://files.pythonhosted.org/packages/de/86/5486b0188d08aa643e127774a99bac51ffa6cf343e3deb0583956dca5b22/fsspec-2024.12.0-py3-none-any.whl", hash = "sha256:b520aed47ad9804237ff878b504267a3b0b441e97508bd6d2d8774e3db85cee2", size = 183862 },
 ]
 
 [[package]]
@@ -3246,16 +3246,16 @@ wheels = [
 
 [[package]]
 name = "s3fs"
-version = "2024.10.0"
+version = "2024.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiobotocore" },
     { name = "aiohttp" },
     { name = "fsspec" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/75/65/4b4c868cff76c036d11dc75dd91e5696dbf16ce626514166f35d5f4a930f/s3fs-2024.10.0.tar.gz", hash = "sha256:58b8c3650f8b99dbedf361543da3533aac8707035a104db5d80b094617ad4a3f", size = 75916 }
+sdist = { url = "https://files.pythonhosted.org/packages/96/88/e2fc4fc2a618126ac3cea9b16a4abc5a37dff2522067c9730b5d72d67ac3/s3fs-2024.12.0.tar.gz", hash = "sha256:1b0f3a8f5946cca5ba29871d6792ab1e4528ed762327d8aefafc81b73b99fd56", size = 76578 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/44/bb9ff095ae7b1b6908480f683b6ca6b71c2105d343a5e5cb25334b01f5fa/s3fs-2024.10.0-py3-none-any.whl", hash = "sha256:7a2025d60d5b1a6025726b3a5e292a8e5aa713abc3b16fd1f81735181f7bb282", size = 29855 },
+    { url = "https://files.pythonhosted.org/packages/f7/af/eaec1466887348d7f6cc9d3a668b30b62a4629fb187d0268146118ba3d5e/s3fs-2024.12.0-py3-none-any.whl", hash = "sha256:d8665549f9d1de083151582437a2f10d5f3b3227c1f8e67a2b0b730db813e005", size = 30196 },
 ]
 
 [[package]]
