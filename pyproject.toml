@@ -56,7 +56,7 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
-  "kerchunk",
+  "kerchunk >=0.2.8",
   "dask",
   "h5py >=3.8.0",
   "h5netcdf",

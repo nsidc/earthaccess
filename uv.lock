@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.13' and platform_python_implementation == 'PyPy'",
@@ -879,7 +880,7 @@ requires-dist = [
     { name = "importlib-resources", specifier = ">=6.3.2" },
     { name = "ipywidgets", marker = "extra == 'docs'", specifier = ">=7.7.0" },
     { name = "jupyterlab", marker = "extra == 'docs'", specifier = ">=3" },
-    { name = "kerchunk", marker = "extra == 'kerchunk'" },
+    { name = "kerchunk", marker = "extra == 'kerchunk'", specifier = ">=0.2.8" },
     { name = "lxml-html-clean", marker = "extra == 'docs'", specifier = ">=0.1.1" },
     { name = "markdown-callouts", marker = "extra == 'docs'", specifier = ">=0.2.0" },
     { name = "markdown-include", marker = "extra == 'docs'", specifier = ">=0.6" },
@@ -923,6 +924,7 @@ requires-dist = [
     { name = "zarr", marker = "extra == 'test'", specifier = ">=2.12.0,<4.0.0a0" },
     { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=2.12.0,<4.0.0a0" },
 ]
+provides-extras = ["kerchunk", "virtualizarr", "dev", "test", "docs"]
 
 [[package]]
 name = "executing"
@@ -1546,7 +1548,7 @@ wheels = [
 
 [[package]]
 name = "kerchunk"
-version = "0.2.6"
+version = "0.2.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fsspec" },
@@ -1555,9 +1557,9 @@ dependencies = [
     { name = "ujson" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1f/c4/5e991922cd88cbc60749107a58e820534761d81046bcf3ef7d76ff1e24d5/kerchunk-0.2.6.tar.gz", hash = "sha256:7cb2a7a688ee39cfe45ffee1e9c7152201b408a9fbdc02c6fe08cbf2bdb0e281", size = 749710 }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/36/53f64c984f75a544c3a98179a65f714ae4584af9e1adb070eb749ee5cbe2/kerchunk-0.2.8.tar.gz", hash = "sha256:85a932ffb6a26a38bebc45d5f978c962263704e34dd99f66008b402cded316af", size = 711488 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/8c/117feba86c75d42b8434f8e65085165df4cd415c754bcde3df007f036293/kerchunk-0.2.6-py3-none-any.whl", hash = "sha256:dc55fcea6560688ffc2390ff5882847fdf736982c1817553632a2bd7eb59de73", size = 134596 },
+    { url = "https://files.pythonhosted.org/packages/bb/cf/cfc47e6ed7be147ca60f416624a55e0c66466b9a41175d3a9641047550f5/kerchunk-0.2.8-py3-none-any.whl", hash = "sha256:9174d4febcb53521849f3d00193e76d51470c706f622a202aa427cdff7efacdd", size = 65510 },
 ]
 
 [[package]]
