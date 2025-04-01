@@ -425,6 +425,7 @@ def get_s3_filesystem(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
     results: Optional[DataGranule] = None,
+    endpoint: Optional[str] = None,
 ) -> s3fs.S3FileSystem:
     """Return an `s3fs.S3FileSystem` for direct access when running within the AWS us-west-2 region.
 
@@ -434,18 +435,29 @@ def get_s3_filesystem(
             If the DAAC is specified, there is no need to use provider.
         results: A list of results from search_data().
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
+        endpoint: The url of a cloud provider credentials endpoint to be used for specifying
+            access credentials.
 
     Returns:
         An authenticated s3fs session valid for 1 hour.
     """
     daac = _normalize_location(daac)
     provider = _normalize_location(provider)
-    if results is not None:
+    if results:
         endpoint = results[0].get_s3_credentials_endpoint()
-        if endpoint is not None:
+        if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
-            return session
-    session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+        else:
+            raise TypeError('No s3 credentials specified in the given DataGranule')
+    elif endpoint:
+        session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
+    elif daac or provider:
+        session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+    else:
+        raise TypeError(
+            'Invalid set of input arguments given. Please provide either ' \
+            'a valid result, an endpoint, a daac, or a provider.'
+            )
     return session
 
 
