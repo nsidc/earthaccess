@@ -13,6 +13,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#966](https://github.com/nsidc/earthaccess/pull/966))
   ([@weiji14](https://github.com/weiji14))
 
+### Added
+- `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
+
 
 ## [v0.14.0] - 2025-02-11
 
