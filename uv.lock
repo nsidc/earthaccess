@@ -920,9 +920,9 @@ requires-dist = [
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
     { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
     { name = "xarray", marker = "extra == 'kerchunk'" },
-    { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=2.12.0,<4.0.0a0" },
-    { name = "zarr", marker = "extra == 'test'", specifier = ">=2.12.0,<4.0.0a0" },
-    { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=2.12.0,<4.0.0a0" },
+    { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=3.0.0,<4.0.0a0" },
+    { name = "zarr", marker = "extra == 'test'", specifier = ">=3.0.0,<4.0.0a0" },
+    { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=3.0.0,<4.0.0a0" },
 ]
 provides-extras = ["kerchunk", "virtualizarr", "dev", "test", "docs"]
 
