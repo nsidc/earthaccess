@@ -3,9 +3,13 @@
 </p>
 
 
-# Welcome
+# Welcome to `earthaccess`!
 
-`earthaccess` is a python library to **search for** and **download** or **stream** NASA Earth science data with just a few lines of code.
+`earthaccess` is a Python library to **search for** and **download** or **stream** NASA Earth science data with just a few lines of code.
+
+>*"earthaccess revolutionizes data access by drastically reducing the complexity and code required. Since open science is a collaborative effort involving people from different technical backgrounds, our team took the approach that data analysis can and should be made more inclusive and accessible by reducing the complexities of underlying systems."*
+>
+>Luis López, an NSIDC software developer and earthaccess creator
 
 # Community Resources
 
@@ -20,13 +24,17 @@ Earthaccess is a highly active, open-source, and community-driven library whose 
 
 # About
 
->*"earthaccess revolutionizes data access by drastically reducing the complexity and code required. Since open science is a collaborative effort involving people from different technical backgrounds, our team took the approach that data analysis can and should be made more inclusive and accessible by reducing the complexities of underlying systems."*
->
->Luis López, an NSIDC software developer and earthaccess creator
+![*NASA Earthdata using `earthaccess` for impactful science. Art by Allison Horst and Openscapes.*](images/earthaccess_environmental_horst.jpg){alt="3-panel watercolor artwork depicting earthaccess' position as a missing link between environmental data and data analysis. Depicts environmental data within mountains and streams with arrows labeled 'import' and 'earthaccess' that connect to a data analysis panel and then a communicate panel." width="100%"}
+
+We can use `earthaccess` to do impactful science, faster:
+
+- Search Data: Explore NASA's extensive collection of Earth science data, powered by [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html).
+- Access Data: Download data to your local machine or stream it directly into your Python scripts through [`fsspec`](https://github.com/fsspec/filesystem_spec).
+- Authenticate: Manage your [NASA Earthdata Login (EDL)](https://urs.earthdata.nasa.gov) and Earthdata Cloud credentials.
+
 
 The library is an open source community effort under an [MIT license](LICENSE.txt).  We welcome contributions to improve `earthaccess`.  Please see the [Contributing Guide](contributing/index.md) to learn how to get involved.
 
-***earthaccess*** handles authentication with [NASA's Earthdata Login (EDL)](https://urs.earthdata.nasa.gov), search using NASA's [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html) and access through [`fsspec`](https://github.com/fsspec/filesystem_spec).
 
 
 # Supported By
