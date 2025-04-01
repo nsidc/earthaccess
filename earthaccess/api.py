@@ -448,16 +448,16 @@ def get_s3_filesystem(
         if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
         else:
-            raise TypeError('No s3 credentials specified in the given DataGranule')
+            raise TypeError("No s3 credentials specified in the given DataGranule")
     elif endpoint:
         session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
     elif daac or provider:
         session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
     else:
         raise TypeError(
-            'Invalid set of input arguments given. Please provide either ' \
-            'a valid result, an endpoint, a daac, or a provider.'
-            )
+            "Invalid set of input arguments given. Please provide either "
+            "a valid result, an endpoint, a daac, or a provider."
+        )
     return session
 
 
