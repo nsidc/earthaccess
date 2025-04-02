@@ -20,24 +20,24 @@
 		</clipPath>
 	</defs>
 	<style>
-		tspan { white-space:pre } 
-		.t0 { font-size: 20px;fill: #000000;font-family: "' Open  Sans'" } 
-		.t1 { font-size: 20px;fill: #ff0000;font-family: "' Impact'" } 
-		.s2 { fill: url(#g1) } 
-		.s3 { fill: url(#g2) } 
-		.s4 { fill: #000000;stroke: #ff0000 } 
-		.s5 { opacity: .5;fill: #008000;stroke: #000000;stroke-linecap: square;stroke-width: 4;stroke-dasharray: 16 } 
-		.s6 { fill: #231f20 } 
-		.s7 { fill: #ffffff } 
-		.s8 { fill: #000000 } 
-		.s9 { fill: #52ace4 } 
-		.s10 { fill: #25295e } 
-		.s11 { fill: #2c3b92 } 
+		tspan { white-space:pre }
+		.t0 { font-size: 20px;fill: #000000;font-family: "' Open  Sans'" }
+		.t1 { font-size: 20px;fill: #ff0000;font-family: "' Impact'" }
+		.s2 { fill: url(#g1) }
+		.s3 { fill: url(#g2) }
+		.s4 { fill: #000000;stroke: #ff0000 }
+		.s5 { opacity: .5;fill: #008000;stroke: #000000;stroke-linecap: square;stroke-width: 4;stroke-dasharray: 16 }
+		.s6 { fill: #231f20 }
+		.s7 { fill: #ffffff }
+		.s8 { fill: #000000 }
+		.s9 { fill: #52ace4 }
+		.s10 { fill: #25295e }
+		.s11 { fill: #2c3b92 }
 	</style>
 	<g id="Layer">
 		<g id="Layer">
 			<text id="Lorem " style="transform: matrix(1,0,0,1,433.5,219.08)" >
-				<tspan x="0" y="0" class="t0">Lorem 
+				<tspan x="0" y="0" class="t0">Lorem
 </tspan>
 			</text>
 			<text id="ipsum" style="transform: matrix(1,0,0,1,555.75,219.08)" >
@@ -45,7 +45,7 @@
 </tspan>
 			</text>
 			<text id="dolor " style="transform: matrix(1,0,0,1,543.5,245.3)" >
-				<tspan x="0" y="0" class="t0">dolor 
+				<tspan x="0" y="0" class="t0">dolor
 </tspan>
 			</text>
 			<text id="sit" style="transform: matrix(1,0,0,1,653.53,245.3)" >
