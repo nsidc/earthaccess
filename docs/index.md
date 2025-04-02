@@ -50,7 +50,7 @@ The library is an open source community effort under an [MIT license](LICENSE.tx
 <img alt="podaac" src="logos/podaac-logo.png" width="20%" />
 <img alt="lpdaac" src="logos/lpdaac-logo.png" width="20%" />
 <img alt="ORNLdaac" src="logos/ornl-logo.jpg" width="20%" />
-<img alt="obdaac" src="logos/obdaac-logo.png" width="20%" />
+<img alt="OB.DAAC" src="logos/obdaac-logo.svg" width="20%" />
 
 <img alt="Openscapes" src="logos/openscapes_hex-logo.png" width="20%" />
 <img alt="Development Seed" src="logos/devseed-logo.png" width="20%" />
