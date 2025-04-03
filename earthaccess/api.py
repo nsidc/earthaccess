@@ -435,8 +435,8 @@ def get_s3_filesystem(
             If the DAAC is specified, there is no need to use provider.
         results: A list of results from search_data().
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
-        endpoint: The url of a cloud provider credentials endpoint to be used for specifying
-            access credentials.
+        endpoint: URL of a cloud provider credentials endpoint to be used for obtaining
+            AWS S3 access credentials.
 
     Returns:
         An authenticated s3fs session valid for 1 hour.
@@ -448,13 +448,13 @@ def get_s3_filesystem(
         if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
         else:
-            raise TypeError("No s3 credentials specified in the given DataGranule")
+            raise ValueError("No s3 credentials specified in the given DataGranule")
     elif endpoint:
         session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
     elif daac or provider:
         session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
     else:
-        raise TypeError(
+        raise ValueError(
             "Invalid set of input arguments given. Please provide either "
             "a valid result, an endpoint, a daac, or a provider."
         )
