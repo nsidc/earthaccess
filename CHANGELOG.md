@@ -76,6 +76,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Auto-add comment to PR that requires maintainer to review and re-run
   integration tests ([#824](https://github.com/nsidc/earthaccess/issues/824))
   ([@chuckwondo](https://github.com/chuckwondo))
+- Add authentication to User Guide documentation. ([#763](https://github.com/nsidc/earthaccess/pull/763)) ([@andypbarrett](https://github.com/andypbarrett))
 
 ### Removed
 
