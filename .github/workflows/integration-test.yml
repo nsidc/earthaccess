@@ -120,6 +120,7 @@ jobs:
             --cov=earthaccess \
             --cov-report=term-missing \
             --capture=no \
+            --color=yes \
             --tb=native \
             --log-cli-level=INFO
 
