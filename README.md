@@ -87,7 +87,7 @@ We're here for you!
 opened a similar one.**
 
 :bug: If you've found a bug or mistake, please use
-[GitHub issues](https://github.com/nsidc/earthaccess/issue).
+[GitHub issues](https://github.com/nsidc/earthaccess/issues).
 
 :bulb: If you'd like to request a feature or ask a question, please use
 [GitHub discussions](https://github.com/nsidc/earthaccess/discussions).
