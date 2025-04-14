@@ -29,7 +29,7 @@ jobs:
         run: uv run mypy
 
       - name: Test
-        run: uv run pytest tests/unit --verbose --cov=earthaccess --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
+        run: uv run pytest tests/unit --verbose --cov=earthaccess --cov-report=term-missing --capture=no --color=yes --tb=native --log-cli-level=INFO
 
       - name: Upload coverage
         # Don't upload coverage when using the `act` tool to run the workflow locally

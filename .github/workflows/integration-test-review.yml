@@ -32,21 +32,19 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { number, html_url } = (await github.rest.repos.listPullRequestsAssociatedWithCommit({
-              commit_sha: context.sha,
-              owner: "${{ github.event.workflow_run.head_repository.owner.login }}",
-              repo: "${{ github.event.workflow_run.head_repository.name }}",
-            })).data[0] ?? {};
+            const { html_url } = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
 
-            if (number) {
-              github.rest.issues.createComment({
-                issue_number: number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: "User [${{ github.triggering_actor }}](${{ github.event.workflow_run.head_repository.owner.html_url }})"
-                  + " does not have permission to run integration tests. A maintainer must perform a security review of the"
-                  + ` [code changes in this pull request](${html_url}/files) and re-run the`
-                  + " [failed integration tests jobs](${{ github.event.workflow_run.html_url }}),"
-                  + " if the code is deemed safe.",
-              });
-            }
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "User [${{ github.triggering_actor }}](${{ github.event.workflow_run.head_repository.owner.html_url }})"
+                + " does not have permission to run integration tests. A maintainer must perform a security review of the"
+                + ` [code changes in this pull request](${html_url}/files) and re-run the`
+                + " [failed integration tests jobs](${{ github.event.workflow_run.html_url }}),"
+                + " if the code is deemed safe.",
+            });
