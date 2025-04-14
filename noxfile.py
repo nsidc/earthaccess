@@ -32,7 +32,7 @@ def tests(session: nox.Session) -> None:
     )
 
 
-@nox.session(name="test-min-deps", python="3.10", venv_backend="uv")
+@nox.session(name="test-min-deps", python="3.11", venv_backend="uv")
 def test_min_deps(session: nox.Session) -> None:
     """Run the unit tests using the lowest compatible version of all direct dependencies."""
     session.install("--resolution", "lowest-direct", "--editable", ".[test]")
@@ -57,11 +57,6 @@ def integration_tests(session: nox.Session) -> None:
             EARTHDATA_USERNAME=os.environ["EARTHDATA_USERNAME"],
             EARTHDATA_PASSWORD=os.environ["EARTHDATA_PASSWORD"],
         ),
-        external=True,
-        # NOTE: integration test are permitted to pass if the failure rate was less than a hardcoded threshold.
-        #       PyTest will return 99 if there were some failures, but less than the threshold. For more details, see:
-        #       `pytest_sessionfinish` in tests/integration/conftest.py
-        success_codes=[0, 99],
     )
 
 

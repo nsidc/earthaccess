@@ -4,9 +4,18 @@ from pathlib import Path
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Mapping, Optional, Union, deprecated
+from typing_extensions import (
+    Any,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Union,
+    deprecated,
+)
 
 import earthaccess
+from earthaccess.exceptions import LoginStrategyUnavailable
 from earthaccess.services import DataServices
 
 from .auth import Auth
@@ -49,6 +58,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
+            * **has_granules**: if true, only return collections with granules
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
@@ -160,7 +170,11 @@ def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
     return query.get(hits if count < 1 else min(count, hits))
 
 
-def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
+def login(
+    strategy: str = "all",
+    persist: bool = False,
+    system: System = PROD,
+) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
@@ -176,6 +190,10 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
 
     Returns:
         An instance of Auth.
+
+    Raises:
+        LoginAttemptFailure: If the NASA Earthdata Login service rejects
+            credentials.
     """
     # Set the underlying Auth object's earthdata system,
     # before triggering the getattr function for `__auth__`.
@@ -185,16 +203,23 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
         for strategy in ["environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
-                    strategy=strategy, persist=persist, system=system
+                    strategy=strategy,
+                    persist=persist,
+                    system=system,
                 )
-            except Exception:
-                pass
+            except LoginStrategyUnavailable as err:
+                logger.debug(err)
+                continue
 
             if earthaccess.__auth__.authenticated:
                 earthaccess.__store__ = Store(earthaccess.__auth__)
                 break
     else:
-        earthaccess.__auth__.login(strategy=strategy, persist=persist, system=system)
+        earthaccess.__auth__.login(
+            strategy=strategy,
+            persist=persist,
+            system=system,
+        )
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
 
@@ -400,6 +425,7 @@ def get_s3_filesystem(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
     results: Optional[DataGranule] = None,
+    endpoint: Optional[str] = None,
 ) -> s3fs.S3FileSystem:
     """Return an `s3fs.S3FileSystem` for direct access when running within the AWS us-west-2 region.
 
@@ -409,18 +435,29 @@ def get_s3_filesystem(
             If the DAAC is specified, there is no need to use provider.
         results: A list of results from search_data().
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
+        endpoint: URL of a cloud provider credentials endpoint to be used for obtaining
+            AWS S3 access credentials.
 
     Returns:
         An authenticated s3fs session valid for 1 hour.
     """
     daac = _normalize_location(daac)
     provider = _normalize_location(provider)
-    if results is not None:
+    if results:
         endpoint = results[0].get_s3_credentials_endpoint()
-        if endpoint is not None:
+        if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
-            return session
-    session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+        else:
+            raise ValueError("No s3 credentials specified in the given DataGranule")
+    elif endpoint:
+        session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
+    elif daac or provider:
+        session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+    else:
+        raise ValueError(
+            "Invalid set of input arguments given. Please provide either "
+            "a valid result, an endpoint, a daac, or a provider."
+        )
     return session
 
 

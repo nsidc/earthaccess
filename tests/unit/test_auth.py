@@ -6,6 +6,7 @@ from unittest import mock
 import pytest
 import responses
 from earthaccess import Auth
+from earthaccess.exceptions import LoginAttemptFailure
 
 logger = logging.getLogger(__name__)
 
@@ -95,9 +96,7 @@ class TestCreateAuth(unittest.TestCase):
         )
         # Test
         auth = Auth()
-        auth.login(strategy="interactive")
-        with pytest.raises(Exception) as e_info:
-            self.assertEqual(auth.authenticated, False)
-            self.assertEqual(e_info, Exception)
-            self.assertEqual(auth.password, "password")
-            self.assertEqual(auth.token, json_response)
+        with pytest.raises(LoginAttemptFailure):
+            auth.login(strategy="interactive")
+
+        self.assertEqual(auth.authenticated, False)

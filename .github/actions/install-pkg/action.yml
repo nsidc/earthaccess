@@ -1,0 +1,35 @@
+name: Install earthaccess Python package
+description: Install earthaccess Python package and testing dependencies
+
+inputs:
+  python-version:
+    description: Version of Python to use
+    required: true
+  cache-key:
+    description: Cache key to use; combined with python-version.
+    default: ci
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: True
+        cache-suffix: ${{ inputs.cache-key}}-${{ inputs.python-version }}
+
+    # Typically faster than using `uv python install` because of GitHub's
+    # cache. See: https://docs.astral.sh/uv/guides/integration/github/#setting-up-python
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Display full python version
+      shell: bash
+      id: full-python-version
+      run: echo "version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
+
+    - name: Install package and test dependencies
+      shell: bash
+      run: uv sync --extra test
