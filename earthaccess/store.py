@@ -73,6 +73,7 @@ def _open_files(
     pqdm_kwargs = {
         "exception_behaviour": "immediate",
         "n_jobs": 8,
+        "disable": "True",
         **(pqdm_kwargs or {}),
     }
 
