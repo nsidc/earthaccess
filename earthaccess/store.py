@@ -529,6 +529,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "n_jobs": threads,
+            "disable": True,
             **(pqdm_kwargs or {}),
         }
 
