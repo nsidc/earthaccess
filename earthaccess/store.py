@@ -73,6 +73,7 @@ def _open_files(
     pqdm_kwargs = {
         "exception_behaviour": "immediate",
         "n_jobs": 8,
+        "disable": True,
         **(pqdm_kwargs or {}),
     }
 
@@ -529,6 +530,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "n_jobs": threads,
+            "disable": True,
             **(pqdm_kwargs or {}),
         }
 
@@ -738,6 +740,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "exception_behaviour": "immediate",
+            "disable": True,
             **(pqdm_kwargs or {}),
             # We don't want a user to be able to override the following kwargs,
             # which is why they appear *after* spreading pqdm_kwargs above.

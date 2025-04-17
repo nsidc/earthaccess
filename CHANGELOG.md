@@ -18,6 +18,11 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ([#602](https://github.com/nsidc/earthaccess/issues/602))
 ([@rwegener2](https://github.com/rwegener2))
 
+### Changed
+
+- By default, _disable_ progress bars during downloading.
+  ([#612](https://github.com/nsidc/earthaccess/issues/612))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
 
 ## [v0.14.0] - 2025-02-11
 
