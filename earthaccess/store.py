@@ -623,6 +623,16 @@ class Store(object):
             )
         )
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
+        for links in data_links:
+            if "opendap" in links and links.endswith(".html"):
+                links = links.replace(".html", "")
+            local_filename = links.split("/")[-1]
+            path = local_path / Path(local_filename)
+
+            if path.exists():
+                data_links.remove(links)
+            else:
+                pass        
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
