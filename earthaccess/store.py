@@ -622,17 +622,7 @@ class Store(object):
                 for granule in granules
             )
         )
-        total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
-        for links in data_links:
-            if "opendap" in links and links.endswith(".html"):
-                links = links.replace(".html", "")
-            local_filename = links.split("/")[-1]
-            path = local_path / Path(local_filename)
-
-            if path.exists():
-                data_links.remove(links)
-            else:
-                pass        
+        total_size = round(sum(granule.size() for granule in granules) / 1024, 2)    
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
@@ -647,7 +637,16 @@ class Store(object):
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             local_path.mkdir(parents=True, exist_ok=True)
+            for links in data_links:
+                if "opendap" in links and links.endswith(".html"):
+                    links = links.replace(".html", "")
+                local_filename = links.split("/")[-1]
+                path = local_path / Path(local_filename)
 
+                if path.exists():
+                    data_links.remove(links)
+                else:
+                    pass    
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, str(local_path))
