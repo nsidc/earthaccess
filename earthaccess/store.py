@@ -1,3 +1,4 @@
+import os
 import datetime
 import logging
 import threading
@@ -621,11 +622,17 @@ class Store(object):
                 granule.data_links(access=access, in_region=self.in_region)
                 for granule in granules
             )
-        )
+        )   
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)    
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
+        for file in data_links:
+                file_mod = file.split('/')[-1]
+                file_name = local_path / Path(file_mod).name
+                raise ValueError(file,  file_name)
+                if os.path.exists(file_name):
+                    data_links.remove(file)
         if access == "direct":
             if endpoint is not None:
                 logger.info(
@@ -637,16 +644,7 @@ class Store(object):
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             local_path.mkdir(parents=True, exist_ok=True)
-            for links in data_links:
-                if "opendap" in links and links.endswith(".html"):
-                    links = links.replace(".html", "")
-                local_filename = links.split("/")[-1]
-                path = local_path / Path(local_filename)
 
-                if path.exists():
-                    data_links.remove(links)
-                else:
-                    pass    
             # TODO: make this async
             for file in data_links:
                 s3_fs.get(file, str(local_path))
