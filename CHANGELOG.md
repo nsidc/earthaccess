@@ -23,6 +23,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - By default, _disable_ progress bars during downloading.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
+
+### Fixed
 - Corrected Harmony typo in notebooks/Demo.ipynb([stelios-c](https://github.com/stelios-c))
 
 ## [v0.14.0] - 2025-02-11
