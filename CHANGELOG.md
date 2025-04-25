@@ -25,7 +25,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([@Sherwin-14](https://github.com/Sherwin-14))
 
 ### Fixed
-- Corrected Harmony typo in notebooks/Demo.ipynb([stelios-c](https://github.com/stelios-c))
+- Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
 
 ## [v0.14.0] - 2025-02-11
 
