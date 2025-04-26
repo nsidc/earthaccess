@@ -1,4 +1,4 @@
-import os
+import glob
 import datetime
 import logging
 import threading
@@ -616,7 +616,7 @@ class Store(object):
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
         access = "direct" if (cloud_hosted and self.in_region) else "external"
-        data_links = list(
+        _data_links = list(
             # we are not in-region
             chain.from_iterable(
                 granule.data_links(access=access, in_region=self.in_region)
@@ -627,12 +627,14 @@ class Store(object):
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
-        for file in data_links:
-                file_mod = file.split('/')[-1]
-                file_name = local_path / Path(file_mod).name
-                raise ValueError(file,  file_name)
-                if os.path.exists(file_name):
-                    data_links.remove(file)
+
+        for file in _data_links:
+            file_mod = file.split('/')[-1]
+            temp_local_path = local_path.parent.parent / 'data' 
+            file_paths = map(lambda x: x.split('/')[-1], list(glob.iglob(str(temp_local_path) + '/*/*', recursive = True)))
+            if not (file_mod in file_paths):
+               data_links.append(file)
+
         if access == "direct":
             if endpoint is not None:
                 logger.info(
