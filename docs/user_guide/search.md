@@ -22,7 +22,7 @@ To search for collections or datasets use `search_datasets`.  To search for indi
 
 `search_datasets` and `search_data` have a common set of search parameters, as well as some parameters that are only available to `search_datasets` and `search_data`.  See the table of search parameters below to see common and unique parameter keywords.
 
-
+`search_datasets` and `search_data` 
 ## Search for datasets using `search_datasets`
 
 Show basic search
@@ -31,6 +31,54 @@ search by shortname and time range
 
 spatial searches bounding-box, point, polygon, circle, line - separate section
 
+`search_datasets` returns a DataCollection object (a json) with the following methods
+
+
+A summary
+```
+In [22]: result[0].summary()
+Out[22]: 
+{'short-name': 'ATL07',
+ 'concept-id': 'C2564625052-NSIDC_ECS',
+ 'version': '006',
+ 'file-type': "[{'FormatType': 'Native', 'Format': 'HDF5', 'FormatDescription': 'HTTPS'}]",
+ 'get-data': ['https://n5eil01u.ecs.nsidc.org/ATLAS/ATL07.006/',
+  'https://search.earthdata.nasa.gov/search?q=ATL07+V006',
+  'https://nsidc.org/data/data-access-tool/ATL07/versions/6/']}
+```
+
+Services
+This is a really big object
+```
+In [24]: result[0].services()
+```
+
+S3 bucket
+Currently empty or is it because not cloud-hosted
+```
+result[0].s3_bucket()
+```
+
+cloud_hosted
+```
+result[0].cloud_hosted
+```
+
+landing page is empty for example
+```
+In [24]: result[0].landing_page()
+```
+
+Data type
+```
+In [24]: result[0].data_type()
+Out[24]: "[{'FormatType': 'Native', 'Format': 'HDF5', 'FormatDescription': 'HTTPS'}]"
+```
+
+Abstract
+```
+result[0].abstract()
+```
 
 ### Parameters
 
