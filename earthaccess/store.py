@@ -1,5 +1,5 @@
-import glob
 import datetime
+import glob
 import logging
 import threading
 import traceback
@@ -588,13 +588,16 @@ class Store(object):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3_filesystem(provider=provider)
 
-            _data_links = []
-            
+            _data_links: List = []
+
             for file in data_links:
-                file_mod = file.split('/')[-1]
-                temp_local_path = local_path.parent.parent / 'data' 
-                file_paths = map(lambda x: x.split('/')[-1], set(glob.iglob(str(temp_local_path) + '/*/*', recursive = True)))
-                if not (file_mod in file_paths):
+                file_mod = file.split("/")[-1]
+                temp_local_path = local_path.parent.parent / "data"
+                file_paths = map(
+                    lambda x: x.split("/")[-1],
+                    set(glob.iglob(str(temp_local_path) + "/*/*", recursive=True)),
+                )
+                if file_mod not in file_paths:
                     _data_links.append(file)
 
             # TODO: make this parallel or concurrent
@@ -632,18 +635,21 @@ class Store(object):
                 granule.data_links(access=access, in_region=self.in_region)
                 for granule in granules
             )
-        )   
-        total_size = round(sum(granule.size() for granule in granules) / 1024, 2)    
+        )
+        total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
 
         for file in _data_links:
-            file_mod = file.split('/')[-1]
-            temp_local_path = local_path.parent.parent / 'data' 
-            file_paths = map(lambda x: x.split('/')[-1], set(glob.iglob(str(temp_local_path) + '/*/*', recursive = True)))
-            if not (file_mod in file_paths):
-               data_links.append(file)
+            file_mod = file.split("/")[-1]
+            temp_local_path = local_path.parent.parent / "data"
+            file_paths = map(
+                lambda x: x.split("/")[-1],
+                set(glob.iglob(str(temp_local_path) + "/*/*", recursive=True)),
+            )
+            if file_mod not in file_paths:
+                data_links.append(file)
 
         if access == "direct":
             if endpoint is not None:
