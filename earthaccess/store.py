@@ -587,8 +587,18 @@ class Store(object):
         if self.in_region and data_links[0].startswith("s3"):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3_filesystem(provider=provider)
-            # TODO: make this parallel or concurrent
+
+            _data_links = []
+            
             for file in data_links:
+                file_mod = file.split('/')[-1]
+                temp_local_path = local_path.parent.parent / 'data' 
+                file_paths = map(lambda x: x.split('/')[-1], set(glob.iglob(str(temp_local_path) + '/*/*', recursive = True)))
+                if not (file_mod in file_paths):
+                    _data_links.append(file)
+
+            # TODO: make this parallel or concurrent
+            for file in _data_links:
                 s3_fs.get(file, str(local_path))
                 file_name = local_path / Path(file).name
                 logger.info(f"Downloaded: {file_name}")
@@ -631,7 +641,7 @@ class Store(object):
         for file in _data_links:
             file_mod = file.split('/')[-1]
             temp_local_path = local_path.parent.parent / 'data' 
-            file_paths = map(lambda x: x.split('/')[-1], list(glob.iglob(str(temp_local_path) + '/*/*', recursive = True)))
+            file_paths = map(lambda x: x.split('/')[-1], set(glob.iglob(str(temp_local_path) + '/*/*', recursive = True)))
             if not (file_mod in file_paths):
                data_links.append(file)
 
