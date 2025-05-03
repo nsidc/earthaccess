@@ -119,8 +119,7 @@ flowchart TD
   start{"`Followed
   issue
   template?`"}
-  start ==NO==> close1[Change
-  to draft and ask to follow template]
+  start ==NO==> close1[Request needed information from reporter and update issue on behalf of reporter]
   start == YES ==> dupe{Is duplicate?}
   dupe == YES ==> close2[Close and point to duplicate]
   dupe == NO ==> repro{Has proper reproduction?}
@@ -132,11 +131,11 @@ flowchart TD
   real == YES ==> real2["1. Remove 'pending triage' label 2. Add related feature label if applicable (e.g. 'feat: ssr') 3. Add priority and meta labels (see below)"]
   real2 ==> unusable{Does the bug make earthaccess unusable?}
   unusable == YES ==> maj{Does the bug affect the majority of earthaccess users?}
-  maj == YES ==> p5[p5: urgent]
-  maj == NO ==> p4[p4: important]
+  maj == YES ==> close4[Urgent]
+  maj == NO ==>  close5[Important]
   unusable == NO ==> workarounds{Are there workarounds for the bug?}
-  workarounds == NO ==> p3[p3: minor bug]
-  workarounds == YES ==> p2[p2: edge case has workaround]
+  workarounds == NO ==>  close6[Minor Bug]
+  workarounds == YES ==> close7[Edge case has workaround]
 
   %% Link Color %%
     linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
