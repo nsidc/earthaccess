@@ -1,5 +1,4 @@
 import datetime
-import glob
 import logging
 import threading
 import traceback
@@ -588,24 +587,13 @@ class Store(object):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3_filesystem(provider=provider)
 
-            _data_links: List = []
-
-            for file in data_links:
-                file_mod = file.split("/")[-1]
-                temp_local_path = local_path.parent.parent / "data"
-                file_paths = map(
-                    lambda x: x.split("/")[-1],
-                    set(glob.iglob(str(temp_local_path) + "/*/*", recursive=True)),
-                )
-                if file_mod not in file_paths:
-                    _data_links.append(file)
-
             # TODO: make this parallel or concurrent
-            for file in _data_links:
-                s3_fs.get(file, str(local_path))
+            for file in data_links:
                 file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
+                if not file_name.exists():
+                    s3_fs.get(file, str(local_path))
+                    logger.info(f"Downloaded: {file_name}")
+                    downloaded_files.append(file_name)
             return downloaded_files
 
         else:
@@ -629,7 +617,7 @@ class Store(object):
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
         access = "direct" if (cloud_hosted and self.in_region) else "external"
-        _data_links = list(
+        data_links = list(
             # we are not in-region
             chain.from_iterable(
                 granule.data_links(access=access, in_region=self.in_region)
@@ -640,17 +628,6 @@ class Store(object):
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
-
-        for file in _data_links:
-            file_mod = file.split("/")[-1]
-            temp_local_path = local_path.parent.parent / "data"
-            file_paths = map(
-                lambda x: x.split("/")[-1],
-                set(glob.iglob(str(temp_local_path) + "/*/*", recursive=True)),
-            )
-            if file_mod not in file_paths:
-                data_links.append(file)
-
         if access == "direct":
             if endpoint is not None:
                 logger.info(
@@ -665,10 +642,11 @@ class Store(object):
 
             # TODO: make this async
             for file in data_links:
-                s3_fs.get(file, str(local_path))
                 file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
+                if not file_name.exists():
+                    s3_fs.get(file, str(local_path))
+                    logger.info(f"Downloaded: {file_name}")
+                    downloaded_files.append(file_name)
             return downloaded_files
         else:
             # if the data are cloud-based, but we are not in AWS,
