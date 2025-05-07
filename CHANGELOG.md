@@ -29,8 +29,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 - Updated bug and triage label names in bug Issue template.
-  ([#998](https://github.com/nsidc/earthaccess/pull/998)
-  ([@asteiker](https://github.com/asteiker)
+  ([#998](https://github.com/nsidc/earthaccess/pull/998))
+  ([@asteiker](https://github.com/asteiker))
 ## [v0.14.0] - 2025-02-11
 
 ### Added
