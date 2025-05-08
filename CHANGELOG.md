@@ -17,6 +17,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
 ([#602](https://github.com/nsidc/earthaccess/issues/602))
 ([@rwegener2](https://github.com/rwegener2))
+- `search_data` and `search_datasets` now accept query parameters `revision_date`, `created_at`, `production_date`, `point`, `line`, `polygon`.
+([#1007](https://github.com/nsidc/earthaccess/issues/1007))
+([@ninsbl](https://github.com/ninsbl))
+
 
 ### Changed
 
