@@ -234,7 +234,7 @@ def download(
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[str]:
-    """Retrieves data granules from a remote storage system.
+    """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
        * If we run this in the cloud, we will be using S3 to move data to `local_path`.
        * If we run it outside AWS (us-west-2 region) and the dataset is cloud hosted,

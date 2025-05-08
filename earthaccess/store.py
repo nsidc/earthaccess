@@ -586,12 +586,14 @@ class Store(object):
         if self.in_region and data_links[0].startswith("s3"):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3_filesystem(provider=provider)
+
             # TODO: make this parallel or concurrent
             for file in data_links:
-                s3_fs.get(file, str(local_path))
                 file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
+                if not file_name.exists():
+                    s3_fs.get(file, str(local_path))
+                    logger.info(f"Downloaded: {file_name}")
+                    downloaded_files.append(file_name)
             return downloaded_files
 
         else:
@@ -640,10 +642,11 @@ class Store(object):
 
             # TODO: make this async
             for file in data_links:
-                s3_fs.get(file, str(local_path))
                 file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
+                if not file_name.exists():
+                    s3_fs.get(file, str(local_path))
+                    logger.info(f"Downloaded: {file_name}")
+                    downloaded_files.append(file_name)
             return downloaded_files
         else:
             # if the data are cloud-based, but we are not in AWS,
