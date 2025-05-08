@@ -61,6 +61,18 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **has_granules**: if true, only return collections with granules
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
+            * **revision_date**: a tuple representing revision date bounds in the form
+              `(date_from, date_to)`
+            * **created_at**: a tuple representing creation time bounds in the form
+              `(date_from, date_to)`
+            * **production_date**: a tuple representing production date bounds in the form
+              `(date_from, date_to)`
+            * **point**: a tuple representing longitude and latitude of a geographic point
+              in the form of `(lon, lat)`
+            * **line**: a list of geographic point coordinates longitude and latitude
+              describing a line in the form `[lon, lat, lon, lat, ...]`
+            * **polygon**: a list of geographic point coordinates longitude and latitude
+              describing a polygon in the form `[lon, lat, lon, lat, ...]`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
@@ -112,6 +124,18 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
+            * **revision_date**: a tuple representing revision date bounds in the form
+              `(date_from, date_to)`
+            * **created_at**: a tuple representing creation time bounds in the form
+              `(date_from, date_to)`
+            * **production_date**: a tuple representing production date bounds in the form
+              `(date_from, date_to)`
+            * **point**: a tuple representing longitude and latitude of a geographic point
+              in the form of `(lon, lat)`
+            * **line**: a list of geographic point coordinates longitude and latitude
+              describing a line in the form `[lon, lat, lon, lat, ...]`
+            * **polygon**: a list of geographic point coordinates longitude and latitude
+              describing a polygon in the form `[lon, lat, lon, lat, ...]`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
 
