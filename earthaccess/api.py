@@ -1,11 +1,22 @@
 import logging
+from pathlib import Path
 
 import requests
 import s3fs
 from fsspec import AbstractFileSystem
-from typing_extensions import Any, Dict, List, Optional, Union, deprecated
+from typing_extensions import (
+    Any,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Union,
+    deprecated,
+)
 
 import earthaccess
+from earthaccess.exceptions import LoginStrategyUnavailable
+from earthaccess.services import DataServices
 
 from .auth import Auth
 from .results import DataCollection, DataGranule
@@ -47,6 +58,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
             * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
+            * **has_granules**: if true, only return collections with granules
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
             * **revision_date**: a tuple representing revision date bounds in the form
@@ -154,7 +166,39 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
     return query.get_all()
 
 
-def login(strategy: str = "all", persist: bool = False, system: System = PROD) -> Auth:
+def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
+    """Search the NASA CMR for Services matching criteria.
+
+    See <https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#service>.
+
+    Parameters:
+        count:
+            maximum number of services to fetch (if less than 1, all services
+            matching specified criteria are fetched [default])
+        kwargs:
+            keyword arguments accepted by the CMR for searching services
+
+    Returns:
+        list of services (possibly empty) matching specified criteria, in UMM
+        JSON format
+
+    Examples:
+        ```python
+        services = search_services(provider="POCLOUD", keyword="COG")
+        ```
+    """
+    query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
+    hits = query.hits()
+    logger.info(f"Services found: {hits}")
+
+    return query.get(hits if count < 1 else min(count, hits))
+
+
+def login(
+    strategy: str = "all",
+    persist: bool = False,
+    system: System = PROD,
+) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Parameters:
@@ -170,6 +214,10 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
 
     Returns:
         An instance of Auth.
+
+    Raises:
+        LoginAttemptFailure: If the NASA Earthdata Login service rejects
+            credentials.
     """
     # Set the underlying Auth object's earthdata system,
     # before triggering the getattr function for `__auth__`.
@@ -179,16 +227,23 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
         for strategy in ["environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
-                    strategy=strategy, persist=persist, system=system
+                    strategy=strategy,
+                    persist=persist,
+                    system=system,
                 )
-            except Exception:
-                pass
+            except LoginStrategyUnavailable as err:
+                logger.debug(err)
+                continue
 
             if earthaccess.__auth__.authenticated:
                 earthaccess.__store__ = Store(earthaccess.__auth__)
                 break
     else:
-        earthaccess.__auth__.login(strategy=strategy, persist=persist, system=system)
+        earthaccess.__auth__.login(
+            strategy=strategy,
+            persist=persist,
+            system=system,
+        )
         if earthaccess.__auth__.authenticated:
             earthaccess.__store__ = Store(earthaccess.__auth__)
 
@@ -197,9 +252,11 @@ def login(strategy: str = "all", persist: bool = False, system: System = PROD) -
 
 def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
-    local_path: Optional[str],
+    local_path: Optional[Union[Path, str]] = None,
     provider: Optional[str] = None,
     threads: int = 8,
+    *,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[str]:
     """Retrieves data granules from a remote storage system.
 
@@ -209,9 +266,16 @@ def download(
 
     Parameters:
         granules: a granule, list of granules, a granule link (HTTP), or a list of granule links (HTTP)
-        local_path: local directory to store the remote data granules
+        local_path: Local directory to store the remote data granules.  If not
+            supplied, defaults to a subdirectory of the current working directory
+            of the form `data/YYYY-MM-DD-UUID`, where `YYYY-MM-DD` is the year,
+            month, and day of the current date, and `UUID` is the last 6 digits
+            of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+            See pqdm documentation for available options. Default is to use immediate exception behavior
+            and the number of jobs specified by the `threads` parameter.
 
     Returns:
         List of downloaded files
@@ -219,39 +283,50 @@ def download(
     Raises:
         Exception: A file download failed.
     """
-    provider = _normalize_location(provider)
+    provider = _normalize_location(str(provider))
+
     if isinstance(granules, DataGranule):
         granules = [granules]
     elif isinstance(granules, str):
         granules = [granules]
+
     try:
-        results = earthaccess.__store__.get(granules, local_path, provider, threads)
+        return earthaccess.__store__.get(
+            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+        )
     except AttributeError as err:
         logger.error(
             f"{err}: You must call earthaccess.login() before you can download data"
         )
-        return []
-    return results
+
+    return []
 
 
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    *,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
-    """Returns a list of fsspec file-like objects that can be used to access files
+    """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
 
     Parameters:
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+        pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+            See pqdm documentation for available options. Default is to use immediate exception behavior
+            and the number of jobs specified by the `threads` parameter.
 
     Returns:
-        a list of s3fs "file pointers" to s3 files.
+        A list of "file pointers" to remote (i.e. s3 or https) files.
     """
-    provider = _normalize_location(provider)
-    results = earthaccess.__store__.open(granules=granules, provider=provider)
-    return results
+    return earthaccess.__store__.open(
+        granules=granules,
+        provider=_normalize_location(provider),
+        pqdm_kwargs=pqdm_kwargs,
+    )
 
 
 def get_s3_credentials(
@@ -374,6 +449,7 @@ def get_s3_filesystem(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
     results: Optional[DataGranule] = None,
+    endpoint: Optional[str] = None,
 ) -> s3fs.S3FileSystem:
     """Return an `s3fs.S3FileSystem` for direct access when running within the AWS us-west-2 region.
 
@@ -383,18 +459,29 @@ def get_s3_filesystem(
             If the DAAC is specified, there is no need to use provider.
         results: A list of results from search_data().
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
+        endpoint: URL of a cloud provider credentials endpoint to be used for obtaining
+            AWS S3 access credentials.
 
     Returns:
         An authenticated s3fs session valid for 1 hour.
     """
     daac = _normalize_location(daac)
     provider = _normalize_location(provider)
-    if results is not None:
+    if results:
         endpoint = results[0].get_s3_credentials_endpoint()
-        if endpoint is not None:
+        if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
-            return session
-    session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+        else:
+            raise ValueError("No s3 credentials specified in the given DataGranule")
+    elif endpoint:
+        session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
+    elif daac or provider:
+        session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+    else:
+        raise ValueError(
+            "Invalid set of input arguments given. Please provide either "
+            "a valid result, an endpoint, a daac, or a provider."
+        )
     return session
 
 

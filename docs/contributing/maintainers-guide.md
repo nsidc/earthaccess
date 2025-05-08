@@ -8,7 +8,7 @@ This page offers guidance to project maintainers regarding our setup procedures,
 
 If you are interested in becoming a maintainer, you can join our community. Maintainers have several important responsibilities, so please read on to understand the role.
 
-Also, if you're interested in helping managing issues with labels and interacting with incoming requests, you can have a "triager" role!
+Also, if you're interested in helping manage issues with labels and interacting with incoming requests, you can have a "triager" role!
 
 To get permissions, please start by participating on GitHub by answering questions, reviewing PRs, or contributing code or documentation. Once you're feeling comfortable, you can ask any of our maintainers for permissions by `@`ing them on GitHub.
 
@@ -16,7 +16,7 @@ To get permissions, please start by participating on GitHub by answering questio
 
 1. As a maintainer, there is no strict time obligation, as we understand that everyone's ability to commit can fluctuate. However, we do expect maintainers to communicate openly and transparently with the team and the community.
 
-2. As a maintainer, you are expected to uphold a positive and inclusive team culture. This includes following the guidelines outlined in the [Openscapes team culture page](https://openscapes.github.io/series/core-lessons/team-culture.html) and the [recorded psychological safety talk](https://www.youtube.com/watch?v=rzi-qkl8u5M) . By doing so, you can help ensure that all team members and contributors feel safe, respected, and valued.
+2. As a maintainer, you are expected to uphold a positive team culture. This includes following the guidelines outlined in the [Openscapes team culture page](https://openscapes.github.io/series/core-lessons/team-culture.html) and the [recorded psychological safety talk](https://www.youtube.com/watch?v=rzi-qkl8u5M) . By doing so, you can help ensure that all team members and contributors feel safe, respected, and valued.
 
 
 ### Maintainer Processes Beyond Regular Contributing
@@ -44,11 +44,8 @@ main: This is the main branch, which is consistently tested and prepared for rel
 
 ## Continuous Integration & Delivery
 
-The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`. Here we briefly summarize the functions of the files in the `./ci/` directory.
+The GitHub Actions CI services handle the project's building, testing, and management across Linux, macOS, and Windows platforms. The CI configuration files can be found in the `./.github/workflows/`.
 
-`environment-dev.yml` - The environment configuration file specifies dependencies for Python development.
-
-`environment-mindeps.yaml`- Specifies an environment with the minimum supported dependency versions to detect backwards-incompatible code.
 
 ## Continuous Documentation
 

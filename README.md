@@ -51,7 +51,7 @@ During several workshops organized by NASA Openscapes, the need to provide easy-
 To install `earthaccess` go to your terminal and install it using `pip`:
 
 ```
-pip install earthaccess
+python -m pip install earthaccess
 ```
 
 
@@ -80,9 +80,26 @@ files = earthaccess.download(results, "/tmp/my-download-folder")
 Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start/) for more details.
 
 
+## Help!
+
+We're here for you!
+**Before you open a new issue/discussion/topic, please search to see if anyone else has
+opened a similar one.**
+
+:bug: If you've found a bug or mistake, please use
+[GitHub issues](https://github.com/nsidc/earthaccess/issues).
+
+:bulb: If you'd like to request a feature or ask a question, please use
+[GitHub discussions](https://github.com/nsidc/earthaccess/discussions).
+
+:left_speech_bubble: If you prefer real-time chat, please visit us in our
+[Zulip chat space](https://earthaccess.zulipchat.com)!
+We'd love to see you there! :open_hands:
+
+
 ## Compatibility
 
-Only **Python 3.8+** is supported.
+The _minimum_ supported Python version is **3.11**.
 
 
 ## How to Contribute to `earthaccess`

@@ -2,7 +2,10 @@ import json
 import uuid
 from typing import Any, Dict, List, Optional, Union
 
+import earthaccess
+
 from .formatters import _repr_granule_html
+from .services import DataServices
 
 
 class CustomDict(dict):
@@ -178,6 +181,16 @@ class DataCollection(CustomDict):
             return self["umm"]["DirectDistributionInformation"]
         return {}
 
+    def services(self) -> Dict[Any, List[Dict[str, Any]]]:
+        """Return list of services available for this collection."""
+        services = self.get("meta", {}).get("associations", {}).get("services", [])
+        queries = (
+            DataServices(auth=earthaccess.__auth__).parameters(concept_id=service)
+            for service in services
+        )
+
+        return {service: query.get_all() for service, query in zip(services, queries)}
+
     def __repr__(self) -> str:
         return json.dumps(
             self.render_dict, sort_keys=False, indent=2, separators=(",", ": ")
@@ -227,9 +240,9 @@ class DataGranule(CustomDict):
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
-        Collection: {self['umm']['CollectionReference']}
-        Spatial coverage: {self['umm']['SpatialExtent']}
-        Temporal coverage: {self['umm']['TemporalExtent']}
+        Collection: {self["umm"]["CollectionReference"]}
+        Spatial coverage: {self["umm"]["SpatialExtent"]}
+        Temporal coverage: {self["umm"]["TemporalExtent"]}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
@@ -243,6 +256,9 @@ class DataGranule(CustomDict):
         """
         granule_html_repr = _repr_granule_html(self)
         return granule_html_repr
+
+    def __hash__(self) -> int:  # type: ignore[override]
+        return hash(self["meta"]["concept-id"])
 
     def get_s3_credentials_endpoint(self) -> Union[str, None]:
         for link in self["umm"]["RelatedUrls"]:
@@ -287,7 +303,7 @@ class DataGranule(CustomDict):
             elif link.startswith("https://") and (
                 "cumulus" in link or "protected" in link
             ):
-                s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
+                s3_links.append(f"s3://{links[0].split('nasa.gov/')[1]}")
         return s3_links
 
     def data_links(

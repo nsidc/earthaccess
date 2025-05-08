@@ -56,7 +56,7 @@ def redact_key_values(keys_to_redact):
 
 class TestResults(VCRTestCase):
     def _get_vcr(self, **kwargs):
-        myvcr = super(TestResults, self)._get_vcr(**kwargs)
+        myvcr = super()._get_vcr(**kwargs)
         myvcr.cassette_library_dir = "tests/unit/fixtures/vcr_cassettes"
         myvcr.decode_compressed_response = True
         # Header matching is not set by default, we need that to test the
@@ -95,6 +95,17 @@ class TestResults(VCRTestCase):
         myvcr.before_record_request = redact_login_request
 
         return myvcr
+
+    def test_no_results(self):
+        """If we search for a collection that doesn't exist, we should get no results."""
+        granules = earthaccess.search_data(
+            # STAC collection name; correct short name is OPERA_L3_DSWX-HLS_V1
+            # Example discussed in: https://github.com/nsidc/earthaccess/pull/839
+            short_name="OPERA_L3_DSWX-HLS_V1_1.0",
+            bounding_box=(-95.19, 30.59, -94.99, 30.79),
+            temporal=("2024-04-30", "2024-05-31"),
+        )
+        assert len(granules) == 0
 
     def test_data_links(self):
         granules = earthaccess.search_data(

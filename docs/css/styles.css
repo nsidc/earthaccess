@@ -1,2 +1,9 @@
 .details .open {
 }
+
+.tabbed-set {
+  padding: 5px;
+  border: 1px lightgrey;
+  border-radius: 2px;
+  border-style: solid;
+}

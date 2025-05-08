@@ -1,6 +1,6 @@
 import datetime
 import logging
-import shutil
+import threading
 import traceback
 from functools import lru_cache
 from itertools import chain
@@ -18,7 +18,7 @@ from typing_extensions import deprecated
 
 import earthaccess
 
-from .auth import Auth
+from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -27,7 +27,21 @@ logger = logging.getLogger(__name__)
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
-    def __init__(self, f: fsspec.AbstractFileSystem, granule: DataGranule) -> None:
+    """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
+
+    def __init__(
+        self, f: fsspec.spec.AbstractBufferedFile, granule: DataGranule
+    ) -> None:
+        """EarthAccessFile connects an Earthdata search result with an open file-like object.
+
+        No methods exist on the class, which passes all attribute and method calls
+        directly to the file-like object given during initialization. An instance of
+        this class can be treated like that file-like object itself.
+
+        Parameters:
+            f: a file-like object
+            granule: a granule search result
+        """
         self.f = f
         self.granule = granule
 
@@ -43,20 +57,27 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         )
 
     def __repr__(self) -> str:
-        return str(self.f)
+        return repr(self.f)
 
 
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
-    threads: Optional[int] = 8,
-) -> List[fsspec.AbstractFileSystem]:
-    def multi_thread_open(data: tuple) -> EarthAccessFile:
-        urls, granule = data
-        return EarthAccessFile(fs.open(urls), granule)
+    *,
+    pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+) -> List[fsspec.spec.AbstractBufferedFile]:
+    def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
+        url, granule = data
+        return EarthAccessFile(fs.open(url), granule)  # type: ignore
 
-    fileset = pqdm(url_mapping.items(), multi_thread_open, n_jobs=threads)
-    return fileset
+    pqdm_kwargs = {
+        "exception_behaviour": "immediate",
+        "n_jobs": 8,
+        "disable": True,
+        **(pqdm_kwargs or {}),
+    }
+
+    return pqdm(url_mapping.items(), multi_thread_open, **pqdm_kwargs)
 
 
 def make_instance(
@@ -99,6 +120,7 @@ class Store(object):
         Parameters:
             auth: Auth instance to download and access data.
         """
+        self.thread_locals = threading.local()
         if auth.authenticated is True:
             self.auth = auth
             self._s3_credentials: Dict[
@@ -107,7 +129,7 @@ class Store(object):
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
-            self.set_requests_session(oauth_profile)
+            self.set_requests_session(oauth_profile, bearer_token=True)
             if pre_authorize:
                 # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
@@ -163,7 +185,7 @@ class Store(object):
         return False
 
     def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = False
+        self, url: str, method: str = "get", bearer_token: bool = True
     ) -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
 
@@ -304,38 +326,42 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
+    def get_requests_session(self) -> SessionWithHeaderRedirection:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
 
         This HTTPS session can be used to download granules if we want to use a direct,
         lower level API.
 
-        Parameters:
-            bearer_token: if true, will be used for authenticated queries on CMR
-
         Returns:
             requests Session
         """
-        return self.auth.get_session()
+        if hasattr(self, "_http_session"):
+            return self._http_session
+        else:
+            raise AttributeError("The requests session hasn't been set up yet.")
 
     def open(
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-    ) -> List[Any]:
-        """Returns a list of fsspec file-like objects that can be used to access files
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    ) -> List[fsspec.spec.AbstractBufferedFile]:
+        """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
 
         Parameters:
-            granules: a list of granules(DataGranule) instances or list of URLs,
-                e.g. s3://some-granule
-            provider: an option
+            granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
+                If a list of URLs is passed, we need to specify the data provider.
+            provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior.
 
         Returns:
-            A list of s3fs "file pointers" to s3 files.
+            A list of "file pointers" to remote (i.e. s3 or https) files.
         """
         if len(granules):
-            return self._open(granules, provider)
+            return self._open(granules, provider, pqdm_kwargs=pqdm_kwargs)
         return []
 
     @singledispatchmethod
@@ -343,18 +369,9 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
-        """Returns a list of fsspec file-like objects that can be used to access files
-        hosted on S3 or HTTPS by third party libraries like xarray.
-
-        Parameters:
-            granules: a list of granules(DataGranule) instances or list of URLs,
-                e.g. s3://some-granule
-            provider: an option
-
-        Returns:
-            A list of s3fs "file pointers" to s3 files.
-        """
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
     @_open.register
@@ -362,7 +379,8 @@ class Store(object):
         self,
         granules: List[DataGranule],
         provider: Optional[str] = None,
-        threads: Optional[int] = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -395,7 +413,7 @@ class Store(object):
                     fileset = _open_files(
                         url_mapping,
                         fs=s3_fs,
-                        threads=threads,
+                        pqdm_kwargs=pqdm_kwargs,
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -404,19 +422,20 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     ) from e
             else:
-                fileset = self._open_urls_https(url_mapping, threads=threads)
-            return fileset
+                fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs)
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(url_mapping, threads=threads)
-            return fileset
+            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs)
+
+        return fileset
 
     @_open.register
     def _open_urls(
         self,
         granules: List[str],
         provider: Optional[str] = None,
-        threads: Optional[int] = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
 
@@ -443,7 +462,7 @@ class Store(object):
                         fileset = _open_files(
                             url_mapping,
                             fs=s3_fs,
-                            threads=threads,
+                            pqdm_kwargs=pqdm_kwargs,
                         )
                     except Exception as e:
                         raise RuntimeError(
@@ -463,15 +482,17 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(url_mapping, threads)
+            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs)
             return fileset
 
     def get(
         self,
         granules: Union[List[DataGranule], List[str]],
-        local_path: Union[Path, str, None] = None,
+        local_path: Optional[Union[Path, str]] = None,
         provider: Optional[str] = None,
         threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -484,26 +505,36 @@ class Store(object):
 
         Parameters:
             granules: A list of granules(DataGranule) instances or a list of granule links (HTTP).
-            local_path: Local directory to store the remote data granules.
+            local_path: Local directory to store the remote data granules.  If not
+                supplied, defaults to a subdirectory of the current working directory
+                of the form `data/YYYY-MM-DD-UUID`, where `YYYY-MM-DD` is the year,
+                month, and day of the current date, and `UUID` is the last 6 digits
+                of a UUID4 value.
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             List of downloaded files
         """
+        if not granules:
+            raise ValueError("List of URLs or DataGranule instances expected")
+
         if local_path is None:
-            today = datetime.datetime.today().strftime("%Y-%m-%d")
+            today = datetime.datetime.now().strftime("%Y-%m-%d")
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
-        elif isinstance(local_path, str):
-            local_path = Path(local_path)
 
-        if len(granules):
-            files = self._get(granules, local_path, provider, threads)
-            return files
-        else:
-            raise ValueError("List of URLs or DataGranule instances expected")
+        pqdm_kwargs = {
+            "n_jobs": threads,
+            "disable": True,
+            **(pqdm_kwargs or {}),
+        }
+
+        return self._get(granules, Path(local_path), provider, pqdm_kwargs=pqdm_kwargs)
 
     @singledispatchmethod
     def _get(
@@ -511,7 +542,8 @@ class Store(object):
         granules: Union[List[DataGranule], List[str]],
         local_path: Path,
         provider: Optional[str] = None,
-        threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         """Retrieves data granules from a remote storage system.
 
@@ -526,8 +558,9 @@ class Store(object):
             granules: A list of granules (DataGranule) instances or a list of granule links (HTTP).
             local_path: Local directory to store the remote data granules
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
-            threads: Parallel number of threads to use to download the files;
-                adjust as necessary, default = 8.
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             None
@@ -540,7 +573,8 @@ class Store(object):
         granules: List[str],
         local_path: Path,
         provider: Optional[str] = None,
-        threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         data_links = granules
         downloaded_files: List = []
@@ -562,7 +596,9 @@ class Store(object):
 
         else:
             # if we are not in AWS
-            return self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(
+                data_links, local_path, pqdm_kwargs=pqdm_kwargs
+            )
 
     @_get.register
     def _get_granules(
@@ -570,7 +606,8 @@ class Store(object):
         granules: List[DataGranule],
         local_path: Path,
         provider: Optional[str] = None,
-        threads: int = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[str]:
         data_links: List = []
         downloaded_files: List = []
@@ -585,7 +622,7 @@ class Store(object):
                 for granule in granules
             )
         )
-        total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
+        total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
         )
@@ -611,7 +648,30 @@ class Store(object):
         else:
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
-            return self._download_onprem_granules(data_links, local_path, threads)
+            return self._download_onprem_granules(
+                data_links, local_path, pqdm_kwargs=pqdm_kwargs
+            )
+
+    def _clone_session_in_local_thread(
+        self, original_session: SessionWithHeaderRedirection
+    ) -> None:
+        """Clone the original session and store it in the local thread context.
+
+        This method creates a new session that replicates the headers, cookies, and authentication settings
+        from the provided original session. The new session is stored in a thread-local storage.
+
+        Parameters:
+            original_session (SessionWithHeaderRedirection): The session to be cloned.
+
+        Returns:
+            None
+        """
+        if not hasattr(self.thread_locals, "local_thread_session"):
+            local_thread_session = SessionWithHeaderRedirection()
+            local_thread_session.headers.update(original_session.headers)
+            local_thread_session.cookies.update(original_session.cookies)
+            local_thread_session.auth = original_session.auth
+            self.thread_locals.local_thread_session = local_thread_session
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
@@ -630,17 +690,18 @@ class Store(object):
         path = directory / Path(local_filename)
         if not path.exists():
             try:
-                session = self.auth.get_session()
-                with session.get(
-                    url,
-                    stream=True,
-                    allow_redirects=True,
-                ) as r:
+                original_session = self.get_requests_session()
+                # This reuses the auth cookie, we make sure we only authenticate N threads instead
+                # of one per file, see #913
+                self._clone_session_in_local_thread(original_session)
+                session = self.thread_locals.local_thread_session
+                with session.get(url, stream=True, allow_redirects=True) as r:
                     r.raise_for_status()
                     with open(path, "wb") as f:
-                        # This is to cap memory usage for large files at 1MB per write to disk per thread
+                        # Cap memory usage for large files at 1MB per write to disk per thread
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        shutil.copyfileobj(r.raw, f, length=1024 * 1024)
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            f.write(chunk)
             except Exception:
                 logger.exception(f"Error while downloading the file {local_filename}")
                 raise Exception
@@ -649,15 +710,20 @@ class Store(object):
         return str(path)
 
     def _download_onprem_granules(
-        self, urls: List[str], directory: Path, threads: int = 8
+        self,
+        urls: List[str],
+        directory: Path,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         """Downloads a list of URLS into the data directory.
 
         Parameters:
             urls: list of granule URLs from an on-prem collection
             directory: local directory to store the downloaded files
-            threads: parallel number of threads to use to download the files;
-                adjust as necessary, default = 8
+            pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
+                See pqdm documentation for available options. Default is to use immediate exception behavior
+                and the number of jobs specified by the `threads` parameter.
 
         Returns:
             A list of local filepaths to which the files were downloaded.
@@ -671,25 +737,30 @@ class Store(object):
         directory.mkdir(parents=True, exist_ok=True)
 
         arguments = [(url, directory) for url in urls]
-        results = pqdm(
-            arguments,
-            self._download_file,
-            n_jobs=threads,
-            argument_type="args",
-        )
-        return results
+
+        pqdm_kwargs = {
+            "exception_behaviour": "immediate",
+            "disable": True,
+            **(pqdm_kwargs or {}),
+            # We don't want a user to be able to override the following kwargs,
+            # which is why they appear *after* spreading pqdm_kwargs above.
+            "argument_type": "args",
+        }
+
+        return pqdm(arguments, self._download_file, **pqdm_kwargs)
 
     def _open_urls_https(
         self,
         url_mapping: Mapping[str, Union[DataGranule, None]],
-        threads: Optional[int] = 8,
+        *,
+        pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
-        if https_fs is not None:
-            try:
-                fileset = _open_files(url_mapping, https_fs, threads)
-            except Exception:
-                logger.exception(
-                    "An exception occurred while trying to access remote files via HTTPS"
-                )
-        return fileset
+
+        try:
+            return _open_files(url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs)
+        except Exception:
+            logger.exception(
+                "An exception occurred while trying to access remote files via HTTPS"
+            )
+            raise
