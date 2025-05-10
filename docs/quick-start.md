@@ -103,4 +103,4 @@ Data can also be opened in-memory with `earthaccess.open()`. See [our API
 docs](user-reference/api/api.md) for more.
 
 
-We value your feedback! We want to hear all about your experience using earthaccess. Even if you're not noticing any issues or bugs, we want to know... what annoys you? What feels great? We'd love if you would share an experience [report](https://github.com/nsidc/earthaccess/issues) with us!
+We value your feedback! We want to hear all about your experience using earthaccess. Even if you're not noticing any issues or bugs, we want to know... what annoys you? What feels great? We'd love if you would share an experience [report](https://github.com/nsidc/earthaccess/issues/new/choose) with us!
