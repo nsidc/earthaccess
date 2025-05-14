@@ -19,6 +19,7 @@ from typing_extensions import deprecated
 import earthaccess
 
 from .auth import Auth, SessionWithHeaderRedirection
+from .exceptions import DownloadFailure
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -706,8 +707,9 @@ class Store(object):
                         for chunk in r.iter_content(chunk_size=1024 * 1024):
                             f.write(chunk)
             except Exception:
-                logger.exception(f"Error while downloading the file {local_filename}")
-                raise Exception
+                msg = f"Error while downloading the file {local_filename}"
+                logger.error(msg)
+                raise DownloadFailure(msg)
         else:
             logger.info(f"File {local_filename} already downloaded")
         return str(path)
