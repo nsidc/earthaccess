@@ -26,7 +26,7 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
+class EarthAccessFile:
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -44,6 +44,11 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         """
         self.f = f
         self.granule = granule
+        # Automatically copy all methods from f
+        import types
+        import inspect
+        for name, member in inspect.getmembers(f,predicate=inspect.ismethod):
+            setattr(self, name, types.MethodType(member.__func__, f))
 
     def __getattr__(self, method: str) -> Any:
         return getattr(self.f, method)
