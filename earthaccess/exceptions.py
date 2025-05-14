@@ -27,15 +27,10 @@ class LoginAttemptFailure(Exception):
     pass
 
 class DownloadFailure(Exception):
-    """The login attempt failed.
+    """The download attempt failed.
 
-    This should be raised when a login attempt fails, for example, because
-    the user's credentials were rejected.
-
-    DO NOT raise this exception when a login strategy can't be attempted. For
-    example, this exception would not be thrown when "environment" was selected
-    but the envvars are not populated; a `LoginStrategyUnavailable` should be
-    thrown instead.
+    This should be raised when a download attempt fails, for example, because
+    the file could not be retrieved or the download process was interrupted.
     """
 
     pass
