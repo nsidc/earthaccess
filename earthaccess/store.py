@@ -8,7 +8,8 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
-
+import types
+import inspect
 import fsspec
 import requests
 import s3fs
@@ -45,8 +46,6 @@ class EarthAccessFile:
         self.f = f
         self.granule = granule
         # Automatically copy all methods from f
-        import types
-        import inspect
         for name, member in inspect.getmembers(f,predicate=inspect.ismethod):
             setattr(self, name, types.MethodType(member.__func__, f))
 
