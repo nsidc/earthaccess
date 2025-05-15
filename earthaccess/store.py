@@ -19,8 +19,8 @@ from typing_extensions import deprecated
 import earthaccess
 
 from .auth import Auth, SessionWithHeaderRedirection
-from .exceptions import DownloadFailure
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import DownloadFailure
 from .results import DataGranule
 from .search import DataCollections
 

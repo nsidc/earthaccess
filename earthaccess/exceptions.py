@@ -26,6 +26,7 @@ class LoginAttemptFailure(Exception):
 
     pass
 
+
 class DownloadFailure(Exception):
     """The download attempt failed.
 
