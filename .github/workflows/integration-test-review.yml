@@ -48,7 +48,7 @@ jobs:
 
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/artifacts';
+            const temp = path.join('${{ runner.temp }}', 'artifacts');
 
             if (!fs.existsSync(temp)) {
               fs.mkdirSync(temp);
@@ -58,7 +58,7 @@ jobs:
 
       - name: Unzip downloaded PR number artifact
         if: ${{ !env.ACT && steps.permission.outputs.require-result == 'false' }}
-        run: unzip pr_number.zip -d "${{ runner.temp }}/artifacts"
+        run: unzip "${{ runner.temp }}/artifacts/pr_number.zip" -d "${{ runner.temp }}/artifacts"
 
       - name: Add PR comment
         # The name of the output require-result is a bit confusing, but when its value
@@ -76,7 +76,7 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/artifacts';
+            const temp = path.join('${{ runner.temp }}', 'artifacts');
             const { owner, repo } = context.repo;
 
             // Read the PR number from the downloaded and unzipped artifact.
