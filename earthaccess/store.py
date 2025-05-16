@@ -624,7 +624,7 @@ class Store(object):
                 granule.data_links(access=access, in_region=self.in_region)
                 for granule in granules
             )
-        )
+        )   
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
