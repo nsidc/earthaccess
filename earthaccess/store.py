@@ -706,7 +706,7 @@ class Store(object):
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                         for chunk in r.iter_content(chunk_size=1024 * 1024):
                             f.write(chunk)
-            except Exception:
+            except Exception as e:
                 msg = f"Error while downloading the file {local_filename}"
                 logger.error(msg)
                 raise DownloadFailure(msg)
