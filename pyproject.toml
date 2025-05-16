@@ -126,6 +126,7 @@ docs = [
     "dask>=2024.8.0",
     "earthaccess[virtualizarr]",
     "cftime>=1.6.4",
+    "cartopy>=0.24.1"
 ]
 
 
