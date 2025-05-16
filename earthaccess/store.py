@@ -592,9 +592,14 @@ class Store(object):
             for file in data_links:
                 file_name = local_path / Path(file).name
                 if not file_name.exists():
-                    s3_fs.get(file, str(local_path))
-                    logger.info(f"Downloaded: {file_name}")
-                    downloaded_files.append(file_name)
+                    try:
+                        s3_fs.get(file, str(local_path))
+                        logger.info(f"Downloaded: {file_name}")
+                        downloaded_files.append(file_name)
+                    except Exception as e:
+                        msg = f"Failed to download:{file_name}:{e}"
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
             return downloaded_files
 
         else:
@@ -624,7 +629,7 @@ class Store(object):
                 granule.data_links(access=access, in_region=self.in_region)
                 for granule in granules
             )
-        )   
+        )
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
         logger.info(
             f" Getting {len(granules)} granules, approx download size: {total_size} GB"
@@ -645,9 +650,14 @@ class Store(object):
             for file in data_links:
                 file_name = local_path / Path(file).name
                 if not file_name.exists():
-                    s3_fs.get(file, str(local_path))
-                    logger.info(f"Downloaded: {file_name}")
-                    downloaded_files.append(file_name)
+                    try:
+                        s3_fs.get(file, str(local_path))
+                        logger.info(f"Downloaded: {file_name}")
+                        downloaded_files.append(file_name)
+                    except Exception as e:
+                        msg = f"Failed to download:{file_name}:{e}"
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
             return downloaded_files
         else:
             # if the data are cloud-based, but we are not in AWS,
@@ -707,7 +717,7 @@ class Store(object):
                         for chunk in r.iter_content(chunk_size=1024 * 1024):
                             f.write(chunk)
             except Exception as e:
-                msg = f"Error while downloading the file {local_filename}"
+                msg = f"Failed to download {url!r} to {path!r}: {e}"
                 logger.error(msg)
                 raise DownloadFailure(msg)
         else:
