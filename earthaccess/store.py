@@ -655,7 +655,7 @@ class Store(object):
                         logger.info(f"Downloaded: {file_name}")
                         downloaded_files.append(file_name)
                     except Exception as e:
-                        msg = f"Failed to download:{file_name}:{e}"
+                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
                         logger.error(msg)
                         raise DownloadFailure(msg)
             return downloaded_files
