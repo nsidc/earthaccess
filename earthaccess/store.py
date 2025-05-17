@@ -20,6 +20,7 @@ import earthaccess
 
 from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import DownloadFailure
 from .results import DataGranule
 from .search import DataCollections
 
@@ -591,9 +592,14 @@ class Store(object):
             for file in data_links:
                 file_name = local_path / Path(file).name
                 if not file_name.exists():
-                    s3_fs.get(file, str(local_path))
-                    logger.info(f"Downloaded: {file_name}")
-                    downloaded_files.append(file_name)
+                    try:
+                        s3_fs.get(file, str(local_path))
+                        logger.info(f"Downloaded: {file_name}")
+                        downloaded_files.append(file_name)
+                    except Exception as e:
+                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
             return downloaded_files
 
         else:
@@ -644,9 +650,14 @@ class Store(object):
             for file in data_links:
                 file_name = local_path / Path(file).name
                 if not file_name.exists():
-                    s3_fs.get(file, str(local_path))
-                    logger.info(f"Downloaded: {file_name}")
-                    downloaded_files.append(file_name)
+                    try:
+                        s3_fs.get(file, str(local_path))
+                        logger.info(f"Downloaded: {file_name}")
+                        downloaded_files.append(file_name)
+                    except Exception as e:
+                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
             return downloaded_files
         else:
             # if the data are cloud-based, but we are not in AWS,
@@ -705,9 +716,10 @@ class Store(object):
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                         for chunk in r.iter_content(chunk_size=1024 * 1024):
                             f.write(chunk)
-            except Exception:
-                logger.exception(f"Error while downloading the file {local_filename}")
-                raise Exception
+            except Exception as e:
+                msg = f"Failed to download {url!r} to {path!r}: {e}"
+                logger.error(msg)
+                raise DownloadFailure(msg)
         else:
             logger.info(f"File {local_filename} already downloaded")
         return str(path)
