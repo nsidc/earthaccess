@@ -418,6 +418,105 @@ class DataCollections(CollectionQuery):
         """
         return super().temporal(date_from, date_to, exclude_boundary)
 
+    @override
+    def revision_date(
+        self,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        exclude_boundary: bool = False,
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
+
+        Parameters:
+            date_from: start of revision date range
+            date_to: end of revision date range
+            exclude_boundary: whether or not to exclude the date_from/to in
+                the matched range.
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
+        """
+        return super().revision_date(date_from, date_to, exclude_boundary)
+
+    @override
+    def created_at(
+        self,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        exclude_boundary: bool = False,
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
+
+        Parameters:
+            date_from: start of creation time range
+            date_to: end of creation time range
+            exclude_boundary: whether or not to exclude the date_from/to in
+                the matched range.
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
+        """
+        return super().created_at(date_from, date_to, exclude_boundary)
+
+    @override
+    def production_date(
+        self,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        exclude_boundary: bool = False,
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
+
+        Parameters:
+            date_from: start of production date range
+            date_to: end of production date range
+            exclude_boundary: whether or not to exclude the date_from/to in
+                the matched range.
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
+        """
+        return super().production_date(date_from, date_to, exclude_boundary)
+
 
 class DataGranules(GranuleQuery):
     """A Granule oriented client for NASA CMR.
@@ -816,6 +915,102 @@ class DataGranules(GranuleQuery):
                 parsable as such) and `date_from` is after `date_to`.
         """
         return super().temporal(date_from, date_to, exclude_boundary)
+
+    @override
+    def revision_date(
+        self,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        exclude_boundary: bool = False,
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
+
+        Parameters:
+            date_from: earliest revision date to return
+            date_to: latest revision date to return
+            exclude_boundary: whether to exclude the date_from and date_to in the matched range
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
+        """
+        return super().revision_date(date_from, date_to, exclude_boundary)
+
+    @override
+    def created_at(
+        self,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        exclude_boundary: bool = False,
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
+
+        Parameters:
+            date_from: earliest creation time to return
+            date_to: latest creation time to return
+            exclude_boundary: whether to exclude the date_from and date_to in the matched range
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
+        """
+        return super().created_at(date_from, date_to, exclude_boundary)
+
+    @override
+    def production_date(
+        self,
+        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        exclude_boundary: bool = False,
+    ) -> Self:
+        """Filter by an open or closed date range. Dates can be provided as date objects
+        or ISO 8601 strings. Multiple ranges can be provided by successive method calls.
+
+        ???+ Tip
+            Giving either `datetime.date(YYYY, MM, DD)` or `"YYYY-MM-DD"` as the `date_to`
+            parameter includes that entire day (i.e. the time is set to `23:59:59`).
+            Using `datetime.datetime(YYYY, MM, DD)` is different, because `datetime.datetime`
+            objects have `00:00:00` as their built-in default.
+
+        Parameters:
+            date_from: earliest production date to return
+            date_to: latest production date to return
+            exclude_boundary: whether to exclude the date_from and date_to in the matched range
+
+        Returns:
+            self
+
+        Raises:
+            ValueError: `date_from` or `date_to` is a non-`None` value that is
+                neither a datetime object nor a string that can be parsed as a datetime
+                object; or `date_from` and `date_to` are both datetime objects (or
+                parsable as such) and `date_from` is after `date_to`.
+        """
+        return super().production_date(date_from, date_to, exclude_boundary)
 
     @override
     def version(self, version: str) -> Self:
