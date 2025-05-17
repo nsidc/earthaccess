@@ -57,6 +57,9 @@ jobs:
             fs.writeFileSync(path.join(temp, 'pr_number.zip'), Buffer.from(download.data));
 
       - name: Unzip downloaded PR number artifact
+        # The name of the output require-result is a bit confusing, but when its value
+        # is 'false', it means that the triggering actor does NOT have the required
+        # permission.
         if: ${{ !env.ACT && steps.permission.outputs.require-result == 'false' }}
         run: unzip "${{ runner.temp }}/artifacts/pr_number.zip" -d "${{ runner.temp }}/artifacts"
 
@@ -80,15 +83,15 @@ jobs:
             const { owner, repo } = context.repo;
 
             // Read the PR number from the downloaded and unzipped artifact.
-            const issue_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
+            const pr_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
 
             // Get the URL of the PR so we can add a link in the PR comment.
-            const { html_url } = await github.rest.issues.get({ owner, repo, issue_number });
+            const { html_url } = await github.rest.pulls.get({ owner, repo, pr_number });
 
             github.rest.issues.createComment({
               owner,
               repo,
-              issue_number,
+              pr_number,
               body: "User [${{ github.triggering_actor }}](${{ github.event.workflow_run.head_repository.owner.html_url }})"
                 + " does not have permission to run integration tests. A maintainer must perform a security review of the"
                 + ` [code changes in this pull request](${html_url}/files) and re-run the`
