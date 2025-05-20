@@ -51,6 +51,8 @@ plugins:
         'CODE_OF_CONDUCT.md.md': 'contributing/code-of-conduct.md'
   - mkdocs-jupyter:
       execute: True
+      execute_ignore:
+        - "docs/tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
       ignore:
         - "tutorials/dask.ipynb"
         - "**/.ipynb_checkpoints/*"
