@@ -4,7 +4,10 @@ import threading
 import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
-
+import h5netcdf
+import io
+import xarray
+import numpy as np
 import fsspec
 import pytest
 import responses
@@ -209,13 +212,27 @@ class TestStoreSessions(unittest.TestCase):
                 self.assertCountEqual(downloaded_files, urls)  # All files accounted for
 
 
-@pytest.mark.xfail(
-    reason="Expected failure: Reproduces a bug (#610) that has not yet been fixed."
-)
-def test_earthaccess_file_getattr():
-    fs = fsspec.filesystem("memory")
-    with fs.open("/foo", "wb") as f:
-        earthaccess_file = EarthAccessFile(f, granule="foo")  # type: ignore
-        assert f.tell() == earthaccess_file.tell()
-    # cleanup
-    fs.store.clear()
+    @responses.activate
+    def test_earthaccess_file_getattr(self):
+        fs = fsspec.filesystem("memory")
+        with fs.open("/foo", "wb") as f:
+            earthaccess_file = EarthAccessFile(f, granule="foo")
+            assert f.read == earthaccess_file.read
+        fs.store.clear()
+
+    @responses.activate
+    def test_earthaccess_xarray_access(self):
+        buffer = io.BytesIO()
+        with h5netcdf.File(buffer, 'w') as f:
+            f.dimensions = {'x': 3}
+            f.create_variable('data', ('x',), dtype='i4')
+            f.variables['data'][:] = np.array([1, 2, 3])
+        fs = fsspec.filesystem("memory")
+        fs_path = "mydir/myfile.h5"
+        fs.pipe(fs_path, buffer.getvalue())
+        with fs.open(fs_path, mode="rb") as f:
+            earthaccess_file = EarthAccessFile(f, granule="foo")
+            assert earthaccess_file.read == earthaccess_file.f.read
+            assert xarray.backends.list_engines()["h5netcdf"].guess_can_open(earthaccess_file)
+            file = xarray.open_dataset(earthaccess_file, engine="h5netcdf")
+            assert np.all(file["data"].values == [1, 2, 3])

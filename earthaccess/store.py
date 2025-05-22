@@ -8,8 +8,6 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
-import types
-import inspect
 import fsspec
 import requests
 import s3fs
@@ -27,7 +25,7 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile:
+class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -45,12 +43,16 @@ class EarthAccessFile:
         """
         self.f = f
         self.granule = granule
-        # Automatically copy all methods from f
-        for name, member in inspect.getmembers(f,predicate=inspect.ismethod):
-            setattr(self, name, types.MethodType(member.__func__, f))
+        self.mode = f.mode if hasattr(f, "mode") else "rb"
 
-    def __getattr__(self, method: str) -> Any:
-        return getattr(self.f, method)
+    def __getattribute__(self, name):
+        # Avoid infinite recursion on our own attributes
+        if name in ("f", "granule","mode", "__class__", "__dict__", "__getattribute__", "__repr__"):
+            return object.__getattribute__(self, name)
+        try:
+            return getattr(self.f, name)
+        except AttributeError:
+            return object.__getattribute__(self, name)
 
     def __reduce__(self) -> Any:
         return make_instance, (
