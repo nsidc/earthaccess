@@ -43,7 +43,8 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         """
         self.f = f
         self.granule = granule
-        self.mode = f.mode if hasattr(f, "mode") else "rb"
+        if not hasattr(self,"mode"):
+            self.mode = f.mode if hasattr(f, "mode") else ""
 
     def __getattribute__(self, name):
         # Avoid infinite recursion on our own attributes

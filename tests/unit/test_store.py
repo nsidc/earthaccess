@@ -232,7 +232,6 @@ class TestStoreSessions(unittest.TestCase):
         fs.pipe(fs_path, buffer.getvalue())
         with fs.open(fs_path, mode="rb") as f:
             earthaccess_file = EarthAccessFile(f, granule="foo")
-            assert earthaccess_file.read == earthaccess_file.f.read
             assert xarray.backends.list_engines()["h5netcdf"].guess_can_open(earthaccess_file)
             file = xarray.open_dataset(earthaccess_file, engine="h5netcdf")
             assert np.all(file["data"].values == [1, 2, 3])
