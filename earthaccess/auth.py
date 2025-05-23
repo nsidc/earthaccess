@@ -44,6 +44,15 @@ def netrc_path() -> Path:
     return Path(env_netrc) if env_netrc else Path.home() / sys_netrc_name
 
 
+class BearerAuth(requests.auth.AuthBase):
+    def __init__(self, user_token):
+        self.user_token = user_token
+
+    def __call__(self, r):
+        r.headers["authorization"] = "Bearer " + self.user_token
+        return r
+
+
 class SessionWithHeaderRedirection(requests.Session):
     """Requests removes auth headers if the redirect happens outside the
     original req domain.
@@ -60,12 +69,15 @@ class SessionWithHeaderRedirection(requests.Session):
         self,
         username: Optional[str] = None,
         password: Optional[str] = None,
+        user_token: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
 
         if username and password:
             self.auth = (username, password)
+        elif user_token:
+            self.auth = BearerAuth(user_token)
 
     def rebuild_auth(self, prepared_request: Any, response: Any) -> None:
         """Overrides from the library to keep headers when redirected to or from the NASA auth host."""
@@ -110,8 +122,9 @@ class Auth(object):
                 * **"interactive"**: Enter a username and password.
                 * **"netrc"**: (default) Retrieve a username and password from ~/.netrc.
                 * **"environment"**:
-                    Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
-            persist: Will persist credentials in a `.netrc` file.
+                    Retrieve either a username and password pair from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD, or
+                    an Earthdata login token from $EARTHDATA_TOKEN.
+            persist: Will persist username and password credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
@@ -245,7 +258,7 @@ class Auth(object):
     ) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
-        authenticated = self._get_credentials(username, password)
+        authenticated = self._get_credentials(username, password, None)
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
@@ -282,7 +295,7 @@ class Auth(object):
                 f"Password not found in .netrc file {netrc_loc}"
             )
 
-        authenticated = self._get_credentials(username, password)
+        authenticated = self._get_credentials(username, password, None)
 
         if authenticated:
             logger.debug("Using .netrc file for EDL")
@@ -292,23 +305,25 @@ class Auth(object):
     def _environment(self) -> bool:
         username = os.getenv("EARTHDATA_USERNAME")
         password = os.getenv("EARTHDATA_PASSWORD")
+        token = os.getenv("EARTHDATA_TOKEN")
 
-        if not username or not password:
+        if (not username or not password) and not token:
             raise LoginStrategyUnavailable(
-                "EARTHDATA_USERNAME and EARTHDATA_PASSWORD are not set in the current environment, try "
-                "setting them or use a different strategy (netrc, interactive)"
+                "Neither a EARTHDATA_USERNAME and EARTHDATA_PASSWORD pair nor EARTHDATA_TOKEN are not set in the current "
+                "environment, please try setting them or use a different strategy (netrc, interactive, token)"
             )
 
         logger.debug("Using environment variables for EDL")
-        return self._get_credentials(username, password)
+        return self._get_credentials(username, password, token)
 
     def _get_credentials(
         self,
         username: Optional[str],
         password: Optional[str],
+        user_token: Optional[str],
     ) -> bool:
-        if username is not None and password is not None:
-            token_resp = self._find_or_create_token(username, password)
+        if (username is not None and password is not None) or user_token is not None:
+            token_resp = self._find_or_create_token(username, password, user_token)
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
@@ -328,8 +343,10 @@ class Auth(object):
 
         return self.authenticated
 
-    def _find_or_create_token(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password)
+    def _find_or_create_token(
+        self, username: str, password: str, user_token: str
+    ) -> Any:
+        session = SessionWithHeaderRedirection(username, password, user_token)
         auth_resp = session.post(
             self.EDL_FIND_OR_CREATE_TOKEN_URL,
             headers={
