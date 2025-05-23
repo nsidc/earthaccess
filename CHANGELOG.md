@@ -24,6 +24,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ([#807](https://github.com/nsidc/earthaccess/issues/807))
 ([@Sherwin-14](https://github.com/Sherwin-14))
 
+- Retry behavior for `store._download_file`.
+([#600](https://github.com/nsidc/earthaccess/issues/600))
+([@trey-stafford](https://github.com/trey-stafford))
+
 
 ### Changed
 
