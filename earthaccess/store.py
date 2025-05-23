@@ -14,7 +14,9 @@ import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
+from requests.adapters import HTTPAdapter
 from typing_extensions import deprecated
+from urllib3.util import Retry
 
 import earthaccess
 
@@ -687,12 +689,15 @@ class Store(object):
             local_thread_session.auth = original_session.auth
             self.thread_locals.local_thread_session = local_thread_session
 
-    def _download_file(self, url: str, directory: Path) -> str:
+    def _download_file(self, url: str, directory: Path, retries: int = 3) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
 
         Parameters:
             url: the granule url
             directory: local directory
+            retries[Optional]: Number of times to retry download if a problem is
+                               encountered.
+
 
         Returns:
             A local filepath or an exception.
@@ -709,6 +714,8 @@ class Store(object):
                 # of one per file, see #913
                 self._clone_session_in_local_thread(original_session)
                 session = self.thread_locals.local_thread_session
+                retries = Retry(total=retries)
+                session.mount("https://", HTTPAdapter(max_retries=retries))
                 with session.get(url, stream=True, allow_redirects=True) as r:
                     r.raise_for_status()
                     with open(path, "wb") as f:
