@@ -687,12 +687,14 @@ class Store(object):
             local_thread_session.auth = original_session.auth
             self.thread_locals.local_thread_session = local_thread_session
 
-    def _download_file(self, url: str, directory: Path) -> str:
+    def _download_file(self, url: str, directory: Path, *, retries: int = 3) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
 
         Parameters:
             url: the granule url
             directory: local directory
+            retries[Optional]: Number of times to retry download if a problem is
+                               encountered.
 
         Returns:
             A local filepath or an exception.
@@ -703,23 +705,35 @@ class Store(object):
         local_filename = url.split("/")[-1]
         path = directory / Path(local_filename)
         if not path.exists():
-            try:
-                original_session = self.get_requests_session()
-                # This reuses the auth cookie, we make sure we only authenticate N threads instead
-                # of one per file, see #913
-                self._clone_session_in_local_thread(original_session)
-                session = self.thread_locals.local_thread_session
-                with session.get(url, stream=True, allow_redirects=True) as r:
-                    r.raise_for_status()
-                    with open(path, "wb") as f:
-                        # Cap memory usage for large files at 1MB per write to disk per thread
-                        # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        for chunk in r.iter_content(chunk_size=1024 * 1024):
-                            f.write(chunk)
-            except Exception as e:
-                msg = f"Failed to download {url!r} to {path!r}: {e}"
-                logger.error(msg)
-                raise DownloadFailure(msg)
+            total_retries = retries
+            remaining_retries = retries
+            while remaining_retries:
+                try:
+                    original_session = self.get_requests_session()
+                    # This reuses the auth cookie, we make sure we only authenticate N threads instead
+                    # of one per file, see #913
+                    self._clone_session_in_local_thread(original_session)
+                    session = self.thread_locals.local_thread_session
+                    with session.get(url, stream=True, allow_redirects=True) as r:
+                        r.raise_for_status()
+                        with open(path, "wb") as f:
+                            # Cap memory usage for large files at 1MB per write to disk per thread
+                            # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
+                            for chunk in r.iter_content(chunk_size=1024 * 1024):
+                                f.write(chunk)
+                except Exception as e:
+                    remaining_retries -= 1
+                    msg = (
+                        f"Failed to download {url!r} to {path!r}: {e}"
+                        f" (attempt {total_retries - remaining_retries} of {total_retries})."
+                    )
+                    if not remaining_retries:
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
+
+                    warn_msg = msg + " Trying again..."
+                    logger.warning(warn_msg)
+
         else:
             logger.info(f"File {local_filename} already downloaded")
         return str(path)
