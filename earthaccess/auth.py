@@ -45,10 +45,10 @@ def netrc_path() -> Path:
 
 
 class BearerAuth(requests.auth.AuthBase):
-    def __init__(self, user_token):
+    def __init__(self, user_token: str) -> None:
         self.user_token = user_token
 
-    def __call__(self, r):
+    def __call__(self, r: requests.PreparedRequest) -> requests.PreparedRequest:
         r.headers["authorization"] = "Bearer " + self.user_token
         return r
 
@@ -344,7 +344,10 @@ class Auth(object):
         return self.authenticated
 
     def _find_or_create_token(
-        self, username: str, password: str, user_token: str
+        self,
+        username: Optional[str],
+        password: Optional[str],
+        user_token: Optional[str],
     ) -> Any:
         session = SessionWithHeaderRedirection(username, password, user_token)
         auth_resp = session.post(
