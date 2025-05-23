@@ -235,3 +235,4 @@ class TestStoreSessions(unittest.TestCase):
             assert xarray.backends.list_engines()["h5netcdf"].guess_can_open(earthaccess_file)
             file = xarray.open_dataset(earthaccess_file, engine="h5netcdf")
             assert np.all(file["data"].values == [1, 2, 3])
+        fs.store.clear()

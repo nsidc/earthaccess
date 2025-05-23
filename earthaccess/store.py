@@ -14,6 +14,7 @@ import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 from typing_extensions import deprecated
+import io
 
 import earthaccess
 
@@ -26,7 +27,7 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
+class EarthAccessFile(io.IOBase):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -44,12 +45,10 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         """
         self.f = f
         self.granule = granule
-        if not hasattr(self,"mode"):
-            self.mode = f.mode if hasattr(f, "mode") else ""
 
     def __getattribute__(self, name):
         # Avoid infinite recursion on our own attributes
-        if name in ("f", "granule","mode", "__class__", "__dict__", "__getattribute__", "__repr__"):
+        if name in ("f", "granule", "__class__", "__dict__", "__getattribute__", "__repr__"):
             return object.__getattribute__(self, name)
         try:
             return getattr(self.f, name)
