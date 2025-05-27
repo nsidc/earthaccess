@@ -44,15 +44,6 @@ def netrc_path() -> Path:
     return Path(env_netrc) if env_netrc else Path.home() / sys_netrc_name
 
 
-class BearerAuth(requests.auth.AuthBase):
-    def __init__(self, user_token: str) -> None:
-        self.user_token = user_token
-
-    def __call__(self, r: requests.PreparedRequest) -> requests.PreparedRequest:
-        r.headers["authorization"] = "Bearer " + self.user_token
-        return r
-
-
 class SessionWithHeaderRedirection(requests.Session):
     """Requests removes auth headers if the redirect happens outside the
     original req domain.
@@ -343,11 +334,7 @@ class Auth(object):
 
         return self.authenticated
 
-    def _find_or_create_token(
-        self,
-        username: Optional[str],
-        password: Optional[str],
-    ) -> Any:
+    def _find_or_create_token(self, username: str, password: str) -> Any:
         session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.post(
             self.EDL_FIND_OR_CREATE_TOKEN_URL,

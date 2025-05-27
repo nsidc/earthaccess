@@ -478,8 +478,4 @@ def auth_environ() -> Dict[str, str]:
         raise RuntimeError(
             "`auth_environ()` requires you to first authenticate with `earthaccess.login()`"
         )
-    return {
-        "EARTHDATA_USERNAME": auth.username,
-        "EARTHDATA_PASSWORD": auth.password,
-        "EARTHDATA_TOKEN": auth.token,
-    }
+    return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}
