@@ -69,15 +69,12 @@ class SessionWithHeaderRedirection(requests.Session):
         self,
         username: Optional[str] = None,
         password: Optional[str] = None,
-        user_token: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
 
         if username and password:
             self.auth = (username, password)
-        elif user_token:
-            self.auth = BearerAuth(user_token)
 
     def rebuild_auth(self, prepared_request: Any, response: Any) -> None:
         """Overrides from the library to keep headers when redirected to or from the NASA auth host."""
@@ -322,8 +319,11 @@ class Auth(object):
         password: Optional[str],
         user_token: Optional[str],
     ) -> bool:
-        if (username is not None and password is not None) or user_token is not None:
-            token_resp = self._find_or_create_token(username, password, user_token)
+        if user_token is not None:
+            self.token = {"access_token": user_token}
+            self.authenticated = True
+        if username is not None and password is not None:
+            token_resp = self._find_or_create_token(username, password)
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
@@ -347,9 +347,8 @@ class Auth(object):
         self,
         username: Optional[str],
         password: Optional[str],
-        user_token: Optional[str],
     ) -> Any:
-        session = SessionWithHeaderRedirection(username, password, user_token)
+        session = SessionWithHeaderRedirection(username, password)
         auth_resp = session.post(
             self.EDL_FIND_OR_CREATE_TOKEN_URL,
             headers={
