@@ -31,6 +31,9 @@ use:
 auth = earthaccess.login(strategy="environment")
 ```
 
+Alternatively, you can use an existing Earthdata Login token by setting the environment
+variable `EARTHDATA_TOKEN` to it and using the same "environment" strategy, above.
+
 If you wish to enter your Earthdata Login credentials when prompted, with
 optional persistence to your `.netrc` file (see below), specify the interactive
 strategy:
@@ -54,7 +57,8 @@ credentials in two locations:
    used throughout documentation primarily for convenience.  The only
    requirement is that the *contents* of the file adhere to the
    [`.netrc` file format](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html).
-2. `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables
+2. `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables (or, optionally, `EARTHDATA_TOKEN`
+   to use an existing Earthdata Login token)
 
 If neither of these options are configured, you can authenticate by calling the
 `earthaccess.login()` method and manually entering your EDL account credentials.

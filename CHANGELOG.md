@@ -14,8 +14,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([@weiji14](https://github.com/weiji14))
 
 ### Added
+
 - Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset ([#924](https://github.com/nsidc/earthaccess/pull/924))
 ([@danielfromearth](https://github.com/danielfromearth))
+
 - `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
 ([#602](https://github.com/nsidc/earthaccess/issues/602))
 ([@rwegener2](https://github.com/rwegener2))
@@ -24,6 +26,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ([#807](https://github.com/nsidc/earthaccess/issues/807))
 ([@Sherwin-14](https://github.com/Sherwin-14))
 
+- Users may now authenticate with an existing Earthdata login token with environment variable `EARTHDATA_TOKEN`
+([#484](https://github.com/nsidc/earthaccess/issues/484))
+([@kgrimes2](https://github.com/kgrimes2))
 
 ### Changed
 

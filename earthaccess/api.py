@@ -184,7 +184,8 @@ def login(
             * **"all"**: (default) try all methods until one works
             * **"interactive"**: enter username and password.
             * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
+            * **"environment"**: retrieve either a username and password pair from `$EARTHDATA_USERNAME` and
+                `$EARTHDATA_PASSWORD` or an Earthdata login token from $EARTHDATA_TOKEN.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access, defaults to PROD
 
