@@ -173,6 +173,7 @@ def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
 def login(
     strategy: str = "all",
     persist: bool = False,
+    token: str = "",
     system: System = PROD,
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
@@ -182,6 +183,7 @@ def login(
             An authentication method.
 
             * **"all"**: (default) try all methods until one works
+            * **"token"**: use an EDL bearer token.
             * **"interactive"**: enter username and password.
             * **"netrc"**: retrieve username and password from ~/.netrc.
             * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
@@ -200,11 +202,12 @@ def login(
     earthaccess._auth._set_earthdata_system(system)
 
     if strategy == "all":
-        for strategy in ["environment", "netrc", "interactive"]:
+        for strategy in ["token", "environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
                     strategy=strategy,
                     persist=persist,
+                    token=token,
                     system=system,
                 )
             except LoginStrategyUnavailable as err:

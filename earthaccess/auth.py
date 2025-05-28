@@ -60,6 +60,7 @@ class SessionWithHeaderRedirection(requests.Session):
         self,
         username: Optional[str] = None,
         password: Optional[str] = None,
+        token: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
@@ -94,10 +95,13 @@ class Auth(object):
         self.authenticated = False
         self.token: Optional[Mapping[str, str]] = None
         self._set_earthdata_system(PROD)
+        self.username = ""
+        self.password = ""
 
     def login(
         self,
-        strategy: str = "netrc",
+        strategy: str = "environment",
+        token: str = "", # docs: https://urs.earthdata.nasa.gov/documentation/for_users/user_token#/api/users/tokens
         persist: bool = False,
         system: Optional[System] = None,
     ) -> Any:
@@ -111,6 +115,8 @@ class Auth(object):
                 * **"netrc"**: (default) Retrieve a username and password from ~/.netrc.
                 * **"environment"**:
                     Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
+            token: EDL token string, this will superseed all other strategies as is the more secure. 
+                note that not all on-prem files will work with token-only auth.
             persist: Will persist credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
 
@@ -127,8 +133,9 @@ class Auth(object):
         if self.authenticated and (system == self.system):
             logger.debug("We are already authenticated with NASA EDL")
             return self
-
-        if strategy == "interactive":
+        if strategy == "token":
+            self._token_only(token=token)
+        elif strategy == "interactive":
             self._interactive(persist)
         elif strategy == "netrc":
             self._netrc()
@@ -178,7 +185,7 @@ class Auth(object):
             A Python dictionary with the temporary AWS S3 credentials.
         """
         if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password)
+            session = self.get_session()
             if endpoint is None:
                 auth_url = self._get_cloud_auth_url(
                     daac_shortname=daac, provider=provider
@@ -225,6 +232,7 @@ class Auth(object):
         """Returns a new request session instance.
 
         Parameters:
+            token:        An EDL user token
             bearer_token: whether to include bearer token
 
         Returns:
@@ -238,6 +246,21 @@ class Auth(object):
                 {"Authorization": f"Bearer {self.token['access_token']}"}
             )
         return session
+
+    def _token_only(
+        self,
+        token: str = ""
+    ) -> bool:
+        """Authenticate using an EDL bearer-token."""
+        token = os.environ.get("EARTHDATA_TOKEN", token)
+        if token != "":
+            self.token = {"access_token": token}
+        else:
+            logger.debug("EARTHDATA_TOKEN environment variable not set")
+
+        self.authenticated = True
+        logger.debug("Using user provided token for EDL")
+        return self.authenticated
 
     def _interactive(
         self,

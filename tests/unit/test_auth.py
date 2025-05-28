@@ -1,14 +1,28 @@
 # package imports
 import logging
+import os
 import unittest
+from contextlib import contextmanager
 from unittest import mock
 
+import earthaccess
 import pytest
 import responses
 from earthaccess import Auth
 from earthaccess.exceptions import LoginAttemptFailure
 
 logger = logging.getLogger(__name__)
+
+@contextmanager
+def tmp_env(overrides):
+    original = os.environ.copy()
+    os.environ.update(overrides)
+    try:
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(original)
+
 
 
 class TestCreateAuth(unittest.TestCase):
@@ -45,6 +59,54 @@ class TestCreateAuth(unittest.TestCase):
         # test that we are creating a session with the proper headers
         self.assertTrue("User-Agent" in headers)
         self.assertTrue("earthaccess" in headers["User-Agent"])
+
+    @responses.activate
+    def test_auth_token_only_workflow(self):
+
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={"email_address": "test@test.edu"},
+            status=200,
+        )
+
+        token = "my_secret_token"
+
+        with tmp_env({"EARTHDATA_TOKEN": token}):
+            assert os.environ["EARTHDATA_TOKEN"] == token
+            auth = Auth()
+            self.assertEqual(auth.authenticated, False)
+            auth.login(strategy="token")
+
+            session = auth.get_session()
+            headers = session.headers
+            self.assertEqual(auth.authenticated, True)
+            self.assertTrue(token in headers["Authorization"])
+            self.assertTrue("earthaccess" in headers["User-Agent"])
+            self.assertTrue(len(responses.calls) == 0)
+
+        auth = Auth()
+
+        auth.login(strategy="token", token=token)
+        session = auth.get_session()
+        headers = session.headers
+        self.assertEqual(auth.authenticated, True)
+        self.assertTrue(token in headers["Authorization"])
+        self.assertTrue("earthaccess" in headers["User-Agent"])
+        self.assertTrue(len(responses.calls) == 0)
+
+        # Top level API
+
+        with tmp_env({"EARTHDATA_TOKEN": token}):
+            auth = earthaccess.login()
+            self.assertTrue(auth.authenticated)
+            session = auth.get_session()
+            headers = session.headers
+            self.assertEqual(auth.authenticated, True)
+            self.assertTrue(token in headers["Authorization"])
+            self.assertTrue("earthaccess" in headers["User-Agent"])
+            self.assertTrue(len(responses.calls) >= 0) # TODO: make this 0 calls in Store()
+
 
     @responses.activate
     @mock.patch("getpass.getpass")
