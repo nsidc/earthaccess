@@ -255,11 +255,12 @@ class Auth(object):
         token = os.environ.get("EARTHDATA_TOKEN", token)
         if token != "":
             self.token = {"access_token": token}
+            self.authenticated = True
+            logger.debug("Using user provided token for EDL")
         else:
+            self.authenticated = False
             logger.debug("EARTHDATA_TOKEN environment variable not set")
 
-        self.authenticated = True
-        logger.debug("Using user provided token for EDL")
         return self.authenticated
 
     def _interactive(
