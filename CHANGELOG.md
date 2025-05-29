@@ -7,6 +7,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+
+### Added
+
+- Added triaging guide ([#754](https://github.com/nsidc/earthaccess/issues/754))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+  ([@mfisher87](https://github.com/mfisher87))
+
 ### Removed
 
 - Python 3.10 is no longer supported.
@@ -75,6 +82,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `earthaccess.download` now shares the authenticated session cookie among threads to avoid overloading EDL.
   ([#913](https://github.com/nsidc/earthaccess/issues/913))
   ([**@hailiangzhang**](https://github.com/hailiangzhang))
+
 
 ## [v0.12.0] - 2024-11-13
 
