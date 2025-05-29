@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "earthaccess"
-version = "0.12.0"
+version = "0.14.0"
 description = "Client library for NASA Earthdata APIs"
 authors = [
   {name = "earthaccess contributors"}
@@ -26,7 +26,6 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -35,7 +34,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 dependencies = [
   "python-cmr >=0.10.0",
@@ -57,15 +56,19 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
-  "numpy >=1.26.4",
   "kerchunk",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.8.0",
   "h5netcdf",
   "xarray",
+  "zarr >=2.12.0, <3.0.0a",
 ]
 virtualizarr = [
-  "virtualizarr >=1.2.0"
+  "numpy >=1.26.4",
+  "zarr >=2.12.0, <3.0.0a",
+  "virtualizarr >=1.2.0",
+  "dask",
+  "h5py >=3.8.0",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -75,6 +78,8 @@ dev = [
   "uv >=0.4.7",
 ]
 test = [
+  "zarr >=2.12.0, <3.0.0a",
+  "numpy >=1.26.4",
   "mypy >=1.11.2",
   "pytest >=8.3",
   "pytest-cov >=5.0",
@@ -83,7 +88,7 @@ test = [
   "responses >=0.14",
   "types-requests >=0.1",
   "types-setuptools >=0.1",
-  "vcrpy >=6.0.1",
+  "vcrpy >=7.0.0",
   "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
 ]
@@ -120,7 +125,9 @@ docs = [
     # See https://github.com/danielfrg/mkdocs-jupyter/issues/197
     "lxml-html-clean >=0.1.1",
     "dask>=2024.8.0",
+    "earthaccess[virtualizarr]",
     "cftime>=1.6.4",
+    "cartopy>=0.24.1"
 ]
 
 
@@ -128,7 +135,7 @@ docs = [
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
@@ -178,7 +185,7 @@ combine-as-imports = true
 convention = "google"
 
 [tool.bumpversion]
-current_version = "0.12.0"
+current_version = "0.14.0"
 commit = false
 tag = false
 regex = true

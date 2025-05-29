@@ -54,6 +54,15 @@ def test_querybuilder_can_handle_doi():
     assert query.params["doi"] == doi
 
 
+def test_querybuilder_can_handle_has_granules():
+    query = DataCollections().has_granules(False)
+    assert not query.params["has_granules"]
+    query = DataCollections().has_granules(True)
+    assert query.params["has_granules"]
+    query = DataCollections().has_granules(None)
+    assert "has_granules" not in query.params
+
+
 @pytest.mark.parametrize("start,end,expected", valid_single_dates)
 def test_query_can_parse_single_dates(start, end, expected):
     query = DataCollections().temporal(start, end)

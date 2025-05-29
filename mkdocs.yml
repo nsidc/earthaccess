@@ -3,7 +3,7 @@ site_description: Client library for NASA Earthdata APIs
 site_url: https://github.com/nsidc/earthaccess
 
 # Fail on broken links
-strict: true
+strict: false
 
 theme:
   name: "material"
@@ -44,7 +44,6 @@ plugins:
               ignore_init_summary: no
             merge_init_into_class: yes
             show_submodules: no
-          rendering:
             show_root_heading: false
             show_source: false
   - redirects:
@@ -61,15 +60,17 @@ nav:
   - "What is earthaccess?": "index.md"
   - "Quick start": "quick-start.md"
   - "Work with us":
-      - "contributing/index.md"
-      - "Development": "contributing/development.md"
-      - "Releasing": "contributing/releasing.md"
-      - "Our meet-ups": "contributing/our-meet-ups.md"
+      - "contributing/index.md" # << Link target of the parent node
+      - "Development Guide": "contributing/development.md"
+      - "Releasing Guide": "contributing/releasing.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Triaging Guide": "contributing/triaging.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
       - "Contributing naming convention": "contributing/naming-convention.md"
-
+      - "Meet-ups": "contributing/our-meet-ups.md"
+      - "Topics":
+          - "Naming conventions": "contributing/naming-convention.md"
+          - "Integration tests": "contributing/integration-tests.md"
   - "Resources": "resources.md"
   - USER GUIDE:
       - "user_guide/index.md"
@@ -92,6 +93,7 @@ nav:
       - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
       - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb"
       - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
+      - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
   - USER REFERENCE:
       - API:
           - "Search and Access": "user-reference/api/api.md"

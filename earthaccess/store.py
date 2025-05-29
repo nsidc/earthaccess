@@ -1,6 +1,6 @@
 import datetime
 import logging
-import shutil
+import threading
 import traceback
 from functools import lru_cache
 from itertools import chain
@@ -18,8 +18,9 @@ from typing_extensions import deprecated
 
 import earthaccess
 
-from .auth import Auth
+from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import DownloadFailure
 from .results import DataGranule
 from .search import DataCollections
 
@@ -73,6 +74,7 @@ def _open_files(
     pqdm_kwargs = {
         "exception_behaviour": "immediate",
         "n_jobs": 8,
+        "disable": True,
         **(pqdm_kwargs or {}),
     }
 
@@ -119,6 +121,7 @@ class Store(object):
         Parameters:
             auth: Auth instance to download and access data.
         """
+        self.thread_locals = threading.local()
         if auth.authenticated is True:
             self.auth = auth
             self._s3_credentials: Dict[
@@ -127,7 +130,7 @@ class Store(object):
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
-            self.set_requests_session(oauth_profile)
+            self.set_requests_session(oauth_profile, bearer_token=True)
             if pre_authorize:
                 # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
@@ -183,7 +186,7 @@ class Store(object):
         return False
 
     def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = False
+        self, url: str, method: str = "get", bearer_token: bool = True
     ) -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
 
@@ -324,19 +327,19 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(self, bearer_token: bool = True) -> requests.Session:
+    def get_requests_session(self) -> SessionWithHeaderRedirection:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
 
         This HTTPS session can be used to download granules if we want to use a direct,
         lower level API.
 
-        Parameters:
-            bearer_token: if true, will be used for authenticated queries on CMR
-
         Returns:
             requests Session
         """
-        return self.auth.get_session()
+        if hasattr(self, "_http_session"):
+            return self._http_session
+        else:
+            raise AttributeError("The requests session hasn't been set up yet.")
 
     def open(
         self,
@@ -353,8 +356,7 @@ class Store(object):
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
-                See pqdm documentation for available options. Default is to use immediate exception behavior
-                and the number of jobs specified by the `threads` parameter.
+                See pqdm documentation for available options. Default is to use immediate exception behavior.
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -529,6 +531,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "n_jobs": threads,
+            "disable": True,
             **(pqdm_kwargs or {}),
         }
 
@@ -556,8 +559,6 @@ class Store(object):
             granules: A list of granules (DataGranule) instances or a list of granule links (HTTP).
             local_path: Local directory to store the remote data granules
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
-            threads: Parallel number of threads to use to download the files;
-                adjust as necessary, default = 8.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
@@ -586,12 +587,19 @@ class Store(object):
         if self.in_region and data_links[0].startswith("s3"):
             logger.info(f"Accessing cloud dataset using provider: {provider}")
             s3_fs = self.get_s3_filesystem(provider=provider)
+
             # TODO: make this parallel or concurrent
             for file in data_links:
-                s3_fs.get(file, str(local_path))
                 file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
+                if not file_name.exists():
+                    try:
+                        s3_fs.get(file, str(local_path))
+                        logger.info(f"Downloaded: {file_name}")
+                        downloaded_files.append(file_name)
+                    except Exception as e:
+                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
             return downloaded_files
 
         else:
@@ -640,10 +648,16 @@ class Store(object):
 
             # TODO: make this async
             for file in data_links:
-                s3_fs.get(file, str(local_path))
                 file_name = local_path / Path(file).name
-                logger.info(f"Downloaded: {file_name}")
-                downloaded_files.append(file_name)
+                if not file_name.exists():
+                    try:
+                        s3_fs.get(file, str(local_path))
+                        logger.info(f"Downloaded: {file_name}")
+                        downloaded_files.append(file_name)
+                    except Exception as e:
+                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
+                        logger.error(msg)
+                        raise DownloadFailure(msg)
             return downloaded_files
         else:
             # if the data are cloud-based, but we are not in AWS,
@@ -651,6 +665,27 @@ class Store(object):
             return self._download_onprem_granules(
                 data_links, local_path, pqdm_kwargs=pqdm_kwargs
             )
+
+    def _clone_session_in_local_thread(
+        self, original_session: SessionWithHeaderRedirection
+    ) -> None:
+        """Clone the original session and store it in the local thread context.
+
+        This method creates a new session that replicates the headers, cookies, and authentication settings
+        from the provided original session. The new session is stored in a thread-local storage.
+
+        Parameters:
+            original_session (SessionWithHeaderRedirection): The session to be cloned.
+
+        Returns:
+            None
+        """
+        if not hasattr(self.thread_locals, "local_thread_session"):
+            local_thread_session = SessionWithHeaderRedirection()
+            local_thread_session.headers.update(original_session.headers)
+            local_thread_session.cookies.update(original_session.cookies)
+            local_thread_session.auth = original_session.auth
+            self.thread_locals.local_thread_session = local_thread_session
 
     def _download_file(self, url: str, directory: Path) -> str:
         """Download a single file from an on-prem location, a DAAC data center.
@@ -669,20 +704,22 @@ class Store(object):
         path = directory / Path(local_filename)
         if not path.exists():
             try:
-                session = self.auth.get_session()
-                with session.get(
-                    url,
-                    stream=True,
-                    allow_redirects=True,
-                ) as r:
+                original_session = self.get_requests_session()
+                # This reuses the auth cookie, we make sure we only authenticate N threads instead
+                # of one per file, see #913
+                self._clone_session_in_local_thread(original_session)
+                session = self.thread_locals.local_thread_session
+                with session.get(url, stream=True, allow_redirects=True) as r:
                     r.raise_for_status()
                     with open(path, "wb") as f:
-                        # This is to cap memory usage for large files at 1MB per write to disk per thread
+                        # Cap memory usage for large files at 1MB per write to disk per thread
                         # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        shutil.copyfileobj(r.raw, f, length=1024 * 1024)
-            except Exception:
-                logger.exception(f"Error while downloading the file {local_filename}")
-                raise Exception
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            f.write(chunk)
+            except Exception as e:
+                msg = f"Failed to download {url!r} to {path!r}: {e}"
+                logger.error(msg)
+                raise DownloadFailure(msg)
         else:
             logger.info(f"File {local_filename} already downloaded")
         return str(path)
@@ -699,8 +736,6 @@ class Store(object):
         Parameters:
             urls: list of granule URLs from an on-prem collection
             directory: local directory to store the downloaded files
-            threads: parallel number of threads to use to download the files;
-                adjust as necessary, default = 8
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
@@ -720,6 +755,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "exception_behaviour": "immediate",
+            "disable": True,
             **(pqdm_kwargs or {}),
             # We don't want a user to be able to override the following kwargs,
             # which is why they appear *after* spreading pqdm_kwargs above.
