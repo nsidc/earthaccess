@@ -128,14 +128,8 @@ flowchart TD
   real == NO ==> intended{Is the intended behaviour?}
   intended == YES ==> explain[Explain and close point to docs if needed]
   intended == NO ==> open[Keep open for discussion Remove 'pending triage' label]
-  real == YES ==> real2["1. Remove 'pending triage' label 2. Add related feature label if applicable (e.g. 'feat: ssr') 3. Add priority and meta labels (see below)"]
-  real2 ==> unusable{Does the bug make earthaccess unusable?}
-  unusable == YES ==> maj{Does the bug affect the majority of earthaccess users?}
-  maj == YES ==> close4[Urgent]
-  maj == NO ==>  close5[Important]
-  unusable == NO ==> workarounds{Are there workarounds for the bug?}
-  workarounds == NO ==>  close6[Minor Bug]
-  workarounds == YES ==> close7[Edge case has workaround]
+  real == YES ==> real2["Confirm that 'Bug' label was automatically added as part of the Bug Issue template, otherwise add 'Bug' label."]
+
 
   %% Link Color %%
     linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
