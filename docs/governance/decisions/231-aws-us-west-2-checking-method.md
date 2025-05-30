@@ -9,14 +9,14 @@ Technical Story: [#231 AWS us-west-2 checking method](https://github.com/nsidc/e
 
 ## Context and Problem Statement
 
-There is a user-desire to know if they are working in the same region as the data, which is typically in `us-west-2` for NASA data (but not always), so that they can use `S3` aware tools and/or have more performant in-place access. However, there is no reliable way to do this in AWS. So, there's a question of how we should handle `S3` access on the UX side, and how we handle that technically. 
+Currently, `earthaccess` utilizes `earthaccess.__store__.in_region: bool` to check if the user is in `us-west-2`, but this is NASA centric and not even uniform w/in NASA. Therefore, users have reported issues with this approach not accurately determining in-region status (e.g. [#444](https://github.com/nsidc/earthaccess/issues/444). In general, there is a user desire to know if they are working in the same region as the data, which is typically in `us-west-2` for NASA data (but not always), so that they can use `S3` aware tools and/or have more performant in-place access. However, there is no reliable way to do this in AWS. So, there's a question of how we should handle `S3` access on the UX side, and how we handle that technically. 
 
+In terms of UX, the major question discussed in [#231](https://github.com/nsidc/earthaccess/issues/231) is whether to take a "look before you leap" (LBYL) approach by performing an up-front in-region check, or whether to take an "easier to ask forgiveness than permission" (EAFP) approach by handling an access error after it occurs. For the latter approach, options have been proposed to either:
+- Attempt to directly access the S3 link first. If the access is denied, then fall back to HTTPS.
+  - A flag could be optionally supplied if the user does not want to fallback to HTTPS. 
+- Attempt to access the HTTPS link first. This will work regardless of in-region status, but the in-region performance may be degraded compared to S3.
+  - A flag could be optionally supplied if the user would like to attempt S3 access. 
 
-## Decision Drivers <!-- optional -->
-
-- Earthaccess thus far has used `earthaccess.__store__.in_region: bool` to check if the user is in `us-west-2`, but this is NASA centric and not even uniform w/in NASA.
-- [driver 2, e.g., a force, facing concern, …]
-- … <!-- numbers of drivers can vary -->
 
 ## Considered Options
 
