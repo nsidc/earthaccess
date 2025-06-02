@@ -52,6 +52,24 @@ class GranuleCollectionBaseQuery(Query):
         date_to: Optional[Union[str, date, datetime]],
         exclude_boundary: bool = False,
     ) -> Self: ...
+    def revision_date(
+        self,
+        date_from: Optional[Union[str, date, datetime]],
+        date_to: Optional[Union[str, date, datetime]],
+        exclude_boundary: bool = False,
+    ) -> Self: ...
+    def created_at(
+        self,
+        date_from: Optional[Union[str, date, datetime]],
+        date_to: Optional[Union[str, date, datetime]],
+        exclude_boundary: bool = False,
+    ) -> Self: ...
+    def production_date(
+        self,
+        date_from: Optional[Union[str, date, datetime]],
+        date_to: Optional[Union[str, date, datetime]],
+        exclude_boundary: bool = False,
+    ) -> Self: ...
     def short_name(self, short_name: str) -> Self: ...
     def version(self, version: str) -> Self: ...
     def point(self, lon: FloatLike, lat: FloatLike) -> Self: ...
