@@ -38,7 +38,7 @@ For the EAFP approach, earthaccess would:
 
 
 > [!IMPORTANT]
-> Both theLBYL approach and the EAFP approach will require development work to get working well, this decision is about which approach we prefer, so that development work can be directed well.
+> Both the LBYL approach and the EAFP approach will require development work to get working well, this decision is about which approach we prefer, so that development work can be directed well.
 
 
 ## Considered Options
