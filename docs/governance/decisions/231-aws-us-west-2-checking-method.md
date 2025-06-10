@@ -9,67 +9,68 @@ Technical Story: [#231 AWS us-west-2 checking method](https://github.com/nsidc/e
 
 ## Context and Problem Statement
 
-Currently, `earthaccess` utilizes `earthaccess.__store__.in_region: bool` to check if the user is in `us-west-2`, but this is NASA centric and not even uniform w/in NASA. Therefore, users have reported issues with this approach not accurately determining in-region status (e.g. [#444](https://github.com/nsidc/earthaccess/issues/444). In general, there is a user desire to know if they are working in the same region as the data, which is typically in `us-west-2` for NASA data (but not always), so that they can use `S3` aware tools and/or have more performant in-place access. However, there is no reliable way to do this in AWS. So, there's a question of how we should handle `S3` access on the UX side, and how we handle that technically. 
+Users have reported issues with our approach to determining "in-region" status (e.g. [#444](https://github.com/nsidc/earthaccess/issues/444). Currently, `earthaccess` utilizes `earthaccess.__store__.in_region: bool` to check if the user is in the `us-west-2` AWS region, and uses that flag to control whether data is accessed "directly" in S3 or via HTTPS URLs routed through egress applications (e.g., [Cumulus](https://github.com/nasa/cumulus)) or [TEA](https://github.com/asfadmin/thin-egress-app)). However, this implementation has a number of issues:
+1. this is NASA centric (other agencies may use different regions, or clouds)
+2. not uniform w/in NASA (e.g., some data is in `us-east-1`)
+3. there is no reliable way to determine which region you are in, or if you are even in AWS
 
-In terms of UX, the major question discussed in [#231](https://github.com/nsidc/earthaccess/issues/231) is whether to take a "look before you leap" (LBYL) approach by performing an up-front in-region check, or whether to take an "easier to ask forgiveness than permission" (EAFP) approach by handling an access error after it occurs. For the latter approach, options have been proposed to either:
-- Attempt to directly access the S3 link first. If the access is denied, then fall back to HTTPS.
-  - A flag could be optionally supplied if the user does not want to fallback to HTTPS. 
-- Attempt to access the HTTPS link first. This will work regardless of in-region status, but the in-region performance may be degraded compared to S3.
-  - A flag could be optionally supplied if the user would like to attempt S3 access. 
+In general, may want to know if they are working in the same region as the data so that they can:
+1. use `S3` aware tools that expect `S3://` URIs
+2. have more performant access^
+3. not "egress" data outside of Amazon, unless they explicitly want to^^
+
+> [!NOTE]
+> ^If the users is "in-region", HTTPS URLs will get redirected to signed S3 URLs by the egress application, so there is a small performance hit to using HTTPS URLs always, which will be more apparent when accessing a large number of objects like Zarr stores, where each object will have its own unique URL that will need to be redirected.  
+
+> [!NOTE]
+> ^^There was some discussion on whether egressing data outside of AWS is a user concern, or not, outside of performance. Generally, NASA's policy is that it is *not* -- users can access the data freely, in any manner, at no direct cost, and it's NASA's responsibility to ensure the data is distributed in a cost-effective manner. However, some users do want to be good citizens and know they are causing egress charges to be incurred, or to know if they are egressing data unexpectedly.   
+
+In terms of UX, the major question discussed in [#231](https://github.com/nsidc/earthaccess/issues/231) is whether to take a "look before you leap" (LBYL) approach by performing an up-front in-region check, or whether to take an "easier to ask forgiveness than permission" (EAFP) approach by handling an access error after it occurs. 
+
+For the LBYL approach:
+- There's no technical way to do this that works across all AWS services (e.g., Fargate, EC2) or within infrastructure built inside AWS (e.g., a JupyterHub). So, earthaccess would likely have to use a set of "canary" files in each supported region and check (using an EAFP pattern under the hood) if those file were accessible directly. 
+
+For the EAFP approach, earthaccess would:
+- Provide a way to specify what access mechanism you'd like (direct S3 or egress HTTPS), and if other methods should be fallen back on.
+- Attempt to access the data using the user-preferred method and handle accesses errors by:
+  - raising an error if no fallback method was selected
+  - raising a warning and falling back to the alternate method
+
+
+> [!IMPORTANT]
+> Both theLBYL approach and the EAFP approach will require development work to get working well, this decision is about which approach we prefer, so that development work can be directed well. 
 
 
 ## Considered Options
 
-1. Attempt to determine the region -- this is effectively a non-starter technically.
-2. Defult to S3 access and fall back to HTTPS
-3. Defult to HTTPS access and fall back to S3
-4. Allow users to select (2) or (3) and HTTP/S3 only
+1. (Outright rejected; no real consideration given) Don't provide any special handling and only support HTTPS access
+2. Use a LBYL approach and attempt to determine the region before accessing data
+3. Use an EAFP approach and by default, prefer direct S3 access and fall back to HTTPS
+4. Use an EAFP approach and by default, prefer HTTPS access
 
+
+> [!IMPORTANT]
+> for both (3) and (4), users will be able to specify which method they prefer and if they want to fall back to the other. 
 
 ## Decision Outcome
 
-Chosen option: "[option 1]", because [justification. e.g., only option, which meets k.o. criterion decision driver | which resolves force force | … | comes out best (see below)].
+Chosen option: "(3) or (4)", because supporting direct access is critical to our community (outright rejecting (1)) and because there is no technical way to do (2) without standing up permanent infrastructure earthaccess isn't funded to maintain.  
 
-### Positive Consequences <!-- optional -->
-
-- [e.g., improvement of quality attribute satisfaction, follow-up decisions required, …]
-- …
-
-### Negative Consequences <!-- optional -->
-
-- [e.g., compromising quality attribute, follow-up decisions required, …]
-- …
-
-## Pros and Cons of the Options <!-- optional -->
-
-### [option 1]
-
-[example | description | pointer to more information | …] <!-- optional -->
-
-- Good, because [argument a]
-- Good, because [argument b]
-- Bad, because [argument c]
-- … <!-- numbers of pros and cons can vary -->
 
 ### [option 2]
 
-[example | description | pointer to more information | …] <!-- optional -->
-
-- Good, because [argument a]
-- Good, because [argument b]
-- Bad, because [argument c]
-- … <!-- numbers of pros and cons can vary -->
+- Good, because it provides users direct, up-front knowledge and is a commonly requested pattern from users
+- Bad, because it's not technically feasible without direct infrastructure costs and complexity
 
 ### [option 3]
 
-[example | description | pointer to more information | …] <!-- optional -->
+- Good, because it allows users to control the access methods
+- Good, because it will always work by default
+- Bad, because it's a more complicated access pattern and may primarily fall back for a large segment of our users, which is 
+- Bad, because it may generate un-desired warnings by default
 
-- Good, because [argument a]
-- Good, because [argument b]
-- Bad, because [argument c]
-- … <!-- numbers of pros and cons can vary -->
+### [option 4]
 
-## Links <!-- optional -->
-
-- [Link type][link to adr] <!-- example: Refined by [xxx](yyyymmdd-xxx.md) -->
-- … <!-- numbers of links can vary -->
+- Good, because it allows users to control the access methods
+- Good, because it will always work by default
+- Bad, because it may be less performant in the cloud by default
