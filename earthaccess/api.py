@@ -225,7 +225,7 @@ def login(
 
     return earthaccess.__auth__
 
-    
+
 def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
     local_path: Optional[Union[Path, str]] = None,
