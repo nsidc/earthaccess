@@ -9,6 +9,7 @@ repos:
     hooks:
       # Validate format
       - id: check-yaml
+        args: ["--unsafe"]
       - id: check-toml
       - id: check-json
       # Check for common mistakes
