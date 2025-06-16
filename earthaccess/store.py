@@ -494,7 +494,7 @@ class Store(object):
         threads: int = 8,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-    ) -> List[str]:
+    ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
 
            * If we run this in the cloud,
@@ -545,7 +545,7 @@ class Store(object):
         provider: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-    ) -> List[str]:
+    ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
 
            * If we run this in the cloud,
@@ -576,7 +576,7 @@ class Store(object):
         provider: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-    ) -> List[str]:
+    ) -> List[Path]:
         data_links = granules
         downloaded_files: List = []
         if provider is None and self.in_region and "cumulus" in data_links[0]:
@@ -616,7 +616,7 @@ class Store(object):
         provider: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-    ) -> List[str]:
+    ) -> List[Path]:
         data_links: List = []
         downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
@@ -687,7 +687,7 @@ class Store(object):
             local_thread_session.auth = original_session.auth
             self.thread_locals.local_thread_session = local_thread_session
 
-    def _download_file(self, url: str, directory: Path) -> str:
+    def _download_file(self, url: str, directory: Path) -> Path:
         """Download a single file from an on-prem location, a DAAC data center.
 
         Parameters:
@@ -722,7 +722,7 @@ class Store(object):
                 raise DownloadFailure(msg)
         else:
             logger.info(f"File {local_filename} already downloaded")
-        return str(path)
+        return path
 
     def _download_onprem_granules(
         self,

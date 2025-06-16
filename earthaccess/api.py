@@ -233,7 +233,7 @@ def download(
     threads: int = 8,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-) -> List[str]:
+) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
        * If we run this in the cloud, we will be using S3 to move data to `local_path`.
