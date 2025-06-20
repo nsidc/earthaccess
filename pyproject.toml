@@ -151,6 +151,7 @@ disallow_untyped_defs = false
 [[tool.mypy.overrides]]
 module = [
   "fsspec.*",
+  "h5netcdf.*",
   "dask.*",
   "kerchunk.*",
   "pqdm.*",

@@ -46,7 +46,7 @@ class EarthAccessFile(io.IOBase):
         self.f = f
         self.granule = granule
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name) -> Any:
         # Avoid infinite recursion on our own attributes
         if name in ("f", "granule", "__class__", "__dict__", "__getattribute__", "__repr__"):
             return object.__getattribute__(self, name)
