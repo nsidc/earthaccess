@@ -8,13 +8,13 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
-
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 from typing_extensions import deprecated
+import io
 
 import earthaccess
 
@@ -27,7 +27,7 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
+class EarthAccessFile(io.IOBase):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -46,8 +46,14 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         self.f = f
         self.granule = granule
 
-    def __getattr__(self, method: str) -> Any:
-        return getattr(self.f, method)
+    def __getattribute__(self, name) -> Any:
+        # Avoid infinite recursion on our own attributes
+        if name in ("f", "granule", "__class__", "__dict__", "__getattribute__", "__repr__"):
+            return object.__getattribute__(self, name)
+        try:
+            return getattr(self.f, name)
+        except AttributeError:
+            return object.__getattribute__(self, name)
 
     def __reduce__(self) -> Any:
         return make_instance, (
