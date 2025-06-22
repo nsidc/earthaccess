@@ -59,11 +59,8 @@ class DataCollections(CollectionQuery):
 
         if auth:
             self.mode(auth.system.cmr_base_url)
-
+ 
         self._debug = False
-
-        self.params["has_granules"] = True
-        self.params["include_granule_counts"] = True
 
     @override
     def hits(self) -> int:

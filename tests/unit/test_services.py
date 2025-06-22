@@ -47,7 +47,7 @@ class TestServices(VCRTestCase):
             short_name="MUR-JPL-L4-GLOB-v4.1",
             cloud_hosted=True,
             temporal=("2024-02-27T00:00:00Z", "2024-02-29T00:00:00Z"),
-        )
+        )   
         earthaccess._auth.authenticated = False
 
         assert len(datasets) > 0
