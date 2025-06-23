@@ -49,6 +49,11 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Fixed
 - Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
 
+- Removed `self.params["has_granule"]` and `self.params["include_granule_counts"]`
+  from `DataCollections` to avoid future gotchas.
+  ([#884](https://github.com/nsidc/earthaccess/issues/884))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+
 ## [v0.14.0] - 2025-02-11
 
 ### Added

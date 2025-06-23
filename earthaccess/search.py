@@ -59,7 +59,7 @@ class DataCollections(CollectionQuery):
 
         if auth:
             self.mode(auth.system.cmr_base_url)
- 
+
         self._debug = False
 
     @override
