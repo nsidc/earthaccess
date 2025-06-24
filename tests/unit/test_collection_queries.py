@@ -32,6 +32,11 @@ invalid_single_dates = [
 ]
 
 
+def test_no_default_params():
+    query = DataCollections()
+    assert len(query.params) == 0
+
+
 def test_query_can_find_cloud_provider():
     query = DataCollections().daac("PODAAC").cloud_hosted(True)
     assert query.params["provider"] == "POCLOUD"
@@ -59,7 +64,8 @@ def test_querybuilder_can_handle_has_granules():
     assert not query.params["has_granules"]
     query = DataCollections().has_granules(True)
     assert query.params["has_granules"]
-
+    query = DataCollections().has_granules(None)
+    assert query.params["has_granules"] is None
 
 @pytest.mark.parametrize("start,end,expected", valid_single_dates)
 def test_query_can_parse_single_dates(start, end, expected):
