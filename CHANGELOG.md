@@ -8,7 +8,6 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ## [Unreleased]
 
 ### Changed
-
 - By default, _disable_ progress bars during downloading.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
@@ -22,8 +21,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([@Sherwin-14](https://github.com/Sherwin-14))
 
 ### Added
-
-- Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset 
+- Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset
   ([#924](https://github.com/nsidc/earthaccess/pull/924))
   ([@danielfromearth](https://github.com/danielfromearth))
 - `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
@@ -39,7 +37,6 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([@mfisher87](https://github.com/mfisher87))
 
 ### Removed
-
 - **Breaking:** Removed `has_granules=true` and `include_granule_counts=true`
   as default parameters upon creation of a `DataCollections` instance.
   ([#884](https://github.com/nsidc/earthaccess/issues/884))

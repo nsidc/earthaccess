@@ -303,10 +303,10 @@ class DataCollections(CollectionQuery):
         if has_granules is not None and not isinstance(has_granules, bool):
             raise TypeError("has_granules must be of type bool or None")
 
-        if has_granules is None and "has_granules" in self.params:
-            del self.params["has_granules"]
-        else:
+        if has_granules is not None:
             self.params["has_granules"] = has_granules
+        elif "has_granules" in self.params:
+            del self.params["has_granules"]
 
         return self
 
