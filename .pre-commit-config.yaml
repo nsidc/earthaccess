@@ -9,6 +9,7 @@ repos:
     hooks:
       # Validate format
       - id: check-yaml
+        args: ["--unsafe"]
       - id: check-toml
       - id: check-json
       # Check for common mistakes
@@ -28,14 +29,14 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.4
+    rev: v0.11.12
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.6.13"
+    rev: "0.7.9"
     hooks:
       # Asserts that the lockfile is valid for pyproject.toml.
       # If it fails, update the lockfile by running:
@@ -49,7 +50,7 @@ repos:
         stages: ["manual"]
 
   - repo: https://github.com/google/yamlfmt
-    rev: v0.16.0
+    rev: v0.17.0
     hooks:
       - id: yamlfmt
         types_or: [yaml]
