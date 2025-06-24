@@ -26,8 +26,8 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/nsidc/earthaccess"
 
-version: "0.12.0"
-date-released: "2024-11-13"
+version: "0.14.0"
+date-released: "2025-02-11"
 
 authors:
   - family-names: "Barrett"
@@ -70,6 +70,10 @@ authors:
     given-names: "Amy"
     orcid: "https://orcid.org/0000-0002-3039-0260"
     website: "https://github.com/asteiker"
+  - family-names: "Varghese"
+    given-names: "Sherwin"
+    orcid: "https://orcid.org/0009-0005-7030-213X"
+    website: "https://github.com/Sherwin-14"
 
 
 

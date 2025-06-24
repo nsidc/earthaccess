@@ -7,11 +7,82 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+
+### Added
+
+- Added triaging guide ([#754](https://github.com/nsidc/earthaccess/issues/754))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+  ([@mfisher87](https://github.com/mfisher87))
+
+### Removed
+
+- Python 3.10 is no longer supported.
+  ([#966](https://github.com/nsidc/earthaccess/pull/966))
+  ([@weiji14](https://github.com/weiji14))
+
+### Added
+- Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset ([#924](https://github.com/nsidc/earthaccess/pull/924))
+([@danielfromearth](https://github.com/danielfromearth))
+- `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
+([#602](https://github.com/nsidc/earthaccess/issues/602))
+([@rwegener2](https://github.com/rwegener2))
+
+- s3 `download` now checks for existing files.
+([#807](https://github.com/nsidc/earthaccess/issues/807))
+([@Sherwin-14](https://github.com/Sherwin-14))
+
+
+### Changed
+
+- By default, _disable_ progress bars during downloading.
+  ([#612](https://github.com/nsidc/earthaccess/issues/612))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+
+- Updated bug and triage label names in bug Issue template.
+  ([#998](https://github.com/nsidc/earthaccess/pull/998))
+  ([@asteiker](https://github.com/asteiker))
+
+- `download` now raises `DownloadFailure` exception on failure.
+  ([#612](https://github.com/nsidc/earthaccess/issues/612))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+
+### Fixed
+- Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
+
+## [v0.14.0] - 2025-02-11
+
+### Added
+- `search_datasets` now accepts a `has_granules` keyword argument. Use
+  `has_granules=False` to search for metadata about collections with no
+  associated granules. The default value set in `DataCollections` remains `True`.
+  ([#939](https://github.com/nsidc/earthaccess/issues/939))
+  ([**@juliacollins**](https://github.com/juliacollins))
+
+### Changed
+- **Breaking**: earthaccess will now raise an exception when login credentials are
+  rejected.  If you need the old behavior, please use a `try` block.
+  ([#946](https://github.com/nsidc/earthaccess/pull/946))
+  ([**@mfisher87**](https://github.com/mfisher87), [@chuckwondo](https://github.com/chuckwondo),
+  and [@jhkennedy](https://github.com/jhkennedy))
+
+## [v0.13.0] - 2025-01-28
+
+### Added
+- VirtualiZarr: earthaccess can open archival formats (NetCDF, HDF5) as if they were Zarr by leveraging VirtualiZarr
+  In order to use this capability the collection needs to be supported by OPeNDAP and have dmrpp files.
+  See [example notebooks](https://github.com/nsidc/earthaccess/blob/main/docs/tutorials/dmrpp-virtualizarr.ipynb)!
+  ([**@ayushnag**](https://github.com/ayushnag) and [**@TomNicholas**](https://github.com/TomNicholas/))
+
 ### Fixed
 
 - `earthaccess.download` will let requests automatically decode compressed content
   ([#887](https://github.com/nsidc/earthaccess/issues/887))
   ([**@itcarroll**](https://github.com/itcarroll))
+
+- `earthaccess.download` now shares the authenticated session cookie among threads to avoid overloading EDL.
+  ([#913](https://github.com/nsidc/earthaccess/issues/913))
+  ([**@hailiangzhang**](https://github.com/hailiangzhang))
+
 
 ## [v0.12.0] - 2024-11-13
 
@@ -664,7 +735,9 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/nsidc/earthaccess/compare/v0.13.0...v0.14.0
+[0.13.0]: https://github.com/nsidc/earthaccess/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/nsidc/earthaccess/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
 [0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
