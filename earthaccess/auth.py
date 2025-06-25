@@ -110,8 +110,10 @@ class Auth(object):
                 * **"interactive"**: Enter a username and password.
                 * **"netrc"**: (default) Retrieve a username and password from ~/.netrc.
                 * **"environment"**:
-                    Retrieve either a username and password pair from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD, or
-                    an Earthdata login token from $EARTHDATA_TOKEN.
+                    Retrieve either a username and password pair from the
+                    `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
+                    or an Earthdata login token from the `EARTHDATA_TOKEN` environment
+                    variable.
             persist: Will persist username and password credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
 
@@ -297,8 +299,9 @@ class Auth(object):
 
         if (not username or not password) and not token:
             raise LoginStrategyUnavailable(
-                "Neither a EARTHDATA_USERNAME and EARTHDATA_PASSWORD pair nor EARTHDATA_TOKEN are not set in the current "
-                "environment, please try setting them or use a different strategy (netrc, interactive, token)"
+                "Either the environment variables EARTHDATA_USERNAME and "
+                "EARTHDATA_PASSWORD must both be set, or EARTHDATA_TOKEN must be set for "
+                "the 'environment' login strategy."
             )
 
         logger.debug("Using environment variables for EDL")
