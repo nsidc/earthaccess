@@ -52,6 +52,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 
+- `GESDISC` should be `GES_DISC` in docstrings.
+  ([#1037](https://github.com/nsidc/earthaccess/issues/1037))
+  ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
+
 ### Fixed
 - Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
 
