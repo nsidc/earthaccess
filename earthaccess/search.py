@@ -357,7 +357,7 @@ class DataCollections(CollectionQuery):
         """An alias for the `daac` method.
 
         Parameters:
-            data_center_name: DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            data_center_name: DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
@@ -369,7 +369,7 @@ class DataCollections(CollectionQuery):
         for the DAAC.
 
         Parameters:
-            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
@@ -553,7 +553,7 @@ class DataGranules(GranuleQuery):
         """An alias for the `daac` method.
 
         Parameters:
-            data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
@@ -565,7 +565,7 @@ class DataGranules(GranuleQuery):
         the DAAC.
 
         Parameters:
-            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
