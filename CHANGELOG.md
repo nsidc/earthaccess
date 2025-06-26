@@ -7,51 +7,61 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
-
-### Added
-
-- Added triaging guide ([#754](https://github.com/nsidc/earthaccess/issues/754))
-  ([@Sherwin-14](https://github.com/Sherwin-14))
-  ([@mfisher87](https://github.com/mfisher87))
-
-### Removed
-
-- Python 3.10 is no longer supported.
-  ([#966](https://github.com/nsidc/earthaccess/pull/966))
-  ([@weiji14](https://github.com/weiji14))
-
-### Added
-- Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset ([#924](https://github.com/nsidc/earthaccess/pull/924))
-([@danielfromearth](https://github.com/danielfromearth))
-- `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
-([#602](https://github.com/nsidc/earthaccess/issues/602))
-([@rwegener2](https://github.com/rwegener2))
-
-- s3 `download` now checks for existing files.
-([#807](https://github.com/nsidc/earthaccess/issues/807))
-([@Sherwin-14](https://github.com/Sherwin-14))
-
-
 ### Changed
 
 - By default, _disable_ progress bars during downloading.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
-
 - Updated bug and triage label names in bug Issue template.
   ([#998](https://github.com/nsidc/earthaccess/pull/998))
   ([@asteiker](https://github.com/asteiker))
-
 - `download` now raises `DownloadFailure` exception on failure.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
+- `GESDISC` should be `GES_DISC` in docstrings.
+  ([#1037](https://github.com/nsidc/earthaccess/issues/1037))
+  ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
+
+### Added
+
+- Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset
+  ([#924](https://github.com/nsidc/earthaccess/pull/924))
+  ([@danielfromearth](https://github.com/danielfromearth))
+- `get_s3_filesystem` now accepts an `endpoint` argument for specifying a credentials url.
+  ([#602](https://github.com/nsidc/earthaccess/issues/602))
+  ([@rwegener2](https://github.com/rwegener2))
+- s3 `download` now checks for existing files.
+  ([#807](https://github.com/nsidc/earthaccess/issues/807))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+- Added triaging guide ([#754](https://github.com/nsidc/earthaccess/issues/754))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+  ([@mfisher87](https://github.com/mfisher87))
+- `download` now returns Path consistently.
+  ([#595])(https://github.com/nsidc/earthaccess/issues/595)
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+- Users may now authenticate with an existing Earthdata login token with
+  environment variable `EARTHDATA_TOKEN`
+  ([#484](https://github.com/nsidc/earthaccess/issues/484))
+  ([@kgrimes2](https://github.com/kgrimes2))
+
+### Removed
+
+- **Breaking:** Removed `has_granules=true` and `include_granule_counts=true`
+  as default parameters upon creation of a `DataCollections` instance.
+  ([#884](https://github.com/nsidc/earthaccess/issues/884))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+- Python 3.10 is no longer supported.
+  ([#966](https://github.com/nsidc/earthaccess/pull/966))
+  ([@weiji14](https://github.com/weiji14))
 
 ### Fixed
+
 - Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
 
 ## [v0.14.0] - 2025-02-11
 
 ### Added
+
 - `search_datasets` now accepts a `has_granules` keyword argument. Use
   `has_granules=False` to search for metadata about collections with no
   associated granules. The default value set in `DataCollections` remains `True`.
@@ -59,6 +69,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([**@juliacollins**](https://github.com/juliacollins))
 
 ### Changed
+
 - **Breaking**: earthaccess will now raise an exception when login credentials are
   rejected.  If you need the old behavior, please use a `try` block.
   ([#946](https://github.com/nsidc/earthaccess/pull/946))
@@ -68,6 +79,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ## [v0.13.0] - 2025-01-28
 
 ### Added
+
 - VirtualiZarr: earthaccess can open archival formats (NetCDF, HDF5) as if they were Zarr by leveraging VirtualiZarr
   In order to use this capability the collection needs to be supported by OPeNDAP and have dmrpp files.
   See [example notebooks](https://github.com/nsidc/earthaccess/blob/main/docs/tutorials/dmrpp-virtualizarr.ipynb)!
@@ -82,7 +94,6 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `earthaccess.download` now shares the authenticated session cookie among threads to avoid overloading EDL.
   ([#913](https://github.com/nsidc/earthaccess/issues/913))
   ([**@hailiangzhang**](https://github.com/hailiangzhang))
-
 
 ## [v0.12.0] - 2024-11-13
 
