@@ -39,6 +39,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `download` now returns Path consistently.
   ([#595])(https://github.com/nsidc/earthaccess/issues/595)
   ([@Sherwin-14](https://github.com/Sherwin-14))
+- Users may now authenticate with an existing Earthdata login token with
+  environment variable `EARTHDATA_TOKEN`
+  ([#484](https://github.com/nsidc/earthaccess/issues/484))
+  ([@kgrimes2](https://github.com/kgrimes2))
 
 ### Removed
 
