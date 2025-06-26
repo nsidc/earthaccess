@@ -24,6 +24,24 @@ granules_valid_params = [
         "bounding_box": (-92.86, 16.26, -91.58, 16.97),
     },
     {
+        "data_center": "NSIDC",
+        "short_name": "ATL08",
+        "revision_date": "2021-02-01T00:00:00Z,2021-02-02T00:00:00Z",
+        # Chiapas, Mexico
+        "polygon": (
+            -92.86,
+            16.26,
+            -91.58,
+            16.26,
+            -91.58,
+            16.97,
+            -92.86,
+            16.97,
+            -92.86,
+            16.26,
+        ),
+    },
+    {
         "concept_id": "C2021957295-LPCLOUD",
         "day_night_flag": "day",
         "cloud_cover": (0, 20),
