@@ -10,6 +10,7 @@ repos:
       # Validate format
       - id: check-yaml
         args: ["--unsafe"]
+        exclude: ".*/vcr_cassettes/.*\\.yaml"
       - id: check-toml
       - id: check-json
       # Check for common mistakes
