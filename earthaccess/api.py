@@ -27,6 +27,18 @@ from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
 
+def status() -> Dict[str,str] | None:
+    url = "https://status.earthdata.nasa.gov/api/v1/statuses"
+    earthdata_services = ['Earthdata Login', 'Common Metadata Repository (PROD)']
+
+    try:
+        response = requests.get(url)
+        return {status['name']: status['status'] for status in response.json()['statuses'] if status['name'] in earthdata_services}
+
+    except requests.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return 
+
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
     """Handle user-provided `daac` and `provider` values.
