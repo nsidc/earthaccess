@@ -33,6 +33,11 @@ granules_valid_params = [
 ]
 
 
+def test_earthdata_status():
+    result = earthaccess.status()
+    assert isinstance(result, dict) or result is None
+
+
 def test_auth_returns_valid_auth_class():
     auth = earthaccess.login(strategy="environment")
     assert isinstance(auth, earthaccess.Auth)
