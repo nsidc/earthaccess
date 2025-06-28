@@ -43,6 +43,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   environment variable `EARTHDATA_TOKEN`
   ([#484](https://github.com/nsidc/earthaccess/issues/484))
   ([@kgrimes2](https://github.com/kgrimes2))
+- Added `status` method to check status of NASA APIs
+  ([#161](https://github.com/nsidc/earthaccess/issues/161))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
 
 ### Removed
 

@@ -22,22 +22,56 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .system import PROD, System
+from .system import PROD, UAT, System
 from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
 
-def status() -> Dict[str,str] | None:
-    url = "https://status.earthdata.nasa.gov/api/v1/statuses"
-    earthdata_services = ['Earthdata Login', 'Common Metadata Repository (PROD)']
+
+def status(system: System = PROD) -> Mapping[str, str]:
+    """Gets the status of NASA's Earthdata services.
+
+    Parameters:
+        system: The Earthdata system to access, defaults to PROD.
+
+    Returns:
+        A dictionary containing the status of Earthdata services.
+
+    Raises:
+        Exception: The request to the Earthdata status API failed.
+
+    Examples:
+        >>> earthaccess.status()  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+        >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+    """
+    urls = {
+        PROD: "https://status.earthdata.nasa.gov/api/v1/statuses",
+        UAT: "https://status.uat.earthdata.nasa.gov/api/v1/statuses",
+    }
+    earthdata_services = ["Earthdata Login", "Common Metadata Repository"]
+    url = urls[system]
 
     try:
         response = requests.get(url)
-        return {status['name']: status['status'] for status in response.json()['statuses'] if status['name'] in earthdata_services}
+        result = {}
 
-    except requests.RequestException as e:
-        logger.error(f"An error occurred: {e}")
-        return 
+        for status in response.json()["statuses"]:
+            name = status["name"]
+            if name.endswith("(UAT)"):
+                name = name.replace("(UAT)", "").strip()
+            elif name.endswith("(PROD)"):
+                name = name.replace("(PROD)", "").strip()
+
+            if name in earthdata_services:
+                result[name] = status["status"]
+
+        return result
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve Earthdata service status for {system}: {e}")
+        return None
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
