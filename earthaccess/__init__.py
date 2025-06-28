@@ -15,6 +15,7 @@ from .api import (
     get_s3fs_session,
     granule_query,
     login,
+    status,
     open,
     search_data,
     search_datasets,
@@ -33,6 +34,7 @@ logger = logging.getLogger(__name__)
 __all__ = [
     # api.py
     "login",
+    "status",
     "search_datasets",
     "search_data",
     "search_services",
