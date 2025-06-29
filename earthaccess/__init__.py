@@ -15,11 +15,11 @@ from .api import (
     get_s3fs_session,
     granule_query,
     login,
-    status,
     open,
     search_data,
     search_datasets,
     search_services,
+    status,
 )
 from .auth import Auth
 from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset

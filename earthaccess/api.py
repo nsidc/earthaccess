@@ -28,7 +28,7 @@ from .utils import _validation as validate
 logger = logging.getLogger(__name__)
 
 def status(system: System = PROD) -> Dict[str, str] | None:
-    """Get the status of NASA's Earthdata services.
+    """Gets the status of NASA's Earthdata services.
 
     Parameters:
         system: The Earthdata system to access, defaults to PROD.
@@ -37,14 +37,12 @@ def status(system: System = PROD) -> Dict[str, str] | None:
         A dictionary containing the status of Earthdata services.
 
     Raises:
-        RuntimeError: The request to the Earthdata status API failed.
+        Exception: The request to the Earthdata status API failed.
 
     Examples:
         ```python
-        print(earthaccess.status(system=PROD))
-        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
-        print(earthaccess.status(system=UAT))
-        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+        result = earthaccess.status(system=UAT)  
+        print(result)
 
         ```
     """
