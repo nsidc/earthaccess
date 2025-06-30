@@ -27,6 +27,7 @@ from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
 
+
 def status(system: System = PROD) -> Dict[str, str] | None:
     """Gets the status of NASA's Earthdata services.
 
@@ -41,18 +42,18 @@ def status(system: System = PROD) -> Dict[str, str] | None:
 
     Examples:
         ```python
-        result = earthaccess.status(system=UAT)  
+        result = earthaccess.status(system=UAT)
         ```
     """
     urls = {
         PROD: "https://status.earthdata.nasa.gov/api/v1/statuses",
-        UAT: "https://status.uat.earthdata.nasa.gov/api/v1/statuses"
+        UAT: "https://status.uat.earthdata.nasa.gov/api/v1/statuses",
     }
     earthdata_services = ["Earthdata Login", "Common Metadata Repository"]
-    url = urls[system] 
+    url = urls[system]
 
     try:
-        response = requests.get(url) 
+        response = requests.get(url)
         result = {}
 
         for status in response.json()["statuses"]:
@@ -70,6 +71,7 @@ def status(system: System = PROD) -> Dict[str, str] | None:
     except Exception as e:
         logger.error(f"Failed to retrieve Earthdata service status for {system}: {e}")
         return
+
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
     """Handle user-provided `daac` and `provider` values.

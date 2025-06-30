@@ -4,9 +4,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 import earthaccess
-from earthaccess.system import PROD, UAT
-
 import pytest
+from earthaccess.system import PROD, UAT
 
 logger = logging.getLogger(__name__)
 
@@ -79,15 +78,17 @@ def test_download(tmp_path, selection, use_url):
     assert isinstance(files, list)
     assert all(Path(f).exists() for f in files)
 
+
 @pytest.mark.parametrize("system", [PROD, UAT])
 def test_earthdata_status(system):
     result = earthaccess.status(system)
     assert isinstance(result, dict) or result is None
     if result is not None:
-        expected_keys = ['Earthdata Login', 'Common Metadata Repository']
-        assert set(result.keys()) == set(expected_keys)
+        expected_keys = ["Earthdata Login", "Common Metadata Repository"]
+        assert list(result.keys()) == expected_keys
         for value in result.values():
-            assert value in ['OK', 'OUTAGE'] 
+            assert value in ["OK", "OUTAGE"]
+
 
 def fail_to_download_file(*args, **kwargs):
     raise IOError("Download failed")
