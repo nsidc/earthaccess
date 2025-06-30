@@ -42,8 +42,6 @@ def status(system: System = PROD) -> Dict[str, str] | None:
     Examples:
         ```python
         result = earthaccess.status(system=UAT)  
-        print(result)
-
         ```
     """
     urls = {
