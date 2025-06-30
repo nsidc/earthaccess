@@ -35,7 +35,7 @@ def status(system: System = PROD) -> Dict[str, str] | None:
         system: The Earthdata system to access, defaults to PROD.
 
     Returns:
-        A dictionary containing the status of Earthdata services.
+        A dictionary containing the status of Earthdata services or None.
 
     Raises:
         Exception: The request to the Earthdata status API failed.
@@ -70,7 +70,7 @@ def status(system: System = PROD) -> Dict[str, str] | None:
 
     except Exception as e:
         logger.error(f"Failed to retrieve Earthdata service status for {system}: {e}")
-        return
+        return None
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
