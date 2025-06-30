@@ -67,7 +67,7 @@ def status(system: System = PROD) -> Dict[str, str] | None:
 
         return result
 
-    except requests.RequestException as e:
+    except Exception as e:
         logger.error(f"An error occurred: {e}")
         return
 
