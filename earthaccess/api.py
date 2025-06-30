@@ -68,7 +68,7 @@ def status(system: System = PROD) -> Dict[str, str] | None:
         return result
 
     except Exception as e:
-        logger.error(f"An error occurred: {e}")
+        logger.error(f"Failed to retrieve Earthdata service status for {system}: {e}")
         return
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
