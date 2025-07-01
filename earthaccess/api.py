@@ -28,7 +28,7 @@ from .utils import _validation as validate
 logger = logging.getLogger(__name__)
 
 
-def status(system: System = PROD) -> Dict[str, str] | None:
+def status(system: System = PROD) -> Mapping[str, str]:
     """Gets the status of NASA's Earthdata services.
 
     Parameters:
