@@ -47,28 +47,25 @@ def status(system: System = PROD) -> Mapping[str, str]:
         PROD: "https://status.earthdata.nasa.gov/api/v1/statuses",
         UAT: "https://status.uat.earthdata.nasa.gov/api/v1/statuses",
     }
-    earthdata_services = ["Earthdata Login", "Common Metadata Repository"]
-    url = urls[system]
-
+    services = ("Earthdata Login", "Common Metadata Repository")
+    statuses = {service: "Unknown" for service in services}
+    
     try:
-        response = requests.get(url)
-        result = {}
+        with requests.get(system.status_api_url) as r:
+            r.raise_for_status()
 
-        for status in response.json()["statuses"]:
-            name = status["name"]
-            if name.endswith("(UAT)"):
-                name = name.replace("(UAT)", "").strip()
-            elif name.endswith("(PROD)"):
-                name = name.replace("(PROD)", "").strip()
+            for entry in r.json().get("statuses", []):
+                name = entry.get("name", "")
+                
+                if (service := next(filter(name.startswith, services), None)):
+                    statuses[service] = entry.get("status", "Unknown")
+    except (json.JSONDecodeError, requests.exceptions.RequestException):
+        logger.error(
+            f"Unable to retrieve Earthdata service status for {system}."
+            "  Try again later, or visit {system.status_url} to check service status."
+        )
 
-            if name in earthdata_services:
-                result[name] = status["status"]
-
-        return result
-
-    except Exception as e:
-        logger.error(f"Failed to retrieve Earthdata service status for {system}: {e}")
-        return None
+    return statuses
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
