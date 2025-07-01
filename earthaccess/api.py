@@ -41,9 +41,10 @@ def status(system: System = PROD) -> Mapping[str, str]:
         Exception: The request to the Earthdata status API failed.
 
     Examples:
-        ```python
-        result = earthaccess.status(system=UAT)
-        ```
+        >>> earthaccess.status()  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+        >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
     """
     urls = {
         PROD: "https://status.earthdata.nasa.gov/api/v1/statuses",
