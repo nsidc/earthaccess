@@ -35,7 +35,7 @@ def status(system: System = PROD) -> Dict[str, str] | None:
         system: The Earthdata system to access, defaults to PROD.
 
     Returns:
-        A dictionary containing the status of Earthdata services or None.
+        A dictionary containing the status of Earthdata services.
 
     Raises:
         Exception: The request to the Earthdata status API failed.
