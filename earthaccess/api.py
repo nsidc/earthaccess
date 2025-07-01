@@ -37,9 +37,6 @@ def status(system: System = PROD) -> Mapping[str, str]:
     Returns:
         A dictionary containing the status of Earthdata services.
 
-    Raises:
-        Exception: The request to the Earthdata status API failed.
-
     Examples:
         >>> earthaccess.status()  # doctest: +SKIP
         {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
