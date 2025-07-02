@@ -22,10 +22,50 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .system import PROD, System
+from .system import PROD, UAT, System
 from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
+
+
+def status(system: System = PROD) -> dict[str, str]:
+    """Gets the status of NASA's Earthdata services.
+
+    Parameters:
+        system: The Earthdata system to access, defaults to PROD.
+
+    Returns:
+        A dictionary containing the status of Earthdata services.
+
+    Examples:
+        >>> earthaccess.status()  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+        >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+    """
+    urls = {
+        PROD: "https://status.earthdata.nasa.gov/api/v1/statuses",
+        UAT: "https://status.uat.earthdata.nasa.gov/api/v1/statuses",
+    }
+    services = ("Earthdata Login", "Common Metadata Repository")
+    statuses = {service: "Unknown" for service in services}
+    
+    try:
+        with requests.get(system.status_api_url) as r:
+            r.raise_for_status()
+
+            for entry in r.json().get("statuses", []):
+                name = entry.get("name", "")
+                
+                if (service := next(filter(name.startswith, services), None)):
+                    statuses[service] = entry.get("status", "Unknown")
+    except (json.JSONDecodeError, requests.exceptions.RequestException):
+        logger.error(
+            f"Unable to retrieve Earthdata service status for {system}."
+            "  Try again later, or visit {system.status_url} to check service status."
+        )
+
+    return statuses
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
