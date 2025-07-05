@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 
 import requests
+import json
 import s3fs
 from fsspec import AbstractFileSystem
 from typing_extensions import (
@@ -43,10 +44,6 @@ def status(system: System = PROD) -> dict[str, str]:
         >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
         {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
     """
-    urls = {
-        PROD: "https://status.earthdata.nasa.gov/api/v1/statuses",
-        UAT: "https://status.uat.earthdata.nasa.gov/api/v1/statuses",
-    }
     services = ("Earthdata Login", "Common Metadata Repository")
     statuses = {service: "Unknown" for service in services}
     
