@@ -1,0 +1,13 @@
+name: '🗺️ Experience report'
+description: 'Help us level up Earthaccess by sharing your unfiltered experiences, wins, and struggles'
+labels:
+  - 'type: experience report'
+body:
+  - type: 'textarea'
+    attributes:
+      label: 'Description'
+      description: |
+        Provide detailed feedback on your Earthaccess experience, including successes, challenges, and suggestions for improvement.
+        Your insights will inform our development roadmap and community efforts.
+    validations:
+      required: true

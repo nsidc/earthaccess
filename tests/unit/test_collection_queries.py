@@ -32,6 +32,11 @@ invalid_single_dates = [
 ]
 
 
+def test_no_default_params():
+    query = DataCollections()
+    assert len(query.params) == 0
+
+
 def test_query_can_find_cloud_provider():
     query = DataCollections().daac("PODAAC").cloud_hosted(True)
     assert query.params["provider"] == "POCLOUD"

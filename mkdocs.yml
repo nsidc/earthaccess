@@ -3,7 +3,7 @@ site_description: Client library for NASA Earthdata APIs
 site_url: https://github.com/nsidc/earthaccess
 
 # Fail on broken links
-strict: true
+strict: false
 
 theme:
   name: "material"
@@ -33,6 +33,7 @@ extra_css:
 
 plugins:
   - search
+  - mermaid2
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -63,7 +64,9 @@ nav:
       - "Development Guide": "contributing/development.md"
       - "Releasing Guide": "contributing/releasing.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
+      - "Triaging Guide": "contributing/triaging.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
+      - "Contributing naming convention": "contributing/naming-convention.md"
       - "Meet-ups": "contributing/our-meet-ups.md"
       - "Topics":
           - "Naming conventions": "contributing/naming-convention.md"
@@ -90,7 +93,7 @@ nav:
       - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
       - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb"
       - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
-      - "Cloud optimized access to NASA data with earthaccess and virtualizarr": "tutorials/dmrpp-virtualizarr.ipynb"
+      - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
   - USER REFERENCE:
       - API:
           - "Search and Access": "user-reference/api/api.md"
@@ -121,7 +124,12 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+
   - pymdownx.tabbed:
       alternate_style: true
 

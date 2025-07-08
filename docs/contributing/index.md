@@ -6,7 +6,8 @@ whether you're finding bugs, adding new features, fixing anything broken, or imp
 When contributing we recommend:
 
 - reading the contributing guide all the way though once before starting
-- searching through issues, discussions, and pull requests to see if your contribution has already been discussed
+- [join us on Zulip chat](https://earthaccess.zulipchat.com) for any questions you may have
+- searching through issues, discussions, pull requests, and Zulip to see if your contribution has already been discussed
   so you don't duplicate work
 
 Then, you can:
