@@ -19,11 +19,13 @@ In general, users may want to know if they are working in the same region as the
 - have more performant access^
 - not "egress" data outside of Amazon, unless they explicitly want to^^
 
-> [!NOTE]
-> ^If the users is "in-region", HTTPS URLs will get redirected to signed S3 URLs by the egress application, so there is a small performance hit to using HTTPS URLs always, which will be more apparent when accessing a large number of objects like Zarr stores, where each object will have its own unique URL that will need to be redirected.
+!!! note
 
-> [!NOTE]
-> ^^There was some discussion on whether egressing data outside of AWS is a user concern, or not, outside of performance. Generally, NASA's policy is that it is *not* -- users can access the data freely, in any manner, at no direct cost, and it's NASA's responsibility to ensure the data is distributed in a cost-effective manner. However, some users do want to be good citizens and know if they are causing egress charges to be incurred, or to know if they are egressing data unexpectedly.
+    ^If the users is "in-region", HTTPS URLs will get redirected to signed S3 URLs by the egress application, so there is a small performance hit to using HTTPS URLs always, which will be more apparent when accessing a large number of objects like Zarr stores, where each object will have its own unique URL that will need to be redirected.
+
+!!! note
+
+    ^^There was some discussion on whether egressing data outside of AWS is a user concern, or not, outside of performance. Generally, NASA's policy is that it is *not* -- users can access the data freely, in any manner, at no direct cost, and it's NASA's responsibility to ensure the data is distributed in a cost-effective manner. However, some users do want to be good citizens and know if they are causing egress charges to be incurred, or to know if they are egressing data unexpectedly.
 
 In terms of UX, the major question discussed in [#231](https://github.com/nsidc/earthaccess/issues/231) is whether to take a "look before you leap" (LBYL) approach by performing an up-front in-region check, or whether to take an "easier to ask forgiveness than permission" (EAFP) approach by handling an access error after it occurs.
 
@@ -37,8 +39,9 @@ For the EAFP approach, earthaccess would:
   - raising a warning and falling back to the alternate method
 
 
-> [!IMPORTANT]
-> Both the LBYL approach and the EAFP approach will require development work to get working well, this decision is about which approach we prefer, so that development work can be directed well.
+!!! info
+
+    Both the LBYL approach and the EAFP approach will require development work to get working well, this decision is about which approach we prefer, so that development work can be directed well.
 
 
 ## Considered Options
@@ -49,8 +52,9 @@ For the EAFP approach, earthaccess would:
 4. Use an EAFP approach and by default, prefer HTTPS access
 
 
-> [!IMPORTANT]
-> for both (3) and (4), users will be able to specify which method they prefer and if they want to fall back to the other.
+!!! info
+
+    for both (3) and (4), users will be able to specify which method they prefer and if they want to fall back to the other.
 
 ## Decision Outcome
 
