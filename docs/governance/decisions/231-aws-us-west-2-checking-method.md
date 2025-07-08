@@ -32,7 +32,7 @@ For the LBYL approach:
 
 For the EAFP approach, earthaccess would:
 - Provide a way to specify what access mechanism you'd like (direct S3 or egress HTTPS), and if other methods should be fallen back on.
-- Attempt to access the data using the user-preferred method and handle accesses errors by:
+- Attempt to access the data using the user-preferred method and handle access errors by:
   - raising an error if no fallback method was selected
   - raising a warning and falling back to the alternate method
 
