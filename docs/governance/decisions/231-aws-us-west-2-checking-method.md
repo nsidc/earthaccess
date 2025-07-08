@@ -14,7 +14,7 @@ Users have reported issues with our approach to determining "in-region" status (
 - this is not uniform w/in NASA (e.g., some data is in `us-east-1`)
 - there is no reliable way to determine which region you are in, or if you are even in AWS
 
-In general, may want to know if they are working in the same region as the data so that they can:
+In general, users may want to know if they are working in the same region as the data so that they can:
 - use `S3` aware tools that expect `S3://` URIs
 - have more performant access^
 - not "egress" data outside of Amazon, unless they explicitly want to^^
