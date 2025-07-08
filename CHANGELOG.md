@@ -57,6 +57,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Fixed
 
 - Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
+- Issue when `FileDistributionInformation` did not exist for a collection ([#971](https://github.com/nsidc/earthaccess/pull/971))([@mike-gangl](https://github.com/mike-gangl/))
+
 
 ## [v0.14.0] - 2025-02-11
 
