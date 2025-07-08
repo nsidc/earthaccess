@@ -58,7 +58,12 @@ For the EAFP approach, earthaccess would:
 
 ## Decision Outcome
 
-Chosen option: "(3) or (4)", because supporting direct access is critical to our community (outright rejecting (1)) and because there is no technical way to do (2) without standing up permanent infrastructure earthaccess isn't funded to maintain.
+Chosen option: "(4)", because:
+* supporting direct access is critical to our community (outright rejecting (1))
+* there is no technical way to do (2) without standing up permanent infrastructure earthaccess isn't funded to maintain
+* and (4), as compared to (3), because it's simpler and doesn't clutter user workflows with warnings that may be irrelevant
+
+with the understanding that users _will_ be able to explicitly specify what access mechanism they'd like (direct S3 or egress HTTPS), and if other methods should be fallen back on.
 
 
 ### [option 2]
