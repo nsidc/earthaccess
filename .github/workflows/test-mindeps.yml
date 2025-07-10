@@ -24,22 +24,22 @@ jobs:
         uses: actions/checkout@v4.1.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v3.2.2
+        uses: astral-sh/setup-uv@v6.3.1
         with:
           enable-cache: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install minimum-compatible dependencies
         run: uv sync --resolution lowest-direct --extra test
 
       - name: Test
-        run: uv run pytest tests/unit --verbose --cov=earthaccess --cov=tests --cov-report=term-missing --capture=no --tb=native --log-cli-level=INFO
+        run: uv run pytest tests/unit --verbose --cov=earthaccess --cov=tests --cov-report=term-missing --capture=no --color=yes --tb=native --log-cli-level=INFO
 
       - name: Upload coverage
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5

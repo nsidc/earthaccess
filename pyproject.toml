@@ -26,7 +26,6 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -35,7 +34,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 dependencies = [
   "python-cmr >=0.10.0",
@@ -59,7 +58,7 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 kerchunk = [
   "kerchunk",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.8.0",
   "h5netcdf",
   "xarray",
   "zarr >=2.12.0, <3.0.0a",
@@ -69,7 +68,7 @@ virtualizarr = [
   "zarr >=2.12.0, <3.0.0a",
   "virtualizarr >=1.2.0",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.8.0",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -107,6 +106,7 @@ docs = [
     "markdown-callouts >=0.2.0",
     "markdown-include >=0.6",
     "mkdocs-jupyter >=0.19.0",
+    "mkdocs-mermaid2-plugin >=1.2.1",
     "mkdocstrings[python] >=0.19.0",
     "pymdown-extensions >=9.2",
     "pygments >=2.11.1",
@@ -127,6 +127,7 @@ docs = [
     "dask>=2024.8.0",
     "earthaccess[virtualizarr]",
     "cftime>=1.6.4",
+    "cartopy>=0.24.1"
 ]
 
 
@@ -134,7 +135,7 @@ docs = [
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true

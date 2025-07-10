@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - earthaccess v0.10.0
     method: GET
-    uri: https://cmr.earthdata.nasa.gov/search/collections.umm_json?has_granules=true&include_granule_counts=true&short_name=MUR-JPL-L4-GLOB-v4.1&cloud_hosted=true&temporal%5B%5D=2024-02-27T00:00:00Z,2024-02-29T00:00:00Z&page_size=0
+    uri: https://cmr.earthdata.nasa.gov/search/collections.umm_json?short_name=MUR-JPL-L4-GLOB-v4.1&cloud_hosted=true&temporal%5B%5D=2024-02-27T00:00:00Z,2024-02-29T00:00:00Z&page_size=0
   response:
     body:
       string: '{"hits":1,"took":294,"items":[]}'
@@ -78,7 +78,7 @@ interactions:
       User-Agent:
       - earthaccess v0.10.0
     method: GET
-    uri: https://cmr.earthdata.nasa.gov/search/collections.umm_json?has_granules=true&include_granule_counts=true&short_name=MUR-JPL-L4-GLOB-v4.1&cloud_hosted=true&temporal%5B%5D=2024-02-27T00:00:00Z,2024-02-29T00:00:00Z&page_size=0
+    uri: https://cmr.earthdata.nasa.gov/search/collections.umm_json?short_name=MUR-JPL-L4-GLOB-v4.1&cloud_hosted=true&temporal%5B%5D=2024-02-27T00:00:00Z,2024-02-29T00:00:00Z&page_size=0
   response:
     body:
       string: '{"hits":1,"took":184,"items":[]}'
@@ -145,7 +145,7 @@ interactions:
       User-Agent:
       - earthaccess v0.10.0
     method: GET
-    uri: https://cmr.earthdata.nasa.gov/search/collections.umm_json?has_granules=true&include_granule_counts=true&short_name=MUR-JPL-L4-GLOB-v4.1&cloud_hosted=true&temporal%5B%5D=2024-02-27T00:00:00Z,2024-02-29T00:00:00Z&page_size=1
+    uri: https://cmr.earthdata.nasa.gov/search/collections.umm_json?short_name=MUR-JPL-L4-GLOB-v4.1&cloud_hosted=true&temporal%5B%5D=2024-02-27T00:00:00Z,2024-02-29T00:00:00Z&page_size=1
   response:
     body:
       string: "{\"hits\":1,\"took\":304,\"items\":[{\"meta\":{\"revision-id\":38,\"deleted\":false,\"format\":\"application/vnd.nasa.cmr.umm+json\",\"provider-id\":\"POCLOUD\",\"has-combine\":true,\"user-id\":\"wenhaoli\",\"has-formats\":true,\"associations\":{\"variables\":[\"V2262655973-POCLOUD\",\"V2112015425-POCLOUD\",\"V2028632047-POCLOUD\",\"V2112015422-POCLOUD\",\"V2028668049-POCLOUD\",\"V2028632042-POCLOUD\",\"V2112015420-POCLOUD\",\"V2028632044-POCLOUD\"],\"services\":[\"S2839491596-XYZ_PROV\",\"S2164732315-XYZ_PROV\",\"S2004184019-POCLOUD\",\"S2874702816-XYZ_PROV\",\"S2606110201-XYZ_PROV\"],\"tools\":[\"TL2108419875-POCLOUD\",\"TL2245207664-POCLOUD\"]},\"s3-links\":[\"podaac-ops-cumulus-public/MUR-JPL-L4-GLOB-v4.1/\",\"podaac-ops-cumulus-protected/MUR-JPL-L4-GLOB-v4.1/\"],\"has-spatial-subsetting\":true,\"native-id\":\"GHRSST+Level+4+MUR+Global+Foundation+Sea+Surface+Temperature+Analysis+(v4.1)\",\"has-transforms\":false,\"association-details\":{\"variables\":[{\"concept-id\":\"V2262655973-POCLOUD\"},{\"concept-id\":\"V2112015425-POCLOUD\"},{\"concept-id\":\"V2028632047-POCLOUD\"},{\"concept-id\":\"V2112015422-POCLOUD\"},{\"concept-id\":\"V2028668049-POCLOUD\"},{\"concept-id\":\"V2028632042-POCLOUD\"},{\"concept-id\":\"V2112015420-POCLOUD\"},{\"concept-id\":\"V2028632044-POCLOUD\"}],\"services\":[{\"concept-id\":\"S2839491596-XYZ_PROV\"},{\"concept-id\":\"S2164732315-XYZ_PROV\"},{\"concept-id\":\"S2004184019-POCLOUD\"},{\"concept-id\":\"S2874702816-XYZ_PROV\"},{\"concept-id\":\"S2606110201-XYZ_PROV\"}],\"tools\":[{\"concept-id\":\"TL2108419875-POCLOUD\"},{\"concept-id\":\"TL2245207664-POCLOUD\"}]},\"has-variables\":true,\"concept-id\":\"C1996881146-POCLOUD\",\"revision-date\":\"2023-05-30T16:42:26.806Z\",\"granule-count\":3,\"has-temporal-subsetting\":true,\"concept-type\":\"collection\"},\"umm\":{\"DataLanguage\":\"eng\",\"AncillaryKeywords\":[\"GHRSST\",\"sea

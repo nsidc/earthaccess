@@ -184,7 +184,9 @@ def login(
             * **"all"**: (default) try all methods until one works
             * **"interactive"**: enter username and password.
             * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
+            * **"environment"**: retrieve either a username and password pair from
+              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
+              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access, defaults to PROD
 
@@ -233,8 +235,8 @@ def download(
     threads: int = 8,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-) -> List[str]:
-    """Retrieves data granules from a remote storage system.
+) -> List[Path]:
+    """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
        * If we run this in the cloud, we will be using S3 to move data to `local_path`.
        * If we run it outside AWS (us-west-2 region) and the dataset is cloud hosted,
@@ -425,6 +427,7 @@ def get_s3_filesystem(
     daac: Optional[str] = None,
     provider: Optional[str] = None,
     results: Optional[DataGranule] = None,
+    endpoint: Optional[str] = None,
 ) -> s3fs.S3FileSystem:
     """Return an `s3fs.S3FileSystem` for direct access when running within the AWS us-west-2 region.
 
@@ -434,18 +437,29 @@ def get_s3_filesystem(
             If the DAAC is specified, there is no need to use provider.
         results: A list of results from search_data().
             `earthaccess` will use the metadata from CMR to obtain the S3 Endpoint.
+        endpoint: URL of a cloud provider credentials endpoint to be used for obtaining
+            AWS S3 access credentials.
 
     Returns:
         An authenticated s3fs session valid for 1 hour.
     """
     daac = _normalize_location(daac)
     provider = _normalize_location(provider)
-    if results is not None:
+    if results:
         endpoint = results[0].get_s3_credentials_endpoint()
-        if endpoint is not None:
+        if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
-            return session
-    session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+        else:
+            raise ValueError("No s3 credentials specified in the given DataGranule")
+    elif endpoint:
+        session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
+    elif daac or provider:
+        session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
+    else:
+        raise ValueError(
+            "Invalid set of input arguments given. Please provide either "
+            "a valid result, an endpoint, a daac, or a provider."
+        )
     return session
 
 

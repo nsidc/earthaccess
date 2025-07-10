@@ -58,10 +58,39 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          - python-version: 3.11
+            # We must save the PR number only once, and this also prevents
+            # "duplicate artifact" errors caused when attempting to save the same
+            # artifact for every python version we're running with.  More specifically,
+            # save-pr-number must be set to 'true' for 1 (and only 1) matrix combo
+            # (it doesn't matter which combo).
+            save-pr-number: true
+          - python-version: 3.12
+            save-pr-number: false
+          - python-version: 3.13
+            save-pr-number: false
       fail-fast: false
 
     steps:
+      # The first 2 steps will save the PR number to a file and upload the file as an
+      # artifact, which we can then download if the workflow run fails (due to
+      # insufficient permissions), which is handled in integration-test-review.yml.
+      # See https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#using-data-from-the-triggering-workflow
+      - name: Save PR number
+        if: matrix.save-pr-number
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          mkdir -p ./pr
+          echo $PR_NUMBER > ./pr/pr_number
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.save-pr-number
+        with:
+          path: pr/
+          name: pr_number
+
       - name: Fetch user permission
         if: github.event_name == 'pull_request_target'
         id: permission
@@ -120,10 +149,11 @@ jobs:
             --cov=earthaccess \
             --cov-report=term-missing \
             --capture=no \
+            --color=yes \
             --tb=native \
             --log-cli-level=INFO
 
       - name: Upload coverage report
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
