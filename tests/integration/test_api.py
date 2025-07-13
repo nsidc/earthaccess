@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import earthaccess
 import pytest
+import responses
 from earthaccess.system import PROD, UAT
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,89 @@ granules_valid_params = [
         "bounding_box": (-10.15, 51.61, -7.59, 52.43),
     },
 ]
+
+nasa_statuses = {
+    PROD: {
+        "success": True,
+        "statuses": [
+            {"name": "MMT (SIT)", "status": "OK"},
+            {"name": "Status App Test Application", "status": "OK"},
+            {"name": "NSIDC DAAC OpenAltimetry", "status": "OK"},
+            {"name": "ED Pub", "status": "OK"},
+            {"name": "Earthdata Login", "status": "OK"},
+            {"name": "Common Metadata Repository (PROD)", "status": "OK"},
+        ],
+    },
+    UAT: {
+        "success": True,
+        "statuses": [
+            {"name": "MMT (SIT)", "status": "OK"},
+            {"name": "Status App Test Application", "status": "OK"},
+            {"name": "NSIDC DAAC OpenAltimetry", "status": "OK"},
+            {"name": "ED Pub", "status": "OK"},
+            {"name": "Earthdata Login (UAT)", "status": "OK"},
+            {"name": "Common Metadata Repository", "status": "OK"},
+        ],
+    },
+}
+
+
+@pytest.mark.parametrize("system, kwargs", [[PROD, UAT], nasa_statuses])
+@responses.activate
+def test_earthdata_status_happy_path(system, kwargs):
+    statuses = {
+        service["name"].replace(" (PROD)", "").replace(" (UAT)", "").strip(): service[
+            "status"
+        ]
+        for service in nasa_statuses[system]["statuses"][-2:]
+    }
+
+    responses.add(
+        responses.GET,
+        system.status_api_url,
+        json=nasa_statuses[system],
+        status=200,
+    )
+
+    result = earthaccess.status(system)
+    assert isinstance(result, dict)
+    assert result == statuses
+
+
+@pytest.mark.parametrize("system", [PROD, UAT])
+@responses.activate
+def test_earthdata_status_malformed_json(system):
+    services = ("Earthdata Login", "Common Metadata Repository")
+    statuses = {service: "Unknown" for service in services}
+
+    responses.add(
+        responses.GET,
+        system.status_api_url,
+        body='{"x": 5,}',
+        status=200,
+    )
+
+    result = earthaccess.status(system)
+    assert isinstance(result, dict)
+    assert result == statuses
+
+
+@pytest.mark.parametrize("system", [PROD, UAT])
+@responses.activate
+def test_earthdata_status_fetch_fail(system):
+    services = ("Earthdata Login", "Common Metadata Repository")
+    statuses = {service: "Unknown" for service in services}
+
+    responses.add(
+        responses.GET,
+        system.status_api_url,
+        body="Internal Server Error",
+        status=500,
+    )
+
+    result = earthaccess.status(system)
+    assert isinstance(result, dict)
+    assert result == statuses
 
 
 def test_auth_returns_valid_auth_class():
@@ -77,17 +161,6 @@ def test_download(tmp_path, selection, use_url):
     files = earthaccess.download(result, str(tmp_path))
     assert isinstance(files, list)
     assert all(Path(f).exists() for f in files)
-
-
-@pytest.mark.parametrize("system", [PROD, UAT])
-def test_earthdata_status(system):
-    result = earthaccess.status(system)
-    assert isinstance(result, dict) or result is None
-    if result is not None:
-        expected_keys = ["Earthdata Login", "Common Metadata Repository"]
-        assert list(result.keys()) == expected_keys
-        for value in result.values():
-            assert value in ["OK", "OUTAGE"]
 
 
 def fail_to_download_file(*args, **kwargs):

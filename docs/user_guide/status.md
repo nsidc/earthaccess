@@ -6,9 +6,9 @@ Earthaccess relies on the Common Metadata Repository (CMR) API and Earthdata Log
 
 You can check the status of NASA Earthdata services manually for [PROD](https://status.earthdata.nasa.gov/) and [UAT](https://status.uat.earthdata.nasa.gov/) systems.
 
-## Programmatic Status Check 
+## Programmatic Status Check
 
-You can check the status of EarthData services  programatically this way.
+You can check the status of EarthData services  programmatically this way.
 
 ```py
 import earthaccess
@@ -18,9 +18,3 @@ nasa_status = earthaccess.status(system=UAT)
 if any(service_status != 'OK' for service_status in nasa_status.values()):
    raise Exception("NASA APIs unavailable, please try again later.")
 ```
-
-
-
-
-
-

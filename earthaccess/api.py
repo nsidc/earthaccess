@@ -1,8 +1,8 @@
+import json
 import logging
 from pathlib import Path
 
 import requests
-import json
 import s3fs
 from fsspec import AbstractFileSystem
 from typing_extensions import (
@@ -23,13 +23,13 @@ from .auth import Auth
 from .results import DataCollection, DataGranule
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
-from .system import PROD, UAT, System
+from .system import PROD, System
 from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
 
 
-def status(system: System = PROD) -> dict[str, str]:
+def status(system: System = PROD) -> Dict[str, str]:
     """Gets the status of NASA's Earthdata services.
 
     Parameters:
@@ -46,20 +46,20 @@ def status(system: System = PROD) -> dict[str, str]:
     """
     services = ("Earthdata Login", "Common Metadata Repository")
     statuses = {service: "Unknown" for service in services}
-    
+
     try:
         with requests.get(system.status_api_url) as r:
             r.raise_for_status()
 
             for entry in r.json().get("statuses", []):
                 name = entry.get("name", "")
-                
-                if (service := next(filter(name.startswith, services), None)):
+
+                if service := next(filter(name.startswith, services), None):
                     statuses[service] = entry.get("status", "Unknown")
     except (json.JSONDecodeError, requests.exceptions.RequestException):
         logger.error(
             f"Unable to retrieve Earthdata service status for {system}."
-            "  Try again later, or visit {system.status_url} to check service status."
+            f"Try again later, or visit {system.status_url} to check service status."
         )
 
     return statuses
