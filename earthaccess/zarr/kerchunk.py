@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional, Union
-
+import json
 import logging
+import zipfile
+from pathlib import Path
+from typing import Optional, Union
+from uuid import uuid4
 
 import fsspec
 import fsspec.utils
@@ -10,10 +13,7 @@ import s3fs
 
 # import ipdb
 import earthaccess
-from uuid import uuid4
-import zipfile
-from pathlib import Path
-import json
+import zarr
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,6 @@ def consolidate_metadata(
 ) -> Union[str, dict]:
     try:
         import dask
-
         from kerchunk.combine import MultiZarrToZarr
     except ImportError as e:
         raise ImportError(
@@ -81,29 +80,33 @@ def consolidate_metadata(
     mzz.translate(outfile, storage_options=storage_options or {})
     return output
 
-def get_virtual_reference(short_name: str = "",
-                          cloud_hosted: bool=True,
-                          format: str ="parquet") -> Union[fsspec.FSMap, None]:
-    """
-    Returns a virtual reference file for a given collection, this reference has to be created by the DAAC
+
+def get_virtual_reference(
+    short_name: str = "", cloud_hosted: bool = True, format: str = "parquet"
+) -> Union[fsspec.FSMap, None]:
+    """Returns a virtual reference file for a given collection, this reference has to be created by the DAAC
     distributing the data. The reference mapper can be used directly in xarray as a Zarr store.
     """
-
     file_types = {
         "parquet": "parq.zip",
         "json": "json",
     }
 
-    
     # Find collection-level metadata (UMM-C) on CMR:
-    collections = earthaccess.search_datasets(short_name=short_name, cloud_hosted=cloud_hosted)
+    collections = earthaccess.search_datasets(
+        short_name=short_name, cloud_hosted=cloud_hosted
+    )
 
     links = collections[0]["umm"].get("RelatedUrls", [])
 
     # Look within UMM-C for links to virtual data set reference files:
     # I think both json or parquet should be under VIRTUAL COLLECTION
-    refs = [e["URL"] for e in links if "Subtype" in e and (("VIRTUAL COLLECTION" in e["Subtype"]) or ("DATA RECIPE" in e["Subtype"]))]
-    
+    refs = [
+        e["URL"]
+        for e in links
+        if "Subtype" in e
+        and (("VIRTUAL COLLECTION" in e["Subtype"]) or ("DATA RECIPE" in e["Subtype"]))
+    ]
 
     # Currently it is assumed that link descriptions have the following format:
     if refs:
@@ -113,9 +116,22 @@ def get_virtual_reference(short_name: str = "",
         logger.info(
             "Virtual data set reference file does not exists in",
             "There may be a reference file in a different format, or else you will have to",
-            "open this data set using traditional netCDF/HDF methods."
-            )
+            "open this data set using traditional netCDF/HDF methods.",
+        )
         return None
+
+    if zarr.__version__ > "3.0.0" and link.endswith(".json"):
+        # see: https://github.com/nsidc/earthaccess/issues/1046
+        logger.warning("""Using Zarr V3, open as kerchunk store with:
+
+                       data = xr.open_dataset(consolidated_virtual_store,
+                       engine="kerchunk",
+                       chunks={},
+                       backend_kwargs={"storage_options": 
+                                       {"remote_protocol": "s3",
+                                        "remote_options": fs.storage_options}})
+                       """)
+        return link
 
     # this assumes the ref point to s3 links, we'll have to refactor later
     http_fs = earthaccess.get_fsspec_https_session()
@@ -124,16 +140,18 @@ def get_virtual_reference(short_name: str = "",
         with http_fs.open(link) as f:
             ref_loc = json.load(f)
     else:
-        with http_fs.open(link, 'rb') as remote_zip:
+        with http_fs.open(link, "rb") as remote_zip:
             # Unzip the contents into the temporary directory
-            with zipfile.ZipFile(remote_zip, 'r') as zip_ref:
+            with zipfile.ZipFile(remote_zip, "r") as zip_ref:
                 id = uuid4()
                 local_path = Path(f".references/{id}")
                 zip_ref.extractall(local_path)
                 ref_loc = str([d for d in local_path.iterdir() if d.is_dir()][0])
 
-    storage_opts = {"fo": ref_loc, 
-                    "remote_protocol": "s3", 
-                    "remote_options": fs.storage_options}
-    file_ref = fsspec.filesystem('reference', **storage_opts)
-    return file_ref.get_mapper('')
+    storage_opts = {
+        "fo": ref_loc,
+        "remote_protocol": "s3",
+        "remote_options": fs.storage_options,
+    }
+    file_ref = fsspec.filesystem("reference", **storage_opts)
+    return file_ref.get_mapper("")
