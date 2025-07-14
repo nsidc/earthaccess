@@ -184,7 +184,9 @@ def login(
             * **"all"**: (default) try all methods until one works
             * **"interactive"**: enter username and password.
             * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve username and password from `$EARTHDATA_USERNAME` and `$EARTHDATA_PASSWORD`.
+            * **"environment"**: retrieve either a username and password pair from
+              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
+              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access, defaults to PROD
 
@@ -233,7 +235,7 @@ def download(
     threads: int = 8,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-) -> List[str]:
+) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
        * If we run this in the cloud, we will be using S3 to move data to `local_path`.

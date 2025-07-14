@@ -62,9 +62,6 @@ class DataCollections(CollectionQuery):
 
         self._debug = False
 
-        self.params["has_granules"] = True
-        self.params["include_granule_counts"] = True
-
     @override
     def hits(self) -> int:
         """Returns the number of hits the current query will return.
@@ -306,10 +303,10 @@ class DataCollections(CollectionQuery):
         if has_granules is not None and not isinstance(has_granules, bool):
             raise TypeError("has_granules must be of type bool or None")
 
-        if has_granules is None and "has_granules" in self.params:
-            del self.params["has_granules"]
-        else:
+        if has_granules is not None:
             self.params["has_granules"] = has_granules
+        elif "has_granules" in self.params:
+            del self.params["has_granules"]
 
         return self
 
@@ -360,7 +357,7 @@ class DataCollections(CollectionQuery):
         """An alias for the `daac` method.
 
         Parameters:
-            data_center_name: DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            data_center_name: DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
@@ -372,7 +369,7 @@ class DataCollections(CollectionQuery):
         for the DAAC.
 
         Parameters:
-            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
@@ -556,7 +553,7 @@ class DataGranules(GranuleQuery):
         """An alias for the `daac` method.
 
         Parameters:
-            data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            data_center_name (String): DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
@@ -568,7 +565,7 @@ class DataGranules(GranuleQuery):
         the DAAC.
 
         Parameters:
-            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GESDISC
+            daac_short_name: a DAAC shortname, e.g. NSIDC, PODAAC, GES_DISC
 
         Returns:
             self
