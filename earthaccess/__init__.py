@@ -21,12 +21,16 @@ from .api import (
     search_services,
 )
 from .auth import Auth
-from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
-from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
 from .system import PROD, UAT
+from .zarr import (
+    consolidate_metadata,
+    get_virtual_reference,
+    open_virtual_dataset,
+    open_virtual_mfdataset,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +63,7 @@ __all__ = [
     "Store",
     # kerchunk
     "consolidate_metadata",
+    "get_virtual_reference",
     # virtualizarr
     "open_virtual_dataset",
     "open_virtual_mfdataset",
