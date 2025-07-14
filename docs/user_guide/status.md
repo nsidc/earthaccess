@@ -8,7 +8,7 @@ You can check the status of NASA Earthdata services manually for [PROD](https://
 
 ## Programmatic Status Check
 
-You can check the status of EarthData services  programmatically this way.
+You can check the status of Earthdata services  programmatically this way.
 
 ```py
 import earthaccess
