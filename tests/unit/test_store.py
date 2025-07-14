@@ -4,6 +4,7 @@ import threading
 import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
+
 import fsspec
 import pytest
 import responses
@@ -206,7 +207,6 @@ class TestStoreSessions(unittest.TestCase):
 
                 self.assertEqual(len(downloaded_files), n_files)  # 10 files downloaded
                 self.assertCountEqual(downloaded_files, urls)  # All files accounted for
-
 
     @responses.activate
     def test_earthaccess_file_getattr(self):

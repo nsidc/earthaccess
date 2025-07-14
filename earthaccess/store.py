@@ -1,4 +1,5 @@
 import datetime
+import io
 import logging
 import threading
 import traceback
@@ -8,13 +9,13 @@ from pathlib import Path
 from pickle import dumps, loads
 from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from uuid import uuid4
+
 import fsspec
 import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
 from typing_extensions import deprecated
-import io
 
 import earthaccess
 
@@ -48,7 +49,14 @@ class EarthAccessFile(io.IOBase):
 
     def __getattribute__(self, name) -> Any:
         # Avoid infinite recursion on our own attributes
-        if name in ("f", "granule", "__class__", "__dict__", "__getattribute__", "__repr__"):
+        if name in (
+            "f",
+            "granule",
+            "__class__",
+            "__dict__",
+            "__getattribute__",
+            "__repr__",
+        ):
             return object.__getattribute__(self, name)
         try:
             return getattr(self.f, name)
