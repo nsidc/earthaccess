@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 def status(system: System = PROD) -> Dict[str, str]:
-    """Gets the status of NASA's Earthdata services.
+    """Get the statuses of NASA's Earthdata services.
 
     Parameters:
         system: The Earthdata system to access, defaults to PROD.
