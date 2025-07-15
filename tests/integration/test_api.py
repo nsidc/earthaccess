@@ -99,7 +99,6 @@ def test_earthdata_status_malformed_json(system):
     assert result == statuses
 
 
-@pytest.mark.parametrize("system", [PROD, UAT])
 @responses.activate
 def test_earthdata_status_fetch_fail(system):
     services = ("Earthdata Login", "Common Metadata Repository")
