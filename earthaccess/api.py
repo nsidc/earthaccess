@@ -36,7 +36,7 @@ def status(system: System = PROD) -> Dict[str, str]:
         system: The Earthdata system to access, defaults to PROD.
 
     Returns:
-        A dictionary containing the status of Earthdata services.
+        A dictionary containing the statuses of Earthdata services.
 
     Examples:
         >>> earthaccess.status()  # doctest: +SKIP
