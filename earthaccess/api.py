@@ -58,8 +58,8 @@ def status(system: System = PROD) -> Dict[str, str]:
                     statuses[service] = entry.get("status", "Unknown")
     except (json.JSONDecodeError, requests.exceptions.RequestException):
         logger.error(
-            f"Unable to retrieve Earthdata service status for {system}."
-            f"Try again later, or visit {system.status_url} to check service status."
+            f"Unable to retrieve Earthdata service statuses for {system}."
+            f"Try again later, or visit {system.status_url} to check service statuses."
         )
 
     return statuses
