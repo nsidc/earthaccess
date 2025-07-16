@@ -60,16 +60,22 @@ def status(
     try:
         with requests.get(system.status_api_url) as r:
             r.raise_for_status()
+            statuses_json = r.json()
 
-            for entry in r.json().get("statuses", []):
-                name = entry.get("name", "")
+        for entry in statuses_json.get("statuses", []):
+            name = entry.get("name", "")
 
-                if service := next(filter(name.startswith, services), None):
-                    statuses[service] = entry.get("status", "Unknown")
-                    if raise_on_outage and statuses[service] != "OK":
-                        raise ServiceOutage(msg)
+            if service := next(filter(name.startswith, services), None):
+                statuses[service] = entry.get("status", "Unknown")
     except (json.JSONDecodeError, requests.exceptions.RequestException):
         logger.error(msg)
+
+    if (
+        raise_on_outage and
+        any(status not in {"OK", "Unknown"} for status in statuses.values())
+    ):
+        msg = f"At least 1 service is unhealthy: {services}"
+        raise ServiceOutage(msg)
 
     return statuses
 
