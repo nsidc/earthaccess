@@ -52,7 +52,10 @@ def status(
     """
     services = ("Earthdata Login", "Common Metadata Repository")
     statuses = {service: "Unknown" for service in services}
-    msg = f"Unable to retrieve Earthdata service statuses for {system}.Try again later, or visit {system.status_url} to check service statuses."
+    msg = (
+        f"Unable to retrieve Earthdata service statuses for {system}."
+        "  Try again later, or visit {system.status_url} to check service statuses."
+    )
 
     try:
         with requests.get(system.status_api_url) as r:
