@@ -36,6 +36,7 @@ def status(
 
     Parameters:
         system: The Earthdata system to access, defaults to PROD.
+        raise_on_outage: If True, raises exception on errors or outages.
 
     Returns:
         A dictionary containing the statuses of Earthdata services.
