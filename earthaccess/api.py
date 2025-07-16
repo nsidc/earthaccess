@@ -46,6 +46,9 @@ def status(
         {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
         >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
         {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+
+    Raises:
+        ServiceOutage: if at least one service status is not `"OK"`
     """
     services = ("Earthdata Login", "Common Metadata Repository")
     statuses = {service: "Unknown" for service in services}
