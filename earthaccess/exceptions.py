@@ -35,3 +35,12 @@ class DownloadFailure(Exception):
     """
 
     pass
+
+class ServiceOutage(Exception):
+   """A service outage has been detected.
+   
+   This should be raised when Earthdata services are unavailable or experiencing
+   outages that prevent normal operations.
+   """
+   
+   pass

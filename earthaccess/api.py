@@ -16,7 +16,7 @@ from typing_extensions import (
 )
 
 import earthaccess
-from earthaccess.exceptions import LoginStrategyUnavailable
+from earthaccess.exceptions import LoginStrategyUnavailable, ServiceOutage
 from earthaccess.services import DataServices
 
 from .auth import Auth
@@ -29,7 +29,7 @@ from .utils import _validation as validate
 logger = logging.getLogger(__name__)
 
 
-def status(system: System = PROD) -> Dict[str, str]:
+def status(system: System = PROD, raise_on_outage: Optional[bool] = False) -> Dict[str, str]:
     """Get the statuses of NASA's Earthdata services.
 
     Parameters:
@@ -46,6 +46,7 @@ def status(system: System = PROD) -> Dict[str, str]:
     """
     services = ("Earthdata Login", "Common Metadata Repository")
     statuses = {service: "Unknown" for service in services}
+    msg =f"Unable to retrieve Earthdata service statuses for {system}.Try again later, or visit {system.status_url} to check service statuses."
 
     try:
         with requests.get(system.status_api_url) as r:
@@ -56,11 +57,10 @@ def status(system: System = PROD) -> Dict[str, str]:
 
                 if service := next(filter(name.startswith, services), None):
                     statuses[service] = entry.get("status", "Unknown")
+                    if raise_on_outage and statuses[service] != "OK":
+                       raise ServiceOutage(msg)  
     except (json.JSONDecodeError, requests.exceptions.RequestException):
-        logger.error(
-            f"Unable to retrieve Earthdata service statuses for {system}."
-            f"Try again later, or visit {system.status_url} to check service statuses."
-        )
+        logger.error(msg)
 
     return statuses
 

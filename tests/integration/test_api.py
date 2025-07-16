@@ -7,6 +7,8 @@ import earthaccess
 import pytest
 import responses
 from earthaccess.system import PROD, UAT
+from earthaccess.exceptions import ServiceOutage
+
 
 logger = logging.getLogger(__name__)
 
@@ -59,61 +61,77 @@ nasa_statuses = {
     },
 }
 
-
-@pytest.mark.parametrize("system, kwargs", [[PROD, UAT], nasa_statuses])
+@pytest.mark.parametrize("system,nasa_response,expected", [
+    (
+        PROD,
+        nasa_statuses[PROD],
+        {"Earthdata Login": "OK", "Common Metadata Repository": "OK"},
+    ),
+    (
+        UAT,
+        nasa_statuses[UAT],
+        {"Earthdata Login": "OK", "Common Metadata Repository": "OK"},
+    ),
+])
 @responses.activate
-def test_earthdata_status_happy_path(system, kwargs):
-    statuses = {
-        service["name"].replace(" (PROD)", "").replace(" (UAT)", "").strip(): service[
-            "status"
-        ]
-        for service in nasa_statuses[system]["statuses"][-2:]
-    }
-
+def test_earthdata_status_happy_path(system, nasa_response, expected):
     responses.add(
         responses.GET,
         system.status_api_url,
-        json=nasa_statuses[system],
+        json=nasa_response,
         status=200,
     )
 
     result = earthaccess.status(system)
     assert isinstance(result, dict)
-    assert result == statuses
-
+    assert result == expected
 
 @responses.activate
-def test_earthdata_status_malformed_json(system):
+def test_earthdata_status_when_outage():
+    responses.add(
+        responses.GET,
+        "https://status.earthdata.nasa.gov/api/v1/statuses",
+        json={"statuses" : [
+            {"name" : "Earthdata Login", "status" : "geospatial"},
+            {"name" : "Common Metadata Repository", "status" : "OK"},
+        ]
+        },
+        status=200,
+    )
+    with pytest.raises(ServiceOutage):
+        earthaccess.status(raise_on_outage=True)
+         
+@responses.activate
+def test_earthdata_status_malformed_json():
     services = ("Earthdata Login", "Common Metadata Repository")
-    statuses = {service: "Unknown" for service in services}
+    expected = {service: "Unknown" for service in services}
 
     responses.add(
         responses.GET,
-        system.status_api_url,
+        "https://status.earthdata.nasa.gov/api/v1/statuses",
         body='{"x": 5,}',
         status=200,
     )
 
-    result = earthaccess.status(system)
+    result = earthaccess.status()
     assert isinstance(result, dict)
-    assert result == statuses
-
+    assert result == expected
 
 @responses.activate
-def test_earthdata_status_fetch_fail(system):
+def test_earthdata_status_fetch_fail():
     services = ("Earthdata Login", "Common Metadata Repository")
-    statuses = {service: "Unknown" for service in services}
+    expected = {service: "Unknown" for service in services}
 
     responses.add(
         responses.GET,
-        system.status_api_url,
+        "https://status.earthdata.nasa.gov/api/v1/statuses",
         body="Internal Server Error",
         status=500,
     )
 
-    result = earthaccess.status(system)
+    result = earthaccess.status()
     assert isinstance(result, dict)
-    assert result == statuses
+    assert result == expected
 
 
 def test_auth_returns_valid_auth_class():
