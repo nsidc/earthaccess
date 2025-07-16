@@ -13,8 +13,6 @@ You can check the status of Earthdata services  programmatically this way.
 ```py
 import earthaccess
 
-nasa_status = earthaccess.status()
-
-if any(service_status != 'OK' for service_status in nasa_status.values()):
-   raise Exception("NASA APIs unavailable, please try again later.")
+nasa_status = earthaccess.status(system = PROD, raise_on_outage = True)
+print(nasa_status)
 ```

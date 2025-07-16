@@ -11,6 +11,7 @@ EDLHostname = NewType("EDLHostname", str)
 StatusURL = NewType("StatusURL", str)
 StatusApiURL = NewType("StatusApiURL", str)
 
+
 @dataclass(frozen=True)
 class System:
     """Host URL options, for different Earthdata domains."""

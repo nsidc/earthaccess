@@ -29,7 +29,9 @@ from .utils import _validation as validate
 logger = logging.getLogger(__name__)
 
 
-def status(system: System = PROD, raise_on_outage: Optional[bool] = False) -> Dict[str, str]:
+def status(
+    system: System = PROD, raise_on_outage: Optional[bool] = False
+) -> Dict[str, str]:
     """Get the statuses of NASA's Earthdata services.
 
     Parameters:
@@ -46,7 +48,7 @@ def status(system: System = PROD, raise_on_outage: Optional[bool] = False) -> Di
     """
     services = ("Earthdata Login", "Common Metadata Repository")
     statuses = {service: "Unknown" for service in services}
-    msg =f"Unable to retrieve Earthdata service statuses for {system}.Try again later, or visit {system.status_url} to check service statuses."
+    msg = f"Unable to retrieve Earthdata service statuses for {system}.Try again later, or visit {system.status_url} to check service statuses."
 
     try:
         with requests.get(system.status_api_url) as r:
@@ -58,7 +60,7 @@ def status(system: System = PROD, raise_on_outage: Optional[bool] = False) -> Di
                 if service := next(filter(name.startswith, services), None):
                     statuses[service] = entry.get("status", "Unknown")
                     if raise_on_outage and statuses[service] != "OK":
-                       raise ServiceOutage(msg)  
+                        raise ServiceOutage(msg)
     except (json.JSONDecodeError, requests.exceptions.RequestException):
         logger.error(msg)
 
