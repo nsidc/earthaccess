@@ -13,6 +13,7 @@ You can check the status of Earthdata services  programmatically this way.
 ```py
 import earthaccess
 
-nasa_status = earthaccess.status(system = PROD, raise_on_outage = True)
+# Equivalent to earthaccess.status(system=PROD, raise_on_outage=False)
+nasa_status = earthaccess.status()
 print(nasa_status)
 ```
