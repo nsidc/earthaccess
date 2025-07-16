@@ -97,7 +97,7 @@ def test_earthdata_status_service_outage():
         "https://status.earthdata.nasa.gov/api/v1/statuses",
         json={
             "statuses": [
-                {"name": "Earthdata Login", "status": "geospatial"},
+                {"name": "Earthdata Login", "status": "Degraded"},
                 {"name": "Common Metadata Repository", "status": "OK"},
             ]
         },
