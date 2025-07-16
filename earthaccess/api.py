@@ -29,9 +29,7 @@ from .utils import _validation as validate
 logger = logging.getLogger(__name__)
 
 
-def status(
-    system: System = PROD, raise_on_outage: bool = False
-) -> dict[str, str]:
+def status(system: System = PROD, raise_on_outage: bool = False) -> dict[str, str]:
     """Get the statuses of NASA's Earthdata services.
 
     Parameters:
@@ -70,9 +68,8 @@ def status(
     except (json.JSONDecodeError, requests.exceptions.RequestException):
         logger.error(msg)
 
-    if (
-        raise_on_outage and
-        any(status not in {"OK", "Unknown"} for status in statuses.values())
+    if raise_on_outage and any(
+        status not in {"OK", "Unknown"} for status in statuses.values()
     ):
         msg = f"At least 1 service is unhealthy: {services}"
         raise ServiceOutage(msg)

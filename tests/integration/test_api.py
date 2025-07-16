@@ -35,6 +35,9 @@ granules_valid_params = [
     },
 ]
 
+services = ("Earthdata Login", "Common Metadata Repository")
+expected = {service: "Unknown" for service in services}
+
 nasa_statuses = {
     PROD: {
         "success": True,
@@ -109,9 +112,6 @@ def test_earthdata_status_service_outage():
 
 @responses.activate
 def test_earthdata_status_malformed_json():
-    services = ("Earthdata Login", "Common Metadata Repository")
-    expected = {service: "Unknown" for service in services}
-
     responses.add(
         responses.GET,
         "https://status.earthdata.nasa.gov/api/v1/statuses",
@@ -126,9 +126,6 @@ def test_earthdata_status_malformed_json():
 
 @responses.activate
 def test_earthdata_status_fetch_fail():
-    services = ("Earthdata Login", "Common Metadata Repository")
-    expected = {service: "Unknown" for service in services}
-
     responses.add(
         responses.GET,
         "https://status.earthdata.nasa.gov/api/v1/statuses",
