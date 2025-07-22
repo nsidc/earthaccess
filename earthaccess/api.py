@@ -52,7 +52,7 @@ def status(system: System = PROD, raise_on_outage: bool = False) -> dict[str, st
     statuses = {service: "Unknown" for service in services}
     msg = (
         f"Unable to retrieve Earthdata service statuses for {system}."
-        "  Try again later, or visit {system.status_url} to check service statuses."
+        f"  Try again later, or visit {system.status_url} to check service statuses."
     )
 
     try:
