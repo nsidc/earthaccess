@@ -71,7 +71,7 @@ def status(system: System = PROD, raise_on_outage: bool = False) -> dict[str, st
     if raise_on_outage and any(
         status not in {"OK", "Unknown"} for status in statuses.values()
     ):
-        msg = f"At least 1 service is unhealthy: {services}"
+        msg = f"At least 1 service is in an unhealthy/unknown state: {services}"
         raise ServiceOutage(msg)
 
     return statuses
