@@ -2,7 +2,7 @@
 
 At the Earth Science Information Partners (ESIP) Summer Meeting, [FUNding Friday](https://wiki.esipfed.org/FUNding_Friday_Projects) is a way to pitch an idea and win $5K for an idea. Participants from the conference make posters the evening before at a social hour. 
 
-In 2025 Seattle, we won $5K for our idea! This is a short way to document what we did, and to credit non-traditional contributors and contributions. 
+In 2025 Seattle, we won $5K for our idea! This is a short way to document what we did, and to credit non-traditional contributors and contributions. ([video](https://photos.app.goo.gl/851mfZrWPdfmZjcq6)).
 
 ## Brief timeline
 
