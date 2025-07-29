@@ -26,13 +26,15 @@ In 2025 Seattle, we won $5K for our idea! This is a short way to document what w
 
 ## Lyrics
 
-v0.1
+v0.2
 
 Hello. We are earthaccess. We are growing the family. 
 
 We're seeing the whole world in separate catalogs
-We'd like the whole world in our hands
 We've got NASA CMR in our hands
+We've got an open contributor community in our hands
+We want the whole world in our hands
+
 We want NOAA CMR in our hands
 We want USGS STAC in our hands
 We want Copernicus STAC in our hands
