@@ -30,17 +30,17 @@ v0.2
 
 Hello. We are earthaccess. We are growing the family. 
 
-We're seeing the whole world in separate catalogs
-We've got NASA CMR in our hands
-We've got an open contributor community in our hands
-We want the whole world in our hands
+We're seeing the whole world in separate catalogs  
+We've got NASA CMR in our hands  
+We've got an open contributor community in our hands  
+We want the whole world in our hands  
 
-We want NOAA CMR in our hands
-We want USGS STAC in our hands
-We want Copernicus STAC in our hands
-We want the whole world in our hands
+We want NOAA CMR in our hands  
+We want USGS STAC in our hands  
+We want Copernicus STAC in our hands  
+We want the whole world in our hands  
 
-We want a hackday at AGU in our plans
-We want a prototype in an afternoon in our plans
-We want a roadmap in an afternoon in our plans
-We want the whole world in our hands
+We want a hackday at AGU in our plans  
+We want a prototype in an afternoon in our plans  
+We want a roadmap in an afternoon in our plans  
+We want the whole world in our hands  
