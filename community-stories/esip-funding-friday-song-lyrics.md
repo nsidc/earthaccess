@@ -16,23 +16,24 @@ In 2025 Seattle, we won $5K for our idea! This is a short way to document what w
 - Eli Holmes arrives first, grabs some pens, starts drawing earthaccess logo as a first step. Others join, decide minimal text. Max Jones suggests "Growing the Family", helps with taping the word "access" with Kate Wing's white tape. Thumbs up from from Brianna Pagán, Miguel Jimenez-Urias.
 - Eli Holmes has to leave. Before she does, suggests we sing a song. "We've got the whole world in our hands"
 - User testing: what does the poster say? "access". Ah, we need to redo "earth" so it reads "earthaccess"
-- Joe Kennedy and Julie Lowndes start writing lyrics. Steve Young (retired EPA) comes by, asks questions that establish what we'll use the funding for, timeline, and outcomes.
+- Joe Kennedy and Julie Lowndes start writing lyrics. Steve Young (retired EPA) comes by, asks questions that establish what we'll use the funding for, timeline, and outcomes. Joe Kennedy is an excellent songwriter.
 
 **July 25: The pitch**
 
 - Julie Lowndes shows Kate Wing the lyrics at breakfast, with 15 mins to go. Kate, who actually sings, notices immediately we're missing a line in verse 1. Suggest an addition, and rewrites in larger font for the group
 - Joe Kennedy, Julie Lowndes, Kate Wing, Eli Holmes sing. Kate Wing hums the note to get us started, and is a pro at helping us read the actual lines we are supposed to read, and hiding papers shaking from nervousness.
 - The votes are in, we have won $5K!
+- v0.3 refined live by Kate Wing
 
 ## Lyrics
 
-v0.2
+v0.3 (best to sing if the opportunity rises again)
 
 Hello. We are earthaccess. We are growing the family. 
 
-We're seeing the whole world in separate catalogs  
 We've got NASA CMR in our hands  
 We've got an open contributor community in our hands  
+We're seeing the whole world in separate catalogs  
 We want the whole world in our hands  
 
 We want NOAA CMR in our hands  
