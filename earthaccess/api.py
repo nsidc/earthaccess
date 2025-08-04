@@ -235,6 +235,7 @@ def download(
     credentials_endpoint: Optional[str] = None,
     threads: int = 8,
     *,
+    hide_progress: bool = False,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
@@ -252,6 +253,7 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        hide_progress: if True, will not show the progress bar. Default is False.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -276,6 +278,7 @@ def download(
             provider,
             credentials_endpoint,
             threads,
+            hide_progress=hide_progress,
             pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:

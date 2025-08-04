@@ -563,6 +563,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         threads: int = 8,
         *,
+        hide_progress: bool = False,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
@@ -602,7 +603,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "n_jobs": threads,
-            "disable": True,
+            "disable": hide_progress,
             **(pqdm_kwargs or {}),
         }
 
