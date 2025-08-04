@@ -232,6 +232,7 @@ def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
     local_path: Optional[Union[Path, str]] = None,
     provider: Optional[str] = None,
+    credentials_endpoint: Optional[str] = None,
     threads: int = 8,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
@@ -270,7 +271,12 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+            granules,
+            local_path,
+            provider,
+            credentials_endpoint,
+            threads,
+            pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:
         logger.error(
@@ -283,8 +289,10 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    credentials_endpoint: Optional[str] = None,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    open_kwargs: Optional[Dict[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -296,6 +304,8 @@ def open(
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
+            Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -303,7 +313,9 @@ def open(
     return earthaccess.__store__.open(
         granules=granules,
         provider=_normalize_location(provider),
+        credentials_endpoint=credentials_endpoint,
         pqdm_kwargs=pqdm_kwargs,
+        open_kwargs=open_kwargs,
     )
 
 

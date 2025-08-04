@@ -14,6 +14,12 @@ import requests
 import s3fs
 from multimethod import multimethod as singledispatchmethod
 from pqdm.threads import pqdm
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 from typing_extensions import deprecated
 
 import earthaccess
@@ -61,15 +67,53 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         return repr(self.f)
 
 
+def get_cache_config(file_size: int) -> int:
+    """Determine the optimal caching configuration based on file size.
+    Note: we could even be smarter if we know the chunk sizes of the variables
+    we need to cache, e.g. using the dmrpp file and the wellknownparts cache type.
+
+    Uses 'blockcache' for all files with block sizes adjusted by file size:
+
+    - <100MB: 4MB
+    - >100MB: 4–16MB
+
+    Parameters:
+        file_size (int): Size of the file in bytes.
+
+    Returns:
+        Tuple[str, int]: A tuple containing:
+            cache_type (str): Always 'blockcache'.
+            block_size (int): Optimal block size in bytes.
+    """
+    if file_size < 100 * 1024 * 1024:
+        block_size = 4 * 1024 * 1024
+    elif 100 * 1024 * 1024 <= file_size < 1024 * 1024 * 1024:
+        block_size = 8 * 1024 * 1024
+    else:
+        block_size = 16 * 1024 * 1024
+
+    return block_size
+
+
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    open_kwargs: Optional[Dict[str, Any]] = None,
 ) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
-        return EarthAccessFile(fs.open(url), granule)  # type: ignore
+        f_size = fs.info(url)["size"]
+        default_cache_type = "blockcache"
+        default_block_size = get_cache_config(f_size)
+
+        open_kw = open_kwargs or {}
+        open_kw.setdefault("cache_type", default_cache_type)
+        open_kw.setdefault("block_size", default_block_size)
+
+        f = fs.open(url, **open_kw)
+        return EarthAccessFile(f, granule)
 
     pqdm_kwargs = {
         "exception_behaviour": "immediate",
@@ -345,8 +389,10 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -357,12 +403,20 @@ class Store(object):
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
+            open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
+                Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
         if len(granules):
-            return self._open(granules, provider, pqdm_kwargs=pqdm_kwargs)
+            return self._open(
+                granules,
+                provider,
+                credentials_endpoint,
+                pqdm_kwargs=pqdm_kwargs,
+                open_kwargs=open_kwargs,
+            )
         return []
 
     @singledispatchmethod
@@ -370,8 +424,10 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -380,8 +436,10 @@ class Store(object):
         self,
         granules: List[DataGranule],
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -397,7 +455,12 @@ class Store(object):
                 access = "direct"
                 provider = granules[0]["meta"]["provider-id"]
                 # if the data has its own S3 credentials endpoint, we will use it
-                endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
+                if credentials_endpoint is None:
+                    endpoint = self._own_s3_credentials(
+                        granules[0]["umm"]["RelatedUrls"]
+                    )
+                else:
+                    endpoint = credentials_endpoint
                 if endpoint is not None:
                     logger.info(f"using endpoint: {endpoint}")
                     s3_fs = self.get_s3_filesystem(endpoint=endpoint)
@@ -415,6 +478,7 @@ class Store(object):
                         url_mapping,
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
+                        open_kwargs=open_kwargs,
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -423,10 +487,10 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     ) from e
             else:
-                fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs)
+                fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs)
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs)
+            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs)
 
         return fileset
 
@@ -435,11 +499,13 @@ class Store(object):
         self,
         granules: List[str],
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
-
+        s3_fs = None
         if isinstance(granules[0], str) and (
             granules[0].startswith("s3") or granules[0].startswith("http")
         ):
@@ -458,26 +524,29 @@ class Store(object):
         if self.in_region and granules[0].startswith("s3"):
             if provider is not None:
                 s3_fs = self.get_s3_filesystem(provider=provider)
-                if s3_fs is not None:
-                    try:
-                        fileset = _open_files(
-                            url_mapping,
-                            fs=s3_fs,
-                            pqdm_kwargs=pqdm_kwargs,
-                        )
-                    except Exception as e:
-                        raise RuntimeError(
-                            "An exception occurred while trying to access remote files on S3. "
-                            "This may be caused by trying to access the data outside the us-west-2 region."
-                            f"Exception: {traceback.format_exc()}"
-                        ) from e
-                else:
-                    logger.info(f"Provider {provider} has no valid cloud credentials")
+            elif credentials_endpoint is not None:
+                s3_fs = self.get_s3_filesystem(endpoint=credentials_endpoint)
+            if s3_fs:
+                try:
+                    fileset = _open_files(
+                        url_mapping,
+                        fs=s3_fs,
+                        pqdm_kwargs=pqdm_kwargs,
+                        open_kwargs=open_kwargs,
+                    )
+                except Exception as e:
+                    raise RuntimeError(
+                        "An exception occurred while trying to access remote files on S3. "
+                        "This may be caused by trying to access the data outside the us-west-2 region."
+                        f"Exception: {traceback.format_exc()}"
+                    ) from e
+
                 return fileset
             else:
-                raise ValueError(
-                    "earthaccess cannot derive the DAAC provider from URLs only, a provider is needed e.g. POCLOUD"
+                logger.error(
+                    f"An error occurred while trying to access S3 files for provider: {provider}. endpoint: {credentials_endpoint}"
                 )
+                return fileset
         else:
             if granules[0].startswith("s3"):
                 raise ValueError(
@@ -491,6 +560,7 @@ class Store(object):
         granules: Union[List[DataGranule], List[str]],
         local_path: Optional[Union[Path, str]] = None,
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         threads: int = 8,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
@@ -512,6 +582,7 @@ class Store(object):
                 month, and day of the current date, and `UUID` is the last 6 digits
                 of a UUID4 value.
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
+            credentials_endpoint: If provided, this will be used to get S3 credentials
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
@@ -535,7 +606,13 @@ class Store(object):
             **(pqdm_kwargs or {}),
         }
 
-        return self._get(granules, Path(local_path), provider, pqdm_kwargs=pqdm_kwargs)
+        return self._get(
+            granules,
+            Path(local_path),
+            provider,
+            credentials_endpoint,
+            pqdm_kwargs=pqdm_kwargs,
+        )
 
     @singledispatchmethod
     def _get(
@@ -543,6 +620,7 @@ class Store(object):
         granules: Union[List[DataGranule], List[str]],
         local_path: Path,
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
@@ -568,39 +646,68 @@ class Store(object):
         """
         raise NotImplementedError(f"Cannot _get {granules}")
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        retry=retry_if_exception_type(Exception),
+    )
+    def download_file(
+        self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path
+    ) -> Path:
+        file_name = local_path / Path(file).name
+        if file_name.exists():
+            return file_name  # Skip if already exists
+        try:
+            s3_fs.get([file], str(file_name))
+            logger.info(f"Downloaded: {file_name}")
+            return file_name
+        except Exception as e:
+            msg = f"Failed to download {file!r} to {file_name!r}: {e}"
+            logger.error(msg)
+            raise DownloadFailure(msg)
+
     @_get.register
     def _get_urls(
         self,
         granules: List[str],
         local_path: Path,
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         data_links = granules
-        downloaded_files: List = []
-        if provider is None and self.in_region and "cumulus" in data_links[0]:
+        s3_fs = s3fs.S3FileSystem()
+        if (
+            provider is None
+            and credentials_endpoint is None
+            and self.in_region
+            and "cumulus" in data_links[0]
+        ):
             raise ValueError(
                 "earthaccess can't yet guess the provider for cloud collections, "
-                "we need to use one from earthaccess.list_cloud_providers()"
+                "we need to use one from earthaccess.list_cloud_providers() or if known the  S3 credential endpoint"
             )
         if self.in_region and data_links[0].startswith("s3"):
-            logger.info(f"Accessing cloud dataset using provider: {provider}")
-            s3_fs = self.get_s3_filesystem(provider=provider)
+            if credentials_endpoint is not None:
+                logger.info(
+                    f"Accessing cloud dataset using credentials_endpoint: {credentials_endpoint}"
+                )
+                s3_fs = self.get_s3_filesystem(endpoint=credentials_endpoint)
+            elif provider is not None:
+                logger.info(f"Accessing cloud dataset using provider: {provider}")
+                s3_fs = self.get_s3_filesystem(provider=provider)
 
-            # TODO: make this parallel or concurrent
-            for file in data_links:
-                file_name = local_path / Path(file).name
-                if not file_name.exists():
-                    try:
-                        s3_fs.get(file, str(local_path))
-                        logger.info(f"Downloaded: {file_name}")
-                        downloaded_files.append(file_name)
-                    except Exception as e:
-                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
-                        logger.error(msg)
-                        raise DownloadFailure(msg)
-            return downloaded_files
+            def _safe_download(file: str) -> Union[Path, None]:
+                try:
+                    return self.download_file(s3_fs, file, local_path)
+                except DownloadFailure:
+                    logger.error(f"Failed to download {file!r}")
+                    return None
+
+            results = pqdm(data_links, _safe_download, **pqdm_kwargs)
+            return [r for r in results if r is not None]
 
         else:
             # if we are not in AWS
@@ -614,11 +721,11 @@ class Store(object):
         granules: List[DataGranule],
         local_path: Path,
         provider: Optional[str] = None,
+        credentials_endpoint: Optional[str] = None,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         data_links: List = []
-        downloaded_files: List = []
         provider = granules[0]["meta"]["provider-id"]
         endpoint = self._own_s3_credentials(granules[0]["umm"]["RelatedUrls"])
         cloud_hosted = granules[0].cloud_hosted
@@ -646,19 +753,16 @@ class Store(object):
 
             local_path.mkdir(parents=True, exist_ok=True)
 
-            # TODO: make this async
-            for file in data_links:
-                file_name = local_path / Path(file).name
-                if not file_name.exists():
-                    try:
-                        s3_fs.get(file, str(local_path))
-                        logger.info(f"Downloaded: {file_name}")
-                        downloaded_files.append(file_name)
-                    except Exception as e:
-                        msg = f"Failed to download {file!r} to {file_name!r}: {e}"
-                        logger.error(msg)
-                        raise DownloadFailure(msg)
-            return downloaded_files
+            def _safe_download(file: str) -> Union[Path, None]:
+                try:
+                    return self.download_file(s3_fs, file, local_path)
+                except DownloadFailure:
+                    logger.error(f"Failed to download {file!r}")
+                    return None
+
+            results = pqdm(data_links, _safe_download, **pqdm_kwargs)
+            return [r for r in results if r is not None]
+
         else:
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
@@ -769,11 +873,12 @@ class Store(object):
         url_mapping: Mapping[str, Union[DataGranule, None]],
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
 
         try:
-            return _open_files(url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs)
+            return _open_files(url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs)
         except Exception:
             logger.exception(
                 "An exception occurred while trying to access remote files via HTTPS"

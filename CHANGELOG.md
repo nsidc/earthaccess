@@ -9,6 +9,14 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
+- Change default cache behavior in fsspec from `readahead` to `blockcache`.
+  Allow user defined config with `open_kwargs` in the `.open()` method.
+  This improves performance by an order of magnitude.
+  ([#251](https://github.com/nsidc/earthaccess/discussions/251))([#771](https://github.com/nsidc/earthaccess/discussions/771))
+  ([@betolink](https://github.com/betolink))
+- Added `tenacity` to retry downloads up to 3 times with exponential backoff time
+  ([#481](https://github.com/nsidc/earthaccess/issues/481))
+  ([@betolink](https://github.com/betolink))
 - By default, _disable_ progress bars during downloading.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
@@ -56,6 +64,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Fixed
 
+- Files can be downloaded in the cloud([#1009](https://github.com/nsidc/earthaccess/issues/995))([betolink](https://github.com/betolink))
 - Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
 - Resolved an error in virtual dataset tutorial notebook ([#1044](https://github.com/nsidc/earthaccess/issues/1044))([danielfromearth](https://github.com/danielfromearth))
 
