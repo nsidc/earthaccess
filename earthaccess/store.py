@@ -660,8 +660,8 @@ class Store(object):
         if file_name.exists():
             return file_name  # Skip if already exists
         try:
-            s3_fs.get([file], str(file_name))
-            logger.info(f"Downloaded: {file_name}")
+            logger.info(f"Downloading: {file_name}")
+            s3_fs.get([file], str(local_path), recursive=False)
             return file_name
         except Exception as e:
             msg = f"Failed to download {file!r} to {file_name!r}: {e}"
