@@ -32,14 +32,15 @@ from .search import DataCollections
 
 logger = logging.getLogger(__name__)
 
+
 def is_interactive() -> bool:
     """Detect if earthaccess is being used in an interactive session.
 
     Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
     """
     try:
-        from IPython.core.getipython import get_ipython
-        
+        from IPython import get_ipython  # type: ignore
+
         # IPython Notebook or REPL:
         if get_ipython() is not None:
             return True
@@ -47,11 +48,13 @@ def is_interactive() -> bool:
         pass
 
     import sys
+
     # Python REPL
-    if hasattr(sys, 'ps1'):
+    if hasattr(sys, "ps1"):
         return True
 
     return False
+
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
@@ -133,7 +136,7 @@ def _open_files(
         open_kw.setdefault("block_size", default_block_size)
 
         f = fs.open(url, **open_kw)
-        return EarthAccessFile(f, granule)
+        return EarthAccessFile(f, granule) # type: ignore
 
     pqdm_kwargs = {
         "exception_behaviour": "immediate",
@@ -507,10 +510,14 @@ class Store(object):
                         f"Exception: {traceback.format_exc()}"
                     ) from e
             else:
-                fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs)
+                fileset = self._open_urls_https(
+                    url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs
+                )
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs)
+            fileset = self._open_urls_https(
+                url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs
+            )
 
         return fileset
 
@@ -903,7 +910,9 @@ class Store(object):
         https_fs = self.get_fsspec_session()
 
         try:
-            return _open_files(url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs)
+            return _open_files(
+                url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs
+            )
         except Exception:
             logger.exception(
                 "An exception occurred while trying to access remote files via HTTPS"
