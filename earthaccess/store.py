@@ -136,7 +136,7 @@ def _open_files(
         open_kw.setdefault("block_size", default_block_size)
 
         f = fs.open(url, **open_kw)
-        return EarthAccessFile(f, granule) # type: ignore
+        return EarthAccessFile(f, granule)  # type: ignore
 
     pqdm_kwargs = {
         "exception_behaviour": "immediate",
