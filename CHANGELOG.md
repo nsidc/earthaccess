@@ -17,7 +17,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Added `tenacity` to retry downloads up to 3 times with exponential backoff time
   ([#481](https://github.com/nsidc/earthaccess/issues/481))
   ([@betolink](https://github.com/betolink))
-- By default, _disable_ progress bars during downloading.
+- By default, _disable_ progress bars during downloading if session is non interactive.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Updated bug and triage label names in bug Issue template.

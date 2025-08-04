@@ -32,6 +32,26 @@ from .search import DataCollections
 
 logger = logging.getLogger(__name__)
 
+def is_interactive() -> bool:
+    """Detect if earthaccess is being used in an interactive session.
+
+    Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
+    """
+    try:
+        from IPython.core.getipython import get_ipython
+        
+        # IPython Notebook or REPL:
+        if get_ipython() is not None:
+            return True
+    except ImportError:
+        pass
+
+    import sys
+    # Python REPL
+    if hasattr(sys, 'ps1'):
+        return True
+
+    return False
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
@@ -586,6 +606,7 @@ class Store(object):
             credentials_endpoint: If provided, this will be used to get S3 credentials
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            hide_progress: if True, will not show the progress bar. Default is False.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
@@ -600,6 +621,9 @@ class Store(object):
             today = datetime.datetime.now().strftime("%Y-%m-%d")
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
+
+        if not is_interactive():
+            hide_progress = True
 
         pqdm_kwargs = {
             "n_jobs": threads,

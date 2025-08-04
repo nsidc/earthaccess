@@ -253,7 +253,8 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
-        hide_progress: if True, will not show the progress bar. Default is False.
+        hide_progress: if True, will not show the progress bar. Default is False. Using a non-interactive session
+            will set the value to True(hide the progress bar)
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
