@@ -107,6 +107,21 @@ returns a list of data collections/datasets
 - day_night_flag
 - cloud_cover
 - platform (is this available for collections)
+- granule_name
+
+### Search by granule name
+
+
+### Search by granule name using wild cards
+
+```
+granules = earthaccess.search_data(
+    short_name="ATL07",
+    temporal=("2022-07-26","2022-07-26"),
+    granule_name="ATL07-01_*_0531????_*_*.h5",
+    version="006",
+)
+```
 
 ## `search_services`
 
