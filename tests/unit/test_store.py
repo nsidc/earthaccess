@@ -208,14 +208,10 @@ class TestStoreSessions(unittest.TestCase):
                 self.assertEqual(len(downloaded_files), n_files)  # 10 files downloaded
                 self.assertCountEqual(downloaded_files, urls)  # All files accounted for
 
-
-@pytest.mark.xfail(
-    reason="Expected failure: Reproduces a bug (#610) that has not yet been fixed."
-)
-def test_earthaccess_file_getattr():
-    fs = fsspec.filesystem("memory")
-    with fs.open("/foo", "wb") as f:
-        earthaccess_file = EarthAccessFile(f, granule="foo")  # type: ignore
-        assert f.tell() == earthaccess_file.tell()
-    # cleanup
-    fs.store.clear()
+    @responses.activate
+    def test_earthaccess_file_getattr(self):
+        fs = fsspec.filesystem("memory")
+        with fs.open("/foo", "wb") as f:
+            earthaccess_file = EarthAccessFile(f, granule="foo")
+            assert f.tell == earthaccess_file.tell
+        fs.store.clear()
