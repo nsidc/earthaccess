@@ -19,6 +19,7 @@ from .api import (
     search_data,
     search_datasets,
     search_services,
+    status,
 )
 from .auth import Auth
 from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
@@ -33,6 +34,7 @@ logger = logging.getLogger(__name__)
 __all__ = [
     # api.py
     "login",
+    "status",
     "search_datasets",
     "search_data",
     "search_services",
