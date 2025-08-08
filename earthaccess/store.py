@@ -131,7 +131,8 @@ def _open_files(
         default_cache_type = "blockcache"
         default_block_size = get_cache_config(f_size)
 
-        open_kw = open_kwargs or fsspec.config.conf or {}   # this isn't right (too general), but maybe something like this?
+        open_kw = (open_kwargs or fsspec.config.conf or {}).copy()
+
         open_kw.setdefault("cache_type", default_cache_type)
         open_kw.setdefault("block_size", default_block_size)
 
