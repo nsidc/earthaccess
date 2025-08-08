@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 
@@ -15,7 +16,7 @@ from typing_extensions import (
 )
 
 import earthaccess
-from earthaccess.exceptions import LoginStrategyUnavailable
+from earthaccess.exceptions import LoginStrategyUnavailable, ServiceOutage
 from earthaccess.services import DataServices
 
 from .auth import Auth
@@ -26,6 +27,54 @@ from .system import PROD, System
 from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
+
+
+def status(system: System = PROD, raise_on_outage: bool = False) -> dict[str, str]:
+    """Get the statuses of NASA's Earthdata services.
+
+    Parameters:
+        system: The Earthdata system to access, defaults to PROD.
+        raise_on_outage: If True, raises exception on errors or outages.
+
+    Returns:
+        A dictionary containing the statuses of Earthdata services.
+
+    Examples:
+        >>> earthaccess.status()  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+        >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+
+    Raises:
+        ServiceOutage: if at least one service status is not `"OK"`
+    """
+    services = ("Earthdata Login", "Common Metadata Repository")
+    statuses = {service: "Unknown" for service in services}
+    msg = (
+        f"Unable to retrieve Earthdata service statuses for {system}."
+        f"  Try again later, or visit {system.status_url} to check service statuses."
+    )
+
+    try:
+        with requests.get(system.status_api_url) as r:
+            r.raise_for_status()
+            statuses_json = r.json()
+
+        for entry in statuses_json.get("statuses", []):
+            name = entry.get("name", "")
+
+            if service := next(filter(name.startswith, services), None):
+                statuses[service] = entry.get("status", "Unknown")
+    except (json.JSONDecodeError, requests.exceptions.RequestException):
+        logger.error(msg)
+
+    if raise_on_outage and any(
+        status not in {"OK", "Unknown"} for status in statuses.values()
+    ):
+        msg = f"At least 1 service is in an unhealthy/unknown state: {services}"
+        raise ServiceOutage(msg)
+
+    return statuses
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
