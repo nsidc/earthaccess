@@ -60,6 +60,7 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     def __repr__(self) -> str:
         return repr(self.f)
 
+
 def _is_interactive() -> bool:
     """Detect if earthaccess is being used in an interactive session.
     Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.

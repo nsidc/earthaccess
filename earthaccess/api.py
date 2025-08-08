@@ -252,7 +252,7 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
-        hide_progress: if True, will not show the progress bar for downloads. True if 
+        hide_progress: if True, will not show the progress bar for downloads. True if
             the session is non-interactive.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
@@ -273,7 +273,12 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, hide_progress=hide_progress, pqdm_kwargs=pqdm_kwargs
+            granules,
+            local_path,
+            provider,
+            threads,
+            hide_progress=hide_progress,
+            pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:
         logger.error(

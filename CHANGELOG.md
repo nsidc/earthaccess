@@ -9,8 +9,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
-- By default, _disable_ progress bars during downloading.
+- Allow users to disable progress bar if needed, show for interactive sessions.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
+  ([#1065](https://github.com/nsidc/earthaccess/pull/1065))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Updated bug and triage label names in bug Issue template.
   ([#998](https://github.com/nsidc/earthaccess/pull/998))
