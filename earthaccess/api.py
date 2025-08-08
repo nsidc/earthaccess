@@ -234,6 +234,7 @@ def download(
     provider: Optional[str] = None,
     threads: int = 8,
     *,
+    hide_progress: bool = False,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
@@ -251,6 +252,8 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        hide_progress: if True, will not show the progress bar for downloads. True if 
+            the session is non-interactive.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -270,7 +273,7 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+            granules, local_path, provider, threads, hide_progress=hide_progress, pqdm_kwargs=pqdm_kwargs
         )
     except AttributeError as err:
         logger.error(
@@ -284,6 +287,7 @@ def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
     *,
+    hide_progress: bool = False,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
@@ -293,6 +297,8 @@ def open(
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+        hide_progress: if True, will not show the progress bar for downloads. True if
+            the session is non interactive.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -303,6 +309,7 @@ def open(
     return earthaccess.__store__.open(
         granules=granules,
         provider=_normalize_location(provider),
+        hide_progress=hide_progress,
         pqdm_kwargs=pqdm_kwargs,
     )
 
