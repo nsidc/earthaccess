@@ -61,6 +61,28 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         return repr(self.f)
 
 
+def _is_interactive() -> bool:
+    """Detect if earthaccess is being used in an interactive session.
+    Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
+    """
+    try:
+        from IPython import get_ipython  # type: ignore
+
+        # IPython Notebook or REPL:
+        if get_ipython() is not None:
+            return True
+    except ImportError:
+        pass
+
+    import sys
+
+    # Python REPL
+    if hasattr(sys, "ps1"):
+        return True
+
+    return False
+
+
 def _open_files(
     url_mapping: Mapping[str, Union[DataGranule, None]],
     fs: fsspec.AbstractFileSystem,
@@ -70,13 +92,6 @@ def _open_files(
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
         return EarthAccessFile(fs.open(url), granule)  # type: ignore
-
-    pqdm_kwargs = {
-        "exception_behaviour": "immediate",
-        "n_jobs": 8,
-        "disable": True,
-        **(pqdm_kwargs or {}),
-    }
 
     return pqdm(url_mapping.items(), multi_thread_open, **pqdm_kwargs)
 
@@ -346,6 +361,7 @@ class Store(object):
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
         *,
+        hide_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
@@ -355,12 +371,22 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+            hide_progress: If True, progress bars will be hidden. Default is False.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
+        if not _is_interactive() and hide_progress is None:
+            hide_progress = True
+
+        pqdm_kwargs = {
+            "exception_behaviour": "immediate",
+            "n_jobs": 8,
+            "disable": hide_progress,
+            **(pqdm_kwargs or {}),
+        }
         if len(granules):
             return self._open(granules, provider, pqdm_kwargs=pqdm_kwargs)
         return []
@@ -493,6 +519,7 @@ class Store(object):
         provider: Optional[str] = None,
         threads: int = 8,
         *,
+        hide_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
@@ -514,6 +541,7 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
+            hide_progress: If True, progress bars will be hidden. Default is False.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
@@ -529,9 +557,12 @@ class Store(object):
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
 
+        if not _is_interactive() and hide_progress is None:
+            hide_progress = True
+
         pqdm_kwargs = {
             "n_jobs": threads,
-            "disable": True,
+            "disable": hide_progress,
             **(pqdm_kwargs or {}),
         }
 
