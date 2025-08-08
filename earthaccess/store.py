@@ -461,7 +461,6 @@ class Store(object):
         granules: List[str],
         provider: Optional[str] = None,
         *,
-        hide_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Any]:
         fileset: List = []
@@ -489,7 +488,6 @@ class Store(object):
                         fileset = _open_files(
                             url_mapping,
                             fs=s3_fs,
-                            hide_progress=hide_progress,
                             pqdm_kwargs=pqdm_kwargs,
                         )
                     except Exception as e:
