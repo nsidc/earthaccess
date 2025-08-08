@@ -281,8 +281,10 @@ def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
     local_path: Optional[Union[Path, str]] = None,
     provider: Optional[str] = None,
+    credentials_endpoint: Optional[str] = None,
     threads: int = 8,
     *,
+    hide_progress: bool = False,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
@@ -300,6 +302,8 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        hide_progress: if True, will not show the progress bar. Default is False. Using a non-interactive session
+            will set the value to True(hide the progress bar)
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -319,7 +323,13 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+            granules,
+            local_path,
+            provider,
+            credentials_endpoint,
+            threads,
+            hide_progress=hide_progress,
+            pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:
         logger.error(
@@ -332,8 +342,10 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    credentials_endpoint: Optional[str] = None,
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    open_kwargs: Optional[Dict[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -345,6 +357,8 @@ def open(
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
+            Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -352,7 +366,9 @@ def open(
     return earthaccess.__store__.open(
         granules=granules,
         provider=_normalize_location(provider),
+        credentials_endpoint=credentials_endpoint,
         pqdm_kwargs=pqdm_kwargs,
+        open_kwargs=open_kwargs,
     )
 
 
