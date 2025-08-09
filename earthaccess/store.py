@@ -361,7 +361,7 @@ class Store(object):
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
         *,
-        hide_progress: Optional[bool] = None,
+        show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
@@ -371,20 +371,20 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
-            hide_progress: If True, progress bars will be hidden. Default is False.
+            show_progress: If False, progress bars will be hidden. Default is False.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
 
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
-        if not _is_interactive() and hide_progress is None:
-            hide_progress = True
+        if not _is_interactive() and show_progress is None:
+            show_progress = False
 
         pqdm_kwargs = {
             "exception_behaviour": "immediate",
             "n_jobs": 8,
-            "disable": hide_progress,
+            "disable": not show_progress,
             **(pqdm_kwargs or {}),
         }
         if len(granules):
@@ -519,7 +519,7 @@ class Store(object):
         provider: Optional[str] = None,
         threads: int = 8,
         *,
-        hide_progress: Optional[bool] = None,
+        show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
@@ -541,7 +541,7 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
-            hide_progress: If True, progress bars will be hidden. Default is False.
+            show_progress: If False, progress bars will be hidden. Default is True.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
@@ -557,12 +557,12 @@ class Store(object):
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
 
-        if not _is_interactive() and hide_progress is None:
-            hide_progress = True
+        if not _is_interactive() and show_progress is None:
+            show_progress = False
 
         pqdm_kwargs = {
             "n_jobs": threads,
-            "disable": hide_progress,
+            "disable": not show_progress,  # True if show_progrss is False
             **(pqdm_kwargs or {}),
         }
 
