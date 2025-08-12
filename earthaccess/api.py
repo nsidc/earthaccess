@@ -301,8 +301,7 @@ def download(
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
-        show_progress: if False, earthaccess will not show the progress bar for downloads. True if
-            the session is interactive.
+        show_progress: whether to display a progress bar. Defaults to `True` for interactive sessions, otherwise `False`.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
