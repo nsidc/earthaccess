@@ -9,7 +9,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
-- Allow users to disable progress bar if needed, show for interactive sessions.
+- Add `show_progress` argument to `earthaccess.download()` to let the user control display of progress bars. Defaults to true for interactive sessions, otherwise false.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([#1065](https://github.com/nsidc/earthaccess/pull/1065))
   ([@Sherwin-14](https://github.com/Sherwin-14))
