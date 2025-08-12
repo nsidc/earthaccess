@@ -378,8 +378,8 @@ class Store(object):
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
-        if not _is_interactive() and show_progress is None:
-            show_progress = False
+    if show_progress is None:
+        show_progress = _is_interactive()
 
         pqdm_kwargs = {
             "exception_behaviour": "immediate",
