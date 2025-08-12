@@ -27,6 +27,28 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
+def _is_interactive() -> bool:
+    """Detect if earthaccess is being used in an interactive session.
+    Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
+    """
+    try:
+        from IPython import get_ipython  # type: ignore
+
+        # IPython Notebook or REPL:
+        if get_ipython() is not None:
+            return True
+    except ImportError:
+        pass
+
+    import sys
+
+    # Python REPL
+    if hasattr(sys, "ps1"):
+        return True
+
+    return False
+
+
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
@@ -59,28 +81,6 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
 
     def __repr__(self) -> str:
         return repr(self.f)
-
-
-def _is_interactive() -> bool:
-    """Detect if earthaccess is being used in an interactive session.
-    Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
-    """
-    try:
-        from IPython import get_ipython  # type: ignore
-
-        # IPython Notebook or REPL:
-        if get_ipython() is not None:
-            return True
-    except ImportError:
-        pass
-
-    import sys
-
-    # Python REPL
-    if hasattr(sys, "ps1"):
-        return True
-
-    return False
 
 
 def _open_files(
@@ -557,8 +557,8 @@ class Store(object):
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
 
-        if not _is_interactive() and show_progress is None:
-            show_progress = False
+        if show_progress is None:
+            show_progress = _is_interactive()
 
         pqdm_kwargs = {
             "n_jobs": threads,
