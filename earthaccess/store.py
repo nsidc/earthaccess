@@ -562,7 +562,7 @@ class Store(object):
 
         pqdm_kwargs = {
             "n_jobs": threads,
-            "disable": not show_progress,  # True if show_progrss is False
+            "disable": not show_progress,
             **(pqdm_kwargs or {}),
         }
 
