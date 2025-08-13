@@ -368,7 +368,8 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
-            show_progress: If False, progress bars will be hidden. Default is False.
+            show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+                (i.e., in a notebook or a python REPL session), otherwise `False`.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
 
@@ -538,7 +539,8 @@ class Store(object):
             provider: a valid cloud provider, each DAAC has a provider code for their cloud distributions
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
-            show_progress: If False, progress bars will be hidden. Default is True.
+            show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+                (i.e., in a notebook or a python REPL session), otherwise `False`.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
