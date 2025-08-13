@@ -43,10 +43,7 @@ def _is_interactive() -> bool:
     import sys
 
     # Python REPL
-    if hasattr(sys, "ps1"):
-        return True
-
-    return False
+    return hasattr(sys, "ps1")
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
