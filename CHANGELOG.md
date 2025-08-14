@@ -68,7 +68,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Fixed
 
-- Files can be downloaded in the cloud([#1009](https://github.com/nsidc/earthaccess/issues/995))([betolink](https://github.com/betolink))
+- Files can be downloaded in the cloud([#995](https://github.com/nsidc/earthaccess/issues/995))([betolink](https://github.com/betolink))
 - Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
 - Resolved an error in virtual dataset tutorial notebook ([#1044](https://github.com/nsidc/earthaccess/issues/1044))([danielfromearth](https://github.com/danielfromearth))
 
