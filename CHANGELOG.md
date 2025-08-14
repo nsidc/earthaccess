@@ -25,6 +25,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
+- Add `get_virtual_reference()`: returns a reference to a consolidated virtual zarr dataset
+  if there is one available in CMR. ([#964](https://github.com/nsidc/earthaccess/pull/964))
+  ([@DeanHenze](https://github.com/DeanHenze))
 - Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset
   ([#924](https://github.com/nsidc/earthaccess/pull/924))
   ([@danielfromearth](https://github.com/danielfromearth))
