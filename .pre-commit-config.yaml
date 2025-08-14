@@ -46,7 +46,7 @@ repos:
       #
       # Or, if you have `uv` installed, run `uv lock`.
       - id: uv-lock
-        args: ["--locked"]
+        args: ["--locked", "--offline"]
       - id: uv-lock
         stages: ["manual"]
 
