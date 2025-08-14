@@ -55,6 +55,7 @@ plugins:
       ignore:
         - "tutorials/dask.ipynb"
         - "**/.ipynb_checkpoints/*"
+        - "user_guide/fsspec.ipynb"
 
 nav:
   - "What is earthaccess?": "index.md"
@@ -86,6 +87,7 @@ nav:
       - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
       - "Access data": "howto/access-data.md"
       - "Using authenticated sessions to access data": "howto/edl.ipynb"
+      - "Remote access and caching with earthaccess": "user_guide/fsspec.ipynb"
       - "Download data from on-prem location": "howto/onprem.md"
       - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
       - "Search for services": "howto/search-services.md"

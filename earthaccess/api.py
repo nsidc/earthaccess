@@ -281,6 +281,7 @@ def download(
     granules: Union[DataGranule, List[DataGranule], str, List[str]],
     local_path: Optional[Union[Path, str]] = None,
     provider: Optional[str] = None,
+    credentials_endpoint: Optional[str] = None,
     threads: int = 8,
     *,
     show_progress: Optional[bool] = None,
@@ -300,6 +301,8 @@ def download(
             month, and day of the current date, and `UUID` is the last 6 digits
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
+        credentials_endpoint: S3 credentials endpoint to be used for obtaining temporary credentials. This is only required if
+            the metadata doesn't include it or we pass urls to the method instead of granule instances.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
         show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
             (i.e., in a notebook or a python REPL session), otherwise `False`.
@@ -325,6 +328,7 @@ def download(
             granules,
             local_path,
             provider,
+            credentials_endpoint,
             threads,
             show_progress=show_progress,
             pqdm_kwargs=pqdm_kwargs,
@@ -340,9 +344,11 @@ def download(
 def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
+    credentials_endpoint: Optional[str] = None,
     *,
     show_progress: Optional[bool] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    open_kwargs: Optional[Dict[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -356,6 +362,8 @@ def open(
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
+            Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -363,8 +371,10 @@ def open(
     return earthaccess.__store__.open(
         granules=granules,
         provider=_normalize_location(provider),
+        credentials_endpoint=credentials_endpoint,
         show_progress=show_progress,
         pqdm_kwargs=pqdm_kwargs,
+        open_kwargs=open_kwargs,
     )
 
 
