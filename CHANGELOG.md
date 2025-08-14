@@ -14,11 +14,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   This improves performance by an order of magnitude.
   ([#251](https://github.com/nsidc/earthaccess/discussions/251))([#771](https://github.com/nsidc/earthaccess/discussions/771))
   ([@betolink](https://github.com/betolink))
-- Added `tenacity` to retry downloads up to 3 times with exponential backoff time
-  ([#481](https://github.com/nsidc/earthaccess/issues/481))
-  ([@betolink](https://github.com/betolink))
-- By default, _disable_ progress bars during downloading if session is non interactive.
+- Add `show_progress` argument to `earthaccess.download()` to let the user control display of progress bars. Defaults to true for interactive sessions, otherwise false.
   ([#612](https://github.com/nsidc/earthaccess/issues/612))
+  ([#1065](https://github.com/nsidc/earthaccess/pull/1065))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Updated bug and triage label names in bug Issue template.
   ([#998](https://github.com/nsidc/earthaccess/pull/998))
@@ -32,6 +30,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
+- Added `tenacity` to retry downloads up to 3 times with exponential backoff time, replaces #1016
+  ([#481](https://github.com/nsidc/earthaccess/issues/481))
+  ([@betolink](https://github.com/betolink))
 - Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset
   ([#924](https://github.com/nsidc/earthaccess/pull/924))
   ([@danielfromearth](https://github.com/danielfromearth))
@@ -51,6 +52,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   environment variable `EARTHDATA_TOKEN`
   ([#484](https://github.com/nsidc/earthaccess/issues/484))
   ([@kgrimes2](https://github.com/kgrimes2))
+- Added top level `status` function to check the statuses of NASA Earthdata services
+  ([#161](https://github.com/nsidc/earthaccess/issues/161))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
 
 ### Removed
 

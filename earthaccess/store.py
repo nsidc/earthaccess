@@ -33,9 +33,8 @@ from .search import DataCollections
 logger = logging.getLogger(__name__)
 
 
-def is_interactive() -> bool:
+def _is_interactive() -> bool:
     """Detect if earthaccess is being used in an interactive session.
-
     Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
     """
     try:
@@ -50,10 +49,7 @@ def is_interactive() -> bool:
     import sys
 
     # Python REPL
-    if hasattr(sys, "ps1"):
-        return True
-
-    return False
+    return hasattr(sys, "ps1")
 
 
 class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
@@ -138,13 +134,6 @@ def _open_files(
 
         f = fs.open(url, **open_kw)
         return EarthAccessFile(f, granule)  # type: ignore
-
-    pqdm_kwargs = {
-        "exception_behaviour": "immediate",
-        "n_jobs": 8,
-        "disable": True,
-        **(pqdm_kwargs or {}),
-    }
 
     return pqdm(url_mapping.items(), multi_thread_open, **pqdm_kwargs)
 
@@ -415,6 +404,7 @@ class Store(object):
         provider: Optional[str] = None,
         credentials_endpoint: Optional[str] = None,
         *,
+        show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
@@ -425,6 +415,8 @@ class Store(object):
             granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
                 If a list of URLs is passed, we need to specify the data provider.
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+            show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+                (i.e., in a notebook or a python REPL session), otherwise `False`.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
             open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
@@ -433,6 +425,15 @@ class Store(object):
         Returns:
             A list of "file pointers" to remote (i.e. s3 or https) files.
         """
+        if show_progress is None:
+            show_progress = _is_interactive()
+
+        pqdm_kwargs = {
+            "exception_behaviour": "immediate",
+            "n_jobs": 8,
+            "disable": not show_progress,
+            **(pqdm_kwargs or {}),
+        }
         if len(granules):
             return self._open(
                 granules,
@@ -591,7 +592,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         threads: int = 8,
         *,
-        hide_progress: bool = False,
+        show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
@@ -614,7 +615,8 @@ class Store(object):
             credentials_endpoint: If provided, this will be used to get S3 credentials
             threads: Parallel number of threads to use to download the files;
                 adjust as necessary, default = 8.
-            hide_progress: if True, will not show the progress bar. Default is False.
+            show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+                (i.e., in a notebook or a python REPL session), otherwise `False`.
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
@@ -630,12 +632,12 @@ class Store(object):
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
 
-        if not is_interactive():
-            hide_progress = True
+        if show_progress is None:
+            show_progress = _is_interactive()
 
         pqdm_kwargs = {
             "n_jobs": threads,
-            "disable": hide_progress,
+            "disable": not show_progress,
             **(pqdm_kwargs or {}),
         }
 
