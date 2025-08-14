@@ -135,7 +135,10 @@ def _open_files(
         f = fs.open(url, **open_kw)
         return EarthAccessFile(f, granule)  # type: ignore
 
-    return pqdm(url_mapping.items(), multi_thread_open, **pqdm_kwargs)
+    # this {#n_jobs} is for the unittests as this method is not public and pqdm will have values at this point
+    return pqdm(
+        url_mapping.items(), multi_thread_open, **(pqdm_kwargs or {"n_jobs": 8})
+    )
 
 
 def make_instance(
