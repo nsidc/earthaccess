@@ -38,7 +38,7 @@ Bullets from presentation to ESDIS on 2/11/2025:
 * Co-location with other similar projects (including similar resources in other languages, e.g. R and Julia)
 * Meeting users where they are
 * Increase visibility, ability to promote, bring awareness to a broader community (e.g. Pangeo showcase)
-* Meets NASA Open Source Science goals 
+* Meets NASA Open Source Science goals
 * Leveraging NUMFocus sponsorship could allow for Google Summer of Code mentorship and other funding/effort contributions
 * Promotes NASA’s partnerships with other community members based on shared goals, by actively recognizing the critical * contributions of those members.
 * From some Googling:
