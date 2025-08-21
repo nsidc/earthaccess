@@ -639,6 +639,7 @@ class Store(object):
             show_progress = _is_interactive()
 
         pqdm_kwargs = {
+            "exception_behaviour": "immediate",  # should be overriden by pqdm_kwargs if passed
             "n_jobs": threads,
             "disable": not show_progress,
             **(pqdm_kwargs or {}),
@@ -737,14 +738,10 @@ class Store(object):
                 logger.info(f"Accessing cloud dataset using provider: {provider}")
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
-            def _safe_download(file: str) -> Union[Path, None]:
-                try:
-                    return self.download_file(s3_fs, file, local_path)
-                except DownloadFailure:
-                    logger.error(f"Failed to download {file!r}")
-                    return None
+            def _download(file: str) -> Union[Path, None]:
+                return self.download_file(s3_fs, file, local_path)
 
-            results = pqdm(data_links, _safe_download, **pqdm_kwargs)
+            results = pqdm(data_links, _download, **pqdm_kwargs)
             return [r for r in results if r is not None]
 
         else:
@@ -791,14 +788,10 @@ class Store(object):
 
             local_path.mkdir(parents=True, exist_ok=True)
 
-            def _safe_download(file: str) -> Union[Path, None]:
-                try:
-                    return self.download_file(s3_fs, file, local_path)
-                except DownloadFailure:
-                    logger.error(f"Failed to download {file!r}")
-                    return None
+            def _download(file: str) -> Union[Path, None]:
+                return self.download_file(s3_fs, file, local_path)
 
-            results = pqdm(data_links, _safe_download, **pqdm_kwargs)
+            results = pqdm(data_links, _download, **pqdm_kwargs)
             return [r for r in results if r is not None]
 
         else:
