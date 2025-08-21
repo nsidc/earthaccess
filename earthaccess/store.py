@@ -403,9 +403,9 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
         show_progress: Optional[bool] = None,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
@@ -418,6 +418,7 @@ class Store(object):
             provider: e.g. POCLOUD, NSIDC_CPRD, etc.
             show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
                 (i.e., in a notebook or a python REPL session), otherwise `False`.
+            credentials_endpoint: S3 credentials endpoint
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
             open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
@@ -450,8 +451,8 @@ class Store(object):
         self,
         granules: Union[List[str], List[DataGranule]],
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[Any]:
@@ -462,8 +463,8 @@ class Store(object):
         self,
         granules: List[DataGranule],
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[Any]:
@@ -526,8 +527,8 @@ class Store(object):
         self,
         granules: List[str],
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
     ) -> List[Any]:
@@ -587,9 +588,9 @@ class Store(object):
         granules: Union[List[DataGranule], List[str]],
         local_path: Optional[Union[Path, str]] = None,
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         threads: int = 8,
         *,
+        credentials_endpoint: Optional[str] = None,
         show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
@@ -654,8 +655,8 @@ class Store(object):
         granules: Union[List[DataGranule], List[str]],
         local_path: Path,
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
@@ -707,8 +708,8 @@ class Store(object):
         granules: List[str],
         local_path: Path,
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         data_links = granules
@@ -751,8 +752,8 @@ class Store(object):
         granules: List[DataGranule],
         local_path: Path,
         provider: Optional[str] = None,
-        credentials_endpoint: Optional[str] = None,
         *,
+        credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> List[Path]:
         data_links: List = []
