@@ -483,12 +483,9 @@ class Store(object):
                 access = "direct"
                 provider = granules[0]["meta"]["provider-id"]
                 # if the data has its own S3 credentials endpoint, we will use it
-                if credentials_endpoint is None:
-                    endpoint = self._own_s3_credentials(
-                        granules[0]["umm"]["RelatedUrls"]
-                    )
-                else:
-                    endpoint = credentials_endpoint
+                endpoint = credentials_endpoint or self._own_s3_credentials(
+                    granules[0]["umm"]["RelatedUrls"]
+                )
                 if endpoint is not None:
                     logger.info(f"using endpoint: {endpoint}")
                     s3_fs = self.get_s3_filesystem(endpoint=endpoint)
