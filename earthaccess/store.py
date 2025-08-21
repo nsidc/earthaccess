@@ -86,8 +86,8 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         return repr(self.f)
 
 
-def get_cache_config(file_size: int) -> int:
-    """Determine the optimal caching configuration based on file size.
+def _optimal_fsspec_block_size(file_size: int) -> int:
+    """Determine the optimal block size based on file size.
     Note: we could even be smarter if we know the chunk sizes of the variables
     we need to cache, e.g. using the dmrpp file and the wellknownparts cache type.
 
@@ -100,9 +100,7 @@ def get_cache_config(file_size: int) -> int:
         file_size (int): Size of the file in bytes.
 
     Returns:
-        Tuple[str, int]: A tuple containing:
-            cache_type (str): Always 'blockcache'.
-            block_size (int): Optimal block size in bytes.
+        block_size (int): Optimal block size in bytes.
     """
     if file_size < 100 * 1024 * 1024:
         block_size = 4 * 1024 * 1024
@@ -124,8 +122,8 @@ def _open_files(
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
         f_size = fs.info(url)["size"]
-        default_cache_type = "blockcache"
-        default_block_size = get_cache_config(f_size)
+        default_cache_type = "background"  # block cache with background fetching
+        default_block_size = _optimal_fsspec_block_size(f_size)
 
         open_kw = (open_kwargs or fsspec.config.conf or {}).copy()
 
@@ -636,7 +634,7 @@ class Store(object):
             show_progress = _is_interactive()
 
         pqdm_kwargs = {
-            "exception_behaviour": "immediate",  # should be overriden by pqdm_kwargs if passed
+            "exception_behaviour": "immediate",  # should be overridden by pqdm_kwargs if passed
             "n_jobs": threads,
             "disable": not show_progress,
             **(pqdm_kwargs or {}),

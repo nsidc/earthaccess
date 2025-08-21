@@ -225,11 +225,11 @@ def test_earthaccess_file_getattr():
     "file_size, open_kwargs, expected_cache_type, expected_block_size",
     [
         # Case 1: Small file, defaults used
-        (50 * 1024 * 1024, {}, "blockcache", 4 * 1024 * 1024),
+        (50 * 1024 * 1024, {}, "background", 4 * 1024 * 1024),
         # Case 2: Medium file, block_size scales up
-        (300 * 1024 * 1024, {}, "blockcache", 8 * 1024 * 1024),
+        (300 * 1024 * 1024, {}, "background", 8 * 1024 * 1024),
         # Case 3: Large file, hits max block size
-        (1600 * 1024 * 1024, {}, "blockcache", 16 * 1024 * 1024),
+        (1600 * 1024 * 1024, {}, "background", 16 * 1024 * 1024),
         # Case 4: Override cache_type and block_size
         (
             600 * 1024 * 1024,
@@ -241,7 +241,7 @@ def test_earthaccess_file_getattr():
         (
             600 * 1024 * 1024,
             {"block_size": 8 * 1024 * 1024},
-            "blockcache",
+            "background",
             8 * 1024 * 1024,
         ),
     ],
