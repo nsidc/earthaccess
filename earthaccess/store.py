@@ -481,7 +481,6 @@ class Store(object):
             if granules[0].cloud_hosted:
                 access = "direct"
                 provider = granules[0]["meta"]["provider-id"]
-                # if the data has its own S3 credentials endpoint, we will use it
                 endpoint = credentials_endpoint or self._own_s3_credentials(
                     granules[0]["umm"]["RelatedUrls"]
                 )
@@ -685,22 +684,18 @@ class Store(object):
         reraise=True,
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
-        retry=retry_if_exception_type((requests.ConnectionError, s3fs.S3FileSystemError, EndpointConnectionError, OSError)),
+        retry=retry_if_exception_type((requests.ConnectionError, s3fs.S3FileSystemError, EndpointConnectionError, OSError, FileNotFoundError)),
     )
-    def download_file(
+    def download_cloud_file(
         self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path
     ) -> Path:
         file_name = local_path / Path(file).name
         if file_name.exists():
             return file_name  # Skip if already exists
-        try:
-            logger.info(f"Downloading: {file_name}")
-            s3_fs.get([file], str(local_path), recursive=False)
-            return file_name
-        except Exception as e:
-            msg = f"Failed to download {file!r} to {file_name!r}: {e}"
-            logger.error(msg)
-            raise DownloadFailure(msg)
+        
+        s3_fs.get([file], str(local_path), recursive=False)
+        logger.info(f"Downloading: {file_name}")
+        return file_name
 
     @_get.register
     def _get_urls(
@@ -735,7 +730,7 @@ class Store(object):
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             def _download(file: str) -> Union[Path, None]:
-                return self.download_file(s3_fs, file, local_path)
+                return self.download_cloud_file(s3_fs, file, local_path)
 
             results = pqdm(data_links, _download, **pqdm_kwargs)
             return [r for r in results if r is not None]
@@ -818,8 +813,14 @@ class Store(object):
             local_thread_session.auth = original_session.auth
             self.thread_locals.local_thread_session = local_thread_session
 
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        retry=retry_if_exception_type((requests.ConnectionError, EndpointConnectionError, OSError, FileNotFoundError)),
+    )
     def _download_file(self, url: str, directory: Path) -> Path:
-        """Download a single file from an on-prem location, a DAAC data center.
+        """Download a single file using a bearer token.
 
         Parameters:
             url: the granule url
@@ -834,23 +835,18 @@ class Store(object):
         local_filename = url.split("/")[-1]
         path = directory / Path(local_filename)
         if not path.exists():
-            try:
-                original_session = self.get_requests_session()
-                # This reuses the auth cookie, we make sure we only authenticate N threads instead
-                # of one per file, see #913
-                self._clone_session_in_local_thread(original_session)
-                session = self.thread_locals.local_thread_session
-                with session.get(url, stream=True, allow_redirects=True) as r:
-                    r.raise_for_status()
-                    with open(path, "wb") as f:
-                        # Cap memory usage for large files at 1MB per write to disk per thread
-                        # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        for chunk in r.iter_content(chunk_size=1024 * 1024):
-                            f.write(chunk)
-            except Exception as e:
-                msg = f"Failed to download {url!r} to {path!r}: {e}"
-                logger.error(msg)
-                raise DownloadFailure(msg)
+            original_session = self.get_requests_session()
+            # This reuses the auth cookie, we make sure we only authenticate N threads instead
+            # of one per file, see #913
+            self._clone_session_in_local_thread(original_session)
+            session = self.thread_locals.local_thread_session
+            with session.get(url, stream=True, allow_redirects=True) as r:
+                r.raise_for_status()
+                with open(path, "wb") as f:
+                    # Cap memory usage for large files at 1MB per write to disk per thread
+                    # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
+                    for chunk in r.iter_content(chunk_size=1024 * 1024):
+                        f.write(chunk)
         else:
             logger.info(f"File {local_filename} already downloaded")
         return path
