@@ -565,7 +565,7 @@ class Store(object):
                 except Exception as e:
                     raise RuntimeError(
                         "An exception occurred while trying to access remote files on S3. "
-                        "This may be caused by trying to access the data outside the us-west-2 region."
+                        "This may be caused by trying to access the data outside the us-west-2 region. "
                         f"Exception: {traceback.format_exc()}"
                     ) from e
 
