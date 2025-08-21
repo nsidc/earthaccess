@@ -440,7 +440,7 @@ class Store(object):
             return self._open(
                 granules,
                 provider,
-                credentials_endpoint,
+                credentials_endpoint=credentials_endpoint,
                 pqdm_kwargs=pqdm_kwargs,
                 open_kwargs=open_kwargs,
             )
@@ -572,7 +572,7 @@ class Store(object):
                 return fileset
             else:
                 logger.error(
-                    f"An error occurred while trying to access S3 files for provider: {provider}. endpoint: {credentials_endpoint}"
+                    f"An error occurred while trying to retrieve the cloud credentials for provider: {provider}. endpoint: {credentials_endpoint}"
                 )
                 return fileset
         else:
@@ -645,7 +645,7 @@ class Store(object):
             granules,
             Path(local_path),
             provider,
-            credentials_endpoint,
+            credentials_endpoint=credentials_endpoint,
             pqdm_kwargs=pqdm_kwargs,
         )
 
