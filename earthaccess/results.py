@@ -124,11 +124,15 @@ class DataCollection(CustomDict):
             The collection data type, i.e. HDF5, CSV etc., if available.
         """
         if "ArchiveAndDistributionInformation" in self["umm"]:
-            return str(
-                self["umm"]["ArchiveAndDistributionInformation"][
-                    "FileDistributionInformation"
-                ]
-            )
+            if (
+                "FileDistributionInformation"
+                in self["umm"]["ArchiveAndDistributionInformation"]
+            ):
+                return str(
+                    self["umm"]["ArchiveAndDistributionInformation"][
+                        "FileDistributionInformation"
+                    ]
+                )
         return ""
 
     def version(self) -> str:

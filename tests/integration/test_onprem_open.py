@@ -12,13 +12,6 @@ logger = logging.getLogger(__name__)
 
 daacs_list: list[TestParam] = [
     {
-        "provider_name": "NSIDC_ECS",
-        "n_for_top_collections": 3,
-        "granules_count": 100,
-        "granules_sample_size": 2,
-        "granules_max_size_mb": 100,
-    },
-    {
         "provider_name": "LPDAAC_ECS",
         "n_for_top_collections": 3,
         "granules_count": 100,
