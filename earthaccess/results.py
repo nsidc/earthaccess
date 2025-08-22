@@ -150,9 +150,7 @@ class DataCollection(CustomDict):
             The first landing page for the collection (can be many), if available.
         """
         links = self._filter_related_links("LANDING PAGE")
-        if len(links) > 0:
-            return links[0]
-        return ""
+        return links[0] if len(links) > 0 else ""
 
     def get_data(self) -> List[str]:
         """Placeholder.
