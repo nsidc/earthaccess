@@ -22,6 +22,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `GESDISC` should be `GES_DISC` in docstrings.
   ([#1037](https://github.com/nsidc/earthaccess/issues/1037))
   ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
+- `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of `fsspec`.
+  ([#1074](https://github.com/nsidc/earthaccess/issues/1074))
+  ([@owenlittlejohns](https://github.com/owenlittlejohns))
 
 ### Added
 
