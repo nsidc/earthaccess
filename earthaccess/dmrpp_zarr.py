@@ -4,6 +4,7 @@ import warnings
 from typing import TYPE_CHECKING, Any, Literal
 from urllib.parse import urlparse
 
+from obstore.auth.earthdata import NasaEarthdataCredentialProvider
 from obstore.store import HTTPStore, S3Store
 from virtualizarr.parsers import DMRPPParser
 from virtualizarr.registry import ObjectStoreRegistry
@@ -102,7 +103,7 @@ def open_virtual_mfdataset(
         s3_store = S3Store(
             bucket=bucket,
             region=region,
-            credentials_provider=credentials_endpoint,
+            credential_provider=NasaEarthdataCredentialProvider(credentials_endpoint),
             virtual_hosted_style_request=False,
             client_options={"allow_http": True},
         )
