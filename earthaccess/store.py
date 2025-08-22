@@ -88,9 +88,9 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
 def _optimal_fsspec_block_size(file_size: int) -> int:
     """Determine the optimal block size based on file size.
     Note: we could even be smarter if we know the chunk sizes of the variables
-    we need to cache, e.g. using the dmrpp file and the wellknownparts cache type.
+    we need to cache, e.g. using the `dmrpp` file and the `wellknownparts` cache type.
 
-    Uses 'blockcache' for all files with block sizes adjusted by file size:
+    Uses `blockcache` for all files with block sizes adjusted by file size:
 
     - <100MB: 4MB
     - >100MB: 4–16MB
@@ -420,11 +420,11 @@ class Store(object):
             credentials_endpoint: S3 credentials endpoint
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
-            open_kwargs: Additional keyword arguments to pass to fsspec.open, such as `cache_type` and `block_size`.
+            open_kwargs: Additional keyword arguments to pass to `fsspec.open`, such as `cache_type` and `block_size`.
                 Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
         Returns:
-            A list of "file pointers" to remote (i.e. s3 or https) files.
+            A list of "file pointers" to remote (i.e. `s3://` or `https://`) files.
         """
         if show_progress is None:
             show_progress = _is_interactive()
@@ -716,7 +716,7 @@ class Store(object):
         ):
             raise ValueError(
                 "earthaccess can't yet guess the provider for cloud collections, "
-                "we need to use one from earthaccess.list_cloud_providers() or if known the  S3 credential endpoint"
+                "we need to use one from `earthaccess.list_cloud_providers()` or if known the S3 credential endpoint"
             )
         if self.in_region and data_links[0].startswith("s3"):
             if credentials_endpoint is not None:
