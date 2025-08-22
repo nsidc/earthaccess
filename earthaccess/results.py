@@ -160,8 +160,7 @@ class DataCollection(CustomDict):
         Returns:
             The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
-        links = self._filter_related_links("GET DATA")
-        return links
+        return self._filter_related_links("GET DATA")
 
     def s3_bucket(self) -> Dict[str, Any]:
         """Placeholder.
