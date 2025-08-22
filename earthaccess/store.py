@@ -26,7 +26,6 @@ import earthaccess
 
 from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
-from .exceptions import DownloadFailure
 from .results import DataGranule
 from .search import DataCollections
 
@@ -684,7 +683,7 @@ class Store(object):
         reraise=True,
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
-        retry=retry_if_exception_type((requests.ConnectionError, s3fs.S3FileSystemError, EndpointConnectionError, OSError, FileNotFoundError)),
+        retry=retry_if_exception_type(Exception),
     )
     def download_cloud_file(
         self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path
@@ -692,7 +691,7 @@ class Store(object):
         file_name = local_path / Path(file).name
         if file_name.exists():
             return file_name  # Skip if already exists
-        
+
         s3_fs.get([file], str(local_path), recursive=False)
         logger.info(f"Downloading: {file_name}")
         return file_name
@@ -817,7 +816,7 @@ class Store(object):
         reraise=True,
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
-        retry=retry_if_exception_type((requests.ConnectionError, EndpointConnectionError, OSError, FileNotFoundError)),
+        retry=retry_if_exception_type(Exception),
     )
     def _download_file(self, url: str, directory: Path) -> Path:
         """Download a single file using a bearer token.
