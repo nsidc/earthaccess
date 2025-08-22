@@ -779,7 +779,7 @@ class Store(object):
             local_path.mkdir(parents=True, exist_ok=True)
 
             def _download(file: str) -> Union[Path, None]:
-                return self.download_file(s3_fs, file, local_path)
+                return self.download_cloud_file(s3_fs, file, local_path)
 
             results = pqdm(data_links, _download, **pqdm_kwargs)
             return [r for r in results if r is not None]
