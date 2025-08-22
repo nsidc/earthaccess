@@ -11,7 +11,7 @@ import responses
 import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
-from earthaccess.store import EarthAccessFile
+from earthaccess.store import EarthAccessFile, _open_files
 from pqdm.threads import pqdm
 
 
@@ -219,3 +219,53 @@ def test_earthaccess_file_getattr():
         assert f.tell() == earthaccess_file.tell()
     # cleanup
     fs.store.clear()
+
+
+@pytest.mark.parametrize(
+    "file_size, open_kwargs, expected_cache_type, expected_block_size",
+    [
+        # Case 1: Small file, defaults used
+        (50 * 1024 * 1024, {}, "background", 4 * 1024 * 1024),
+        # Case 2: Medium file, block_size scales up
+        (300 * 1024 * 1024, {}, "background", 8 * 1024 * 1024),
+        # Case 3: Large file, hits max block size
+        (1600 * 1024 * 1024, {}, "background", 16 * 1024 * 1024),
+        # Case 4: Override cache_type and block_size
+        (
+            600 * 1024 * 1024,
+            {"cache_type": "readahead", "block_size": 1024},
+            "readahead",
+            1024,
+        ),
+        # Case 5: Override only one (block_size)
+        (
+            600 * 1024 * 1024,
+            {"block_size": 8 * 1024 * 1024},
+            "background",
+            8 * 1024 * 1024,
+        ),
+    ],
+)
+def test_open_files_parametrized(
+    file_size, open_kwargs, expected_cache_type, expected_block_size
+):
+    fs = MagicMock()
+    fs.info.return_value = {"size": file_size}
+    fs.open = MagicMock()
+
+    url = "https://example.com/file.nc"
+    granule = MagicMock()
+    url_mapping = {url: granule}
+
+    result = _open_files(url_mapping, fs, open_kwargs=open_kwargs)
+
+    fs.open.assert_called_once()
+    args, kwargs = fs.open.call_args
+
+    assert args[0] == url
+    assert result[0] is not None
+    assert kwargs["cache_type"] == expected_cache_type
+    assert kwargs["block_size"] == expected_block_size or (
+        isinstance(expected_block_size, float)
+        and abs(kwargs["block_size"] - expected_block_size) < 1e5
+    )
