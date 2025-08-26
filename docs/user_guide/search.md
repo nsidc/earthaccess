@@ -127,27 +127,27 @@ granules = earthaccess.search_data(
 
 _Add table showing which methods are available for search_datasets and search_data_
 
-| Query | `search_datasets` | `search_data` |
-|-------|-------------------|---------------|
-| concept_id | | |
-| temporal | | |
-| bounding_box | | |
-| polygon | | |
-| point | | |
-| circle | | |
-| line | | |
-| keyword | | |
-| doi | | |
-| short_name | | |
-| cloud_hosted | | |
-| version | | |
-| instrument | | |
-| project | | |
-| provider | | |
-| daac | | |
-| data_center | | |
-| has_granules | | |
-| orbit_number | | |
-| day_night_flag | | |
-| cloud_cover | | |
+| Query | `search_datasets` | `search_data` | `search_services` |
+|-------|-------------------|---------------|-------------------|
+| concept_id | | | |
+| temporal | | | |
+| bounding_box | | | |
+| polygon | | | |
+| point | | | |
+| circle | | | |
+| line | | | |
+| keyword | | | |
+| doi | | | |
+| short_name | | | |
+| cloud_hosted | | | |
+| version | | | |
+| instrument | | | |
+| project | | | |
+| provider | | | |
+| daac | | | |
+| data_center | | | |
+| has_granules | | | |
+| orbit_number | | | |
+| day_night_flag | | | |
+| cloud_cover | | | |
 
