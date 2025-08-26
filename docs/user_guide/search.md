@@ -125,7 +125,7 @@ granules = earthaccess.search_data(
 
 ## `search_services`
 
-_Add table showing which methods are available for search_datasets and search_data_
+## Available arguments for search methods
 
 | Query | `search_datasets` | `search_data` | `search_services` |
 |-------|-------------------|---------------|-------------------|
