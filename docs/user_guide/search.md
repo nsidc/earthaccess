@@ -25,27 +25,81 @@ To search for collections or datasets use `search_datasets`.  To search for indi
 
 ## Search for datasets using `search_datasets`
 
-Show basic search
+#### A basic search
+
+`search_datasets` allows datasets to be searched using combinations of keywords.  Here, we use the `platform` keyword to search for all datasets matching `icesat-2`.
+
+```
+results = earthaccess.search_datasets(
+    platform="icesat-2"
+    )
+```
+
+`search_datasets` returns a Python list of results.  We can find the number of dataets using the built-in Python `len()` function.
+
+```
+print(len(result))
+```
+```
+82
+```
+
+The number of datasets returned can be refined by using additional keywords.  Here, we use `cloud_hosted` and `downloadable` to restrict datasets returned to only those that can be downloaded from the AWS-hosted NASA Earthdata Cloud.
+
+!!! note "NASA Earthdata Cloud"
+
+    By July 2026, all NASA data will be hosted in the cloud.  _What is the plan for archiving both ECS and V0 - will **all** data be in the cloud, will some data be discoverable but not downloadable._
+
+```
+results = earthaccess.search_datasets(
+    platform="icesat-2",
+    downloadable=True,
+    cloud_hosted=True,
+    )
+print(len(results))
+```
+```
+59
+```
+
+This refined search now returns 59 datasets.
+
+Each element of the `results` list is a `earthaccess.results.DataCollection` object.  This is a custom dictionary with methods to return a dataset `summary`, `concept_id`, `data_type`, `version`, `abstract`, `land_page`, urls to data links - `get_data`, information about the S3 bucket containing the data granules - `s3_bucket`, a list of services available for the dataset `services`, and a method to return specific fields within the dictionary `get_umm`.  This last method requires some knowledge of the NASA [Unified Metadata Model (UMM)](https://www.earthdata.nasa.gov/about/esdis/eosdis/cmr/umm).
+
+```
+# Add code for getting summary etc
+pprint(result[0].summary())
+```
+```
+{
+    'short-name': 'ATL07',
+    'concept-id': 'C2564625052-NSIDC_ECS',
+    'version': '006',
+    'file-type': "[{'FormatType': 'Native', 'Format': 'HDF5', 'FormatDescription': 'HTTPS'}]",
+    'get-data': [
+        'https://n5eil01u.ecs.nsidc.org/ATLAS/ATL07.006/',
+        'https://search.earthdata.nasa.gov/search?q=ATL07+V006',
+        'https://nsidc.org/data/data-access-tool/ATL07/versions/6/'
+        ]
+}
+```
+
+_Maybe add some code to get structure of dict_
+
+#### Search by time range
+
+
+#### Perform Spatial Search
+spatial searches bounding-box, point, polygon, circle, line - separate section
+
+#### Search by provider or data archive
+
+
 
 search by shortname and time range
 
-spatial searches bounding-box, point, polygon, circle, line - separate section
-
-`search_datasets` returns a DataCollection object (a json) with the following methods
 
 
-A summary
-```
-In [22]: result[0].summary()
-Out[22]: 
-{'short-name': 'ATL07',
- 'concept-id': 'C2564625052-NSIDC_ECS',
- 'version': '006',
- 'file-type': "[{'FormatType': 'Native', 'Format': 'HDF5', 'FormatDescription': 'HTTPS'}]",
- 'get-data': ['https://n5eil01u.ecs.nsidc.org/ATLAS/ATL07.006/',
-  'https://search.earthdata.nasa.gov/search?q=ATL07+V006',
-  'https://nsidc.org/data/data-access-tool/ATL07/versions/6/']}
-```
 
 Services
 This is a really big object
