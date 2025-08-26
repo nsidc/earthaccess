@@ -8,21 +8,21 @@
     * [Quick start](../quick-start.md)
     * [How-To Access Data](../howto/access-data.md)
 
-`earthaccess` enables users to search for datasets (what NASA call's collections) and the data within those datasets (what NASA calls granules).
+`earthaccess` enables users to search for datasets (what NASA call's collections), the data within those datasets (what NASA calls granules), and the services that are available for a given dataset.
 
 !!! note "Collections and Granules"
 
-    A collection is a set of data products or files for the same release of that product,
+    A _collection_ is a set of data products or files for the same release of that product,
     data generated during an experiment or campaign.
 
-    A granule is the smallest aggregation of data.  It could be an individual scene or swath acquired
+    A _granule_ is the smallest aggregation of data.  It could be an individual scene or swath acquired
     at a given timestep.  You can think of granules as files.
 
-To search for collections or datasets use `search_datasets`.  To search for individual files use `search_data`.
+To search for collections or datasets use `search_datasets`.  To search for individual files use `search_data`.  To search for services use `search_services`
 
 `search_datasets` and `search_data` have a common set of search parameters, as well as some parameters that are only available to `search_datasets` and `search_data`.  See the table of search parameters below to see common and unique parameter keywords.
 
-`search_datasets` and `search_data` 
+
 ## Search for datasets using `search_datasets`
 
 Show basic search
