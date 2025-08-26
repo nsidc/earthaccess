@@ -102,20 +102,21 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         kwargs (Dict):
             arguments to CMR:
 
-            * **keyword**: (str) case-insensitive and supports wildcards ? and *
-              See https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#c-keyword.
-            * **short_name**: e.g. ATL08
-            * **doi**: Filter by DOI
-            * **daac**: Filter by DAAC; e.g. NSIDC or PODAAC
-            * **data_center**: An alias for `daac`
-            * **provider**: Filter by data provider; each DAAC can have more than one provider,
-               e.g. POCLOUD, PODAAC, etc.
-            * **has_granules**: if true, only return collections with granules
+            * **keyword**: (str) Filter collections by keywords.  Case-insensitive and 
+              supports wildcards ? and *
+            * **short_name**: (str) Filter collections by product short name; e.g. ATL08
+            * **doi**: (str) Filter by DOI
+            * **daac**: (str) Filter by DAAC; e.g. NSIDC or PODAAC
+            * **data_center**: (str) An alias for `daac`
+            * **provider**: (str) Filter by data provider; each DAAC can have more than 
+               one provider, e.g. POCLOUD, PODAAC, etc.
+            * **has_granules**: (bool) If true, only return collections with granules
             * **temporal**: (Tuple) A tuple representing temporal bounds in the form
               `(date_from, date_to)`.  Dates can be `datetime` objects or ISO 8601 
               formatted strings.  Date strings can be full timestamps; e.g. YYYY-MM-DD HH:mm:ss
               or truncated YYYY-MM-DD
-            * **bounding_box**: a tuple representing spatial bounds in the form
+            * **bounding_box**: (tuple) Filter collection by those that intersect bounding box.
+              A tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
             * **polygon**: (List[tuples]) Filter by polygon.  Polygon must be a list of 
               tuples containing longitude-latitude pairs representing polygon vertices.
@@ -126,7 +127,11 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **line**: (List[tuples]) Filter collections that overlap a series of connected
               points.  Points are represented as tuples containing longitude-latitude pairs; 
               e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3)]
-            * **circle**: (List[float, float, float]) Filter collections that intersect a circle defined as a point with a radius.  Circle parameters are a list containing latitude, longitude and radius in meters; e.g. [lon, lat, radius_m].  The circle center cannot be the north or south poles.  The radius mst be between 10 and 6,000,000 m
+            * **circle**: (List[float, float, float]) Filter collections that intersect a 
+              circle defined as a point with a radius.  Circle parameters are a list 
+              containing latitude, longitude and radius in meters; e.g. [lon, lat, radius_m].  
+              The circle center cannot be the north or south poles.  The radius mst be 
+              between 10 and 6,000,000 m
             * **cloud_hosted**: (bool) Return only collected hosted on Earthdata Cloud
             * **downloadable**: (bool) If True, only return collections that can be downloaded
               from an online archive
@@ -151,6 +156,22 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             cloud_hosted=True
         )
         ```
+
+        ```python
+        results = earthaccess.search_datasets(
+            daac="NSIDC",
+            bounding_box=(-73., 58., -10., 84.),
+        )
+        ```
+
+        ```python
+        results = earthaccess.search_datasets(
+            instrument="ATLAS",
+            bounding_box=(-73., 58., -10., 84.),
+            temporal=("2024-09-01", "2025-04-30"),
+        )
+        ```
+
     """
     if not validate.valid_dataset_parameters(**kwargs):
         logger.warning(
