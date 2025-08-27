@@ -15,8 +15,7 @@
     A _collection_ is a set of data products or files for the same release of that product,
     data generated during an experiment or campaign.
 
-    A _granule_ is the smallest aggregation of data.  It could be an individual scene or swath acquired
-    at a given timestep.  You can think of granules as files.
+    A _granule_ is the smallest aggregation of data.  It could be an individual scene or swath acquired at a given timestep.  You can think of granules as files.
 
 To search for collections or datasets use `search_datasets`.  To search for individual files use `search_data`.  To search for services use `search_services`
 
@@ -136,8 +135,8 @@ result[0].abstract()
 
 ### Parameters
 
-- concept_id - filter by concept-id 
-- keyword - case insensitive and wildcard search through "over two dozen" fields in CMR 
+- concept_id - filter by concept-id
+- keyword - case insensitive and wildcard search through "over two dozen" fields in CMR
 - doi - search datasets by doi
 - instrument - search datasets by instrument name - not all datasets have an instrument name
 - project - search datasets by associated project
@@ -147,7 +146,7 @@ result[0].abstract()
 - provider - NASA datacenter of DAAC - list these
 - data_center - alias of daac method
 - daac match collections to DAAC
-- version  
+- version
 - fields allows masking of reponse to just specified fields
 - has_granules - match only collections with granules
 - hits
@@ -204,4 +203,3 @@ granules = earthaccess.search_data(
 | orbit_number | | | |
 | day_night_flag | | | |
 | cloud_cover | | | |
-
