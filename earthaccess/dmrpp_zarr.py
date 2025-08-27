@@ -218,6 +218,9 @@ def get_granule_credentials_endpoint_and_region(
         )
         collection_s3_bucket = collection_results[0].s3_bucket()
         credentials_endpoint = collection_s3_bucket.get("S3CredentialsAPIEndpoint")
-        region = collection_s3_bucket.get("Region")
+        region = collection_s3_bucket.get("Region", "us-west-2")
+
+    if credentials_endpoint is None:
+        raise ValueError("The collection did not provide an S3CredentialsAPIEndpoint")
 
     return credentials_endpoint, region
