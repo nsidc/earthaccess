@@ -34,7 +34,7 @@ results = earthaccess.search_datasets(
     )
 ```
 
-`search_datasets` returns a Python list of results.  We can find the number of dataets using the built-in Python `len()` function.
+`search_datasets` returns a Python list of results.  We can find the number of datasets using the built-in Python `len()` function.
 
 ```
 print(len(result))
@@ -135,6 +135,8 @@ result[0].abstract()
 
 ### Parameters
 
+_This is a space for me to collect the keywords.  API docstrings will be the canonical source_
+
 - concept_id - filter by concept-id
 - keyword - case insensitive and wildcard search through "over two dozen" fields in CMR
 - doi - search datasets by doi
@@ -147,7 +149,7 @@ result[0].abstract()
 - data_center - alias of daac method
 - daac match collections to DAAC
 - version
-- fields allows masking of reponse to just specified fields
+- fields allows masking of response to just specified fields
 - has_granules - match only collections with granules
 - hits
 - count - just get up to count granules
