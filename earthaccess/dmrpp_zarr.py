@@ -20,7 +20,7 @@ def open_virtual_mfdataset(
     group: str | None = None,
     access: str = "indirect",
     preprocess: callable | None = None,  # type: ignore
-    parallel: Literal["dask", False] = "dask",  # type: ignore
+    parallel: Literal["dask", "lithops", False] = "dask",
     **xr_combine_nested_kwargs: Any,
 ) -> xr.Dataset:
     """Open multiple granules as a single virtual xarray Dataset.
@@ -39,7 +39,7 @@ def open_virtual_mfdataset(
         preprocess:
             A function to apply to each virtual dataset before combining
         parallel:
-            Open the virtual datasets in parallel (using dask.delayed)
+            Open the virtual datasets in parallel (using dask.delayed or lithops)
         xr_combine_nested_kwargs:
             Xarray arguments describing how to concatenate the datasets. Keyword arguments for xarray.combine_nested.
             See [https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html](https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html)
@@ -91,6 +91,9 @@ def open_virtual_mfdataset(
         ```
     """
     import virtualizarr as vz
+
+    if len(granules) == 0:
+        raise ValueError("No granules provided. At least one granule is required.")
 
     parsed_url = urlparse(granules[0].data_links(access=access)[0])
 
