@@ -8,10 +8,12 @@ In 2025 Seattle, we won $5K for our idea! This is a short way to document what w
 
 ## Brief timeline
 
+Showing the power of the social infrastructure and open community collaboration, with folks contributing asyncronously and synchronously, remotely and in person at conference as they are available, and contributing different skills and handoffs to deliver on a short deadline.
+
 **July 23: Scoping ideas**
 
-- Aaron Friesz reminds Julie Lowndes of FUNding Friday, Julie thinks of earthaccess. Wonders a low-key way to get input from the NASA Openscapes Mentors. Ah, they are meeting in 5 minutes at a regular Mentors Call, Julie writes a note in the agenda doc.
-- Stef Butland (Openscapes), Danny Kaufman (ASDC), Amy Steiker (NSIDC DAAC), Liz Neeley (Openscapes), Mikala Beig (NSIDC DAAC), Michele Thornton (ORNL DAAC) meet during the Mentors Call and scope ideas in https://github.com/nsidc/earthaccess/discussions/1054; other contributors including Matt Fisher (UC Berkeley) and Eli Holmes (NOAA Fisheries) weigh in
+- Aaron Friesz reminds Julie Lowndes of FUNding Friday, Julie thinks of `earthaccess`. Wonders a low-key way to get input about what is a good scope to pitch for `earthaccess` from the NASA Openscapes Mentors. Ah, they are meeting in 5 minutes at a regular Mentors Call, Julie writes a note in the agenda doc.
+- Stef Butland (Openscapes), Danny Kaufman (ASDC), Amy Steiker (NSIDC DAAC), Liz Neeley (Openscapes), Mikala Beig (NSIDC DAAC), Michele Thornton (ORNL DAAC) meet during the Mentors Call and see Julie's note; they scope ideas publicly in https://github.com/nsidc/earthaccess/discussions/1054; other contributors including Matt Fisher (UC Berkeley) and Eli Holmes (NOAA Fisheries) weigh in
 
 **July 24: Poster-making**
 
