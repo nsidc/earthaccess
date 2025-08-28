@@ -1,4 +1,4 @@
-# FUNding Friday Song Lyrics, 2025 
+# FUNding Friday Song Lyrics for `earthaccess` hackday, 2025 
 
 At the Earth Science Information Partners (ESIP) Summer Meeting, [FUNding Friday](https://wiki.esipfed.org/FUNding_Friday_Projects) is a way to pitch an idea and win $5K for an idea. Participants from the conference make posters the evening before at a social hour. 
 
