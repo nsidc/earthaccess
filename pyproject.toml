@@ -40,8 +40,8 @@ dependencies = [
   "python-cmr >=0.10.0",
   "pqdm >=0.1",
   "requests >=2.26",
-  "s3fs >=2022.11",
-  "fsspec >=2022.11",
+  "s3fs >=2025.2",
+  "fsspec >=2025.2",
   "tinynetrc >=1.3.1",
   "tenacity >=9.0",
   "multimethod >=1.8",
@@ -57,7 +57,7 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
-  "kerchunk",
+  "kerchunk>=0.2.9",
   "dask",
   "h5py >=3.14.0",
   "h5netcdf",
