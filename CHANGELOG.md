@@ -27,7 +27,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `GESDISC` should be `GES_DISC` in docstrings.
   ([#1037](https://github.com/nsidc/earthaccess/issues/1037))
   ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
-- `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of `fsspec`.
+- `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of `fsspec`. Updated Zarr to V3 xref #967.
   ([#1074](https://github.com/nsidc/earthaccess/issues/1074))
   ([@owenlittlejohns](https://github.com/owenlittlejohns))
 
@@ -49,7 +49,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([@Sherwin-14](https://github.com/Sherwin-14))
   ([@mfisher87](https://github.com/mfisher87))
 - `download` now returns Path consistently.
-  ([#595])(https://github.com/nsidc/earthaccess/issues/595)
+  ([#595])(<https://github.com/nsidc/earthaccess/issues/595>)
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Users may now authenticate with an existing Earthdata login token with
   environment variable `EARTHDATA_TOKEN`
@@ -767,9 +767,6 @@ _Conception!_
 - Basic object formatting.
 
 [Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.14.0...HEAD
-[0.14.0]: https://github.com/nsidc/earthaccess/compare/v0.13.0...v0.14.0
-[0.13.0]: https://github.com/nsidc/earthaccess/compare/v0.12.0...v0.13.0
-[0.12.0]: https://github.com/nsidc/earthaccess/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
 [0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
 [0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
