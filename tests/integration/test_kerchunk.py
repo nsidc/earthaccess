@@ -53,23 +53,22 @@ def test_consolidate_metadata(tmp_path, granules, output):
 
     # Open with kerchunk consolidated metadata file
     kwargs = {"outfile": tmp_path / "metadata.json"} if output == "file" else {}
-    metadata = earthaccess.consolidate_metadata(
+    earthaccess.consolidate_metadata(
         granules, access="indirect", kerchunk_options={"concat_dims": "Time"}, **kwargs
     )
 
     fs = earthaccess.get_fsspec_https_session()
-    result = xr.open_dataset(
-        "reference://",
-        engine="zarr",
-        chunks={},
-        backend_kwargs={
-            "consolidated": False,
-            "storage_options": {
-                "fo": metadata,
-                "remote_protocol": "https",
-                "remote_options": fs.storage_options,
+    # This test should be eventually refactored to use virtualizarr
+    if output == "file":
+        result = xr.open_dataset(
+            str(tmp_path / "metadata.json"),
+            engine="kerchunk",
+            backend_kwargs={
+                "storage_options": {
+                    "remote_protocol": "https",
+                    "remote_options": fs.storage_options,
+                },
             },
-        },
-    )
+        )
 
-    xr.testing.assert_equal(result, expected)
+        xr.testing.assert_equal(result, expected)

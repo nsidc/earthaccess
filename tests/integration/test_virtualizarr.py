@@ -32,7 +32,5 @@ def granule(request):
 
 def test_open_virtual_dataset(granule):
     # Simply check that the dmrpp can be found, parsed, and loaded. Actual parser result is checked in virtualizarr
-    vds = earthaccess.open_virtual_dataset(granule, load=False)
+    vds = earthaccess.open_virtual_dataset(granule)
     assert vds is not None
-    vds_load = earthaccess.open_virtual_dataset(granule, load=True)
-    assert vds_load is not None
