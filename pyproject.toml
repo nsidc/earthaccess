@@ -40,8 +40,8 @@ dependencies = [
   "python-cmr >=0.10.0",
   "pqdm >=0.1",
   "requests >=2.26",
-  "s3fs >=2025.2",
-  "fsspec >=2025.2",
+  "s3fs >=2022.11",
+  "fsspec >=2022.11",
   "tinynetrc >=1.3.1",
   "tenacity >=9.0",
   "multimethod >=1.8",
@@ -57,20 +57,19 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
-  "kerchunk>=0.2.9",
+  "kerchunk",
   "dask",
-  "h5py >=3.14.0",
+  "h5py >=3.8.0",
   "h5netcdf",
   "xarray",
-  "zarr >=3.1.1",
+  "zarr >=2.12.0, <3.0.0a",
 ]
 virtualizarr = [
   "numpy >=1.26.4",
-  "zarr >=3.1.1",
-  "virtualizarr >=2.1.1",
+  "zarr >=2.12.0, <3.0.0a",
+  "virtualizarr >=1.2.0",
   "dask",
-  "h5py >=3.14.0",
-  "obstore >= 0.8.0",
+  "h5py >=3.8.0",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -80,7 +79,7 @@ dev = [
   "uv >=0.4.7",
 ]
 test = [
-  "zarr >=3.1.1",
+  "zarr >=2.12.0, <3.0.0a",
   "numpy >=1.26.4",
   "mypy >=1.11.2",
   "pytest >=8.3",
