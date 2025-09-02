@@ -13,7 +13,9 @@
 
 # Community Resources
 
-Earthaccess is a highly active, open-source, and community-driven library whose development is being led through NASA Openscapes, an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud. Development of the earthaccess library also features leadership and contributions from private industry and the broader user community.
+`earthaccess` is a highly active, open-source, and community-driven library developed by [NASA DAACs](https://www.earthdata.nasa.gov/centers), private industry, and the broader NASA data user community.
+
+`earthaccess` development is facilitated by [NASA Openscapes](https://nasa-openscapes.github.io/), an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud.
 
 - [earthaccess Blog](https://www.earthdata.nasa.gov/news/blogearthaccess-earth-science-data-simplified)
 
