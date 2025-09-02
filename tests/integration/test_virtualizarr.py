@@ -18,19 +18,21 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
 @pytest.fixture(
     scope="module",
     params=[
-        "MUR25-JPL-L4-GLOB-v04.2",
-        "AVHRR_OI-NCEI-L4-GLOB-v2.1",
-        "M2T1NXSLV",
+        ("MUR25-JPL-L4-GLOB-v04.2", 2),
+        ("AVHRR_OI-NCEI-L4-GLOB-v2.1", 1),
+        ("M2T1NXSLV", 1),
     ],
 )
-def granule(request):
+def granules(request):
+    short_name, count = request.param
     granules = earthaccess.search_data(
-        count=1, temporal=("2024"), short_name=request.param
+        count=count, temporal=("2024"), short_name=short_name
     )
-    return granules[0]
+    return granules
 
 
-def test_open_virtual_dataset(granule):
+def test_open_virtual_dataset(granules):
     # Simply check that the dmrpp can be found, parsed, and loaded. Actual parser result is checked in virtualizarr
-    vds = earthaccess.open_virtual_dataset(granule)
-    assert vds is not None
+    vds = earthaccess.open_virtual_mfdataset(granules, concat_dim="time")
+    # We can use fancy indexing
+    assert vds.isel(time=0) is not None
