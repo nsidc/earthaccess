@@ -45,18 +45,16 @@ We can use `earthaccess` to do impactful science, faster:
 <img alt="Openscapes" src="logos/openscapes_hex-logo.png" width="18%" />
 <img alt="NASA logo" src="nasa-logo.png" width="25%" />
 <img alt="NSIDC" src="nsidc-logo.png" width="20%" />
+<img alt="GES DISC" src="logos/gesdisc-logo.png" width="20%" />
 <img alt="ORNLdaac" src="logos/ornl-logo.jpg" width="20%" />
 <img alt="podaac" src="logos/podaac-logo.png" width="20%" />
-<img alt="Development Seed" src="logos/devseed-logo.png" width="20%" /><img alt="Coiled" src="logos/coiled-logo.png" width="25%" />
+<img alt="Development Seed" src="logos/devseed-logo.png" width="20%" />
 <img alt="ESDIS logo" src="logos/earthdata-logo.jpg" width="20%" />
 
 <img alt="ASF" src="logos/asf-logo.png" width="20%" />
 <img alt="ASDC" src="logos/asdc-logo.png" width="20%" />
 <img alt="lpdaac" src="logos/lpdaac-logo.png" width="20%" />
 <img alt="OB.DAAC" src="logos/obdaac-logo.svg" width="20%" />
-
-<div class="text">
-        <h1>GES DISC</h1>
-</div>
+<img alt="Coiled" src="logos/coiled-logo.png" width="20%" />
 
 </p>
