@@ -31,7 +31,7 @@ def granules(request):
     return granules
 
 
-def test_open_virtual_dataset(granules):
+def test_open_virtual_mfdataset(granules):
     # Simply check that the dmrpp can be found, parsed, and loaded. Actual parser result is checked in virtualizarr
     vds = earthaccess.open_virtual_mfdataset(granules, concat_dim="time")
     # We can use fancy indexing
