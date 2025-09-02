@@ -5,6 +5,9 @@ from unittest.mock import patch
 
 import earthaccess
 import pytest
+import responses
+from earthaccess.exceptions import ServiceOutage
+from earthaccess.system import PROD, UAT
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +35,108 @@ granules_valid_params = [
     },
 ]
 
+services = ("Earthdata Login", "Common Metadata Repository")
+expected = {service: "Unknown" for service in services}
+
+nasa_statuses = {
+    PROD: {
+        "success": True,
+        "statuses": [
+            {"name": "MMT (SIT)", "status": "OK"},
+            {"name": "Status App Test Application", "status": "OK"},
+            {"name": "NSIDC DAAC OpenAltimetry", "status": "OK"},
+            {"name": "ED Pub", "status": "OK"},
+            {"name": "Earthdata Login", "status": "OK"},
+            {"name": "Common Metadata Repository (PROD)", "status": "OK"},
+        ],
+    },
+    UAT: {
+        "success": True,
+        "statuses": [
+            {"name": "MMT (SIT)", "status": "OK"},
+            {"name": "Status App Test Application", "status": "OK"},
+            {"name": "NSIDC DAAC OpenAltimetry", "status": "OK"},
+            {"name": "ED Pub", "status": "OK"},
+            {"name": "Earthdata Login (UAT)", "status": "OK"},
+            {"name": "Common Metadata Repository", "status": "OK"},
+        ],
+    },
+}
+
+
+@pytest.mark.parametrize(
+    "system,nasa_response,expected",
+    [
+        (
+            PROD,
+            nasa_statuses[PROD],
+            {"Earthdata Login": "OK", "Common Metadata Repository": "OK"},
+        ),
+        (
+            UAT,
+            nasa_statuses[UAT],
+            {"Earthdata Login": "OK", "Common Metadata Repository": "OK"},
+        ),
+    ],
+)
+@responses.activate
+def test_earthdata_status_happy_path(system, nasa_response, expected):
+    responses.add(
+        responses.GET,
+        system.status_api_url,
+        json=nasa_response,
+        status=200,
+    )
+
+    result = earthaccess.status(system)
+    assert isinstance(result, dict)
+    assert result == expected
+
+
+@responses.activate
+def test_earthdata_status_service_outage():
+    responses.add(
+        responses.GET,
+        "https://status.earthdata.nasa.gov/api/v1/statuses",
+        json={
+            "statuses": [
+                {"name": "Earthdata Login", "status": "Degraded"},
+                {"name": "Common Metadata Repository", "status": "OK"},
+            ]
+        },
+        status=200,
+    )
+    with pytest.raises(ServiceOutage):
+        earthaccess.status(raise_on_outage=True)
+
+
+@responses.activate
+def test_earthdata_status_malformed_json():
+    responses.add(
+        responses.GET,
+        "https://status.earthdata.nasa.gov/api/v1/statuses",
+        body='{"x": 5,}',
+        status=200,
+    )
+
+    result = earthaccess.status()
+    assert isinstance(result, dict)
+    assert result == expected
+
+
+@responses.activate
+def test_earthdata_status_fetch_fail():
+    responses.add(
+        responses.GET,
+        "https://status.earthdata.nasa.gov/api/v1/statuses",
+        body="Internal Server Error",
+        status=500,
+    )
+
+    result = earthaccess.status()
+    assert isinstance(result, dict)
+    assert result == expected
+
 
 def test_auth_returns_valid_auth_class():
     auth = earthaccess.login(strategy="environment")
@@ -51,6 +156,12 @@ def test_dataset_search_returns_valid_results(kwargs):
     results = earthaccess.search_datasets(**kwargs)
     assert isinstance(results, list)
     assert isinstance(results[0], dict)
+
+
+def test_dataset_search_summary_missing_file_dist_info():
+    results = earthaccess.search_datasets(short_name="AIRS_CPR_IND", daac="GES_DISC")
+    collection_with_no_FileDistributionInformation = results[0]
+    assert collection_with_no_FileDistributionInformation.summary()["file-type"] == ""
 
 
 @pytest.mark.parametrize("kwargs", granules_valid_params)

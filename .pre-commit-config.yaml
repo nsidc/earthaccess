@@ -5,10 +5,12 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       # Validate format
       - id: check-yaml
+        args: ["--unsafe"]
+        exclude: ".*/vcr_cassettes/.*\\.yaml"
       - id: check-toml
       - id: check-json
       # Check for common mistakes
@@ -28,14 +30,14 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.1
+    rev: v0.12.11
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.5.5"
+    rev: "0.8.14"
     hooks:
       # Asserts that the lockfile is valid for pyproject.toml.
       # If it fails, update the lockfile by running:
@@ -49,14 +51,14 @@ repos:
         stages: ["manual"]
 
   - repo: https://github.com/google/yamlfmt
-    rev: v0.14.0
+    rev: v0.17.2
     hooks:
       - id: yamlfmt
         types_or: [yaml]
         exclude: ".*/vcr_cassettes/.*\\.yaml"
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.3.0"
+    rev: "v2.4.1"
     hooks:
       - id: "codespell"
         exclude: ".codespellignore|tests/.*"

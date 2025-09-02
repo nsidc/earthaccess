@@ -105,9 +105,7 @@ class DataCollection(CustomDict):
         Returns:
             The value of a given field inside the UMM (Unified Metadata Model).
         """
-        if umm_field in self["umm"]:
-            return self["umm"][umm_field]
-        return ""
+        return self["umm"].get(umm_field, "")
 
     def concept_id(self) -> str:
         """Placeholder.
@@ -123,13 +121,11 @@ class DataCollection(CustomDict):
         Returns:
             The collection data type, i.e. HDF5, CSV etc., if available.
         """
-        if "ArchiveAndDistributionInformation" in self["umm"]:
-            return str(
-                self["umm"]["ArchiveAndDistributionInformation"][
-                    "FileDistributionInformation"
-                ]
-            )
-        return ""
+        return str(
+            self["umm"]
+            .get("ArchiveAndDistributionInformation", {})
+            .get("FileDistributionInformation", "")
+        )
 
     def version(self) -> str:
         """Placeholder.
@@ -137,9 +133,7 @@ class DataCollection(CustomDict):
         Returns:
             The collection's version.
         """
-        if "Version" in self["umm"]:
-            return self["umm"]["Version"]
-        return ""
+        return self["umm"].get("Version", "")
 
     def abstract(self) -> str:
         """Placeholder.
@@ -147,9 +141,7 @@ class DataCollection(CustomDict):
         Returns:
             The abstract of a collection.
         """
-        if "Abstract" in self["umm"]:
-            return self["umm"]["Abstract"]
-        return ""
+        return self["umm"].get("Abstract", "")
 
     def landing_page(self) -> str:
         """Placeholder.
@@ -158,9 +150,7 @@ class DataCollection(CustomDict):
             The first landing page for the collection (can be many), if available.
         """
         links = self._filter_related_links("LANDING PAGE")
-        if len(links) > 0:
-            return links[0]
-        return ""
+        return links[0] if len(links) > 0 else ""
 
     def get_data(self) -> List[str]:
         """Placeholder.
@@ -168,8 +158,7 @@ class DataCollection(CustomDict):
         Returns:
             The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
-        links = self._filter_related_links("GET DATA")
-        return links
+        return self._filter_related_links("GET DATA")
 
     def s3_bucket(self) -> Dict[str, Any]:
         """Placeholder.
@@ -177,9 +166,7 @@ class DataCollection(CustomDict):
         Returns:
             The S3 bucket information if the collection has it (**cloud hosted collections only**).
         """
-        if "DirectDistributionInformation" in self["umm"]:
-            return self["umm"]["DirectDistributionInformation"]
-        return {}
+        return self["umm"].get("DirectDistributionInformation", {})
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """Return list of services available for this collection."""
@@ -240,9 +227,9 @@ class DataGranule(CustomDict):
         """
         data_links = [link for link in self.data_links()]
         rep_str = f"""
-        Collection: {self['umm']['CollectionReference']}
-        Spatial coverage: {self['umm']['SpatialExtent']}
-        Temporal coverage: {self['umm']['TemporalExtent']}
+        Collection: {self["umm"]["CollectionReference"]}
+        Spatial coverage: {self["umm"]["SpatialExtent"]}
+        Temporal coverage: {self["umm"]["TemporalExtent"]}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
@@ -303,7 +290,7 @@ class DataGranule(CustomDict):
             elif link.startswith("https://") and (
                 "cumulus" in link or "protected" in link
             ):
-                s3_links.append(f's3://{links[0].split("nasa.gov/")[1]}')
+                s3_links.append(f"s3://{links[0].split('nasa.gov/')[1]}")
         return s3_links
 
     def data_links(

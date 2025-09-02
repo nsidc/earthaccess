@@ -25,3 +25,23 @@ class LoginAttemptFailure(Exception):
     """
 
     pass
+
+
+class DownloadFailure(Exception):
+    """The download attempt failed.
+
+    This should be raised when a download attempt fails, for example, because
+    the file could not be retrieved or the download process was interrupted.
+    """
+
+    pass
+
+
+class ServiceOutage(Exception):
+    """A service outage has been detected.
+
+    This should be raised when Earthdata services are unavailable or experiencing
+    outages that prevent normal operations.
+    """
+
+    pass

@@ -26,7 +26,6 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -35,15 +34,16 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 dependencies = [
   "python-cmr >=0.10.0",
   "pqdm >=0.1",
   "requests >=2.26",
-  "s3fs >=2022.11",
-  "fsspec >=2022.11",
+  "s3fs >=2025.2",
+  "fsspec >=2025.2",
   "tinynetrc >=1.3.1",
+  "tenacity >=9.0",
   "multimethod >=1.8",
   "importlib-resources >=6.3.2",
   "typing_extensions >=4.10.0",
@@ -57,19 +57,20 @@ Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
-  "kerchunk",
+  "kerchunk>=0.2.9",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.14.0",
   "h5netcdf",
   "xarray",
-  "zarr >=2.12.0, <3.0.0a",
+  "zarr >=3.1.1",
 ]
 virtualizarr = [
   "numpy >=1.26.4",
-  "zarr >=2.12.0, <3.0.0a",
-  "virtualizarr >=1.2.0",
+  "zarr >=3.1.1",
+  "virtualizarr >=2.1.1",
   "dask",
-  "h5py >=3.6.0",
+  "h5py >=3.14.0",
+  "obstore >= 0.8.0",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -79,7 +80,7 @@ dev = [
   "uv >=0.4.7",
 ]
 test = [
-  "zarr >=2.12.0, <3.0.0a",
+  "zarr >=3.1.1",
   "numpy >=1.26.4",
   "mypy >=1.11.2",
   "pytest >=8.3",
@@ -107,6 +108,7 @@ docs = [
     "markdown-callouts >=0.2.0",
     "markdown-include >=0.6",
     "mkdocs-jupyter >=0.19.0",
+    "mkdocs-mermaid2-plugin >=1.2.1",
     "mkdocstrings[python] >=0.19.0",
     "pymdown-extensions >=9.2",
     "pygments >=2.11.1",
@@ -127,6 +129,7 @@ docs = [
     "dask>=2024.8.0",
     "earthaccess[virtualizarr]",
     "cftime>=1.6.4",
+    "cartopy>=0.24.1"
 ]
 
 
@@ -134,7 +137,7 @@ docs = [
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true

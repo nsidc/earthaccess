@@ -110,8 +110,11 @@ class Auth(object):
                 * **"interactive"**: Enter a username and password.
                 * **"netrc"**: (default) Retrieve a username and password from ~/.netrc.
                 * **"environment"**:
-                    Retrieve a username and password from $EARTHDATA_USERNAME and $EARTHDATA_PASSWORD.
-            persist: Will persist credentials in a `.netrc` file.
+                    Retrieve either a username and password pair from the
+                    `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
+                    or an Earthdata login token from the `EARTHDATA_TOKEN` environment
+                    variable.
+            persist: Will persist username and password credentials in a `.netrc` file.
             system: the EDL endpoint to log in to Earthdata, defaults to PROD
 
         Returns:
@@ -235,7 +238,7 @@ class Auth(object):
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
             session.headers.update(
-                {"Authorization": f'Bearer {self.token["access_token"]}'}
+                {"Authorization": f"Bearer {self.token['access_token']}"}
             )
         return session
 
@@ -245,7 +248,7 @@ class Auth(object):
     ) -> bool:
         username = input("Enter your Earthdata Login username: ")
         password = getpass.getpass(prompt="Enter your Earthdata password: ")
-        authenticated = self._get_credentials(username, password)
+        authenticated = self._get_credentials(username, password, None)
         if authenticated:
             logger.debug("Using user provided credentials for EDL")
             if persist_credentials:
@@ -282,7 +285,7 @@ class Auth(object):
                 f"Password not found in .netrc file {netrc_loc}"
             )
 
-        authenticated = self._get_credentials(username, password)
+        authenticated = self._get_credentials(username, password, None)
 
         if authenticated:
             logger.debug("Using .netrc file for EDL")
@@ -292,21 +295,27 @@ class Auth(object):
     def _environment(self) -> bool:
         username = os.getenv("EARTHDATA_USERNAME")
         password = os.getenv("EARTHDATA_PASSWORD")
+        token = os.getenv("EARTHDATA_TOKEN")
 
-        if not username or not password:
+        if (not username or not password) and not token:
             raise LoginStrategyUnavailable(
-                "EARTHDATA_USERNAME and EARTHDATA_PASSWORD are not set in the current environment, try "
-                "setting them or use a different strategy (netrc, interactive)"
+                "Either the environment variables EARTHDATA_USERNAME and "
+                "EARTHDATA_PASSWORD must both be set, or EARTHDATA_TOKEN must be set for "
+                "the 'environment' login strategy."
             )
 
         logger.debug("Using environment variables for EDL")
-        return self._get_credentials(username, password)
+        return self._get_credentials(username, password, token)
 
     def _get_credentials(
         self,
         username: Optional[str],
         password: Optional[str],
+        user_token: Optional[str],
     ) -> bool:
+        if user_token is not None:
+            self.token = {"access_token": user_token}
+            self.authenticated = True
         if username is not None and password is not None:
             token_resp = self._find_or_create_token(username, password)
 
