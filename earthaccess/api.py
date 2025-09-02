@@ -199,7 +199,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
         kwargs (Dict):
             arguments to CMR:
 
-            * **short_name**: dataset short name, e.g. ATL08
+            * **short_name**: (str) Filter collections by product short name; e.g. ATL08
             * **version**: dataset version
             * **doi**: DOI for a dataset
             * **daac**: e.g. NSIDC or PODAAC
