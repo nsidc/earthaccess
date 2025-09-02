@@ -108,7 +108,7 @@ def open_virtual_mfdataset(
         raise ValueError("No granules provided. At least one granule is required.")
 
     parsed_url = urlparse(granules[0].data_links(access=access)[0])
-    fs = None
+    fs = earthaccess.get_fsspec_https_session()
     if len(granules):
         collection_id = granules[0]["meta"]["collection-concept-id"]
 
@@ -130,8 +130,6 @@ def open_virtual_mfdataset(
         )
         obstore_registry = ObjectStoreRegistry({f"s3://{bucket}": s3_store})
     else:
-        if load:
-            fs = earthaccess.get_fsspec_https_session()
         domain = parsed_url.netloc
         http_store = HTTPStore.from_url(
             f"https://{domain}",

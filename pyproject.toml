@@ -71,7 +71,7 @@ virtualizarr = [
   "dask",
   "h5py >=3.14.0",
   "obstore >= 0.8.0",
-  "fastparquet"
+  "fastparquet >= 2023.4.0"
 ]
 dev = [
   "bump-my-version >=0.10.0",
