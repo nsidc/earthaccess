@@ -171,7 +171,7 @@ def open_virtual_mfdataset(
         if group is None or group == "/":
             group_name = "root"
         else:
-            group_name = group.replace('/', '_').replace(' ', '_').lstrip('_')
+            group_name = group.replace("/", "_").replace(" ", "_").lstrip("_")
 
         ref_ = ref_dir / Path(f"{collection_id}-{group_name}.{reference_format}")
         # We still need the round trip because: https://github.com/zarr-developers/VirtualiZarr/issues/360
