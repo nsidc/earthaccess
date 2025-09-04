@@ -1066,6 +1066,7 @@ docs = [
     { name = "mkdocs-mermaid2-plugin" },
     { name = "mkdocs-redirects" },
     { name = "mkdocstrings", extra = ["python"] },
+    { name = "numcodecs" },
     { name = "numpy" },
     { name = "obstore" },
     { name = "pygments" },
@@ -1091,6 +1092,7 @@ test = [
     { name = "h5py" },
     { name = "kerchunk" },
     { name = "mypy" },
+    { name = "numcodecs" },
     { name = "numpy" },
     { name = "obstore" },
     { name = "pytest" },
@@ -1110,6 +1112,7 @@ virtualizarr = [
     { name = "dask" },
     { name = "fastparquet" },
     { name = "h5py" },
+    { name = "numcodecs" },
     { name = "numpy" },
     { name = "obstore" },
     { name = "virtualizarr" },
@@ -1150,6 +1153,7 @@ requires-dist = [
     { name = "multimethod", specifier = ">=1.8" },
     { name = "mypy", marker = "extra == 'test'", specifier = ">=1.11.2" },
     { name = "nox", marker = "extra == 'dev'" },
+    { name = "numcodecs", marker = "extra == 'virtualizarr'", specifier = ">=0.16.2" },
     { name = "numpy", marker = "extra == 'test'", specifier = ">=1.26.4" },
     { name = "numpy", marker = "extra == 'virtualizarr'", specifier = ">=1.26.4" },
     { name = "obstore", marker = "extra == 'virtualizarr'", specifier = ">=0.8.0" },
@@ -1175,7 +1179,7 @@ requires-dist = [
     { name = "typing-extensions", specifier = ">=4.10.0" },
     { name = "uv", marker = "extra == 'dev'", specifier = ">=0.4.7" },
     { name = "vcrpy", marker = "extra == 'test'", specifier = ">=7.0.0" },
-    { name = "virtualizarr", marker = "extra == 'virtualizarr'", specifier = ">=2.1.1" },
+    { name = "virtualizarr", marker = "extra == 'virtualizarr'", specifier = ">=2.1.2" },
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
     { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
     { name = "xarray", marker = "extra == 'kerchunk'" },
@@ -4517,7 +4521,7 @@ wheels = [
 
 [[package]]
 name = "virtualizarr"
-version = "2.1.1"
+version = "2.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numcodecs" },
@@ -4529,9 +4533,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bc/69/93bda4fe2c749fa6718c27bff129ee2ba1a1f77b199262d9008825365c46/virtualizarr-2.1.1.tar.gz", hash = "sha256:2ad9a6dd2c864d76465fe4945e734a4e8d548fe0a8143f1f5a14b36121ef8a23", size = 218660, upload-time = "2025-08-14T16:13:14.674Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/45/d37c05c83adff6533923586dd7326985b0deec6c8b465475379907a95f7e/virtualizarr-2.1.2.tar.gz", hash = "sha256:d5f40cc32cbd2bf58dfbe684af60143a52c07e05dacc915981a8ea1078af9109", size = 219468, upload-time = "2025-09-03T19:49:09.24Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/93/a3d6eba4217e01d723a38e9f46c4eb2c0e4d5d99ce8d7a3ba1593686597a/virtualizarr-2.1.1-py3-none-any.whl", hash = "sha256:3efe6990f44c74d87d948f2d5e275bdb0bf9afdfc71a559560bc4144bcdd5aa9", size = 191407, upload-time = "2025-08-14T16:13:13.187Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/5e/a5c9cc2468fa185b1bed605b407c646a6670232349abce24023592a60db3/virtualizarr-2.1.2-py3-none-any.whl", hash = "sha256:b39b1a32b7a2b79e103facb5aa687a3926725f802fa9f1588f1637762c017370", size = 191993, upload-time = "2025-09-03T19:49:07.972Z" },
 ]
 
 [[package]]
