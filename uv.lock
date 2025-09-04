@@ -1118,6 +1118,7 @@ virtualizarr = [
     { name = "numpy" },
     { name = "obstore" },
     { name = "virtualizarr" },
+    { name = "xarray" },
     { name = "zarr" },
 ]
 
@@ -1186,6 +1187,7 @@ requires-dist = [
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
     { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
     { name = "xarray", marker = "extra == 'kerchunk'" },
+    { name = "xarray", marker = "extra == 'virtualizarr'" },
     { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'test'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=3.1.1" },

@@ -72,6 +72,7 @@ virtualizarr = [
   "obstore >= 0.8.0",
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",
+  "xarray",
 ]
 dev = [
   "bump-my-version >=0.10.0",
