@@ -217,7 +217,6 @@ class TestStoreSessions(unittest.TestCase):
         fs.store.clear()
 
 
-
 @pytest.mark.parametrize(
     "file_size, open_kwargs, expected_cache_type, expected_block_size",
     [
