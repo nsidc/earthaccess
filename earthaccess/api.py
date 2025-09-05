@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 
@@ -15,7 +16,7 @@ from typing_extensions import (
 )
 
 import earthaccess
-from earthaccess.exceptions import LoginStrategyUnavailable
+from earthaccess.exceptions import LoginStrategyUnavailable, ServiceOutage
 from earthaccess.services import DataServices
 
 from .auth import Auth
@@ -26,6 +27,54 @@ from .system import PROD, System
 from .utils import _validation as validate
 
 logger = logging.getLogger(__name__)
+
+
+def status(system: System = PROD, raise_on_outage: bool = False) -> dict[str, str]:
+    """Get the statuses of NASA's Earthdata services.
+
+    Parameters:
+        system: The Earthdata system to access, defaults to PROD.
+        raise_on_outage: If True, raises exception on errors or outages.
+
+    Returns:
+        A dictionary containing the statuses of Earthdata services.
+
+    Examples:
+        >>> earthaccess.status()  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+        >>> earthaccess.status(earthaccess.UAT)  # doctest: +SKIP
+        {'Earthdata Login': 'OK', 'Common Metadata Repository': 'OK'}
+
+    Raises:
+        ServiceOutage: if at least one service status is not `"OK"`
+    """
+    services = ("Earthdata Login", "Common Metadata Repository")
+    statuses = {service: "Unknown" for service in services}
+    msg = (
+        f"Unable to retrieve Earthdata service statuses for {system}."
+        f"  Try again later, or visit {system.status_url} to check service statuses."
+    )
+
+    try:
+        with requests.get(system.status_api_url) as r:
+            r.raise_for_status()
+            statuses_json = r.json()
+
+        for entry in statuses_json.get("statuses", []):
+            name = entry.get("name", "")
+
+            if service := next(filter(name.startswith, services), None):
+                statuses[service] = entry.get("status", "Unknown")
+    except (json.JSONDecodeError, requests.exceptions.RequestException):
+        logger.error(msg)
+
+    if raise_on_outage and any(
+        status not in {"OK", "Unknown"} for status in statuses.values()
+    ):
+        msg = f"At least 1 service is in an unhealthy/unknown state: {services}"
+        raise ServiceOutage(msg)
+
+    return statuses
 
 
 def _normalize_location(location: Optional[str]) -> Optional[str]:
@@ -234,6 +283,8 @@ def download(
     provider: Optional[str] = None,
     threads: int = 8,
     *,
+    show_progress: Optional[bool] = None,
+    credentials_endpoint: Optional[str] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
@@ -250,7 +301,11 @@ def download(
             month, and day of the current date, and `UUID` is the last 6 digits
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
+        credentials_endpoint: S3 credentials endpoint to be used for obtaining temporary S3 credentials. This is only required if
+            the metadata doesn't include it, or we pass urls to the method instead of `DataGranule` instances.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+            (i.e., in a notebook or a python REPL session), otherwise `False`.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -270,7 +325,13 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+            granules,
+            local_path,
+            provider,
+            threads,
+            credentials_endpoint=credentials_endpoint,
+            show_progress=show_progress,
+            pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:
         logger.error(
@@ -284,7 +345,10 @@ def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
     *,
+    credentials_endpoint: Optional[str] = None,
+    show_progress: Optional[bool] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    open_kwargs: Optional[Dict[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -293,9 +357,13 @@ def open(
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+        show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+            (i.e., in a notebook or a python REPL session), otherwise `False`.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        open_kwargs: Additional keyword arguments to pass to `fsspec.open`, such as `cache_type` and `block_size`.
+            Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -303,7 +371,10 @@ def open(
     return earthaccess.__store__.open(
         granules=granules,
         provider=_normalize_location(provider),
+        credentials_endpoint=credentials_endpoint,
+        show_progress=show_progress,
         pqdm_kwargs=pqdm_kwargs,
+        open_kwargs=open_kwargs,
     )
 
 
