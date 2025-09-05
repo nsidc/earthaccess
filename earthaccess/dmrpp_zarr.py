@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import tempfile
 import warnings
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 from urllib.parse import urlparse
 
@@ -21,6 +23,9 @@ def open_virtual_mfdataset(
     access: str = "indirect",
     preprocess: callable | None = None,  # type: ignore
     parallel: Literal["dask", "lithops", False] = "dask",
+    load: bool = True,
+    reference_dir: str | None = None,
+    reference_format: Literal["json", "parquet"] = "json",
     **xr_combine_nested_kwargs: Any,
 ) -> xr.Dataset:
     """Open multiple granules as a single virtual xarray Dataset.
@@ -40,6 +45,12 @@ def open_virtual_mfdataset(
             A function to apply to each virtual dataset before combining
         parallel:
             Open the virtual datasets in parallel (using dask.delayed or lithops)
+        load:
+            If load is True, earthaccess will serialize the virtual references in order to use lazy indexing on the resulting xarray virtual ds.
+        reference_dir:
+            Directory to store kerchunk references. If None, a temporary directory will be created and deleted after use.
+        reference_format:
+            When load is True, earthaccess will serialize the references using this format, json (default) or parquet.
         xr_combine_nested_kwargs:
             Xarray arguments describing how to concatenate the datasets. Keyword arguments for xarray.combine_nested.
             See [https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html](https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html)
@@ -91,17 +102,24 @@ def open_virtual_mfdataset(
         ```
     """
     import virtualizarr as vz
+    import xarray as xr
 
     if len(granules) == 0:
         raise ValueError("No granules provided. At least one granule is required.")
 
     parsed_url = urlparse(granules[0].data_links(access=access)[0])
+    fs = earthaccess.get_fsspec_https_session()
+    if len(granules):
+        collection_id = granules[0]["meta"]["collection-concept-id"]
 
     if access == "direct":
         credentials_endpoint, region = get_granule_credentials_endpoint_and_region(
             granules[0]
         )
         bucket = parsed_url.netloc
+
+        if load:
+            fs = earthaccess.get_s3_filesystem(endpoint=credentials_endpoint)
 
         s3_store = S3Store(
             bucket=bucket,
@@ -139,8 +157,36 @@ def open_virtual_mfdataset(
             parser=DMRPPParser(group=group),
             preprocess=preprocess,
             parallel=parallel,
+            combine="nested",
             **xr_combine_nested_kwargs,
         )
+
+    if load:
+        if reference_dir is None:
+            ref_dir = Path(tempfile.gettempdir())
+        else:
+            ref_dir = Path(reference_dir)
+            ref_dir.mkdir(exist_ok=True, parents=True)  # type: ignore
+
+        if group is None or group == "/":
+            group_name = "root"
+        else:
+            group_name = group.replace("/", "_").replace(" ", "_").lstrip("_")
+
+        ref_ = ref_dir / Path(f"{collection_id}-{group_name}.{reference_format}")
+        # We still need the round trip because: https://github.com/zarr-developers/VirtualiZarr/issues/360
+        vmfdataset.virtualize.to_kerchunk(str(ref_), format=reference_format)
+
+        storage_options = {
+            "remote_protocol": fs.protocol,
+            "remote_options": fs.storage_options,
+        }
+        vds = xr.open_dataset(
+            str(ref_),
+            engine="kerchunk",
+            storage_options=storage_options,
+        )
+        return vds
 
     return vmfdataset
 
