@@ -1,4 +1,4 @@
-# CLOUD COMPUTING TERMINOLOGY 
+# CLOUD COMPUTING TERMINOLOGY
 
 This guide demystifies key cloud computing terms you'll need to know when working with NASA Earthdata, empowering you to harness the full potential of cloud-based Earth science workflows.
 
@@ -8,7 +8,7 @@ This guide demystifies key cloud computing terms you'll need to know when workin
 
 **Out-of-region**: When your compute resources are in a different AWS region than where the data is stored, which incurs egress charges and typically slower data transfer speeds.
 
-## Cloud Optimized 
+## Cloud Optimized
 
 Cloud-optimized refers to data, workflows, and computing approaches that are specifically designed or adapted to leverage cloud computing capabilities for efficient, scalable Earth science analysis.
 
