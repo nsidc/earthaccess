@@ -16,7 +16,7 @@
 `earthaccess` is a highly active, open-source, and community-driven library developed by [NASA DAACs](https://www.earthdata.nasa.gov/centers), private industry, and the broader NASA data user community.
 
 <figure markdown="span">
-  ![3-panel watercolor artwork depicting earthaccess' position as a missing link between environmental data and data analysis. Depicts environmental data within mountains and streams with arrows labeled 'import' and 'earthaccess' that connect to a data analysis panel and then a communicate panel.](images/earthaccess_environmental_horst.jpg){width="100%"}
+  ![3-panel watercolor artwork depicting earthaccess' position as a missing link between environmental data and data analysis. Depicts environmental data within mountains and streams with arrows labeled 'import' and 'earthaccess' that connect to a data analysis panel and then a communicate panel.](images/earthaccess_environmental_horst.jpg)
   <figcaption>NASA Earthdata using `earthaccess` for impactful science. Art by Allison Horst and Openscapes.</figcaption>
 </figure>
 
