@@ -208,8 +208,16 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
             * **provider**: (str) Only match granules from a given provider.  A DAAC can
                             have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and 
                             NSIDC_CPRD.
+            * **cloud_hosted**: (bool) If True, only match granules hosted in Earthdata Cloud
+            * **downloadable**: (bool) If True, only match granules that are downloadable.  
+                                A granule is downloadable when it contains at least one 
+                                RelatedURL of type GETDATA.
+            * **online_only**: (bool) Alias of downloadable 
             * **orbit_number**; (float) Filter granule by the orbit number in which a 
                                 granule was acquired
+            * **granule_name**; (str) Filter by granule name.  Granule name can contain 
+                                wild cards, e.g `MODGRNLD.*.daily.*`.
+            * **instrument**; (str) Filter by instrument name, e.g. "ATLAS"
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
