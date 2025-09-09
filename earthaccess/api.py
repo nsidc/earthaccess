@@ -218,6 +218,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
             * **granule_name**; (str) Filter by granule name.  Granule name can contain 
                                 wild cards, e.g `MODGRNLD.*.daily.*`.
             * **instrument**; (str) Filter by instrument name, e.g. "ATLAS"
+            * **platform**; (str) Filter by platform, e.g. satellite or plane
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form

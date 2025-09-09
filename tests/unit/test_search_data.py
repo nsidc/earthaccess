@@ -146,3 +146,13 @@ def test_search_data_by_daac_with_instrument():
         count=expected_count,
         )
     assert len(results) > 0
+
+
+def test_search_data_by_daac_with_platform():
+    """Test search_data by daac and platform"""
+    results = earthaccess.search_data(
+        daac="NSIDC",
+        platform="icesat-2",
+        count=expected_count,
+        )
+    assert len(results) > 0
