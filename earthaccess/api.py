@@ -194,20 +194,27 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
+    The CMR does not permit queries across all granules in all collections in order to provide fast search responses. Granule queries must target a subset of the collections in the CMR using a condition like provider, provider_id, concept_id, collection_concept_id, short_name, version or entry_title.
+
     Parameters:
         count: Number of records to get, -1 = all
         kwargs (Dict):
             arguments to CMR:
 
-            * **short_name**: (str) Filter collections by product short name; e.g. ATL08
-            * **version**: dataset version
-            * **doi**: DOI for a dataset
-            * **daac**: e.g. NSIDC or PODAAC
-            * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
+            * **short_name**: (str) Filter granules by product short name; e.g. ATL08
+            * **version**: (str) Filter by dataset version
+            * **daac**: (str) a provider code for any DAAC, e.g. NSIDC or PODAAC
+            * **data_center**; (str) An alias for daac
+            * **provider**: (str) Only match granules from a given provider.  A DAAC can
+                            have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and 
+                            NSIDC_CPRD.
+            * **orbit_number**; (float) Filter granule by the orbit number in which a 
+                                granule was acquired
             * **temporal**: a tuple representing temporal bounds in the form
               `(date_from, date_to)`
             * **bounding_box**: a tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
+            
 
     Returns:
         a list of DataGranules that can be used to access the granule files by using
