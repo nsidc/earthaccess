@@ -95,6 +95,8 @@ test = [
   "vcrpy >=7.0.0",
   "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
+  "dask[distributed]>=2025.7.0",
+  "xarray<2025.8.0", ## TODO report this as the h5py unpickleable problem
 ]
 docs = [
   "jupyterlab >=3",
