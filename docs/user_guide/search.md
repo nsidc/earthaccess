@@ -1,13 +1,5 @@
 # Search
 
-!!! note "This Page is a Work in Progress"
-
-    We are reorganizing and updating the documentation, so not all pages are complete.  If you are looking for information about authenticating using earthaccess see the
-    How-Tos and Tutorials in links below.
-
-    * [Quick start](../quick-start.md)
-    * [How-To Access Data](../howto/access-data.md)
-
 `earthaccess` enables users to search for datasets (what NASA call's collections), the data within those datasets (what NASA calls granules), and the services that are available for a given dataset.
 
 !!! note "Collections and Granules"
