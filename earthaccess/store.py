@@ -63,6 +63,9 @@ class EarthAccessFile:
         directly to the file-like object given during initialization. An instance of
         this class can be treated like that file-like object itself.
 
+        Note that `type()` applied to an instance of this class is expected to disagree with
+        the `__class__` attribute on the instance.
+
         Parameters:
             f: a file-like object
             granule: a granule search result
