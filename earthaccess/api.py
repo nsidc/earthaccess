@@ -206,23 +206,47 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
             * **daac**: (str) a provider code for any DAAC, e.g. NSIDC or PODAAC
             * **data_center**; (str) An alias for daac
             * **provider**: (str) Only match granules from a given provider.  A DAAC can
-                            have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and 
-                            NSIDC_CPRD.
+              have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and NSIDC_CPRD.
             * **cloud_hosted**: (bool) If True, only match granules hosted in Earthdata Cloud
             * **downloadable**: (bool) If True, only match granules that are downloadable.  
-                                A granule is downloadable when it contains at least one 
-                                RelatedURL of type GETDATA.
+              A granule is downloadable when it contains at least one RelatedURL of type 
+              GETDATA.
             * **online_only**: (bool) Alias of downloadable 
             * **orbit_number**; (float) Filter granule by the orbit number in which a 
-                                granule was acquired
+              granule was acquired
             * **granule_name**; (str) Filter by granule name.  Granule name can contain 
-                                wild cards, e.g `MODGRNLD.*.daily.*`.
+              wild cards, e.g `MODGRNLD.*.daily.*`.
             * **instrument**; (str) Filter by instrument name, e.g. "ATLAS"
             * **platform**; (str) Filter by platform, e.g. satellite or plane
-            * **temporal**: a tuple representing temporal bounds in the form
-              `(date_from, date_to)`
-            * **bounding_box**: a tuple representing spatial bounds in the form
+            * **cloud_cover**: (tuple) Filter by cloud cover.  Tuple is a range of 
+              cloud covers, e.g. (0, 20).  Cloud cover values in metadata may be fractions 
+              (i.e. (0.,0.2)) or percentages.  CMRS searches for cloud cover range based on 
+              values in metadata. Note collections without cloud_cover in metadata will return 
+              zero granules.
+            * **day_night_flag**: (str) Filter for day- and night-time images, accepts
+              'day', 'night', 'unspecified'.   
+            * **temporal**: (Tuple) A tuple representing temporal bounds in the form
+              `(date_from, date_to)`.  Dates can be `datetime` objects or ISO 8601
+              formatted strings.  Date strings can be full timestamps; e.g. YYYY-MM-DD HH:mm:ss
+              or truncated YYYY-MM-DD
+            * **bounding_box**: (tuple) Filter collection by those that intersect bounding box.
+              A tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
+            * **polygon**: (List[tuples]) Filter by polygon.  Polygon must be a list of
+              tuples containing longitude-latitude pairs representing polygon vertices.
+              Vertices must be in counter-clockwise order and the final vertex must be the
+              same as the first vertex; e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3),
+              (lon4,lat4),(lon1,lat1)]
+            * **point**: (Tuple[float,float])  Filter by collections intersecting a point,
+              where the point is a longitude-latitude pair; e.g. (lon,lat)
+            * **line**: (List[tuples]) Filter collections that overlap a series of connected
+              points.  Points are represented as tuples containing longitude-latitude pairs;
+              e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3)]
+            * **circle**: (List[float, float, float]) Filter collections that intersect a
+              circle defined as a point with a radius.  Circle parameters are a list
+              containing latitude, longitude and radius in meters; e.g. [lon, lat, radius_m].
+              The circle center cannot be the north or south poles.  The radius mst be
+              between 10 and 6,000,000 m
             
 
     Returns:
@@ -233,8 +257,16 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
         RuntimeError: The CMR query failed.
 
     Examples:
+
         ```python
-        datasets = earthaccess.search_data(
+        granules = earthaccess.search_data(
+            short_name="ATL06",
+            bounding_box=(-46.5, 61.0, -42.5, 63.0),
+            )    
+        ```
+ 
+        ```python
+        granules = earthaccess.search_data(
             doi="10.5067/SLREF-CDRV2",
             cloud_hosted=True,
             temporal=("2002-01-01", "2002-12-31")
