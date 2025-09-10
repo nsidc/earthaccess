@@ -208,23 +208,23 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
             * **provider**: (str) Only match granules from a given provider.  A DAAC can
               have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and NSIDC_CPRD.
             * **cloud_hosted**: (bool) If True, only match granules hosted in Earthdata Cloud
-            * **downloadable**: (bool) If True, only match granules that are downloadable.  
-              A granule is downloadable when it contains at least one RelatedURL of type 
+            * **downloadable**: (bool) If True, only match granules that are downloadable.
+              A granule is downloadable when it contains at least one RelatedURL of type
               GETDATA.
-            * **online_only**: (bool) Alias of downloadable 
-            * **orbit_number**; (float) Filter granule by the orbit number in which a 
+            * **online_only**: (bool) Alias of downloadable
+            * **orbit_number**; (float) Filter granule by the orbit number in which a
               granule was acquired
-            * **granule_name**; (str) Filter by granule name.  Granule name can contain 
+            * **granule_name**; (str) Filter by granule name.  Granule name can contain
               wild cards, e.g `MODGRNLD.*.daily.*`.
             * **instrument**; (str) Filter by instrument name, e.g. "ATLAS"
             * **platform**; (str) Filter by platform, e.g. satellite or plane
-            * **cloud_cover**: (tuple) Filter by cloud cover.  Tuple is a range of 
-              cloud covers, e.g. (0, 20).  Cloud cover values in metadata may be fractions 
-              (i.e. (0.,0.2)) or percentages.  CMRS searches for cloud cover range based on 
-              values in metadata. Note collections without cloud_cover in metadata will return 
+            * **cloud_cover**: (tuple) Filter by cloud cover.  Tuple is a range of
+              cloud covers, e.g. (0, 20).  Cloud cover values in metadata may be fractions
+              (i.e. (0.,0.2)) or percentages.  CMRS searches for cloud cover range based on
+              values in metadata. Note collections without cloud_cover in metadata will return
               zero granules.
             * **day_night_flag**: (str) Filter for day- and night-time images, accepts
-              'day', 'night', 'unspecified'.   
+              'day', 'night', 'unspecified'.
             * **temporal**: (Tuple) A tuple representing temporal bounds in the form
               `(date_from, date_to)`.  Dates can be `datetime` objects or ISO 8601
               formatted strings.  Date strings can be full timestamps; e.g. YYYY-MM-DD HH:mm:ss
@@ -247,7 +247,7 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
               containing latitude, longitude and radius in meters; e.g. [lon, lat, radius_m].
               The circle center cannot be the north or south poles.  The radius mst be
               between 10 and 6,000,000 m
-            
+
 
     Returns:
         a list of DataGranules that can be used to access the granule files by using
@@ -257,14 +257,13 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
         RuntimeError: The CMR query failed.
 
     Examples:
-
         ```python
         granules = earthaccess.search_data(
             short_name="ATL06",
             bounding_box=(-46.5, 61.0, -42.5, 63.0),
-            )    
+            )
         ```
- 
+
         ```python
         granules = earthaccess.search_data(
             doi="10.5067/SLREF-CDRV2",
