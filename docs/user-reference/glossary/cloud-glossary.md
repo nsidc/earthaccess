@@ -4,7 +4,7 @@ This guide demystifies key cloud computing terms you'll need to know when workin
 
 ## In-region vs Out-of-region
 
-**In-region**: Accessing data directly in the cloud from the us-west-2 S3 region is free, where NASA's Earthdata is primarily hosted. This means your compute resources are in the same AWS region as the data.
+**In-region**: In-region refers to compute resources running in the same cloud computing region as where the data is stored. NASA Earthdata is primarily hosted in the Amazon Web Services (AWS) `us-west-2` region. Accessing data directly in the cloud from the `us-west-2` Simple Storage Solution (S3) region is free to the user.
 
 **Out-of-region**: When your compute resources are in a different AWS region than where the data is stored, which incurs egress charges and typically slower data transfer speeds.
 
