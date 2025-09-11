@@ -1,6 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+import tempfile
+import warnings
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Literal
+from urllib.parse import urlparse
+
+from obstore.auth.earthdata import NasaEarthdataCredentialProvider
+from obstore.store import HTTPStore, S3Store
+from virtualizarr.parsers import DMRPPParser
+from virtualizarr.registry import ObjectStoreRegistry
 
 import earthaccess
 
@@ -12,9 +21,11 @@ def open_virtual_mfdataset(
     granules: list[earthaccess.DataGranule],
     group: str | None = None,
     access: str = "indirect",
-    load: bool = False,
     preprocess: callable | None = None,  # type: ignore
-    parallel: bool = True,
+    parallel: Literal["dask", "lithops", False] = "dask",
+    load: bool = True,
+    reference_dir: str | None = None,
+    reference_format: Literal["json", "parquet"] = "json",
     **xr_combine_nested_kwargs: Any,
 ) -> xr.Dataset:
     """Open multiple granules as a single virtual xarray Dataset.
@@ -30,14 +41,16 @@ def open_virtual_mfdataset(
             Path to the netCDF4 group in the given file to open. If None, the root group will be opened. If the DMR++ file does not have groups, this parameter is ignored.
         access:
             The access method to use. One of "direct" or "indirect". Use direct when running on AWS, use indirect when running on a local machine.
-        load:
-            Create an xarray dataset with indexes and lazy loaded data.
-
-            When true, creates a lazy loaded, numpy/dask backed xarray dataset with indexes. Note that when `load=True` all the data is now available to access but not loaded into memory. When `load=False` a virtual xarray dataset is created with ManifestArrays. This virtual dataset is a view over the underlying metadata and chunks and allows creation and concatenation of zarr reference files. This virtual dataset cannot load data on it's own and see https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets.
         preprocess:
             A function to apply to each virtual dataset before combining
         parallel:
-            Open the virtual datasets in parallel (using dask.delayed)
+            Open the virtual datasets in parallel (using dask.delayed or lithops)
+        load:
+            If load is True, earthaccess will serialize the virtual references in order to use lazy indexing on the resulting xarray virtual ds.
+        reference_dir:
+            Directory to store kerchunk references. If None, a temporary directory will be created and deleted after use.
+        reference_format:
+            When load is True, earthaccess will serialize the references using this format, json (default) or parquet.
         xr_combine_nested_kwargs:
             Xarray arguments describing how to concatenate the datasets. Keyword arguments for xarray.combine_nested.
             See [https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html](https://docs.xarray.dev/en/stable/generated/xarray.combine_nested.html)
@@ -48,7 +61,7 @@ def open_virtual_mfdataset(
     Examples:
         ```python
         >>> results = earthaccess.search_data(count=5, temporal=("2024"), short_name="MUR-JPL-L4-GLOB-v4.1")
-        >>> vds = earthaccess.open_virtual_mfdataset(results, access="indirect", load=False, concat_dim="time", coords='minimal', compat='override', combine_attrs="drop_conflicts")
+        >>> vds = earthaccess.open_virtual_mfdataset(results, access="indirect", load=False, concat_dim="time", coords="minimal", compat="override", combine_attrs="drop_conflicts")
         >>> vds
         <xarray.Dataset> Size: 29GB
         Dimensions:           (time: 5, lat: 17999, lon: 36000)
@@ -68,7 +81,7 @@ def open_virtual_mfdataset(
             title:                      Daily MUR SST, Final product
 
         >>> vds.virtualize.to_kerchunk("mur_combined.json", format="json")
-        >>> vds = open_virtual_mfdataset(results, access="indirect", load=True, concat_dim="time", coords='minimal', compat='override', combine_attrs="drop_conflicts")
+        >>> vds = open_virtual_mfdataset(results, access="indirect", concat_dim="time", coords='minimal', compat='override', combine_attrs="drop_conflicts")
         >>> vds
         <xarray.Dataset> Size: 143GB
         Dimensions:           (time: 5, lat: 17999, lon: 36000)
@@ -91,64 +104,97 @@ def open_virtual_mfdataset(
     import virtualizarr as vz
     import xarray as xr
 
-    if access == "direct":
-        fs = earthaccess.get_s3_filesystem(results=granules)  # type: ignore
-        fs.storage_options["anon"] = False
-    else:
-        fs = earthaccess.get_fsspec_https_session()
-    if parallel:
-        import dask
+    if len(granules) == 0:
+        raise ValueError("No granules provided. At least one granule is required.")
 
-        # wrap _open_virtual_dataset and preprocess with delayed
-        open_ = dask.delayed(vz.open_virtual_dataset)  # type: ignore
-        if preprocess is not None:
-            preprocess = dask.delayed(preprocess)  # type: ignore
-    else:
-        open_ = vz.open_virtual_dataset  # type: ignore
-    vdatasets = []
-    # Get list of virtual datasets (or dask delayed objects)
-    for g in granules:
-        vdatasets.append(
-            open_(
-                filepath=g.data_links(access=access)[0] + ".dmrpp",
-                filetype="dmrpp",  # type: ignore
-                group=group,
-                indexes={},
-                reader_options={"storage_options": fs.storage_options},
-            )
+    parsed_url = urlparse(granules[0].data_links(access=access)[0])
+    fs = earthaccess.get_fsspec_https_session()
+    if len(granules):
+        collection_id = granules[0]["meta"]["collection-concept-id"]
+
+    if access == "direct":
+        credentials_endpoint, region = get_granule_credentials_endpoint_and_region(
+            granules[0]
         )
-    if preprocess is not None:
-        vdatasets = [preprocess(ds) for ds in vdatasets]
-    if parallel:
-        vdatasets = dask.compute(vdatasets)[0]  # type: ignore
-    if len(vdatasets) == 1:
-        vds = vdatasets[0]
+        bucket = parsed_url.netloc
+
+        if load:
+            fs = earthaccess.get_s3_filesystem(endpoint=credentials_endpoint)
+
+        s3_store = S3Store(
+            bucket=bucket,
+            region=region,
+            credential_provider=NasaEarthdataCredentialProvider(credentials_endpoint),
+            virtual_hosted_style_request=False,
+            client_options={"allow_http": True},
+        )
+        obstore_registry = ObjectStoreRegistry({f"s3://{bucket}": s3_store})
     else:
-        vds = xr.combine_nested(vdatasets, **xr_combine_nested_kwargs)
-    if load:
-        refs = vds.virtualize.to_kerchunk(filepath=None, format="dict")
-        protocol = "s3" if "s3" in fs.protocol else fs.protocol
-        return xr.open_dataset(
-            "reference://",
-            engine="zarr",
-            chunks={},
-            backend_kwargs={
-                "consolidated": False,
-                "storage_options": {
-                    "fo": refs,  # codespell:ignore
-                    "remote_protocol": protocol,
-                    "remote_options": fs.storage_options,
+        domain = parsed_url.netloc
+        http_store = HTTPStore.from_url(
+            f"https://{domain}",
+            client_options={
+                "default_headers": {
+                    "Authorization": f"Bearer {earthaccess.__auth__.token['access_token']}",
                 },
             },
         )
-    return vds
+        obstore_registry = ObjectStoreRegistry({f"https://{domain}": http_store})
+
+    granule_dmrpp_urls = [
+        granule.data_links(access=access)[0] + ".dmrpp" for granule in granules
+    ]
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="Numcodecs codecs*",
+            category=UserWarning,
+        )
+        vmfdataset = vz.open_virtual_mfdataset(
+            urls=granule_dmrpp_urls,
+            registry=obstore_registry,
+            parser=DMRPPParser(group=group),
+            preprocess=preprocess,
+            parallel=parallel,
+            combine="nested",
+            **xr_combine_nested_kwargs,
+        )
+
+    if load:
+        if reference_dir is None:
+            ref_dir = Path(tempfile.gettempdir())
+        else:
+            ref_dir = Path(reference_dir)
+            ref_dir.mkdir(exist_ok=True, parents=True)  # type: ignore
+
+        if group is None or group == "/":
+            group_name = "root"
+        else:
+            group_name = group.replace("/", "_").replace(" ", "_").lstrip("_")
+
+        ref_ = ref_dir / Path(f"{collection_id}-{group_name}.{reference_format}")
+        # We still need the round trip because: https://github.com/zarr-developers/VirtualiZarr/issues/360
+        vmfdataset.virtualize.to_kerchunk(str(ref_), format=reference_format)
+
+        storage_options = {
+            "remote_protocol": fs.protocol,
+            "remote_options": fs.storage_options,
+        }
+        vds = xr.open_dataset(
+            str(ref_),
+            engine="kerchunk",
+            storage_options=storage_options,
+        )
+        return vds
+
+    return vmfdataset
 
 
 def open_virtual_dataset(
     granule: earthaccess.DataGranule,
     group: str | None = None,
     access: str = "indirect",
-    load: bool = False,
 ) -> xr.Dataset:
     """Open a granule as a single virtual xarray Dataset.
 
@@ -163,10 +209,6 @@ def open_virtual_dataset(
             Path to the netCDF4 group in the given file to open. If None, the root group will be opened. If the DMR++ file does not have groups, this parameter is ignored.
         access:
             The access method to use. One of "direct" or "indirect". Use direct when running on AWS, use indirect when running on a local machine.
-        load:
-            Create an xarray dataset with indexes and lazy loaded data.
-
-            When true, creates a lazy loaded, numpy/dask backed xarray dataset with indexes. Note that when `load=True` all the data is now available to access but not loaded into memory. When `load=False` a virtual xarray dataset is created with ManifestArrays. This virtual dataset is a view over the underlying metadata and chunks and allows creation and concatenation of zarr reference files. This virtual dataset cannot load data on it's own and see https://virtualizarr.readthedocs.io/en/latest/ for more information on virtual xarray datasets.
 
     Returns:
         xarray.Dataset
@@ -174,7 +216,7 @@ def open_virtual_dataset(
     Examples:
         ```python
         >>> results = earthaccess.search_data(count=2, temporal=("2023"), short_name="SWOT_L2_LR_SSH_Expert_2.0")
-        >>> vds =  earthaccess.open_virtual_dataset(results[0], access="indirect", load=False)
+        >>> vds =  earthaccess.open_virtual_dataset(results[0], access="indirect")
         >>> vds
         <xarray.Dataset> Size: 149MB
         Dimensions:                                (num_lines: 9866, num_pixels: 69,
@@ -194,7 +236,40 @@ def open_virtual_dataset(
         granules=[granule],
         group=group,
         access=access,
-        load=load,
         parallel=False,
         preprocess=None,
     )
+
+
+def get_granule_credentials_endpoint_and_region(
+    granule: earthaccess.DataGranule,
+) -> tuple[str, str]:
+    """Retrieve credentials endpoint for direct access granule link.
+
+    Parameters:
+        granule:
+            The first granule being included in the virtual dataset.
+
+    Returns:
+        credentials_endpoint:
+            The S3 credentials endpoint. If this information is in the UMM-G record, then it is used from there. If not, a query for the collection is performed and the information is taken from the UMM-C record.
+        region:
+            Region for the data. Defaults to us-west-2. If the credentials endpoint is retrieved from the UMM-C record for the collection, the Region information is also used from UMM-C.
+
+    """
+    credentials_endpoint = granule.get_s3_credentials_endpoint()
+    region = "us-west-2"
+
+    if credentials_endpoint is None:
+        collection_results = earthaccess.search_datasets(
+            count=1,
+            concept_id=granule["meta"]["collection-concept-id"],
+        )
+        collection_s3_bucket = collection_results[0].s3_bucket()
+        credentials_endpoint = collection_s3_bucket.get("S3CredentialsAPIEndpoint")
+        region = collection_s3_bucket.get("Region", "us-west-2")
+
+    if credentials_endpoint is None:
+        raise ValueError("The collection did not provide an S3CredentialsAPIEndpoint")
+
+    return credentials_endpoint, region
