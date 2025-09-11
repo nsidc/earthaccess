@@ -12,4 +12,4 @@ This guide demystifies key cloud computing terms you'll need to know when workin
 
 Cloud-optimized refers to data, workflows, and computing approaches that are specifically designed or adapted to leverage cloud computing capabilities for efficient, scalable Earth science analysis.
 
-Want to learn more? The team at Development Seed created an amazing [zine](https://zines.developmentseed.org/zines/cloud-native/#zine/23/) that transforms complex concepts into digestible, visual stories.
+Want to learn more? The team at Development Seed created an amazing [zine](https://zines.developmentseed.org/zines/cloud-native/#zine/1/) that transforms complex concepts into digestible, visual stories.
