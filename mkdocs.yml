@@ -49,7 +49,6 @@ plugins:
   - redirects:
       redirect_maps:
         "CODE_OF_CONDUCT.md": "contributing/code-of-conduct.md"
-        "CODE_OF_CONDUCT.md.md": "contributing/code-of-conduct.md"
   - mkdocs-jupyter:
       execute: True
       ignore:
