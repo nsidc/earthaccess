@@ -33,7 +33,7 @@ We can use `earthaccess` to do impactful science, faster:
 
 `earthaccess` development is facilitated by [NASA Openscapes](https://nasa-openscapes.github.io/), an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud.
 
-- [earthaccess Blog](https://www.earthdata.nasa.gov/news/blogearthaccess-earth-science-data-simplified)
+- [earthaccess Blog](https://www.earthdata.nasa.gov/news/blog/earthaccess-earth-science-data-simplified)
 
 - [earthaccess: Accelerating NASA Earthdata access through open, collaborative development](https://docs.google.com/presentation/d/1K5RbQj4OKWt49kznIF9ct-cmWADlvdYA0eI7dA7_fFg/edit#slide=id.g269ad4ab477_0_691) - Luis López, Matt Fisher, Aaron Friesz, Qiusheng Wu, Amy Steiker, earthaccess community. Feb 26, 2024. NASA ESDS Tech Spotlight. ([video](https://www.youtube.com/watch?v=EIr3j1_wDc0))
 
