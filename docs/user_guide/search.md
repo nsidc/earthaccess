@@ -396,31 +396,3 @@ services = earthaccess.search_services(provider="PODAAC")
 ```
 
 `search_services` returns a list of Python doctionaries.
-
-
-
-## Available arguments for search methods
-
-| Query | `search_datasets` | `search_data` | `search_services` |
-|-------|-------------------|---------------|-------------------|
-| concept_id | x | | |
-| temporal | x | | |
-| bounding_box | x | | |
-| polygon | x | | |
-| point | x | | |
-| circle | x | | |
-| line | x | | |
-| keyword | x | | |
-| doi | x | | |
-| short_name | x | | |
-| cloud_hosted | x | | |
-| version | x | | |
-| instrument | x | | |
-| project | x | | |
-| provider | x | | |
-| daac | x | | |
-| data_center | x | | |
-| has_granules | x | | |
-| orbit_number | | | |
-| day_night_flag | | | |
-| cloud_cover | | | |
