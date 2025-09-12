@@ -367,6 +367,38 @@ results = earthaccess.search_data(
 
 ## Search for services
 
+NASA Earthdata provides services that you can use to transform data before you download it.  Tranformations include converting data files to a different file format, subsetting data by spatial extent, time range or variable, reprojecting or transforming data to a different coordinate reference system (CRS) from the one it is stored in.  Not all datasets have services and not all transformation services are available for a given dataset.
+
+There are wo ways to discover which services are available for a dataset.  One way is to call the `services` method on a result returned by `search_datasets`.  See the [Results] section of this User Guide for more information.
+
+```python
+results = earthaccess.search_datasets(
+    short_name="MUR-JPL-L4-GLOB-v4.1",
+    cloud_hosted=True,
+    temporal=("2024-02-27T00:00:00Z", "2024-02-29T23:59:59Z"),
+    )
+```
+
+```python
+for dataset in datasets:
+    print(dataset.services())
+```
+
+The other way to use the `search_services` function.  This takes the following keywords:
+
+- `provider`: the name of the DAAC, e.g. `"PODAAC"`
+- `concept_id`: the concept ID of the service, e.g. `"S3084748458-POCLOUD"` (starts with a "S")
+- `name`: the name of the service, e.g. `"PODAAC_SWODLR"`  
+- `native_id`: an alternative name of the service, e.g `"POCLOUD_podaac_swodlr"`
+
+```
+services = earthaccess.search_services(provider="PODAAC")
+```
+
+`search_services` returns a list of Python doctionaries.
+
+
+
 ## Available arguments for search methods
 
 | Query | `search_datasets` | `search_data` | `search_services` |
