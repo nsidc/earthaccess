@@ -79,7 +79,7 @@ PROCESSING TASKS | : 100%|██████████████████
 COLLECTING RESULTS | : 100%|████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 26379.27it/s]
 ```
 
-Rather than returning a list of paths, `earthaccess.open` returns a list of _file-like objects_.  These can be used in the same way as a filepath with third-party applications such as `xarray`. 
+Rather than returning a list of paths, `earthaccess.open` returns a list of _file-like objects_.  These can be used in the same way as a filepath with third-party applications such as `xarray`.
 
 ```python
 ds = xarray.open_mfdataset(fileobjects)
@@ -90,4 +90,3 @@ or
 ```python
 ds = xarray.open_dataset(fileobjects[0])
 ```
-

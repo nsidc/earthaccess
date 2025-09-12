@@ -66,7 +66,7 @@ This refined search now returns 59 datasets.
 #### Search by version
 
 
-### Acessing and understanding the search results
+### Accessing and understanding the search results
 
 Each element of the `results` list is a `earthaccess.results.DataCollection` object.  A summary showing key fields for each result in `results` can be displayed using the `summary` method.  Each result in `results` is accessed in the same way you access elements in a Python list; by giving an index.
 
@@ -88,13 +88,13 @@ pprint(result[0].summary())
 }
 ```
 
-The `summary` method returns the **short-name** for the dataset; the **concept-id**, a unique identifier for the datset; the dataset **version**; the **file-type** of the files in the dataset; and a set of links to access the data files.
+The `summary` method returns the **short-name** for the dataset; the **concept-id**, a unique identifier for the dataset; the dataset **version**; the **file-type** of the files in the dataset; and a set of links to access the data files.
 
 !!!note "You need to login to use the **get-data** links"
 
     You can search for datasets and data without logging in to NASA's Earthdata Login but you must login before you download data.  `earthaccess` makes this easy with the `login` method.  See the [Authentication section](./authenticate.md) for more information.
-    
-In addition to the `summary` method, there are methods to return the dataset [`concept_id`](<link-to-glossary-entry>), `data_type`, `version`, the dataset `abstract`, the url for the datset `landing_page`, urls for data links - `get_data`, information about the S3 bucket containing the data granules - `s3_bucket`, and a list of services available for the dataset `services`.
+
+In addition to the `summary` method, there are methods to return the dataset [`concept_id`](<link-to-glossary-entry>), `data_type`, `version`, the dataset `abstract`, the url for the dataset `landing_page`, urls for data links - `get_data`, information about the S3 bucket containing the data granules - `s3_bucket`, and a list of services available for the dataset `services`.
 
 The `concept_id` is one way to search for granules in a dataset using `search_data`.
 
@@ -138,7 +138,7 @@ Searches can be refined further by `orbit_number`, cloud cover fraction and day-
 
 !!!warning "Not all datasets have metadata to use these keywords"
 
-    Not all datasets have the relevant metadata to allow all keywords to be used.  If the metadata relevant to a keyword is not included in the dataset metadata record, a search will return zero results.  One strategy is to start with a broard search, for example just `short_name` or `concept_id`, for a dataset but set the `count` argument to a small number, e.g. 10.  Then add keywords to see if you continue to get results.  If you continue to get 10 results with a new keyword, it is likely that the keyword is valid.   
+    Not all datasets have the relevant metadata to allow all keywords to be used.  If the metadata relevant to a keyword is not included in the dataset metadata record, a search will return zero results.  One strategy is to start with a broard search, for example just `short_name` or `concept_id`, for a dataset but set the `count` argument to a small number, e.g. 10.  Then add keywords to see if you continue to get results.  If you continue to get 10 results with a new keyword, it is likely that the keyword is valid.
 
 Orbit number is a way to track the number of passes a satellite platform has made.  You can think of it as a proxy for time since launch.
 
@@ -211,7 +211,7 @@ ATL10-02_20181014000347_**023501**01_006_02.h5
 
 Dataset user guides contain information about filename formats.
 
-We can use wildcard characters to construct a filename string to search for a particular set of granules.  Below, modify the last example to search for all ICESat-2 ATL10 granules that follow RGT 235 by relacing the date-time stamp in the filename with `*`.  
+We can use wildcard characters to construct a filename string to search for a particular set of granules.  Below, modify the last example to search for all ICESat-2 ATL10 granules that follow RGT 235 by relacing the date-time stamp in the filename with `*`.
 
 ```python
 results = earthaccess.search_data(
@@ -262,7 +262,7 @@ Both `search_datasets` and `search_data` accept several keywords to search by a 
 
 All the methods described here require coordinates to be in geodetic coordinates, e.g. longitude and latitude, expressed as decimal degrees.
 
-In each case, matching granules or datasets are returned if their geometries intersect with the geometries passed to `earthaccess`. 
+In each case, matching granules or datasets are returned if their geometries intersect with the geometries passed to `earthaccess`.
 
 ### Bounding box
 
@@ -367,7 +367,7 @@ results = earthaccess.search_data(
 
 ## Search for services
 
-NASA Earthdata provides services that you can use to transform data before you download it.  Tranformations include converting data files to a different file format, subsetting data by spatial extent, time range or variable, reprojecting or transforming data to a different coordinate reference system (CRS) from the one it is stored in.  Not all datasets have services and not all transformation services are available for a given dataset.
+NASA Earthdata provides services that you can use to transform data before you download it.  Transformations include converting data files to a different file format, subsetting data by spatial extent, time range or variable, reprojecting or transforming data to a different coordinate reference system (CRS) from the one it is stored in.  Not all datasets have services and not all transformation services are available for a given dataset.
 
 There are wo ways to discover which services are available for a dataset.  One way is to call the `services` method on a result returned by `search_datasets`.  See the [Results] section of this User Guide for more information.
 
@@ -388,7 +388,7 @@ The other way to use the `search_services` function.  This takes the following k
 
 - `provider`: the name of the DAAC, e.g. `"PODAAC"`
 - `concept_id`: the concept ID of the service, e.g. `"S3084748458-POCLOUD"` (starts with a "S")
-- `name`: the name of the service, e.g. `"PODAAC_SWODLR"`  
+- `name`: the name of the service, e.g. `"PODAAC_SWODLR"`
 - `native_id`: an alternative name of the service, e.g `"POCLOUD_podaac_swodlr"`
 
 ```

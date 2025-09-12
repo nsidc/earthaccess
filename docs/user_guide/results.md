@@ -41,4 +41,3 @@ Abstract
 ```
 result[0].abstract()
 ```
-

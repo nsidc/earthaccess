@@ -11,4 +11,3 @@ Collection: a set of data products or files for the same release of that product
     data generated during an experiment or campaign.
 
 Granule: the smallest aggregation of data.  It could be an individual scene or swath acquired at a given timestep.  You can think of granules as files.
-
