@@ -23,6 +23,12 @@ PROCESSING TASKS | : 100%|██████████████████
 COLLECTING RESULTS | : 100%|████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 26379.27it/s]
 ```
 
+If you want to download a single elements from results, for example `results[0]`, you have make sure you pass a list to `download`, this is done by putting the single element inside square brackets.
+
+```python
+filelist = earthaccess.download([results[0]])
+```
+
 By default files are downloaded to a sub-directory of the current working directory with a name similar to `./data/YYYY-MM-DD_UUID`, where `YYYY-MM-DD` is the year, month and day of the current date, and `UUID` is a unique identifier.  The path to each file is returned and, here, stored in the variable `filelist`.
 
 ```python
