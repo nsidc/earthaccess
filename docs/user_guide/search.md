@@ -331,10 +331,41 @@ results = earthaccess.search_data(
 
 ### Circle
 
-A circle is defined as a longitude, latitude pair and a radius in meters.
+A circle is defined as a longitude, latitude pair and a radius in meters.  Here, we extend the point in the example above to find granules within 1 km of the point (-105.253,40.012).
+
+```python
+lon, lat = (-105.25303896425012, 40.01259873086735)
+radius = 1000.
+
+results = earthaccess.search_data(
+    short_name="ATL06",
+    circle=(lon,lat, radius),
+    )
+```
 
 ### Line
 
+A line is a Python list of tuples containing longitude-latitude pairs.
+
+In this example we search for ICESat-2 Geolocated photon height (ATL03) tracks that intersect with the [Canyon de Chelly](https://www.nps.gov/cach/index.htm), AZ (Near Chinle, [Naabeehó Bináhásdzo](https://en.wikipedia.org/wiki/Navajo_Nation)).
+
+```python
+line = [
+    (-109.49099495904196, 36.141620186146454),
+    (-109.46326273316441, 36.12549319389707),
+    (-109.42416829289516, 36.11336807764218),
+    (-109.39942951589708, 36.10816134722084),
+    (-109.33995221922424, 36.10943400693182),
+    (-109.28600071040317, 36.11941578661717),
+]
+
+results = earthaccess.search_data(
+    short_name="ATL03",
+    line=line,
+    )
+```
+
+## Search for services
 
 Services
 This is a really big object
