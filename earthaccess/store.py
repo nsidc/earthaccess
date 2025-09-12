@@ -1,4 +1,5 @@
 import datetime
+import io
 import logging
 import threading
 import traceback
@@ -51,7 +52,7 @@ def _is_interactive() -> bool:
     return hasattr(sys, "ps1")
 
 
-class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
+class EarthAccessFile(io.IOBase):
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -70,8 +71,21 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         self.f = f
         self.granule = granule
 
-    def __getattr__(self, method: str) -> Any:
-        return getattr(self.f, method)
+    def __getattribute__(self, name: str) -> Any:
+        # Avoid infinite recursion on our own attributes
+        if name in (
+            "f",
+            "granule",
+            "__class__",
+            "__dict__",
+            "__getattribute__",
+            "__repr__",
+        ):
+            return object.__getattribute__(self, name)
+        try:
+            return getattr(self.f, name)
+        except AttributeError:
+            return object.__getattribute__(self, name)
 
     def __reduce__(self) -> Any:
         return make_instance, (
