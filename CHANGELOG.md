@@ -9,6 +9,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
+- Populated glossary section under USER-REFERENCE.
+  ([#1027](https://github.com/nsidc/earthaccess/issues/1027))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
 - Change default cache behavior in fsspec from `readahead` to `blockcache`.
   Allow user defined config with `open_kwargs` in the `.open()` method.
   This improves performance by an order of magnitude.
