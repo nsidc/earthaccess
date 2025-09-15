@@ -1185,9 +1185,9 @@ requires-dist = [
     { name = "vcrpy", marker = "extra == 'test'", specifier = ">=7.0.0" },
     { name = "virtualizarr", marker = "extra == 'virtualizarr'", specifier = ">=2.1.2" },
     { name = "widgetsnbextension", marker = "extra == 'docs'", specifier = ">=3.6.0" },
-    { name = "xarray", marker = "extra == 'docs'", specifier = ">=2023.1" },
-    { name = "xarray", marker = "extra == 'kerchunk'" },
-    { name = "xarray", marker = "extra == 'virtualizarr'", specifier = ">=2025.4.0" },
+    { name = "xarray", marker = "extra == 'docs'", specifier = "<=2025.6" },
+    { name = "xarray", marker = "extra == 'kerchunk'", specifier = "<=2025.6" },
+    { name = "xarray", marker = "extra == 'virtualizarr'", specifier = "<=2025.6" },
     { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'test'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=3.1.1" },
@@ -4688,16 +4688,16 @@ wheels = [
 
 [[package]]
 name = "xarray"
-version = "2025.8.0"
+version = "2025.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "packaging" },
     { name = "pandas" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d2/55/18055bc943029d25fb8f260b7e3b1485c30646ccf503a5e4a744d31a3b78/xarray-2025.8.0.tar.gz", hash = "sha256:323d4169ce72d4ef849de2b0bd122f9cd2905b82c7558169930dc16070982bab", size = 3034425, upload-time = "2025-08-14T16:52:13.872Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/72/d60c34f61def6a547d65d779171e3063f0c0370293fd73e79eab87e4fab9/xarray-2025.6.0.tar.gz", hash = "sha256:c521c6c1b806fc8e5c9b1bed85d69ce950fd6d2668507d4dd02850787b4c84f2", size = 3001856, upload-time = "2025-06-10T16:50:07.631Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e6/c8/0f8db9d9478de8d70cbcae2056588401e26168e269d6d9919bf2ecb01f78/xarray-2025.8.0-py3-none-any.whl", hash = "sha256:1c454f32b38c93df68e450238c9473fe21248b8572d42ddd58c5170bb30934ee", size = 1342279, upload-time = "2025-08-14T16:52:10.956Z" },
+    { url = "https://files.pythonhosted.org/packages/57/ed/e737a1c9be5d654b71524ee19ea22376c4d81c50ef2bb5598c9dada74e9a/xarray-2025.6.0-py3-none-any.whl", hash = "sha256:175034a388e9b3c764035b40ad29581f0cbb9c596b97b75a7beb93ef2cc876e8", size = 1314069, upload-time = "2025-06-10T16:50:04.747Z" },
 ]
 
 [[package]]
