@@ -17,8 +17,8 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
     params=[
         ("MUR25-JPL-L4-GLOB-v04.2", 2),
         ("AVHRR_OI-NCEI-L4-GLOB-v2.1", 1),
-        ("TEMPO_NO2_L3", 3),
-        # ("M2T1NXSLV", 1), failing for some reason (2025/09)
+        ("TEMPO_NO2_L3", 2),
+        ("M2T1NXSLV", 1),
     ],
 )
 def granules(request):
