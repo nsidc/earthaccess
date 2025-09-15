@@ -132,7 +132,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
               containing latitude, longitude and radius in meters; e.g. [lon, lat, radius_m].
               The circle center cannot be the north or south poles.  The radius mst be
               between 10 and 6,000,000 m
-            * **cloud_hosted**: (bool) Return only collected hosted on Earthdata Cloud
+            * **cloud_hosted**: (bool) Return only collected hosted on Earthdata Cloud.  Default: True
             * **downloadable**: (bool) If True, only return collections that can be downloaded
               from an online archive
             * **concept_id**: (str) Filter by Concept ID; e.g. C3151645377-NSIDC_CPRD
