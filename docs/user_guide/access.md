@@ -102,8 +102,8 @@ Here, we give a brief overview of the default parameters.  For more nformation s
 
 Two key parameters control the efficiency of file access; cache type and block-size.  The default cache type in `earthaccess` is `blockcache`.  Block-size is set depending on the file size as follows:
 
-:File Size: :Block Size:
-:---------:--:----------:
-: Small : < 1000 MB : 4 MB :
-: Medium : < 1 GB : 8 MB :
-: Large : > 1 GB : 16 MB :
+| File Size |  | Block Size |
+|---------|--|----------|
+| Small | < 1000 MB | 4 MB |
+| Medium | < 1 GB | 8 MB |
+| Large | > 1 GB | 16 MB |
