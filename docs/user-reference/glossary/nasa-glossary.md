@@ -7,7 +7,9 @@ are defined in their Earth Observation Data Basics Glossary.
 
 We also give some simple definitions for commonly used terms in this documentation below.
 
-Collection: a set of data products or files for the same release of that product,
+**Collection**: a set of data products or files for the same release of that product,
     data generated during an experiment or campaign.
 
-Granule: the smallest aggregation of data.  It could be an individual scene or swath acquired at a given timestep.  You can think of granules as files.
+**concept-id**: a unique identifier for a collection, granule, service or tool.  Concept-id can be used to search for datasets or granules using `earthaccess`.
+
+**Granule**: the smallest aggregation of data.  It could be an individual scene or swath acquired at a given timestep.  You can think of granules as files.
