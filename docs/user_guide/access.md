@@ -99,7 +99,7 @@ When using `earthaccess.open` to stream data from NASA Earthdata cloud, access t
 
 Here, we give a brief overview of the default parameters.  For more nformation see this [Gist](https://gist.github.com/betolink/94aef93ad09f80b09132b8a009561049).  Some of this gets technical.  If it is too technical, just go ahead and use the defaults.  Or ask a question in the `earthaccess GitHub [Issues](https://github.com/nsidc/earthaccess/issues). 
 
-`earthaccess.open` uses [`fsspec`](https://filesystem-spec.readthedocs.io/en/latest/) to access data stored in NASA Earthdata cloud.  `fsspec` provides a standard interface to local, remote and embedded file systems and byte storage.  Essentially, it allows you (and Python tools) to treat remote file storage as virtual file system in the same way you would interect with your local file system.
+`earthaccess.open` uses [`fsspec`](https://filesystem-spec.readthedocs.io/en/latest/) to access data stored in NASA Earthdata cloud.  `fsspec` provides a standard interface to local, remote and embedded file systems and byte storage.  Essentially, it allows you (and Python tools) to treat remote file storage as virtual file system in the same way you would interact with your local file system.
 
 Two key parameters control the efficiency of file access; cache type and block-size.  The default cache type in `earthaccess` is `blockcache`.  Block-size is set depending on the file size as follows:
 
