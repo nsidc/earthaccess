@@ -110,7 +110,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **data_center**: (str) An alias for `daac`
             * **provider**: (str) Filter by data provider; each DAAC can have more than
                one provider, e.g. POCLOUD, PODAAC, etc.
-            * **has_granules**: (bool) If true, only return collections with granules
+            * **has_granules**: (bool) If true, only return collections with granules.  Default: True
             * **temporal**: (tuple) A tuple representing temporal bounds in the form
               `(date_from, date_to)`.  Dates can be `datetime` objects or ISO 8601
               formatted strings.  Date strings can be full timestamps; e.g. YYYY-MM-DD HH:mm:ss
