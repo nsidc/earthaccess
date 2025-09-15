@@ -93,7 +93,7 @@ def _normalize_location(location: Optional[str]) -> Optional[str]:
 
 
 def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
-    """Search datasets using NASA's CMR.
+    """Search datasets (collections) using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
@@ -191,7 +191,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
 
 
 def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
-    """Search dataset granules using NASA's CMR.
+    """Search for dataset files (granules) using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
