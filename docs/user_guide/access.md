@@ -34,10 +34,11 @@ By default files are downloaded to a sub-directory of the current working direct
 ```python
 filelist
 ```
+
 ```
 [PosixPath('/current/working/directory/data/2025-09-12-c58fe9/ATL10-01_20181014000347_02350101_006_02.h5'),
  PosixPath('/current/working/directory/data/2025-09-12-c58fe9/ATL10-01_20181014000347_02350101_007_01.h5')]
- ```
+```
 
 You can override this behaviour by setting the `local_path` keyword to a local directory.
 
