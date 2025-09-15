@@ -95,7 +95,6 @@ results[0].concept_id()
 ```
 
 
-
 ### Accessing and understanding the search results
 
 Each element of the `results` list is a `earthaccess.results.DataCollection` object.  A summary showing key fields for each result in `results` can be displayed using the `summary` method.  Each result in `results` is accessed in the same way you access elements in a Python list; by giving an index.
