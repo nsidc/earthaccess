@@ -2,13 +2,13 @@
 
 ## Overview
 
-Searching for NASA Earthdata is the core function is `earthaccess`.  NASA organizes Earthdata into [_collections_](<link-to-glossary>).  An example of a collection is the [MODIS/TERRA Global Daily Snow Cover](https://nsidc.org/data/mod10a1/versions/61).  You can think of a collection as a dataset.  Collections contain many data _granules_, each granule is a file.  For the MODIS snow cover data, each granule (or file) contains data for one day for a 10x10 area of the globe.
+Searching for NASA Earthdata is the core function is `earthaccess`.  NASA organizes Earthdata into [_collections_](<link-to-glossary>).  An example of a collection is the [MODIS/TERRA Global Daily Snow Cover](https://nsidc.org/data/mod10a1/versions/61).  You can think of a collection as a dataset.  Collections contain many data _granules_, each granule is a file.  For the MODIS snow cover data, each granule (or file) contains data for one day for a 10&deg; x 10&deg; area of the globe.
 
-Using `earthaccess`, you can search for datasets using [`search_datasets`](/earthaccess/user-reference/api/api/#earthaccess.api.search_datasets) or search for files (or granules) within a dataset using `search_data`.  For example, you may want snow cover data or perhaps data for ocean color but not know a specific dataset.  `search_datasets` allows you to search by keywords.  Or you may want data about canopy height in the Amazon rain forest for a given data but do not know what datasets are available.  `search_datasets` allows you to define a region of interest and a time range of interest to your search.  Alternatively, you might know you want to work with data from the MODIS snow cover dataset, in the example above, but want to find out which version of that data is available.
+Using `earthaccess`, you can search for datasets using [`search_datasets`](#search-for-datasets-using-search_datasets) or search for files (or granules) within a dataset using [`search_data`](#search-for-data-granules-using-search_data).  For example, you may want snow cover data or perhaps data for ocean color but not know a specific dataset that contains this data.  `search_datasets` allows you to search by keywords.  Or you may want data about canopy height in the Amazon rain forest for a given date but do not know what datasets are available for this region of time range.  `search_datasets` allows you to define a region of interest and a time range of interest to your search.  Alternatively, you might know you want to work with data from the MODIS snow cover dataset, in the example above, but want to find out which version of that data is available.
 
-On the other hand, you may know which dataset you want to work with but need to find the data files for a time period and region of interest.  You can find this files with `search_data`.  You might want to further refine that search to find only files with less than 50% cloud cover or with data collected during day-time.  `search_data` accepts these search terms as well.
+On the other hand, you may know which dataset you want to work with but need to find the data files for a time period and region of interest.  You can find these files with `search_data`.  You might want to further refine that search to find only files with less than 50% cloud cover or with data collected during day-time.  `search_data` accepts these search terms as well.
 
-NASA offers a number of services to subset and transform data.  These services are not available for datasets.  You can use `search_services` to discover which datasets have particular services.
+NASA also offers a number of services to subset and transform data.  These services are not available for datasets.  You can use `search_services` to discover which datasets have particular services.
 
 `search_datasets` and `search_data` have some search parameters in common, as well as some parameters that are only available to `search_datasets` and `search_data`.  Below, we first cover some basic searches using `search_datasets` and `search_data`.  We then give some more examples and detail on keywords common to both functions.
 
@@ -17,7 +17,7 @@ NASA offers a number of services to subset and transform data.  These services a
 
 ### A basic search
 
-[`search_datasets`](<add-link-to-docstring>) allows you to search for NASA datasets using combinations of keywords.  As a simple example, we use the `keyword` keyword to search for all datasets matching `icesat-2`.
+[`search_datasets`](../user-reference/api/api.md/#earthaccess.api.search_datasets) allows you to search for NASA datasets using combinations of keywords.  As a simple example, we use the `keyword` keyword to search for all datasets matching `icesat-2`.
 
 ```python
 results = earthaccess.search_datasets(
@@ -40,11 +40,7 @@ print(len(result))
 
 ### Refine the search by adding more keywords
 
-The number of datasets returned can be refined by using additional keywords.  For a full list of keywords accepted by `search_datasets` see the [User Reference](<link-to-api>).  Here, we use `cloud_hosted` and `downloadable` to restrict datasets returned to only those that can be downloaded from the AWS-hosted NASA Earthdata Cloud.
-
-!!! note "NASA Earthdata Cloud"
-
-    _What is the plan for archiving both ECS and V0 - will **all** data be in the cloud, will some data be discoverable but not downloadable._
+The number of datasets returned can be refined by using additional keywords.  For a full list of keywords accepted by `search_datasets` see the [User Reference](../user-reference/api/api.md/#earthaccess.api.search_datasets).  Here, we use `cloud_hosted` and `downloadable` to restrict datasets returned to only those that can be downloaded from the AWS-hosted NASA Earthdata Cloud.
 
 ```python
 results = earthaccess.search_datasets(
@@ -62,8 +58,42 @@ This refined search now returns 59 datasets.
 
 #### Search by provider or data archive
 
+You might know that a particular DAAC has a dataset or just datasets for a given variable, for example snow.  Here, we use the `daac` or `provider` keywords to find all the datasets at NSIDC DAAC, the National Snow and Ice Data Center.
+
+```python
+results = earthaccess.search_datasets(
+    daac="nsidc",
+    )
+```
 
 #### Search by version
+
+In general, DAACs archive the two most recent versions of a dataset.  You might want to find the **concept-id**, the unique identifier for a dataset for that version.  Here, we search for the concept-id for version 007 of ICESat-2 Geolocated Photon Heights (ATL03).
+
+```python
+results = earthaccess.search_datasets(
+    short_name="ATL03",
+    version="007",
+    )
+```
+
+```python
+len(results)
+```
+
+```
+1
+```
+
+The concept-id can be accessed directly using the `concept_id` method.
+
+```
+results[0].concept_id()
+```
+```
+'C3326974349-NSIDC_CPRD'
+```
+
 
 
 ### Accessing and understanding the search results
