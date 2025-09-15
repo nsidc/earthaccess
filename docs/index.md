@@ -33,11 +33,14 @@ We can use `earthaccess` to do impactful science, faster:
 
 `earthaccess` development is facilitated by [NASA Openscapes](https://nasa-openscapes.github.io/), an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud.
 
-- [earthaccess Blog](https://www.earthdata.nasa.gov/news/blogearthaccess-earth-science-data-simplified)
+- [earthaccess NASA Blog post](https://www.earthdata.nasa.gov/news/blog/earthaccess-earth-science-data-simplified)
 
 - [earthaccess: Accelerating NASA Earthdata access through open, collaborative development](https://docs.google.com/presentation/d/1K5RbQj4OKWt49kznIF9ct-cmWADlvdYA0eI7dA7_fFg/edit#slide=id.g269ad4ab477_0_691) - Luis López, Matt Fisher, Aaron Friesz, Qiusheng Wu, Amy Steiker, earthaccess community. Feb 26, 2024. NASA ESDS Tech Spotlight. ([video](https://www.youtube.com/watch?v=EIr3j1_wDc0))
 
-- [The earthaccess Python Library: Awesome Discovery and Access of NASA Earthdata](https://docs.google.com/presentation/d/e/2PACX-1vT8BN1C4FkHrid_eVfOwJjZzKGn9Nomb6mnDj3Nld-nD0ekzoenxQIq6Xzo9VFQsXbixCNskadBwPwM/pub?start=false&loop=false&delayms=3000) - Amy Steiker, Andrew P. Barrett, Charles Daniels, Matthew Fisher, Daniel Kaufman, Joseph H. Kennedy, Luis López, Julia S. Stewart Lowndes, Jessica Scheick, The NASA Openscapes mentors team. December 9, 2024. AGU Fall Conference Poster ([slide](https://docs.google.com/presentation/d/1iBqeMQcdNAxQfhIH9jdcvI2m1HmBxJFixLX1BnwG-S8/edit#slide=id.g317ff1cef8c_1_87))
+- [The earthaccess Python Library: Awesome Discovery and Access of NASA Earthdata](https://docs.google.com/presentation/d/e/2PACX-1vT8BN1C4FkHrid_eVfOwJjZzKGn9Nomb6mnDj3Nld-nD0ekzoenxQIq6Xzo9VFQsXbixCNskadBwPwM/pub?start=false&loop=false&delayms=3000) - Amy Steiker, Andrew P. Barrett, Charles Daniels, Matthew Fisher, Daniel Kaufman, Joseph H. Kennedy, Luis López, Julia S. Stewart Lowndes, Jessica Scheick, The NASA Openscapes mentors team. December 9, 2024. AGU Fall Conference Poster.
+
+- [earthaccess — helping users leverage the awesomeness of NASA Earthdata](https://nasa-openscapes.github.io/news/2025-08-01-earthaccess-awesomeness-nasa-earthdata/) - Amy Steiker, Luis López, Danny Kaufman, Joe Kennedy, Chris Battisto, Andy Teucher, Stefanie Butland, Julie Lowndes, and the earthaccess and NASA Openscapes communities. July 29, 2025. Openscapes Community Call.
+
 
 # Supported By
 
