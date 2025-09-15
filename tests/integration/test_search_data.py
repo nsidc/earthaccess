@@ -6,7 +6,7 @@ import earthaccess
 import pytest
 
 # Set SKIP_THIS to False to run test
-SKIP_THIS = True
+SKIP_THIS = False
 
 # Number of granules to return passed to count, also expected number returned
 expected_count = 10
