@@ -139,8 +139,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             * **instrument**: (str) Filter by Instrument name; e.g. ATLAS
             * **project**: (str) Filter by project or campaign name; e.g. ABOVE
             * **fields**: (List[str]) Return only the UMM fields listed in this parameter
-            * **revision_date**: Tuple(str,str) Filter by collections that have revision date
+            * **revision_date**: tuple(str,str) Filter by collections that have revision date
               within the range
+            * **debug**: (bool) If True prints CMR request.  Default: True
 
     Returns:
         A list of DataCollection results that can be used to get information about a
