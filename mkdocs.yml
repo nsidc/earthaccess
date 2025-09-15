@@ -46,6 +46,7 @@ plugins:
             show_submodules: no
             show_root_heading: false
             show_source: false
+  - autorefs
   - redirects:
       redirect_maps:
         'CODE_OF_CONDUCT.md': 'contributing/code-of-conduct.md'
