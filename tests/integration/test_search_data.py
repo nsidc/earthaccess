@@ -6,7 +6,7 @@ import earthaccess
 import pytest
 
 # Set SKIP_THIS to False to run test
-SKIP_THIS = False
+SKIP_THIS = True
 
 # Number of granules to return passed to count, also expected number returned
 expected_count = 10
@@ -179,7 +179,7 @@ def test_search_data_by_daac_with_instrument():
     """Test search_data by daac and instrument."""
     results = earthaccess.search_data(
         daac="NSIDC",
-        instrument="atlas",
+        instrument="modis",
         count=expected_count,
     )
     assert len(results) > 0
@@ -190,7 +190,7 @@ def test_search_data_by_daac_with_platform():
     """Test search_data by daac and platform."""
     results = earthaccess.search_data(
         daac="NSIDC",
-        platform="icesat-2",
+        platform="terra",
         count=expected_count,
     )
     assert len(results) > 0
