@@ -86,7 +86,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Reflected new publisher of SEDAC datasets ([#1032](https://github.com/nsidc/earthaccess/issues/1032))([@itcarroll](https://github.com/itcarroll))
 - Better proxying by `EarthAccessFile` with correct MRO ([#610](https://github.com/nsidc/earthaccess/issues/610))([@alexandervladsemenov](https://github.com/alexandervladsemenov), [@itcarroll](https://github.com/itcarroll))
 
-## [v0.14.0] - 2025-02-11
+## [0.14.0] - 2025-02-11
 
 ### Added
 
@@ -104,7 +104,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([**@mfisher87**](https://github.com/mfisher87), [@chuckwondo](https://github.com/chuckwondo),
   and [@jhkennedy](https://github.com/jhkennedy))
 
-## [v0.13.0] - 2025-01-28
+## [0.13.0] - 2025-01-28
 
 ### Added
 
@@ -123,7 +123,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#913](https://github.com/nsidc/earthaccess/issues/913))
   ([**@hailiangzhang**](https://github.com/hailiangzhang))
 
-## [v0.12.0] - 2024-11-13
+## [0.12.0] - 2024-11-13
 
 ### Changed
 
