@@ -74,12 +74,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Fixed
 
-- Files can be downloaded in the cloud([#1009](https://github.com/nsidc/earthaccess/issues/1009))([betolink](https://github.com/betolink))
-- Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
-- Resolved an error in virtual dataset tutorial notebook ([#1044](https://github.com/nsidc/earthaccess/issues/1044))([danielfromearth](https://github.com/danielfromearth))
+- Files can be downloaded in the cloud([#1009](https://github.com/nsidc/earthaccess/issues/1009))([@betolink](https://github.com/betolink))
+- Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([@stelios-c](https://github.com/stelios-c))
+- Resolved an error in virtual dataset tutorial notebook ([#1044](https://github.com/nsidc/earthaccess/issues/1044))([@danielfromearth](https://github.com/danielfromearth))
 - Issue when `FileDistributionInformation` did not exist for a collection
   ([#971](https://github.com/nsidc/earthaccess/pull/971))
   ([@mike-gangl](https://github.com/mike-gangl/))
+- Reflected new publisher of SEDAC datasets ([#1032](https://github.com/nsidc/earthaccess/issues/1032))([@itcarroll](https://github.com/itcarroll))
 
 ## [v0.14.0] - 2025-02-11
 
