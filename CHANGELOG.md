@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.15.0] - 2025-09-16
+
 ### Changed
 
 - Populated glossary section under USER-REFERENCE.
@@ -33,6 +35,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of `fsspec`. Updated Zarr to V3 xref #967.
   ([#1074](https://github.com/nsidc/earthaccess/issues/1074))
   ([@owenlittlejohns](https://github.com/owenlittlejohns))
+- Populate search and access user guides.
+  ([#1035](https://github.com/nsidc/earthaccess/pull/1035))
+  ([@andypbarrett](https://github.com/andypbarrett))
 
 ### Added
 
@@ -81,8 +86,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#971](https://github.com/nsidc/earthaccess/pull/971))
   ([@mike-gangl](https://github.com/mike-gangl/))
 - Reflected new publisher of SEDAC datasets ([#1032](https://github.com/nsidc/earthaccess/issues/1032))([@itcarroll](https://github.com/itcarroll))
+- Better proxying by `EarthAccessFile` with correct MRO ([#610](https://github.com/nsidc/earthaccess/issues/610))([@alexandervladsemenov](https://github.com/alexandervladsemenov), [@itcarroll](https://github.com/itcarroll))
 
-## [v0.14.0] - 2025-02-11
+## [0.14.0] - 2025-02-11
 
 ### Added
 
@@ -100,7 +106,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([**@mfisher87**](https://github.com/mfisher87), [@chuckwondo](https://github.com/chuckwondo),
   and [@jhkennedy](https://github.com/jhkennedy))
 
-## [v0.13.0] - 2025-01-28
+## [0.13.0] - 2025-01-28
 
 ### Added
 
@@ -119,7 +125,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#913](https://github.com/nsidc/earthaccess/issues/913))
   ([**@hailiangzhang**](https://github.com/hailiangzhang))
 
-## [v0.12.0] - 2024-11-13
+## [0.12.0] - 2024-11-13
 
 ### Changed
 
@@ -770,7 +776,8 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/nsidc/earthaccess/compare/v0.14.0...v0.15.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
 [0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
 [0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
