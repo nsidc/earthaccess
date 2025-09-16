@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.15.1] - 2025-09-16
+
 ## Fixed:
 
 - Obstore and VirtualiZarr should not be required([#1097](https://github.com/nsidc/earthaccess/issues/1097))([@betolink](https://github.com/betolink))
@@ -780,7 +782,8 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.1...HEAD
+[0.15.1]: https://github.com/nsidc/earthaccess/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/nsidc/earthaccess/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
 [0.13.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.13.0
