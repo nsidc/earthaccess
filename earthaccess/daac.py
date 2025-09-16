@@ -81,7 +81,7 @@ DAACS = [
         "name": "NASA's Socioeconomic Data and Applications Center",
         "homepage": "https://earthdata.nasa.gov/eosdis/daacs/sedac",
         "cloud-providers": [],
-        "on-prem-providers": ["SEDAC"],
+        "on-prem-providers": ["ESDIS"],
         "s3-credentials": "",
         "eulas": [],
     },
