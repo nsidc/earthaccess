@@ -59,7 +59,7 @@ kerchunk = [
   "dask",
   "h5py >=3.14.0",
   "h5netcdf",
-  "xarray",
+  "xarray <=2025.6",
   "zarr >=3.1.1",
 ]
 virtualizarr = [
@@ -72,7 +72,7 @@ virtualizarr = [
   "obstore >= 0.8.0",
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",
-  "xarray >=2025.04.0",
+  "xarray <=2025.6",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -114,7 +114,7 @@ docs = [
   "mkdocstrings[python] >=0.19.0",
   "pymdown-extensions >=9.2",
   "pygments >=2.11.1",
-  "xarray >=2023.01",
+  "xarray <=2025.6",
   "matplotlib >=3.3",
   "h5netcdf >=0.11",
   "pyproj >=3.5.0; python_version < '3.12'",
