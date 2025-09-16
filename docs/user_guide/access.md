@@ -97,7 +97,7 @@ ds = xarray.open_dataset(fileobjects[0])
 
 When using `earthaccess.open` to stream data from NASA Earthdata cloud, access times depend on the file format of the data you want to stream and how this data is read by the tools you are using (e.g. `xarray`, `pandas`, `pyarrow`).  The default access strategies and parameters for `earthaccess.open` have been chosen to give good performance for the broad range of datasets, file formats and structures archived by NASA.  However, for specific datasets, fine tuning access strategy and parameters may provide improved performance.  Fine tuning access is done by setting parameters in `fsspec_open_kwargs`.
 
-Here, we give a brief overview of the default parameters.  For more nformation see this [Gist](https://gist.github.com/betolink/94aef93ad09f80b09132b8a009561049).  Some of this gets technical.  If it is too technical, just go ahead and use the defaults.  Or ask a question in the `earthaccess GitHub [Issues](https://github.com/nsidc/earthaccess/issues). 
+Here, we give a brief overview of the default parameters.  For more nformation see this [Gist](https://gist.github.com/betolink/94aef93ad09f80b09132b8a009561049).  Some of this gets technical.  If it is too technical, just go ahead and use the defaults.  Or ask a question in the `earthaccess GitHub [Issues](https://github.com/nsidc/earthaccess/issues).
 
 `earthaccess.open` uses [`fsspec`](https://filesystem-spec.readthedocs.io/en/latest/) to access data stored in NASA Earthdata cloud.  `fsspec` provides a standard interface to local, remote and embedded file systems and byte storage.  Essentially, it allows you (and Python tools) to treat remote file storage as virtual file system in the same way you would interact with your local file system.
 
