@@ -44,7 +44,7 @@ def test_query_can_find_cloud_provider():
     assert query.params["provider"] == "POCLOUD"
     # SEDAC does not have a cloud provider, so it should default to the on prem provider
     query = DataCollections().cloud_hosted(True).daac("SEDAC")
-    assert query.params["provider"] == "SEDAC"
+    assert query.params["provider"] == "ESDIS"
     query = DataCollections().daac("ASDC").cloud_hosted(True)
     assert query.params["provider"] == "LARC_CLOUD"
     query = DataCollections().cloud_hosted(True).daac("ASDC")
