@@ -51,11 +51,14 @@ plugins:
       redirect_maps:
         "CODE_OF_CONDUCT.md": "contributing/code-of-conduct.md"
   - mkdocs-jupyter:
-      execute: True
+      execute: true
       ignore:
         - "tutorials/dask.ipynb"
         - "**/.ipynb_checkpoints/*"
         - "user_guide/fsspec.ipynb"
+        - "tutorials/SSL.ipynb"
+        - "tutorials/dmrpp-virtualizarr.ipynb"
+        - "howto/edl.ipynb"
 
 nav:
   - "What is earthaccess?": "index.md"
