@@ -59,7 +59,7 @@ kerchunk = [
   "dask",
   "h5py >=3.14.0",
   "h5netcdf",
-  "xarray <=2025.6",
+  "xarray >=2025.04.0",
   "zarr >=3.1.1",
 ]
 virtualizarr = [
@@ -72,7 +72,7 @@ virtualizarr = [
   "obstore >= 0.8.0",
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",
-  "xarray <=2025.6",
+  "xarray",
 ]
 dev = [
   "bump-my-version >=0.10.0",
@@ -95,6 +95,8 @@ test = [
   "vcrpy >=7.0.0",
   "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
+  "dask[distributed]>=2025.7.0",
+  "xarray",
 ]
 docs = [
   "jupyterlab >=3",
@@ -114,7 +116,7 @@ docs = [
   "mkdocstrings[python] >=0.19.0",
   "pymdown-extensions >=9.2",
   "pygments >=2.11.1",
-  "xarray <=2025.6",
+  "xarray",
   "matplotlib >=3.3",
   "h5netcdf >=0.11",
   "pyproj >=3.5.0; python_version < '3.12'",
@@ -145,7 +147,7 @@ mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
 # TODO: incrementally work towards strict mode (currently too many errors)
 # strict = true
-pretty = true                        # Show additional context in error messages
+pretty = true # Show additional context in error messages
 enable_error_code = "redundant-self"
 
 [[tool.mypy.overrides]]
@@ -155,11 +157,12 @@ disallow_untyped_defs = false
 [[tool.mypy.overrides]]
 module = [
   "fsspec.*",
+  "h5netcdf.*",
   "dask.*",
   "kerchunk.*",
   "pqdm.*",
   "s3fs",
-  "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
+  "tinynetrc.*", # TODO: generate stubs for tinynetrc and remove this line
   "vcr.unittest", # TODO: generate stubs for vcr and remove this line
 ]
 ignore_missing_imports = true
