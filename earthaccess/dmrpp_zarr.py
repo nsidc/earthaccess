@@ -6,11 +6,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 from urllib.parse import urlparse
 
-from obstore.auth.earthdata import NasaEarthdataCredentialProvider
-from obstore.store import HTTPStore, S3Store
-from virtualizarr.parsers import DMRPPParser
-from virtualizarr.registry import ObjectStoreRegistry
-
 import earthaccess
 
 if TYPE_CHECKING:
@@ -101,8 +96,17 @@ def open_virtual_mfdataset(
             title:                      Daily MUR SST, Final product
         ```
     """
-    import virtualizarr as vz
-    import xarray as xr
+    try:
+        import virtualizarr as vz
+        import xarray as xr
+        from obstore.auth.earthdata import NasaEarthdataCredentialProvider
+        from obstore.store import HTTPStore, S3Store
+        from virtualizarr.parsers import DMRPPParser
+        from virtualizarr.registry import ObjectStoreRegistry
+    except ImportError as e:
+        raise ImportError(
+            "`earthaccess.open_virtual_dataset` requires `pip install earthaccess[virtualizarr]`"
+        ) from e
 
     if len(granules) == 0:
         raise ValueError("No granules provided. At least one granule is required.")

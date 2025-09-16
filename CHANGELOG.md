@@ -7,6 +7,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## Fixed:
+
+- Obstore and VirtualiZarr should not be required([#1097](https://github.com/nsidc/earthaccess/issues/1097))([@betolink](https://github.com/betolink))
+
 ## [v0.15.0] - 2025-09-16
 
 ### Changed
@@ -778,6 +782,9 @@ _Conception!_
 
 [Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.0...HEAD
 [0.15.0]: https://github.com/nsidc/earthaccess/compare/v0.14.0...v0.15.0
+[0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
+[0.13.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.13.0
+[0.12.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.12.0
 [0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
 [0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
 [0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
