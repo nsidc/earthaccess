@@ -95,6 +95,8 @@ test = [
   "vcrpy >=7.0.0",
   "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
+  "dask[distributed]>=2025.7.0",
+  "xarray",
 ]
 docs = [
   "jupyterlab >=3",
