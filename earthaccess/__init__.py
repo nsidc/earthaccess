@@ -13,6 +13,7 @@ from .api import (
     get_s3_credentials,
     get_s3_filesystem,
     get_s3fs_session,
+    granule_query,
     in_us_west_2,
     login,
     open,
@@ -20,7 +21,6 @@ from .api import (
     search_datasets,
     search_services,
     status,
-    in_us_west_2,
 )
 from .auth import Auth
 from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
