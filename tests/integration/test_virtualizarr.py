@@ -1,5 +1,4 @@
 import logging
-import os
 import unittest
 
 import earthaccess
@@ -8,10 +7,7 @@ import pytest
 logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
 
-assertions.assertTrue("EARTHDATA_USERNAME" in os.environ)
-assertions.assertTrue("EARTHDATA_PASSWORD" in os.environ)
 
-logger.info(f"Current username: {os.environ['EARTHDATA_USERNAME']}")
 logger.info(f"earthaccess version: {earthaccess.__version__}")
 
 
@@ -20,13 +16,14 @@ logger.info(f"earthaccess version: {earthaccess.__version__}")
     params=[
         ("MUR25-JPL-L4-GLOB-v04.2", 2),
         ("AVHRR_OI-NCEI-L4-GLOB-v2.1", 1),
+        ("TEMPO_NO2_L3", 2),
         ("M2T1NXSLV", 1),
     ],
 )
 def granules(request):
     short_name, count = request.param
     granules = earthaccess.search_data(
-        count=count, temporal=("2024"), short_name=short_name
+        count=count, temporal=("2025"), short_name=short_name
     )
     return granules
 
