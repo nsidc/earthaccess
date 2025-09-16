@@ -33,6 +33,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of `fsspec`. Updated Zarr to V3 xref #967.
   ([#1074](https://github.com/nsidc/earthaccess/issues/1074))
   ([@owenlittlejohns](https://github.com/owenlittlejohns))
+- Populate search and access user guides.
+  ([#1035](https://github.com/nsidc/earthaccess/pull/1035))
+  ([@andypbarrett](https://github.com/andypbarrett))
 
 ### Added
 
