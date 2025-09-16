@@ -51,7 +51,7 @@ def _is_interactive() -> bool:
     return hasattr(sys, "ps1")
 
 
-class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
+class EarthAccessFile:
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
@@ -59,9 +59,12 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
     ) -> None:
         """EarthAccessFile connects an Earthdata search result with an open file-like object.
 
-        No methods exist on the class, which passes all attribute and method calls
+        The class implements custom serialization, but otherwise passes all attribute and method calls
         directly to the file-like object given during initialization. An instance of
         this class can be treated like that file-like object itself.
+
+        Note that `type()` applied to an instance of this class is expected to disagree with
+        the `__class__` attribute on the instance.
 
         Parameters:
             f: a file-like object
@@ -70,12 +73,19 @@ class EarthAccessFile(fsspec.spec.AbstractBufferedFile):
         self.f = f
         self.granule = granule
 
-    def __getattr__(self, method: str) -> Any:
-        return getattr(self.f, method)
+    def __getattribute__(self, name: str) -> Any:
+        # use super().__getattribute__ to avoid infinite recursion
+        if (name in EarthAccessFile.__dict__) or (name in self.__dict__):
+            # accessing our attributes
+            return super().__getattribute__(name)
+        else:
+            # access proxied attributes
+            proxy = super().__getattribute__("f")
+            return getattr(proxy, name)
 
-    def __reduce__(self) -> Any:
+    def __reduce_ex__(self, protocol: Any) -> Any:
         return make_instance, (
-            type(self.f),
+            self.__class__,
             self.granule,
             earthaccess.__auth__,
             dumps(self.f),
@@ -153,7 +163,7 @@ def make_instance(
     ):
         # NOTE: This uses the first data_link listed in the granule. That's not
         #       guaranteed to be the right one.
-        return EarthAccessFile(earthaccess.open([granule])[0], granule)
+        return earthaccess.open([granule])[0]
     else:
         return EarthAccessFile(loads(data), granule)
 
