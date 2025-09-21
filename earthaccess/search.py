@@ -625,7 +625,7 @@ class DataGranules(GranuleQuery):
                 self.params["provider"] = provider
         return self
 
-    def granule_name(self, granule_name: str) -> Self:
+    def granule_name(self, granule_name: str | list[str]) -> Self:
         """Find granules matching either granule ur or producer granule id,
         queries using the readable_granule_name metadata field.
 
@@ -640,10 +640,10 @@ class DataGranules(GranuleQuery):
             self
 
         Raises:
-            TypeError: if `granule_name` is not of type `str`
+            TypeError: if `granule_name` is not of type `str` or `list[str]`.
         """
-        if not isinstance(granule_name, str):
-            raise TypeError("granule_name must be of type string")
+        if not isinstance(granule_name, (str, list)):
+            raise TypeError("granule_name must be of type string or list of strings")
 
         self.params["readable_granule_name"] = granule_name
         self.params["options[readable_granule_name][pattern]"] = True
