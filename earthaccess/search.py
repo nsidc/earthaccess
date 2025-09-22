@@ -5,6 +5,7 @@ from inspect import getmembers, ismethod
 import requests
 from typing_extensions import (
     Any,
+    Iterable,
     List,
     Optional,
     Self,
