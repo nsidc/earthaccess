@@ -649,7 +649,7 @@ class DataGranules(GranuleQuery):
             # Convert iterable to list of strings. Since str is also Iterable, make
             # sure we don't do this when granule_name is a string, otherwise
             # we would get a list of individual characters.
-            granule_name = list(str(name) for name in granule_name)
+            granule_name = [str(name) for name in granule_name]
 
         self.params["readable_granule_name"] = granule_name
         self.params["options[readable_granule_name][pattern]"] = True
