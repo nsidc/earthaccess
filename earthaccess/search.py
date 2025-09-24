@@ -644,7 +644,9 @@ class DataGranules(GranuleQuery):
             TypeError: if `granule_name` is not of type `str` or `Iterable[str]`.
         """
         if not isinstance(granule_name, Iterable):
-            raise TypeError("granule_name must be of type string or Iterable of strings")
+            raise TypeError(
+                "granule_name must be of type string or Iterable of strings"
+            )
         if not isinstance(granule_name, str):
             # Convert iterable to list of strings. Since str is also Iterable, make
             # sure we don't do this when granule_name is a string, otherwise
