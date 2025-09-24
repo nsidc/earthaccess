@@ -14,6 +14,7 @@ from .api import (
     get_s3_filesystem,
     get_s3fs_session,
     granule_query,
+    in_us_west_2,
     login,
     open,
     search_data,
