@@ -2,7 +2,7 @@
 
 - Status: Ready for Review  <!-- optional -->
 - Deciders: @jhkennedy, @chuckwondo, @mfisher87, @Sherwin-14, @asteiker, @itcarroll, @danielfromearth
-- Date: 2025-07-08
+- Date: 2025-07-08; modified 2025-09-30
 <!-- - Tags: [space and/or comma separated list of tags] optional -->
 
 Technical Story: [#929 Move or fork to independent organization](https://github.com/nsidc/earthaccess/issues/929)
@@ -29,49 +29,46 @@ In order to strengthen the community engagement of earthaccess and lower partici
 
 ### Historical Context
 
-A presentation by several earthaccess maintainers to NASA ESDIS on 2/11/2025 provided additional context and benefits of "repotting" the earthaccess repository, in order to learn more about their stance on moving and how this might impact future funding opportunities. This presentation highlighted other key benefits of repotting the repository, including: 
+A presentation by several earthaccess maintainers to NASA ESDIS on 11 February 2025 provided additional context and benefits of "repotting" the earthaccess repository, in order to learn more about their stance on moving and how this might impact future funding opportunities. This presentation highlighted other key benefits of repotting the repository, including: 
 
-* Accelerating development via broader participation
-* Lower the cost:value even further for NASA ESDIS by enabling rapid innovation and improved security through rapid bug fixes
-* Promote NASA’s partnerships with other community members based on shared goals, by actively recognizing the critical contributions of those members and increasing transparency and trust.
-* Meet NASA Open Source Science goals
+* Accelerating development via broader participation.
+* Lowering the cost:value even further for NASA ESDIS by enabling rapid innovation and improved security through rapid bug fixes.
+* Promoting NASA’s partnerships with other community members based on shared goals, by actively recognizing the critical contributions of those members and increasing transparency and trust.
+* Meeting NASA Open Source Science goals.
 
-An outcome of this meeting was to pursue a cross-DAAC proposal for sustained ESDIS funding, retaining the existing community ownership model while enhancing and amplifying the communication of feature development across the earthaccess community and ESDIS. While inter-community support reduces ESDIS/NASA required support, we acknowledge that increased ESDIS funding will also help us sustain the library. Although a draft was developed, ESDIS asked for this effort to be paused in summer 2025. Regardless of the approach we choose, we will continue acknowledging ESDIS support through our ESDIS-funded contributors and the facilitation role of NASA Openscapes. 
-
-While earthaccess is listed by ESDIS as an approved Enterprise Solution, earthaccess is not part of ESDIS convergence...
-
+Subsequent discussion included positive feedback from ESDIS on the value of earthaccess, and the desire to not disrupt the existing community development and engagement. An outcome of this meeting was to pursue a cross-DAAC proposal for sustained ESDIS funding, retaining the existing community ownership model while enhancing the communication of feature development across the earthaccess community and ESDIS. While inter-community support reduces ESDIS/NASA required support, we acknowledged in the proposal that increased ESDIS funding will also help us sustain the library. Although a proposal draft was developed, ESDIS asked for this effort to be paused in summer 2025. earthaccess is currently listed by ESDIS as an approved, operational Enterprise Solution, and was considered out of scope in broader tool and service convergence activities across other enterprise components. Regardless of the repository migration approach we choose, we will continue acknowledging ESDIS support through our ESDIS-funded contributors and the valuable facilitation role of NASA Openscapes. 
 
 ### Migration effort tasks
 
-Options 2 and 3 below would involve the movement of the existing earthaccess repository into another GitHub organization.
+Options 2 and 3 below would involve the movement of the existing earthaccess repository into another GitHub organization. 
 
-Transferring a GitHub repository to another organization involves several impacts and considerations:
-1. Repository URL and Local Clones:
-The repository's URL will change to reflect the new organization.
-GitHub provides redirects from the old URL, but it is recommended to update local clones to point to the new URL using git remote set-url origin NEW-URL to avoid potential issues and confusion.
-2. Permissions and Access:
-Permissions and access settings will need to be reconfigured within the new organization.
-Team members who previously had access may need to be granted access to the repository within the new organization's structure.
+This transfer would be transparent to the earthaccess community in the following ways:
+
+1. Repository URL (https://github.com/nsidc/earthaccess):
+   * While the repository's URL will change to reflect the new organization, GitHub provides redirects from the old URL. Users who bookmark the old URL should not be negatively impacted.
+2. Readthedocs URL (https://earthaccess.readthedocs.io/en/stable/):
+   * This URL will not change even if the repository is migrated to a new GitHub organization.
+3. Issues, Pull Requests, and Discussions:
+   * All existing issues, pull requests, and other project details (e.g., commit history, branches) will be transferred with the repository and remain intact.
+4. Forks:
+   * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "If the transferred repository has any forks, then those forks will remain associated with the repository after the transfer is complete."
+   * In the above documentation, there is also mention of "Single repositories forked from a private upstream network cannot be transferred." but this may not apply to us(?).
+5. PyPI and conda-forge releases:
+   * earthaccess publication to both PyPI and conda-forge package managers should continue as expected without any breaking changes.
+
+This transfer would lead to the following administrative changes:
+  
+1. Local Clones:
+   * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "All links to the previous repository location are automatically redirected to the new location. When you use git clone, git fetch, or git push on a transferred repository, these commands will redirect to the new repository location or URL. However, to avoid confusion, we strongly recommend updating any existing local clones to point to the new repository URL. You can do this by using git remote on the command line: `git remote set-url origin NEW_URL`
+   * We may want to consider if/how to provide guidance to our community on this recommended update, though we expect this update would cause minimal disruption.
+3. Permissions and Access to the new organization:
+   * earthaccess maintainers would need to consider updating/reconfiguring permissions and access settings for team members within the new organization.
+   * We may need to consider updates to our existing contributor documentation to reflect any applicable changes to our access processes.
 3. Integrations and Third-Party Tools:
-Any integrations or third-party tools connected to the repository (e.g., CI/CD pipelines, project management tools) may be affected.
-These tools will likely need to be updated or reconfigured to work with the repository's new location and potentially different access tokens or settings.
-4. Issues, Pull Requests, and Project Details:
-All existing issues, pull requests, and other project details (e.g., commit history, branches) will be transferred with the repository and remain intact.
-However, if you are using classic GitHub Projects tied to the repository, they will not transfer and references to issues/PRs within them may break. New GitHub Projects (beta) issues will remain but may need manual re-association. 
-5. GitHub Pages:
-Links to the Git repository on the web and through Git activity will be redirected if the repository contains a GitHub Pages site.
-However, the GitHub Pages site itself is not automatically redirected and may need manual adjustment or recreation in the new organization's context.
-6. Forks:
-If the repository was forked from a private upstream network, it cannot be transferred.
-If the target organization already has a fork of the repository, the transfer cannot proceed.
-7. Packages:
-Packages associated with the repository may or may not transfer or retain their link, depending on the registry they belong to. Permissions for GitHub Packages should be reviewed. 
-8. Notifications:
-Users who previously interacted with the repository will receive a notification that the repository has been moved.
+   * This may not apply to earthaccess, but we ought to consider whether any existing integrations in the NSIDC GitHub organization apply and would need to be re-connected to the migrated repository. 
+4. GitHub Project configuration
+   * Classic GitHub Projects tied to the repository will not transfer and references to issues/PRs within them may break. We need to identify whether we are utilizing classic vs new (beta) projects. For the latter option, project configuration may remain but may need manual re-association. 
 
-What are the things that don't need to be migrated
-
-Issues, PRs, etc.
 
 ## Considered Options
 
@@ -86,6 +83,7 @@ Cons:
 ### Option 2: Move to an independent org, e.g. `earthaccess-dev`.
 
 Pros:
+* Overall benefits described above
 * Full / flexible community governance
 * Custom branding?
 
@@ -97,11 +95,13 @@ Cons:
 ### Option 3: Move to a sponsor / incubator org, e.g. `pangeo`, `openscapes`.
 
 Pros:
+* Overall benefits described above
 * Built-in open source credibility and visibility
 * Leverage existing communities, increased contributor base?
 * Leverage existing software infrastructure?,
 * Leverage existing governance models?
 * Potential funding opportunities?
+
 Cons:
 * Migration effort
 * Less control over organizationl decisions/policies/memership?
@@ -111,7 +111,7 @@ Cons:
 
 ## Decision Outcome
 
-?
+TBD
 
 
 
