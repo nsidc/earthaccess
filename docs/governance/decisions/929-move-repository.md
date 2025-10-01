@@ -104,7 +104,7 @@ Pros:
 
 Cons:
 * Migration effort
-* Less control over organizationl decisions/policies/memership?
+* Less control over organizational decisions/policies/membership?
 * May need to align with existing organization's priorities and processes
 
 
