@@ -29,18 +29,18 @@ In order to strengthen the community engagement of earthaccess and lower partici
 
 ### Historical Context
 
-A presentation by several earthaccess maintainers to NASA ESDIS on 11 February 2025 provided additional context and benefits of "repotting" the earthaccess repository, in order to learn more about their stance on moving and how this might impact future funding opportunities. This presentation highlighted other key benefits of repotting the repository, including: 
+A presentation by several earthaccess maintainers to NASA ESDIS on 11 February 2025 provided additional context and benefits of "repotting" the earthaccess repository, in order to learn more about their stance on moving and how this might impact future funding opportunities. This presentation highlighted other key benefits of repotting the repository, including:
 
 * Accelerating development via broader participation.
 * Lowering the cost:value even further for NASA ESDIS by enabling rapid innovation and improved security through rapid bug fixes.
 * Promoting NASA’s partnerships with other community members based on shared goals, by actively recognizing the critical contributions of those members and increasing transparency and trust.
 * Meeting NASA Open Source Science goals.
 
-Subsequent discussion included positive feedback from ESDIS on the value of earthaccess, and the desire to not disrupt the existing community development and engagement. An outcome of this meeting was to pursue a cross-DAAC proposal for sustained ESDIS funding, retaining the existing community ownership model while enhancing the communication of feature development across the earthaccess community and ESDIS. While inter-community support reduces ESDIS/NASA required support, we acknowledged in the proposal that increased ESDIS funding will also help us sustain the library. Although a proposal draft was developed, ESDIS asked for this effort to be paused in summer 2025. earthaccess is currently listed by ESDIS as an approved, operational Enterprise Solution, and was considered out of scope in broader tool and service convergence activities across other enterprise components. Regardless of the repository migration approach we choose, we will continue acknowledging ESDIS support through our ESDIS-funded contributors and the valuable facilitation role of NASA Openscapes. 
+Subsequent discussion included positive feedback from ESDIS on the value of earthaccess, and the desire to not disrupt the existing community development and engagement. An outcome of this meeting was to pursue a cross-DAAC proposal for sustained ESDIS funding, retaining the existing community ownership model while enhancing the communication of feature development across the earthaccess community and ESDIS. While inter-community support reduces ESDIS/NASA required support, we acknowledged in the proposal that increased ESDIS funding will also help us sustain the library. Although a proposal draft was developed, ESDIS asked for this effort to be paused in summer 2025. earthaccess is currently listed by ESDIS as an approved, operational Enterprise Solution, and was considered out of scope in broader tool and service convergence activities across other enterprise components. Regardless of the repository migration approach we choose, we will continue acknowledging ESDIS support through our ESDIS-funded contributors and the valuable facilitation role of NASA Openscapes.
 
 ### Migration effort tasks
 
-Options 2 and 3 below would involve the movement of the existing earthaccess repository into another GitHub organization. 
+Options 2 and 3 below would involve the movement of the existing earthaccess repository into another GitHub organization.
 
 This transfer would be transparent to the earthaccess community in the following ways:
 
@@ -57,7 +57,7 @@ This transfer would be transparent to the earthaccess community in the following
    * earthaccess publication to both PyPI and conda-forge package managers should continue as expected without any breaking changes.
 
 This transfer would lead to the following administrative changes:
-  
+
 1. Local Clones:
    * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "All links to the previous repository location are automatically redirected to the new location. When you use git clone, git fetch, or git push on a transferred repository, these commands will redirect to the new repository location or URL. However, to avoid confusion, we strongly recommend updating any existing local clones to point to the new repository URL. You can do this by using git remote on the command line: `git remote set-url origin NEW_URL`
    * We may want to consider if/how to provide guidance to our community on this recommended update, though we expect this update would cause minimal disruption.
@@ -65,9 +65,9 @@ This transfer would lead to the following administrative changes:
    * earthaccess maintainers would need to consider updating/reconfiguring permissions and access settings for team members within the new organization.
    * We may need to consider updates to our existing contributor documentation to reflect any applicable changes to our access processes.
 3. Integrations and Third-Party Tools:
-   * This may not apply to earthaccess, but we ought to consider whether any existing integrations in the NSIDC GitHub organization apply and would need to be re-connected to the migrated repository. 
+   * This may not apply to earthaccess, but we ought to consider whether any existing integrations in the NSIDC GitHub organization apply and would need to be re-connected to the migrated repository.
 4. GitHub Project configuration
-   * Classic GitHub Projects tied to the repository will not transfer and references to issues/PRs within them may break. We need to identify whether we are utilizing classic vs new (beta) projects. For the latter option, project configuration may remain but may need manual re-association. 
+   * Classic GitHub Projects tied to the repository will not transfer and references to issues/PRs within them may break. We need to identify whether we are utilizing classic vs new (beta) projects. For the latter option, project configuration may remain but may need manual re-association.
 
 
 ## Considered Options
@@ -112,6 +112,3 @@ Cons:
 ## Decision Outcome
 
 TBD
-
-
-
