@@ -991,6 +991,25 @@ class DataGranules(GranuleQuery):
         self.options['line'] = {'or': True}
         return self
 
+    def multicircle(self, multi_circles: Sequence[Tuple[FloatLike,FloatLike,FloatLike]]) -> Self:
+        """Filter by granules that overlap any circle from an input list.
+
+        Parameters:
+            multi_circles: list of tuples of (lon, lat, radius)
+
+        Returns:
+            self
+        """
+        circles = []
+
+        for circle in multi_circles:
+            self.circle(*circle)
+            circles.append(self.params.pop('circle'))
+
+        self.params['circle'] = circles
+        self.options['circle'] = {'or': True}
+        return self
+
     @override
     def downloadable(self, downloadable: bool = True) -> Self:
         """Only match granules that are available for download. The inverse of this

@@ -372,3 +372,29 @@ def test_search_data_by_short_name_with_multiline():
     )
     # Note: multiline uses OR logic, so should generally return >= single line results
     assert len(results) >= len(single_line_results)
+
+
+@pytest.mark.skipif(SKIP_THIS, reason="calls python-cmr, set SKIP_THIS=False to run")
+def test_search_data_by_short_name_with_multicircle():
+    """Tests searching for granules with multiple circles."""
+    # Define two circles
+    circle1 = (-105.61708725711999, 36.38510879364757, 1000.0)  # Taos, NM
+    circle2 = (-110.0, 35.0, 1500.0)  # Another area
+    
+    multicircle_coords = [circle1, circle2]
+    
+    results = earthaccess.search_data(
+        short_name="ATL03",
+        multicircle=multicircle_coords,
+        count=expected_count,
+    )
+    assert len(results) > 0
+    
+    # Verify that multicircle returns more results than single circle
+    single_circle_results = earthaccess.search_data(
+        short_name="ATL03",
+        circle=circle1,
+        count=expected_count,
+    )
+    # Note: multicircle uses OR logic, so should generally return >= single circle results
+    assert len(results) >= len(single_circle_results)
