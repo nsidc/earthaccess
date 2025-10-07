@@ -260,3 +260,115 @@ def test_search_data_by_short_name_with_line():
         count=expected_count,
     )
     assert len(results) > 0
+
+
+@pytest.mark.skipif(SKIP_THIS, reason="calls python-cmr, set SKIP_THIS=False to run")
+def test_search_data_by_short_name_with_multipoint():
+    """Tests searching for granules with multiple points."""
+    # Test with 2 points
+    multipoint_coords = [
+        (-105.61708725711999, 36.38510879364757),  # Taos, NM
+        (-112.73, 42.5),  # Idaho/Utah area
+    ]
+    results = earthaccess.search_data(
+        short_name="MOD10A1",
+        multipoint=multipoint_coords,
+        count=expected_count,
+    )
+    assert len(results) > 0
+    
+    # Verify that multipoint returns more results than single point
+    single_point_results = earthaccess.search_data(
+        short_name="MOD10A1",
+        point=multipoint_coords[0],
+        count=expected_count,
+    )
+    # Note: multipoint uses OR logic, so should generally return >= single point results
+    assert len(results) >= len(single_point_results)
+
+
+@pytest.mark.skipif(SKIP_THIS, reason="calls python-cmr, set SKIP_THIS=False to run")
+def test_search_data_by_short_name_with_multipolygon():
+    """Tests searching for granules with multiple polygons."""
+    # Second polygon near Greenland
+    polygon2 = [
+        (-45.0, 70.0),
+        (-45.0, 68.0),
+        (-40.0, 68.0),
+        (-40.0, 70.0),
+        (-45.0, 70.0),
+    ]
+    
+    multipolygon_coords = [polygon, polygon2]
+    
+    results = earthaccess.search_data(
+        short_name="ATL06",
+        multipolygon=multipolygon_coords,
+        count=expected_count,
+    )
+    assert len(results) > 0
+    
+    # Verify that multipolygon returns more results than single polygon
+    single_polygon_results = earthaccess.search_data(
+        short_name="ATL06",
+        polygon=polygon,
+        count=expected_count,
+    )
+    # Note: multipolygon uses OR logic, so should generally return >= single polygon results
+    assert len(results) >= len(single_polygon_results)
+
+
+@pytest.mark.skipif(SKIP_THIS, reason="calls python-cmr, set SKIP_THIS=False to run")
+def test_search_data_by_short_name_with_multi_bounding_box():
+    """Tests searching for granules with multiple bounding boxes."""
+    # Greenland area bounding boxes
+    bbox1 = (-46.5, 61.0, -42.5, 63.0)  # Original bbox from existing test
+    bbox2 = (-50.0, 65.0, -45.0, 68.0)  # Another Greenland area
+    
+    multi_bboxes = [bbox1, bbox2]
+    
+    results = earthaccess.search_data(
+        short_name="ATL06",
+        multi_bounding_box=multi_bboxes,
+        count=expected_count,
+    )
+    assert len(results) > 0
+    
+    # Verify that multi_bounding_box returns more results than single bbox
+    single_bbox_results = earthaccess.search_data(
+        short_name="ATL06",
+        bounding_box=bbox1,
+        count=expected_count,
+    )
+    # Note: multi_bounding_box uses OR logic, so should generally return >= single bbox results
+    assert len(results) >= len(single_bbox_results)
+
+
+@pytest.mark.skipif(SKIP_THIS, reason="calls python-cmr, set SKIP_THIS=False to run")
+def test_search_data_by_short_name_with_multiline():
+    """Tests searching for granules with multiple lines."""
+    # Second line in a different area
+    line2 = [
+        (-120.0, 40.0),
+        (-119.0, 41.0),
+        (-118.0, 42.0),
+        (-117.0, 43.0),
+    ]
+    
+    multiline_coords = [line, line2]
+    
+    results = earthaccess.search_data(
+        short_name="ATL08",
+        multiline=multiline_coords,
+        count=expected_count,
+    )
+    assert len(results) > 0
+    
+    # Verify that multiline returns more results than single line
+    single_line_results = earthaccess.search_data(
+        short_name="ATL08",
+        line=line,
+        count=expected_count,
+    )
+    # Note: multiline uses OR logic, so should generally return >= single line results
+    assert len(results) >= len(single_line_results)
