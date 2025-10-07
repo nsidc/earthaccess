@@ -394,6 +394,63 @@ results = earthaccess.search_data(
     )
 ```
 
+### Multi feature support
+
+`earthaccess` supports multi-feature searches for various spatial types, including polygons, points, lines, and more. To query multiple features of the same type, use the prefix multi followed by the feature type, such as:
+
+- `multi_bounding_box`
+- `multipolygon`
+- `multipoint`
+- `multicircle`
+- `multiline`
+
+When using `earthaccess.search_data`, the query will return granules that intersect any of the specified features. For example, to search using multiple polygons, you can structure your code as follows:
+
+```python
+polygons = [
+    # same polygon used in the single query
+    [
+        (-49.64860422604741, 69.23553485026147),
+        (-49.667876114626296, 69.07309059285959),
+        (-49.1722491331669, 69.03175841820749),
+        (-47.53552489113113, 69.03872918462292),
+        (-47.35616491854395, 69.22149993224824),
+        (-48.1447695277283, 69.33507802083219),
+        (-49.178671242118384, 69.29455117736225),
+        (-49.64860422604741, 69.23553485026147),
+    ],    
+    # a second polygon over the Eyjafjallajökull volcano in Iceland
+    [
+        (-19.61490317965708, 63.63370144220765), 
+        (-19.61490317965708, 63.61370144220765),
+        (-19.59490317965708, 63.61370144220765),
+        (-19.59490317965708, 63.63370144220765),
+        (-19.61490317965708, 63.63370144220765),
+    ]
+]
+
+results = earthaccess.search_data(
+    short_name="ATL06",
+    multipolygon=polygons,
+    )
+```
+
+Similarly, to query multiple points, you can use:
+
+```python
+lon_lat_pairs = [
+    (-105.25303896425012, 40.01259873086735),
+    (-96.123457744456789, 19.98765455634521)
+]
+
+results = earthaccess.search_data(
+    short_name="ATL06",
+    multipoint=lon_lat_pairs,
+    )
+``` 
+
+This method enables efficient querying of granules that intersect with any of the specified spatial features without the need for multiple API calls.
+
 ## Search for services
 
 NASA Earthdata provides services that you can use to transform data before you download it.  Transformations include converting data files to a different file format, subsetting data by spatial extent, time range or variable, reprojecting or transforming data to a different coordinate reference system (CRS) from the one it is stored in.  Not all datasets have services and not all transformation services are available for a given dataset.
