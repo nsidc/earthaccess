@@ -1211,7 +1211,7 @@ requires-dist = [
     { name = "responses", marker = "extra == 'test'", specifier = ">=0.14" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6.3" },
     { name = "s3fs", specifier = ">=2025.2" },
-    { name = "tenacity", specifier = ">=9.0" },
+    { name = "tenacity", specifier = ">=8.0" },
     { name = "tinynetrc", specifier = ">=1.3.1" },
     { name = "types-requests", marker = "extra == 'test'", specifier = ">=0.1" },
     { name = "types-setuptools", marker = "extra == 'test'", specifier = ">=0.1" },
