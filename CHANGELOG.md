@@ -13,6 +13,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - Obstore and VirtualiZarr should not be required([#1097](https://github.com/nsidc/earthaccess/issues/1097))([@betolink](https://github.com/betolink))
 
+## Added:
+
+- Multi-feature search support (multi_bounding_box, multipolygon, multipoint, multicircle, multiline) from a single API call following the [CMR](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#g-polygon) standards.
+
 ## [v0.15.0] - 2025-09-16
 
 ### Changed
