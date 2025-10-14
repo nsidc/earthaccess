@@ -114,21 +114,21 @@ class DataCollection(CustomDict):
         Returns:
             A collection's DOI information.
         """
-        return self["umm"].get("DOI","")
+        return self["umm"].get("DOI","").get("DOI", "")
 
-    def citation(self, doi:str, format:str, language:str) -> str:
+    def citation(self, format:str, language:str) -> str:
         """Placeholder.
 
         Parameters:
-            doi: The DOI string (e.g., 'doi:10.16904/envidat.lwf.34').
             format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
             language: Language code (e.g., 'en-US').
 
         Returns:
              The formatted citation as a string.
         """
-        url = f"https://citation.doi.org/format?doi={doi}&style={format}&lang={language}"
-        return requests.get(url).text
+        if not self.doi():
+           raise ValueError("The collection is missing a DOI, citation generation is not supported.")
+        return requests.get(f"https://citation.doi.org/format?doi={self.doi()}&style={format}&lang={language}").text
 
     def concept_id(self) -> str:
         """Placeholder.
