@@ -1,5 +1,6 @@
 import json
 import uuid
+import requests
 from typing import Any, Dict, List, Optional, Union
 
 import earthaccess
@@ -106,6 +107,28 @@ class DataCollection(CustomDict):
             The value of a given field inside the UMM (Unified Metadata Model).
         """
         return self["umm"].get(umm_field, "")
+
+    def doi(self) -> Union[Dict[str, str], str]:
+        """Placeholder.
+
+        Returns:
+            A collection's DOI information.
+        """
+        return self["umm"].get("DOI","")
+
+    def citation(self, doi:str, format:str, language:str) -> str:
+        """Placeholder.
+
+        Parameters:
+            doi: The DOI string (e.g., 'doi:10.16904/envidat.lwf.34').
+            format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
+            language: Language code (e.g., 'en-US').
+
+        Returns:
+             The formatted citation as a string.
+        """
+        url = f"https://citation.doi.org/format?doi={doi}&style={format}&lang={language}"
+        return requests.get(url).text
 
     def concept_id(self) -> str:
         """Placeholder.
