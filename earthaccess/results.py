@@ -1,7 +1,8 @@
 import json
 import uuid
-import requests
 from typing import Any, Dict, List, Optional, Union
+
+import requests
 
 import earthaccess
 
@@ -108,15 +109,15 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get(umm_field, "")
 
-    def doi(self) -> Union[Dict[str, str], str]:
+    def get_doi(self) -> str:
         """Placeholder.
 
         Returns:
             A collection's DOI information.
         """
-        return self["umm"].get("DOI","").get("DOI", "")
+        return self["umm"].get("DOI", "").get("DOI", "")
 
-    def citation(self, format:str, language:str) -> str:
+    def get_citation(self, format: str, language: str) -> str:
         """Placeholder.
 
         Parameters:
@@ -126,9 +127,13 @@ class DataCollection(CustomDict):
         Returns:
              The formatted citation as a string.
         """
-        if not self.doi():
-           raise ValueError("The collection is missing a DOI, citation generation is not supported.")
-        return requests.get(f"https://citation.doi.org/format?doi={self.doi()}&style={format}&lang={language}").text
+        if not self.get_doi():
+            raise ValueError(
+                "The collection is missing a DOI, citation generation is not supported."
+            )
+        return requests.get(
+            f"https://citation.doi.org/format?doi={self.get_doi()}&style={format}&lang={language}"
+        ).text
 
     def concept_id(self) -> str:
         """Placeholder.
