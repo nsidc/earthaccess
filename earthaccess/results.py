@@ -131,9 +131,11 @@ class DataCollection(CustomDict):
             raise ValueError(
                 "The collection is missing a DOI, citation generation is not supported."
             )
-        return requests.get(
+        response = requests.get(
             f"https://citation.doi.org/format?doi={self.get_doi()}&style={format}&lang={language}"
-        ).text
+        )
+        response.raise_for_status()  # Raise exception for HTTP errors
+        return response.text
 
     def concept_id(self) -> str:
         """Placeholder.
