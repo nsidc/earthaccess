@@ -110,7 +110,7 @@ class DataCollection(CustomDict):
         return self["umm"].get(umm_field, "")
 
     def get_doi(self) -> str:
-        """Placeholder.
+        """Retrieve the Digital Object Identifier (DOI) for this collection.
 
         Returns:
             A collection's DOI information.
@@ -118,11 +118,13 @@ class DataCollection(CustomDict):
         return self["umm"].get("DOI", "").get("DOI", "")
 
     def get_citation(self, format: str, language: str) -> str:
-        """Placeholder.
+        """Generate a formatted citation for this collection using its DOI.
 
         Parameters:
             format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
+                 For a full list of valid formats, visit https://citation.doi.org/
             language: Language code (e.g., 'en-US').
+                 For a full list of valid langauge codes, visit https://citation.doi.org/
 
         Returns:
              The formatted citation as a string.
