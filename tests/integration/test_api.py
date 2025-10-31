@@ -234,12 +234,15 @@ def test_download_deferred_failure(tmp_path: Path):
     assert all(isinstance(e, IOError) and str(e) == "Download failed" for e in errors)
 
 
-def test_auth_environ():
+def test_auth_environ(monkeypatch: pytest.MonkeyPatch):
+    user, password = "admin", "secret"
+    monkeypatch.setenv("EARTHDATA_USERNAME", user)
+    monkeypatch.setenv("EARTHDATA_PASSWORD", password)
     earthaccess.login(strategy="environment")
     environ = earthaccess.auth_environ()
     assert environ == {
-        "EARTHDATA_USERNAME": os.environ["EARTHDATA_USERNAME"],
-        "EARTHDATA_PASSWORD": os.environ["EARTHDATA_PASSWORD"],
+        "EARTHDATA_USERNAME": user,
+        "EARTHDATA_PASSWORD": password,
     }
 
 

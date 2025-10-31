@@ -76,10 +76,9 @@ class TestCreateAuth(unittest.TestCase):
         self.assertEqual(auth.token, json_response)
 
     @responses.activate
+    @mock.patch.dict(os.environ, {"EARTHDATA_TOKEN": "ABCDEFGHIJKLMNOPQ"})
     def test_auth_can_parse_existing_user_token(self):
-        user_token = "ABCDEFGHIJKLMNOPQ"
-        os.environ["EARTHDATA_TOKEN"] = user_token
-        json_response = {"access_token": user_token}
+        json_response = {"access_token": os.environ["EARTHDATA_TOKEN"]}
 
         # Test
         auth = Auth()
