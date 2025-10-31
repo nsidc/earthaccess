@@ -235,7 +235,7 @@ def test_download_deferred_failure(tmp_path: Path):
 
 
 def test_auth_environ(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.delenv("EARTHDATA_TOKEN")
+    monkeypatch.delenv("EARTHDATA_TOKEN", raising=False)
     earthaccess.login(strategy="environment")
     environ = earthaccess.auth_environ()
     assert environ == {
