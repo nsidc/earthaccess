@@ -115,7 +115,10 @@ class DataCollection(CustomDict):
         Returns:
             A collection's DOI information.
         """
-        return self["umm"].get("DOI", "").get("DOI", "")
+        doi = self["umm"].get("DOI", {})
+        if isinstance(doi, dict):
+            return doi.get("DOI", "")
+        return ""
 
     def get_citation(self, format: str, language: str) -> str:
         """Generate a formatted citation for this collection using its DOI.
@@ -124,7 +127,7 @@ class DataCollection(CustomDict):
             format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
                  For a full list of valid formats, visit https://citation.doi.org/
             language: Language code (e.g., 'en-US').
-                 For a full list of valid langauge codes, visit https://citation.doi.org/
+                 For a full list of valid language codes, visit https://citation.doi.org/
 
         Returns:
              The formatted citation as a string.
