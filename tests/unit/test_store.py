@@ -17,9 +17,15 @@ from pqdm.threads import pqdm
 
 class TestStoreSessions(unittest.TestCase):
     @responses.activate
+    @patch.dict(
+        os.environ,
+        {
+            "EARTHDATA_USERNAME": "user",
+            "EARTHDATA_PASSWORD": "password",
+        },
+        clear=True,
+    )
     def setUp(self):
-        os.environ["EARTHDATA_USERNAME"] = "user"
-        os.environ["EARTHDATA_PASSWORD"] = "password"
         json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
         responses.add(
             responses.POST,

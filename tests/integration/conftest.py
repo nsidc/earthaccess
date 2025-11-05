@@ -19,7 +19,7 @@ def mock_missing_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(earthaccess, "__auth__", auth)
 
 
-@pytest.fixture
+@pytest.fixture  # pyright: ignore[reportCallIssue]
 def mock_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     netrc = tmp_path / ".netrc"
     monkeypatch.setenv("NETRC", str(netrc))
