@@ -22,7 +22,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   "all" is specified ([#945](https://github.com/nsidc/earthaccess/issues/945))
   (@chuckwondo)
 
-## [v0.15.1] - 2025-09-16
+## [0.15.1] - 2025-09-16
 
 ### Fixed
 
@@ -30,7 +30,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#1097](https://github.com/nsidc/earthaccess/issues/1097))
   ([@betolink](https://github.com/betolink))
 
-## [v0.15.0] - 2025-09-16
+## [0.15.0] - 2025-09-16
 
 ### Changed
 
@@ -802,27 +802,29 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.1...HEAD
-[0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
-[0.13.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.13.0
-[0.12.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.12.0
-[0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
-[0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
-[0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
-[0.8.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.2
-[0.8.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.1
-[0.8.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.0
-[0.7.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.1
-[0.7.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.0
-[0.6.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.6.0
-[0.5.3]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.3
-[0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
-[0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
-[0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.0
-[0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
-[0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
-[0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1
-[0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
-[0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
-[0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
 [0.1.0-beta.1]: https://github.com/betolink/earthaccess/releases/tag/v0.1.0-beta.1
+[0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
+[0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
+[0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
+[0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1
+[0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
+[0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
+[0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.0
+[0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
+[0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
+[0.5.3]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.3
+[0.6.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.6.0
+[0.7.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.0
+[0.7.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.1
+[0.8.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.0
+[0.8.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.1
+[0.8.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.2
+[0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
+[0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
+[0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
+[0.12.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.12.0
+[0.13.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.13.0
+[0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
+[0.15.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.15.0
+[0.15.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.15.1
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.1...HEAD
