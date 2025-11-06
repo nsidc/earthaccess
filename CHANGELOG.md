@@ -13,11 +13,22 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#203](https://github.com/nsidc/earthaccess/issues/203))
   (@Sherwin-14, @chuckwondo)
 
+### Fixed
+
+- Ignore environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`
+  when `EARTHDATA_TOKEN` is set
+  ([#1121](https://github.com/nsidc/earthaccess/issues/1121)) (@chuckwondo)
+- Use only specified login strategy to attempt login, when strategy other than
+  "all" is specified ([#945](https://github.com/nsidc/earthaccess/issues/945))
+  (@chuckwondo)
+
 ## [v0.15.1] - 2025-09-16
 
 ### Fixed
 
-- Obstore and VirtualiZarr should not be required([#1097](https://github.com/nsidc/earthaccess/issues/1097))([@betolink](https://github.com/betolink))
+- Obstore and VirtualiZarr should not be required
+  ([#1097](https://github.com/nsidc/earthaccess/issues/1097))
+  ([@betolink](https://github.com/betolink))
 
 ## [v0.15.0] - 2025-09-16
 
@@ -27,12 +38,14 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#1027](https://github.com/nsidc/earthaccess/issues/1027))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Change default cache behavior in fsspec from `readahead` to `blockcache`.
-  Allow user defined config with `open_kwargs` in the `.open()` method.
-  This improves performance by an order of magnitude.
-  ([#251](https://github.com/nsidc/earthaccess/discussions/251))([#771](https://github.com/nsidc/earthaccess/discussions/771))
+  Allow user defined config with `open_kwargs` in the `.open()` method.  This
+  improves performance by an order of magnitude.
+  ([#251](https://github.com/nsidc/earthaccess/discussions/251))
+  ([#771](https://github.com/nsidc/earthaccess/discussions/771))
   ([@betolink](https://github.com/betolink))
-- Add `show_progress` argument to `earthaccess.download()` to let the user control display of progress bars. Defaults to true for interactive sessions, otherwise false.
-  ([#612](https://github.com/nsidc/earthaccess/issues/612))
+- Add `show_progress` argument to `earthaccess.download()` to let the user
+  control display of progress bars.  Defaults to true for interactive sessions,
+  otherwise false.  ([#612](https://github.com/nsidc/earthaccess/issues/612))
   ([#1065](https://github.com/nsidc/earthaccess/pull/1065))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Updated bug and triage label names in bug Issue template.
@@ -44,7 +57,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `GESDISC` should be `GES_DISC` in docstrings.
   ([#1037](https://github.com/nsidc/earthaccess/issues/1037))
   ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
-- `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of `fsspec`. Updated Zarr to V3 xref #967.
+- `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of
+  `fsspec`.  Updated Zarr to V3 xref #967.
   ([#1074](https://github.com/nsidc/earthaccess/issues/1074))
   ([@owenlittlejohns](https://github.com/owenlittlejohns))
 - Populate search and access user guides.
@@ -789,8 +803,6 @@ _Conception!_
 - Basic object formatting.
 
 [Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.1...HEAD
-[0.15.1]: https://github.com/nsidc/earthaccess/compare/v0.15.0...v0.15.1
-[0.15.0]: https://github.com/nsidc/earthaccess/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
 [0.13.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.13.0
 [0.12.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.12.0
