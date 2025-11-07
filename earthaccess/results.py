@@ -109,18 +109,18 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get(umm_field, "")
 
-    def get_doi(self) -> str:
+    def get_doi(self) -> Optional[str]:
         """Retrieve the Digital Object Identifier (DOI) for this collection.
 
         Returns:
-            A collection's DOI information.
+            A collection's DOI information or None.
         """
         doi = self["umm"].get("DOI", {})
         if isinstance(doi, dict):
-            return doi.get("DOI", "")
-        return ""
+            return doi.get("DOI", None)
+        return None
 
-    def get_citation(self, format: str, language: str) -> str:
+    def get_citation(self, format: str, language: str) -> Optional[str]:
         """Generate a formatted citation for this collection using its DOI.
 
         Parameters:
@@ -130,16 +130,15 @@ class DataCollection(CustomDict):
                  For a full list of valid language codes, visit https://citation.doi.org/
 
         Returns:
-             The formatted citation as a string.
+             The formatted citation as a string or None.
         """
         if not self.get_doi():
-            raise ValueError(
-                "The collection is missing a DOI, citation generation is not supported."
-            )
+            return None
+
         response = requests.get(
             f"https://citation.doi.org/format?doi={self.get_doi()}&style={format}&lang={language}"
         )
-        response.raise_for_status()  # Raise exception for HTTP errors
+        response.raise_for_status()
         return response.text
 
     def concept_id(self) -> str:

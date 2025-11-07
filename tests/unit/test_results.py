@@ -4,7 +4,6 @@ import logging
 import os.path
 
 import earthaccess
-import pytest
 import responses
 from earthaccess.results import DataCollection
 from earthaccess.search import DataCollections
@@ -240,13 +239,13 @@ def test_get_doi_returns_doi_when_present():
 def test_get_doi_returns_empty_string_when_doi_missing():
     collection = DataCollection({"umm": {"DOI": {}}, "meta": {}})
 
-    assert collection.get_doi() == ""
+    assert collection.get_doi() is None
 
 
 def test_get_doi_returns_empty_string_when_doi_key_missing():
     collection = DataCollection({"umm": {}, "meta": {}})
 
-    assert collection.get_doi() == ""
+    assert collection.get_doi() is None
 
 
 @responses.activate
@@ -294,15 +293,10 @@ def test_get_citation_different_language():
 def test_get_citation_raises_error_when_doi_missing():
     collection = DataCollection({"umm": {}, "meta": {}})
 
-    with pytest.raises(
-        ValueError,
-        match="The collection is missing a DOI, citation generation is not supported.",
-    ):
-        collection.get_citation(format="apa", language="en-US")
+    assert collection.get_citation(format="apa", language="en-US") is None
 
 
 def test_get_citation_raises_error_when_doi_empty():
     collection = DataCollection({"umm": {"DOI": {"DOI": ""}}, "meta": {}})
 
-    with pytest.raises(ValueError):
-        collection.get_citation(format="apa", language="en-US")
+    assert collection.get_citation(format="apa", language="en-US") is None
