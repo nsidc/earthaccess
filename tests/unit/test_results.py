@@ -233,19 +233,19 @@ def test_get_doi_returns_doi_when_present():
         {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
     )
 
-    assert collection.get_doi() == "doi:10.16904/envidat.lwf.34"
+    assert collection.doi() == "doi:10.16904/envidat.lwf.34"
 
 
 def test_get_doi_returns_empty_string_when_doi_missing():
     collection = DataCollection({"umm": {"DOI": {}}, "meta": {}})
 
-    assert collection.get_doi() is None
+    assert collection.doi() is None
 
 
 def test_get_doi_returns_empty_string_when_doi_key_missing():
     collection = DataCollection({"umm": {}, "meta": {}})
 
-    assert collection.get_doi() is None
+    assert collection.doi() is None
 
 
 @responses.activate
@@ -261,7 +261,7 @@ def test_get_citation_apa_format():
         status=200,
     )
 
-    citation = collection.get_citation(format="apa", language="en-US")
+    citation = collection.citation(format="apa", language="en-US")
 
     assert (
         citation
@@ -282,7 +282,7 @@ def test_get_citation_different_language():
         status=200,
     )
 
-    citation = collection.get_citation(format="apa", language="fr-FR")
+    citation = collection.citation(format="apa", language="fr-FR")
 
     assert (
         citation
@@ -290,13 +290,13 @@ def test_get_citation_different_language():
     )
 
 
-def test_get_citation_raises_error_when_doi_missing():
+def test_get_citation_returns_none_when_doi_missing():
     collection = DataCollection({"umm": {}, "meta": {}})
 
-    assert collection.get_citation(format="apa", language="en-US") is None
+    assert collection.citation(format="apa", language="en-US") is None
 
 
-def test_get_citation_raises_error_when_doi_empty():
+def test_get_citation_returns_none_when_doi_empty():
     collection = DataCollection({"umm": {"DOI": {"DOI": ""}}, "meta": {}})
 
-    assert collection.get_citation(format="apa", language="en-US") is None
+    assert collection.citation(format="apa", language="en-US") is None

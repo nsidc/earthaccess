@@ -109,34 +109,37 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get(umm_field, "")
 
-    def get_doi(self) -> Optional[str]:
+    def doi(self) -> str | None:
         """Retrieve the Digital Object Identifier (DOI) for this collection.
 
         Returns:
-            A collection's DOI information or None.
+            This collection's DOI information, or `None`, if it has none.
         """
         doi = self["umm"].get("DOI", {})
         if isinstance(doi, dict):
             return doi.get("DOI", None)
         return None
 
-    def get_citation(self, format: str, language: str) -> Optional[str]:
+    def citation(self, *, format: str, language: str) -> str | None:
         """Generate a formatted citation for this collection using its DOI.
 
         Parameters:
             format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
-                 For a full list of valid formats, visit https://citation.doi.org/
+                 For a full list of valid formats, visit <https://citation.doi.org/>
             language: Language code (e.g., 'en-US').
-                 For a full list of valid language codes, visit https://citation.doi.org/
+                 For a full list of valid language codes, visit <https://citation.doi.org/>
 
         Returns:
-             The formatted citation as a string or None.
+             The formatted citation as a string, or `None`, if this collection does not have a DOI.
+
+        Raises:
+             requests.RequestException: if fetching citation information from citations.doi.org failed.
         """
-        if not self.get_doi():
+        if not self.doi():
             return None
 
         response = requests.get(
-            f"https://citation.doi.org/format?doi={self.get_doi()}&style={format}&lang={language}"
+            f"https://citation.doi.org/format?doi={self.doi()}&style={format}&lang={language}"
         )
         response.raise_for_status()
         return response.text
