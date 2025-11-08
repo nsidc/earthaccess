@@ -1,5 +1,6 @@
 import json
 import uuid
+from functools import cache
 from typing import Any, Dict, List, Optional, Union
 
 import requests
@@ -8,6 +9,31 @@ import earthaccess
 
 from .formatters import _repr_granule_html
 from .services import DataServices
+
+
+@cache
+def _citation(*, doi: str, format: str, language: str) -> str:
+    """Generate a formatted citation for a collection using its DOI.
+
+    Parameters:
+        doi: The DOI of the collection.
+        format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
+             For a full list of valid formats, visit <https://citation.doi.org/>
+        language: Language code (e.g., 'en-US').
+             For a full list of valid language codes, visit <https://citation.doi.org/>
+
+    Returns:
+         The formatted citation as a string.
+
+    Raises:
+         requests.RequestException: if fetching citation information from citations.doi.org failed.
+    """
+    response = requests.get(
+        "https://citation.doi.org/format",
+        params={"doi": doi, "style": format, "lang": language},
+    )
+    response.raise_for_status()
+    return response.text
 
 
 class CustomDict(dict):
@@ -135,14 +161,11 @@ class DataCollection(CustomDict):
         Raises:
              requests.RequestException: if fetching citation information from citations.doi.org failed.
         """
-        if not self.doi():
-            return None
-
-        response = requests.get(
-            f"https://citation.doi.org/format?doi={self.doi()}&style={format}&lang={language}"
+        return (
+            None
+            if not (doi := self.doi())
+            else _citation(doi=doi, format=format, language=language)
         )
-        response.raise_for_status()
-        return response.text
 
     def concept_id(self) -> str:
         """Placeholder.
