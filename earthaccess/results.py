@@ -13,21 +13,6 @@ from .services import DataServices
 
 @cache
 def _citation(*, doi: str, format: str, language: str) -> str:
-    """Generate a formatted citation for a collection using its DOI.
-
-    Parameters:
-        doi: The DOI of the collection.
-        format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
-             For a full list of valid formats, visit <https://citation.doi.org/>
-        language: Language code (e.g., 'en-US').
-             For a full list of valid language codes, visit <https://citation.doi.org/>
-
-    Returns:
-         The formatted citation as a string.
-
-    Raises:
-         requests.RequestException: if fetching citation information from citations.doi.org failed.
-    """
     response = requests.get(
         "https://citation.doi.org/format",
         params={"doi": doi, "style": format, "lang": language},
@@ -147,7 +132,7 @@ class DataCollection(CustomDict):
         return None
 
     def citation(self, *, format: str, language: str) -> str | None:
-        """Generate a formatted citation for this collection using its DOI.
+        """Fetch a formatted citation for this collection using its DOI.
 
         Parameters:
             format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
