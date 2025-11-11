@@ -24,6 +24,7 @@ from .api import (
 from .auth import Auth
 from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
 from .kerchunk import consolidate_metadata
+from .icechunk import _open_icechunk_from_url
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
@@ -59,6 +60,7 @@ __all__ = [
     "Auth",
     # store.py
     "Store",
+    "open_icechunk_from_url"
     # kerchunk
     "consolidate_metadata",
     # virtualizarr
