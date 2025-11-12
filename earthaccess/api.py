@@ -325,6 +325,7 @@ def login(
     `"netrc"`, `"interactive"`.  In this case, only when all strategies fail
     does login fail.
 
+<<<<<<< Updated upstream
     Parameters:
         strategy: One of the following:
             * `"all"`: (default) try each of the following methods, in order,
@@ -341,6 +342,25 @@ def login(
         persist: if `True`, persist credentials to a `.netrc` file (default:
             `False`)
         system: the Earthdata system to access (default: `earthaccess.PROD`)
+||||||| Stash base
+            * **"all"**: (default) try all methods until one works
+            * **"interactive"**: enter username and password.
+            * **"netrc"**: retrieve username and password from ~/.netrc.
+            * **"environment"**: retrieve either a username and password pair from
+              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
+              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
+        persist: will persist credentials in a .netrc file
+        system: the Earthdata system to access, defaults to PROD
+=======
+            * **"all"**: try all methods until one works
+            * **"interactive"**: enter username and password.
+            * **"netrc"**: retrieve username and password from ~/.netrc.
+            * **"environment"**: retrieve either a username and password pair from
+              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
+              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
+        persist: will persist credentials in a .netrc file
+        system: the Earthdata system to access
+>>>>>>> Stashed changes
 
     Returns:
         An instance of Auth.
