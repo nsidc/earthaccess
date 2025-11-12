@@ -217,7 +217,7 @@ class Auth(object):
                     return auth_resp.json()
                 except requests.exceptions.JSONDecodeError:
                     logger.error(
-                        "Response code {}: {}", auth_resp.status_code, auth_resp.text
+                        "Response code %d: %s", auth_resp.status_code, auth_resp.text
                     )
                     raise
             else:
