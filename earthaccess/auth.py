@@ -193,7 +193,7 @@ class Auth(object):
                 auth_resp = session.get(
                     cumulus_resp.url, allow_redirects=True, timeout=15
                 )
-                if not (auth_resp.ok):  # type: ignore
+                if not auth_resp:
                     # Let's try to authenticate with Bearer tokens
                     _session = self.get_session()
                     cumulus_resp = _session.get(
@@ -202,17 +202,24 @@ class Auth(object):
                     auth_resp = _session.get(
                         cumulus_resp.url, allow_redirects=True, timeout=15
                     )
-                    if not (auth_resp.ok):
+                    if not auth_resp:
                         logger.error(
-                            f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
+                            f"Authentication with Earthdata Login failed with: {auth_resp.text[:1000]}"
                         )
                         logger.error(
                             f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
                         )
-                        return {}
+                        auth_resp.raise_for_status()
 
                     return auth_resp.json()
-                return auth_resp.json()
+
+                try:
+                    return auth_resp.json()
+                except requests.exceptions.JSONDecodeError:
+                    logger.error(
+                        "Response code {}: {}", auth_resp.status_code, auth_resp.text
+                    )
+                    raise
             else:
                 # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
                 # does not have cloud collections yet
