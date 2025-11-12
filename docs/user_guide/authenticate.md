@@ -76,12 +76,15 @@ You will then be prompted for your Earthdata Login username and password.  A `.n
     In a `CMD` session, create a `%HOME%` environment variable.  The following line
     creates `%HOME%` from the path in `%USERPROFILE%`, which looks something like
     `C:\Users\"username"`.
+
     ```
-setx HOME %USERPROFILE%
+    setx HOME %USERPROFILE%
     ```
+
     You now need to create a `_netrc` file in `%HOME%`.
+
     ```
-echo "machine urs.earthdata.nasa.gov login <username> password <password>" >> %HOME%\_netrc
+    echo "machine urs.earthdata.nasa.gov login <username> password <password>" >> %HOME%\_netrc
     ```
 
 ## Login using environment variables
@@ -90,32 +93,41 @@ Alternatively, Earthdata Login credentials can be created as environment variabl
 
 === "MacOS"
     If you want to set the environment variables for the current shell session, type the following on the command line.
+
     ```
-export EARTHDATA_USERNAME="username"
+    export EARTHDATA_USERNAME="username"
     export EARTHDATA_PASSWORD="password"
     ```
+
     If you want to set these environmental variables permanently, add these two lines to the appropriate configuration files for your operating system.
 
 === "Linux"
     If you want to set the environment variables for the current shell session, type the following on the command line.
+
     ```
-export EARTHDATA_USERNAME="username"
+    export EARTHDATA_USERNAME="username"
     export EARTHDATA_PASSWORD="password"
     ```
+
     If you use `bash` and would like to set these environmental variables permanently, add these two lines to your `~/.profile` file:
+
     ```
-EARTHDATA_USERNAME="username"
+    EARTHDATA_USERNAME="username"
     EARTHDATA_PASSWORD="password"
     ```
+
     For other shells, use the recommended method to persistently set these environment variables for whichever shell you use.
 
 === "Windows"
     To set the environment variables for the current `CMD` session, type the following:
+
     ```
-setx EARTHDATA_USERNAME "username"
+    setx EARTHDATA_USERNAME "username"
     setx EARTHDATA_PASSWORD "password"
     ```
-    To set these environmental variables permanently
+
+    To set these environmental variables permanently:
+
     1. Open the start menu.
     2. Search for the "Advanced System Settings" control panel and click on it.
     3. Click on the "Environment Variables" button toward the bottom of the screen.
@@ -133,14 +145,13 @@ by setting the `system` argument at login, as follows:
 import earthaccess
 
 earthaccess.login(system=earthaccess.UAT)
-
 ```
 
 ## Using `earthaccess` to get S3 credentials
 
 `earthaccess.login` is a very convenient way to manage and provide Earthdata Login credentials.  `earthaccess.login` can also be used to obtain S3 credentials to access NASA Earthdata Cloud.  If you use `earthaccess` to access data in the cloud, you do not have to use this option, `earthaccess` handles this.  However, if you are using other packages, such as `h5coro`, `earthaccess` can save a lot of time.
 
-```
+```python
 import earthaccess
 import xarray as xr
 import h5coro
