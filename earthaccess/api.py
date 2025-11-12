@@ -320,15 +320,14 @@ def login(
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
     Attempt to login via _only_ the specified strategy, unless the `"all"`
-    strategy is used (default), in which case each of the individual strategies
-    is attempted in the following order, until one succeeds: `"environment"`,
+    strategy is used, in which case each of the individual strategies is
+    attempted in the following order, until one succeeds: `"environment"`,
     `"netrc"`, `"interactive"`.  In this case, only when all strategies fail
     does login fail.
 
-<<<<<<< Updated upstream
     Parameters:
         strategy: One of the following:
-            * `"all"`: (default) try each of the following methods, in order,
+            * `"all"`: try each of the following methods, in order,
               until one succeeds.
             * `"environment"`: retrieve either an Earthdata login token from the
               `EARTHDATA_TOKEN` environment variable, or a username and password
@@ -339,19 +338,8 @@ def login(
               environment variable.
             * `"interactive"`: enter username and password via interactive
               prompts.
-        persist: if `True`, persist credentials to a `.netrc` file (default:
-            `False`)
-        system: the Earthdata system to access (default: `earthaccess.PROD`)
-||||||| Stash base
-            * **"all"**: (default) try all methods until one works
-            * **"interactive"**: enter username and password.
-            * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve either a username and password pair from
-              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
-              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
-        persist: will persist credentials in a .netrc file
-        system: the Earthdata system to access, defaults to PROD
-=======
+        persist: if `True`, persist credentials to a `.netrc` file
+        system: the Earthdata system to access
             * **"all"**: try all methods until one works
             * **"interactive"**: enter username and password.
             * **"netrc"**: retrieve username and password from ~/.netrc.
@@ -360,7 +348,6 @@ def login(
               or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
         persist: will persist credentials in a .netrc file
         system: the Earthdata system to access
->>>>>>> Stashed changes
 
     Returns:
         An instance of Auth.
