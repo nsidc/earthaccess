@@ -7,9 +7,15 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- Added methods `doi` and `citation` to `DataCollection` class.
+  ([#203](https://github.com/nsidc/earthaccess/issues/203))
+  (@Sherwin-14, @chuckwondo)
+
 ## [v0.15.1] - 2025-09-16
 
-## Fixed:
+### Fixed
 
 - Obstore and VirtualiZarr should not be required([#1097](https://github.com/nsidc/earthaccess/issues/1097))([@betolink](https://github.com/betolink))
 
