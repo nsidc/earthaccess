@@ -327,8 +327,8 @@ def login(
 
     Parameters:
         strategy: One of the following:
-            * `"all"`: try each of the following methods, in order,
-              until one succeeds.
+            * `"all"`: try each of the following methods, in order, until one
+              succeeds.
             * `"environment"`: retrieve either an Earthdata login token from the
               `EARTHDATA_TOKEN` environment variable, or a username and password
               pair from the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`
@@ -339,14 +339,6 @@ def login(
             * `"interactive"`: enter username and password via interactive
               prompts.
         persist: if `True`, persist credentials to a `.netrc` file
-        system: the Earthdata system to access
-            * **"all"**: try all methods until one works
-            * **"interactive"**: enter username and password.
-            * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve either a username and password pair from
-              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
-              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
-        persist: will persist credentials in a .netrc file
         system: the Earthdata system to access
 
     Returns:
