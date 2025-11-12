@@ -326,7 +326,9 @@ def login(
     does login fail.
 
     Parameters:
-        strategy: One of the following:
+        strategy:
+            An authentication method.
+
             * `"all"`: try each of the following methods, in order, until one
               succeeds.
             * `"environment"`: retrieve either an Earthdata login token from the
