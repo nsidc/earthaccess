@@ -13,6 +13,24 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#203](https://github.com/nsidc/earthaccess/issues/203))
   (@Sherwin-14, @chuckwondo)
 
+### Removed
+
+- **Breaking:** Remove _default automatic login_ behavior.  This removes
+  previously undocumented behavior, where a user would be logged in
+  automatically (i.e., without having to call `earthdata.login` explicitly) if
+  the user had valid EDL credentials specified either via environment variables
+  or a `netrc` file.  This led to potentially unexpected behavior.
+
+  Removing this automatic behavior breaks existing user code that does not make
+  an explicit call to `earthdata.login` before streaming/downloading data, but
+  used to succeed due to the (perhaps unknown) automatic login behavior.
+
+  Users must now _explicitly_ call `earthdata.login` in order to access data
+  that requires EDL authentication.
+
+  Removing this automatic behavior was necessary to fix
+  [#945](https://github.com/nsidc/earthaccess/issues/945).
+
 ### Fixed
 
 - Ignore environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`
