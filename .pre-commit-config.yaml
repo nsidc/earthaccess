@@ -13,11 +13,11 @@ repos:
         exclude: ".*/vcr_cassettes/.*\\.yaml"
       - id: check-toml
       - id: check-json
+      # Check for common mistakes
       - id: check-added-large-files
-        # Check for common mistakes
       - id: check-case-conflict
+      # - id: check-illegal-windows-names # TODO: Enable in next release
       - id: check-merge-conflict
-        # - id: check-illegal-windows-names # TODO: Enable in next release
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
