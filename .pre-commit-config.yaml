@@ -55,6 +55,7 @@ repos:
     rev: v0.20.0
     hooks:
       - id: yamlfmt
+        entry: python scripts/yamlfmt.py
         types_or: [yaml]
         exclude: ".*/vcr_cassettes/.*\\.yaml"
 
