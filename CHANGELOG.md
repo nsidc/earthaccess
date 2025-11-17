@@ -39,6 +39,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Use only specified login strategy to attempt login, when strategy other than
   "all" is specified ([#945](https://github.com/nsidc/earthaccess/issues/945))
   (@chuckwondo)
+- Fix undesirable pre-commit changes when running on Windows
+  ([#1143](https://github.com/nsidc/earthaccess/issues/1143)) (@ana-sher)
 
 ## [0.15.1] - 2025-09-16
 
