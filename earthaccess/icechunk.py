@@ -28,7 +28,7 @@ def _get_daac_provider_from_url(url: str) -> str:
 
 
 class S3IcechunkCredentials:
-    def __init__(self, daac: Optional[str], provider: Optional[str]):
+    def __init__(self, daac: str | None, provider: str | None):
         if daac is None and provider is None:
             raise ValueError("daac and provider cannot both be None")
         self.daac = daac
