@@ -319,18 +319,29 @@ def login(
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
+    Attempt to login via _only_ the specified strategy, unless the `"all"`
+    strategy is used, in which case each of the individual strategies is
+    attempted in the following order, until one succeeds: `"environment"`,
+    `"netrc"`, `"interactive"`.  In this case, only when all strategies fail
+    does login fail.
+
     Parameters:
         strategy:
             An authentication method.
 
-            * **"all"**: (default) try all methods until one works
-            * **"interactive"**: enter username and password.
-            * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve either a username and password pair from
-              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
-              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
-        persist: will persist credentials in a .netrc file
-        system: the Earthdata system to access, defaults to PROD
+            * `"all"`: try each of the following methods, in order, until one
+              succeeds.
+            * `"environment"`: retrieve either an Earthdata login token from the
+              `EARTHDATA_TOKEN` environment variable, or a username and password
+              pair from the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`
+              environment variables (specifying a token takes precedence).
+            * `"netrc"`: retrieve username and password from `~/.netrc` (or
+              `~/_netrc` on Windows), or from the file specified by the `NETRC`
+              environment variable.
+            * `"interactive"`: enter username and password via interactive
+              prompts.
+        persist: if `True`, persist credentials to a `.netrc` file
+        system: the Earthdata system to access
 
     Returns:
         An instance of Auth.

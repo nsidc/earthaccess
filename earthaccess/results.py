@@ -1,11 +1,24 @@
 import json
 import uuid
+from functools import cache
 from typing import Any, Dict, List, Optional, Union
+
+import requests
 
 import earthaccess
 
 from .formatters import _repr_granule_html
 from .services import DataServices
+
+
+@cache
+def _citation(*, doi: str, format: str, language: str) -> str:
+    response = requests.get(
+        "https://citation.doi.org/format",
+        params={"doi": doi, "style": format, "lang": language},
+    )
+    response.raise_for_status()
+    return response.text
 
 
 class CustomDict(dict):
@@ -106,6 +119,38 @@ class DataCollection(CustomDict):
             The value of a given field inside the UMM (Unified Metadata Model).
         """
         return self["umm"].get(umm_field, "")
+
+    def doi(self) -> str | None:
+        """Retrieve the Digital Object Identifier (DOI) for this collection.
+
+        Returns:
+            This collection's DOI information, or `None`, if it has none.
+        """
+        doi = self["umm"].get("DOI", {})
+        if isinstance(doi, dict):
+            return doi.get("DOI", None)
+        return None
+
+    def citation(self, *, format: str, language: str) -> str | None:
+        """Fetch a formatted citation for this collection using its DOI.
+
+        Parameters:
+            format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
+                 For a full list of valid formats, visit <https://citation.doi.org/>
+            language: Language code (e.g., 'en-US').
+                 For a full list of valid language codes, visit <https://citation.doi.org/>
+
+        Returns:
+             The formatted citation as a string, or `None`, if this collection does not have a DOI.
+
+        Raises:
+             requests.RequestException: if fetching citation information from citations.doi.org failed.
+        """
+        return (
+            None
+            if not (doi := self.doi())
+            else _citation(doi=doi, format=format, language=language)
+        )
 
     def concept_id(self) -> str:
         """Placeholder.
