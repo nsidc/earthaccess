@@ -93,7 +93,7 @@ def _normalize_location(location: Optional[str]) -> Optional[str]:
 
 
 def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
-    """Search datasets using NASA's CMR.
+    """Search datasets (collections) using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
 
@@ -102,16 +102,46 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
         kwargs (Dict):
             arguments to CMR:
 
-            * **keyword**: case-insensitive and supports wildcards ? and *
-            * **short_name**: e.g. ATL08
-            * **doi**: DOI for a dataset
-            * **daac**: e.g. NSIDC or PODAAC
-            * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
-            * **has_granules**: if true, only return collections with granules
-            * **temporal**: a tuple representing temporal bounds in the form
-              `(date_from, date_to)`
-            * **bounding_box**: a tuple representing spatial bounds in the form
+            * **keyword**: (str) Filter collections by keywords.  Case-insensitive and
+              supports wildcards ? and *
+            * **short_name**: (str) Filter collections by product short name; e.g. ATL08
+            * **doi**: (str) Filter by DOI
+            * **daac**: (str) Filter by DAAC; e.g. NSIDC or PODAAC
+            * **data_center**: (str) An alias for `daac`
+            * **provider**: (str) Filter by data provider; each DAAC can have more than
+               one provider, e.g. POCLOUD, PODAAC, etc.
+            * **has_granules**: (bool) If true, only return collections with granules.  Default: True
+            * **temporal**: (tuple) A tuple representing temporal bounds in the form
+              `(date_from, date_to)`.  Dates can be `datetime` objects or ISO 8601
+              formatted strings.  Date strings can be full timestamps; e.g. YYYY-MM-DD HH:mm:ss
+              or truncated YYYY-MM-DD
+            * **bounding_box**: (tuple) Filter collection by those that intersect bounding box.
+              A tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
+            * **polygon**: (List[tuples]) Filter by polygon.  Polygon must be a list of
+              tuples containing longitude-latitude pairs representing polygon vertices.
+              Vertices must be in counter-clockwise order and the final vertex must be the
+              same as the first vertex; e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3),(lon4,lat4),(lon1,lat1)]
+            * **point**: (Tuple[float,float])  Filter by collections intersecting a point,
+              where the point is a longitude-latitude pair; e.g. (lon,lat)
+            * **line**: (List[tuples]) Filter collections that overlap a series of connected
+              points.  Points are represented as tuples containing longitude-latitude pairs;
+              e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3)]
+            * **circle**: (List[float, float, float]) Filter collections that intersect a
+              circle defined as a point with a radius.  Circle parameters are a list
+              containing latitude, longitude and radius in meters; e.g. [lon, lat, radius_m].
+              The circle center cannot be the north or south poles.  The radius mst be
+              between 10 and 6,000,000 m
+            * **cloud_hosted**: (bool) Return only collected hosted on Earthdata Cloud.  Default: True
+            * **downloadable**: (bool) If True, only return collections that can be downloaded
+              from an online archive
+            * **concept_id**: (str) Filter by Concept ID; e.g. C3151645377-NSIDC_CPRD
+            * **instrument**: (str) Filter by Instrument name; e.g. ATLAS
+            * **project**: (str) Filter by project or campaign name; e.g. ABOVE
+            * **fields**: (List[str]) Return only the UMM fields listed in this parameter
+            * **revision_date**: tuple(str,str) Filter by collections that have revision date
+              within the range
+            * **debug**: (bool) If True prints CMR request.  Default: True
 
     Returns:
         A list of DataCollection results that can be used to get information about a
@@ -127,6 +157,22 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
             cloud_hosted=True
         )
         ```
+
+        ```python
+        results = earthaccess.search_datasets(
+            daac="NSIDC",
+            bounding_box=(-73., 58., -10., 84.),
+        )
+        ```
+
+        ```python
+        results = earthaccess.search_datasets(
+            instrument="ATLAS",
+            bounding_box=(-73., 58., -10., 84.),
+            temporal=("2024-09-01", "2025-04-30"),
+        )
+        ```
+
     """
     if not validate.valid_dataset_parameters(**kwargs):
         logger.warning(
@@ -145,24 +191,64 @@ def search_datasets(count: int = -1, **kwargs: Any) -> List[DataCollection]:
 
 
 def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
-    """Search dataset granules using NASA's CMR.
+    """Search for dataset files (granules) using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
+
+    The CMR does not permit queries across all granules in all collections in order to provide fast search responses. Granule queries must target a subset of the collections in the CMR using a condition like provider, provider_id, concept_id, collection_concept_id, short_name, version or entry_title.
 
     Parameters:
         count: Number of records to get, -1 = all
         kwargs (Dict):
             arguments to CMR:
 
-            * **short_name**: dataset short name, e.g. ATL08
-            * **version**: dataset version
-            * **doi**: DOI for a dataset
-            * **daac**: e.g. NSIDC or PODAAC
-            * **provider**: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
-            * **temporal**: a tuple representing temporal bounds in the form
-              `(date_from, date_to)`
-            * **bounding_box**: a tuple representing spatial bounds in the form
+            * **short_name**: (str) Filter granules by product short name; e.g. ATL08
+            * **version**: (str) Filter by dataset version
+            * **daac**: (str) a provider code for any DAAC, e.g. NSIDC or PODAAC
+            * **data_center**; (str) An alias for daac
+            * **provider**: (str) Only match granules from a given provider.  A DAAC can
+              have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and NSIDC_CPRD.
+            * **cloud_hosted**: (bool) If True, only match granules hosted in Earthdata Cloud
+            * **downloadable**: (bool) If True, only match granules that are downloadable.
+              A granule is downloadable when it contains at least one RelatedURL of type
+              GETDATA.
+            * **online_only**: (bool) Alias of downloadable
+            * **orbit_number**; (float) Filter granule by the orbit number in which a
+              granule was acquired
+            * **granule_name**; (str) Filter by granule name.  Granule name can contain
+              wild cards, e.g `MODGRNLD.*.daily.*`.
+            * **instrument**; (str) Filter by instrument name, e.g. "ATLAS"
+            * **platform**; (str) Filter by platform, e.g. satellite or plane
+            * **cloud_cover**: (tuple) Filter by cloud cover.  Tuple is a range of
+              cloud covers, e.g. (0, 20).  Cloud cover values in metadata may be fractions
+              (i.e. (0.,0.2)) or percentages.  CMRS searches for cloud cover range based on
+              values in metadata. Note collections without cloud_cover in metadata will return
+              zero granules.
+            * **day_night_flag**: (str) Filter for day- and night-time images, accepts
+              'day', 'night', 'unspecified'.
+            * **temporal**: (tuple) A tuple representing temporal bounds in the form
+              `(date_from, date_to)`.  Dates can be `datetime` objects or ISO 8601
+              formatted strings.  Date strings can be full timestamps; e.g. YYYY-MM-DD HH:mm:ss
+              or truncated YYYY-MM-DD
+            * **bounding_box**: (tuple) Filter collection by those that intersect bounding box.
+              A tuple representing spatial bounds in the form
               `(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)`
+            * **polygon**: (list[tuples]) Filter by polygon.  Polygon must be a list of
+              tuples containing longitude-latitude pairs representing polygon vertices.
+              Vertices must be in counter-clockwise order and the final vertex must be the
+              same as the first vertex; e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3),
+              (lon4,lat4),(lon1,lat1)]
+            * **point**: (tuple(float,float))  Filter by collections intersecting a point,
+              where the point is a longitude-latitude pair; e.g. (lon,lat)
+            * **line**: (list[tuples]) Filter collections that overlap a series of connected
+              points.  Points are represented as tuples containing longitude-latitude pairs;
+              e.g. [(lon1,lat1),(lon2,lat2),(lon3,lat3)]
+            * **circle**: (tuple(float, float, float)) Filter collections that intersect a
+              circle defined as a point with a radius.  Circle parameters are a tuple
+              containing latitude, longitude and radius in meters; e.g. (lon, lat, radius_m).
+              The circle center cannot be the north or south poles.  The radius mst be
+              between 10 and 6,000,000 m
+
 
     Returns:
         a list of DataGranules that can be used to access the granule files by using
@@ -173,7 +259,14 @@ def search_data(count: int = -1, **kwargs: Any) -> List[DataGranule]:
 
     Examples:
         ```python
-        datasets = earthaccess.search_data(
+        granules = earthaccess.search_data(
+            short_name="ATL06",
+            bounding_box=(-46.5, 61.0, -42.5, 63.0),
+            )
+        ```
+
+        ```python
+        granules = earthaccess.search_data(
             doi="10.5067/SLREF-CDRV2",
             cloud_hosted=True,
             temporal=("2002-01-01", "2002-12-31")
@@ -226,18 +319,29 @@ def login(
 ) -> Auth:
     """Authenticate with Earthdata login (https://urs.earthdata.nasa.gov/).
 
+    Attempt to login via _only_ the specified strategy, unless the `"all"`
+    strategy is used, in which case each of the individual strategies is
+    attempted in the following order, until one succeeds: `"environment"`,
+    `"netrc"`, `"interactive"`.  In this case, only when all strategies fail
+    does login fail.
+
     Parameters:
         strategy:
             An authentication method.
 
-            * **"all"**: (default) try all methods until one works
-            * **"interactive"**: enter username and password.
-            * **"netrc"**: retrieve username and password from ~/.netrc.
-            * **"environment"**: retrieve either a username and password pair from
-              the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables,
-              or an Earthdata login token from the `EARTHDATA_TOKEN` environment variable.
-        persist: will persist credentials in a .netrc file
-        system: the Earthdata system to access, defaults to PROD
+            * `"all"`: try each of the following methods, in order, until one
+              succeeds.
+            * `"environment"`: retrieve either an Earthdata login token from the
+              `EARTHDATA_TOKEN` environment variable, or a username and password
+              pair from the `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`
+              environment variables (specifying a token takes precedence).
+            * `"netrc"`: retrieve username and password from `~/.netrc` (or
+              `~/_netrc` on Windows), or from the file specified by the `NETRC`
+              environment variable.
+            * `"interactive"`: enter username and password via interactive
+              prompts.
+        persist: if `True`, persist credentials to a `.netrc` file
+        system: the Earthdata system to access
 
     Returns:
         An instance of Auth.
@@ -283,6 +387,8 @@ def download(
     provider: Optional[str] = None,
     threads: int = 8,
     *,
+    show_progress: Optional[bool] = None,
+    credentials_endpoint: Optional[str] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
@@ -299,7 +405,11 @@ def download(
             month, and day of the current date, and `UUID` is the last 6 digits
             of a UUID4 value.
         provider: if we download a list of URLs, we need to specify the provider.
+        credentials_endpoint: S3 credentials endpoint to be used for obtaining temporary S3 credentials. This is only required if
+            the metadata doesn't include it, or we pass urls to the method instead of `DataGranule` instances.
         threads: parallel number of threads to use to download the files, adjust as necessary, default = 8
+        show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+            (i.e., in a notebook or a python REPL session), otherwise `False`.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
@@ -319,7 +429,13 @@ def download(
 
     try:
         return earthaccess.__store__.get(
-            granules, local_path, provider, threads, pqdm_kwargs=pqdm_kwargs
+            granules,
+            local_path,
+            provider,
+            threads,
+            credentials_endpoint=credentials_endpoint,
+            show_progress=show_progress,
+            pqdm_kwargs=pqdm_kwargs,
         )
     except AttributeError as err:
         logger.error(
@@ -333,7 +449,10 @@ def open(
     granules: Union[List[str], List[DataGranule]],
     provider: Optional[str] = None,
     *,
+    credentials_endpoint: Optional[str] = None,
+    show_progress: Optional[bool] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    open_kwargs: Optional[Dict[str, Any]] = None,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -342,9 +461,13 @@ def open(
         granules: a list of granule instances **or** list of URLs, e.g. `s3://some-granule`.
             If a list of URLs is passed, we need to specify the data provider.
         provider: e.g. POCLOUD, NSIDC_CPRD, etc.
+        show_progress: whether or not to display a progress bar. If not specified, defaults to `True` for interactive sessions
+            (i.e., in a notebook or a python REPL session), otherwise `False`.
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        open_kwargs: Additional keyword arguments to pass to `fsspec.open`, such as `cache_type` and `block_size`.
+            Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -352,7 +475,10 @@ def open(
     return earthaccess.__store__.open(
         granules=granules,
         provider=_normalize_location(provider),
+        credentials_endpoint=credentials_endpoint,
+        show_progress=show_progress,
         pqdm_kwargs=pqdm_kwargs,
+        open_kwargs=open_kwargs,
     )
 
 

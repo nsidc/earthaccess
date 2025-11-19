@@ -316,7 +316,7 @@ class Auth(object):
         if user_token is not None:
             self.token = {"access_token": user_token}
             self.authenticated = True
-        if username is not None and password is not None:
+        elif username is not None and password is not None:
             token_resp = self._find_or_create_token(username, password)
 
             if not (token_resp.ok):  # type: ignore

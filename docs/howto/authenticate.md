@@ -57,6 +57,7 @@ credentials in two locations:
    used throughout documentation primarily for convenience.  The only
    requirement is that the *contents* of the file adhere to the
    [`.netrc` file format](https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html).
+
 2. `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` environment variables (or, optionally, `EARTHDATA_TOKEN`
    to use an existing Earthdata Login token)
 

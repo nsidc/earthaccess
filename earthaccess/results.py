@@ -1,11 +1,24 @@
 import json
 import uuid
+from functools import cache
 from typing import Any, Dict, List, Optional, Union
+
+import requests
 
 import earthaccess
 
 from .formatters import _repr_granule_html
 from .services import DataServices
+
+
+@cache
+def _citation(*, doi: str, format: str, language: str) -> str:
+    response = requests.get(
+        "https://citation.doi.org/format",
+        params={"doi": doi, "style": format, "lang": language},
+    )
+    response.raise_for_status()
+    return response.text
 
 
 class CustomDict(dict):
@@ -105,9 +118,39 @@ class DataCollection(CustomDict):
         Returns:
             The value of a given field inside the UMM (Unified Metadata Model).
         """
-        if umm_field in self["umm"]:
-            return self["umm"][umm_field]
-        return ""
+        return self["umm"].get(umm_field, "")
+
+    def doi(self) -> str | None:
+        """Retrieve the Digital Object Identifier (DOI) for this collection.
+
+        Returns:
+            This collection's DOI information, or `None`, if it has none.
+        """
+        doi = self["umm"].get("DOI", {})
+        if isinstance(doi, dict):
+            return doi.get("DOI", None)
+        return None
+
+    def citation(self, *, format: str, language: str) -> str | None:
+        """Fetch a formatted citation for this collection using its DOI.
+
+        Parameters:
+            format: Citation format style (e.g., 'apa', 'bibtex', 'ris').
+                 For a full list of valid formats, visit <https://citation.doi.org/>
+            language: Language code (e.g., 'en-US').
+                 For a full list of valid language codes, visit <https://citation.doi.org/>
+
+        Returns:
+             The formatted citation as a string, or `None`, if this collection does not have a DOI.
+
+        Raises:
+             requests.RequestException: if fetching citation information from citations.doi.org failed.
+        """
+        return (
+            None
+            if not (doi := self.doi())
+            else _citation(doi=doi, format=format, language=language)
+        )
 
     def concept_id(self) -> str:
         """Placeholder.
@@ -123,13 +166,11 @@ class DataCollection(CustomDict):
         Returns:
             The collection data type, i.e. HDF5, CSV etc., if available.
         """
-        if "ArchiveAndDistributionInformation" in self["umm"]:
-            return str(
-                self["umm"]["ArchiveAndDistributionInformation"][
-                    "FileDistributionInformation"
-                ]
-            )
-        return ""
+        return str(
+            self["umm"]
+            .get("ArchiveAndDistributionInformation", {})
+            .get("FileDistributionInformation", "")
+        )
 
     def version(self) -> str:
         """Placeholder.
@@ -137,9 +178,7 @@ class DataCollection(CustomDict):
         Returns:
             The collection's version.
         """
-        if "Version" in self["umm"]:
-            return self["umm"]["Version"]
-        return ""
+        return self["umm"].get("Version", "")
 
     def abstract(self) -> str:
         """Placeholder.
@@ -147,9 +186,7 @@ class DataCollection(CustomDict):
         Returns:
             The abstract of a collection.
         """
-        if "Abstract" in self["umm"]:
-            return self["umm"]["Abstract"]
-        return ""
+        return self["umm"].get("Abstract", "")
 
     def landing_page(self) -> str:
         """Placeholder.
@@ -158,9 +195,7 @@ class DataCollection(CustomDict):
             The first landing page for the collection (can be many), if available.
         """
         links = self._filter_related_links("LANDING PAGE")
-        if len(links) > 0:
-            return links[0]
-        return ""
+        return links[0] if len(links) > 0 else ""
 
     def get_data(self) -> List[str]:
         """Placeholder.
@@ -168,8 +203,7 @@ class DataCollection(CustomDict):
         Returns:
             The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
-        links = self._filter_related_links("GET DATA")
-        return links
+        return self._filter_related_links("GET DATA")
 
     def s3_bucket(self) -> Dict[str, Any]:
         """Placeholder.
@@ -177,9 +211,7 @@ class DataCollection(CustomDict):
         Returns:
             The S3 bucket information if the collection has it (**cloud hosted collections only**).
         """
-        if "DirectDistributionInformation" in self["umm"]:
-            return self["umm"]["DirectDistributionInformation"]
-        return {}
+        return self["umm"].get("DirectDistributionInformation", {})
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """Return list of services available for this collection."""

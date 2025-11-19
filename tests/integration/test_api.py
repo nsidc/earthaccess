@@ -158,6 +158,12 @@ def test_dataset_search_returns_valid_results(kwargs):
     assert isinstance(results[0], dict)
 
 
+def test_dataset_search_summary_missing_file_dist_info():
+    results = earthaccess.search_datasets(short_name="AIRS_CPR_IND", daac="GES_DISC")
+    collection_with_no_FileDistributionInformation = results[0]
+    assert collection_with_no_FileDistributionInformation.summary()["file-type"] == ""
+
+
 @pytest.mark.parametrize("kwargs", granules_valid_params)
 def test_granules_search_returns_valid_results(kwargs):
     results = earthaccess.search_data(count=10, **kwargs)
@@ -228,7 +234,8 @@ def test_download_deferred_failure(tmp_path: Path):
     assert all(isinstance(e, IOError) and str(e) == "Download failed" for e in errors)
 
 
-def test_auth_environ():
+def test_auth_environ(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.delenv("EARTHDATA_TOKEN", raising=False)
     earthaccess.login(strategy="environment")
     environ = earthaccess.auth_environ()
     assert environ == {

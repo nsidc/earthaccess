@@ -7,10 +7,66 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- Added methods `doi` and `citation` to `DataCollection` class.
+  ([#203](https://github.com/nsidc/earthaccess/issues/203))
+  (@Sherwin-14, @chuckwondo)
+
+### Removed
+
+- **Breaking:** Remove _default automatic login_ behavior.  This removes
+  previously undocumented behavior, where a user would be logged in
+  automatically (i.e., without having to call `earthdata.login` explicitly) if
+  the user had valid EDL credentials specified either via environment variables
+  or a `netrc` file.  This led to potentially unexpected behavior.
+
+  Removing this automatic behavior breaks existing user code that does not make
+  an explicit call to `earthdata.login` before streaming/downloading data, but
+  used to succeed due to the (perhaps unknown) automatic login behavior.
+
+  Users must now _explicitly_ call `earthdata.login` in order to access data
+  that requires EDL authentication.
+
+  Removing this automatic behavior was necessary to fix
+  [#945](https://github.com/nsidc/earthaccess/issues/945).
+
+### Fixed
+
+- Ignore environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`
+  when `EARTHDATA_TOKEN` is set
+  ([#1121](https://github.com/nsidc/earthaccess/issues/1121)) (@chuckwondo)
+- Use only specified login strategy to attempt login, when strategy other than
+  "all" is specified ([#945](https://github.com/nsidc/earthaccess/issues/945))
+  (@chuckwondo)
+- Fix undesirable pre-commit changes when running on Windows
+  ([#1143](https://github.com/nsidc/earthaccess/issues/1143)) (@ana-sher)
+
+## [0.15.1] - 2025-09-16
+
+### Fixed
+
+- Obstore and VirtualiZarr should not be required
+  ([#1097](https://github.com/nsidc/earthaccess/issues/1097))
+  ([@betolink](https://github.com/betolink))
+
+## [0.15.0] - 2025-09-16
+
 ### Changed
 
-- By default, _disable_ progress bars during downloading.
-  ([#612](https://github.com/nsidc/earthaccess/issues/612))
+- Populated glossary section under USER-REFERENCE.
+  ([#1027](https://github.com/nsidc/earthaccess/issues/1027))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+- Change default cache behavior in fsspec from `readahead` to `blockcache`.
+  Allow user defined config with `open_kwargs` in the `.open()` method.  This
+  improves performance by an order of magnitude.
+  ([#251](https://github.com/nsidc/earthaccess/discussions/251))
+  ([#771](https://github.com/nsidc/earthaccess/discussions/771))
+  ([@betolink](https://github.com/betolink))
+- Add `show_progress` argument to `earthaccess.download()` to let the user
+  control display of progress bars.  Defaults to true for interactive sessions,
+  otherwise false.  ([#612](https://github.com/nsidc/earthaccess/issues/612))
+  ([#1065](https://github.com/nsidc/earthaccess/pull/1065))
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Updated bug and triage label names in bug Issue template.
   ([#998](https://github.com/nsidc/earthaccess/pull/998))
@@ -21,9 +77,19 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `GESDISC` should be `GES_DISC` in docstrings.
   ([#1037](https://github.com/nsidc/earthaccess/issues/1037))
   ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
+- `open_virtual_mfdataset` now uses `virtualizarr` v2, and `obstore` in place of
+  `fsspec`.  Updated Zarr to V3 xref #967.
+  ([#1074](https://github.com/nsidc/earthaccess/issues/1074))
+  ([@owenlittlejohns](https://github.com/owenlittlejohns))
+- Populate search and access user guides.
+  ([#1035](https://github.com/nsidc/earthaccess/pull/1035))
+  ([@andypbarrett](https://github.com/andypbarrett))
 
 ### Added
 
+- Added `tenacity` to retry downloads up to 3 times with exponential backoff time, replaces #1016
+  ([#481](https://github.com/nsidc/earthaccess/issues/481))
+  ([@betolink](https://github.com/betolink))
 - Add notebook demonstrating workflow with TEMPO Level 3 data as a virtual dataset
   ([#924](https://github.com/nsidc/earthaccess/pull/924))
   ([@danielfromearth](https://github.com/danielfromearth))
@@ -37,7 +103,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([@Sherwin-14](https://github.com/Sherwin-14))
   ([@mfisher87](https://github.com/mfisher87))
 - `download` now returns Path consistently.
-  ([#595])(https://github.com/nsidc/earthaccess/issues/595)
+  ([#595])(<https://github.com/nsidc/earthaccess/issues/595>)
   ([@Sherwin-14](https://github.com/Sherwin-14))
 - Users may now authenticate with an existing Earthdata login token with
   environment variable `EARTHDATA_TOKEN`
@@ -59,10 +125,16 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Fixed
 
-- Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([stelios-c](https://github.com/stelios-c))
-- Resolved an error in virtual dataset tutorial notebook ([#1044](https://github.com/nsidc/earthaccess/issues/1044))([danielfromearth](https://github.com/danielfromearth))
+- Files can be downloaded in the cloud([#1009](https://github.com/nsidc/earthaccess/issues/1009))([@betolink](https://github.com/betolink))
+- Corrected Harmony typo in notebooks/Demo.ipynb([#995](https://github.com/nsidc/earthaccess/issues/995))([@stelios-c](https://github.com/stelios-c))
+- Resolved an error in virtual dataset tutorial notebook ([#1044](https://github.com/nsidc/earthaccess/issues/1044))([@danielfromearth](https://github.com/danielfromearth))
+- Issue when `FileDistributionInformation` did not exist for a collection
+  ([#971](https://github.com/nsidc/earthaccess/pull/971))
+  ([@mike-gangl](https://github.com/mike-gangl/))
+- Reflected new publisher of SEDAC datasets ([#1032](https://github.com/nsidc/earthaccess/issues/1032))([@itcarroll](https://github.com/itcarroll))
+- Better proxying by `EarthAccessFile` with correct MRO ([#610](https://github.com/nsidc/earthaccess/issues/610))([@alexandervladsemenov](https://github.com/alexandervladsemenov), [@itcarroll](https://github.com/itcarroll))
 
-## [v0.14.0] - 2025-02-11
+## [0.14.0] - 2025-02-11
 
 ### Added
 
@@ -80,7 +152,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([**@mfisher87**](https://github.com/mfisher87), [@chuckwondo](https://github.com/chuckwondo),
   and [@jhkennedy](https://github.com/jhkennedy))
 
-## [v0.13.0] - 2025-01-28
+## [0.13.0] - 2025-01-28
 
 ### Added
 
@@ -99,7 +171,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#913](https://github.com/nsidc/earthaccess/issues/913))
   ([**@hailiangzhang**](https://github.com/hailiangzhang))
 
-## [v0.12.0] - 2024-11-13
+## [0.12.0] - 2024-11-13
 
 ### Changed
 
@@ -750,27 +822,29 @@ _Conception!_
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.14.0...HEAD
-[0.14.0]: https://github.com/nsidc/earthaccess/compare/v0.13.0...v0.14.0
-[0.13.0]: https://github.com/nsidc/earthaccess/compare/v0.12.0...v0.13.0
-[0.12.0]: https://github.com/nsidc/earthaccess/compare/v0.11.0...v0.12.0
-[0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
-[0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
-[0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
-[0.8.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.2
-[0.8.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.1
-[0.8.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.0
-[0.7.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.1
-[0.7.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.0
-[0.6.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.6.0
-[0.5.3]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.3
-[0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
-[0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
-[0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.0
-[0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
-[0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
-[0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1
-[0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
-[0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
-[0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
 [0.1.0-beta.1]: https://github.com/betolink/earthaccess/releases/tag/v0.1.0-beta.1
+[0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
+[0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
+[0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
+[0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1
+[0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
+[0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7
+[0.5.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.0
+[0.5.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.1
+[0.5.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.2
+[0.5.3]: https://github.com/nsidc/earthaccess/releases/tag/v0.5.3
+[0.6.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.6.0
+[0.7.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.0
+[0.7.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.7.1
+[0.8.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.0
+[0.8.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.1
+[0.8.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.8.2
+[0.9.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.9.0
+[0.10.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.10.0
+[0.11.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.11.0
+[0.12.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.12.0
+[0.13.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.13.0
+[0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
+[0.15.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.15.0
+[0.15.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.15.1
+[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.15.1...HEAD

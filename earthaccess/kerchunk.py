@@ -44,7 +44,6 @@ def consolidate_metadata(
 ) -> Union[str, dict]:
     try:
         import dask
-
         from kerchunk.combine import MultiZarrToZarr
     except ImportError as e:
         raise ImportError(
