@@ -45,6 +45,44 @@ class S3IcechunkCredentials:
             expires_after=datetime.fromisoformat(creds["expiration"]),
             session_token=creds["sessionToken"],
         )
+    
+
+def get_virtual_chunk_authorization(storage: ic.Storage) -> dict[str, ic.AnyCredential | None]:
+    """Function to retrive virtual chunk containers from icechunk storage and authenticate 
+    all allowed virtual chunk prefixes using EDL credentials"""
+    # get config and extract virtual containers
+    config = ic.Repository.fetch_config(storage=storage)
+    # TODO: accommodate case without virtual chunk containers.
+    vchunk_container_urls = config.virtual_chunk_containers.keys()
+    print(vchunk_container_urls)
+
+    print(DAACS)
+
+    # check full list of approved container urls against repo
+    # TODO: implement an actual check, for now hardcode for test example.
+    approved_virtual_container_urls: Dict[str, List[str]] = {
+        "PODAAC": ["s3://podaac-ops-cumulus-protected/"]
+    }
+
+    # Provide appropriate auth for approved virtual container urls
+    provider = None # TODO: get provider from the DAACS (I need to understand provider concept better.)
+    container_credentials = ic.containers_credentials(
+        {
+            # I am not sure if there is typically a 1:1, 1:few, 1:many relation
+            # between daacs and buckets. If its 1:many, maybe we do not want 
+            # create multiple instances of the credentials? 
+            # Very likely a premature optimization right now.
+            
+            url: ic.s3_refreshable_credentials(
+                S3IcechunkCredentials(daac=daac, provider=provider)
+            )  
+            for daac, urls in approved_virtual_container_urls.items()
+            for url in urls
+        }
+    )
+    # can we assume that these will always need auth, or will there be public buckets in the mix?
+    return container_credentials
+
 
 
 def _open_icechunk_from_url(datacube_url: str) -> IcechunkStore:
@@ -73,31 +111,7 @@ def _open_icechunk_from_url(datacube_url: str) -> IcechunkStore:
     else:
         raise NotImplementedError("Currently only s3 is supported as storage protocol.")
 
-    # get config and extract virtual containers
-    config = ic.Repository.fetch_config(storage=storage)
-    # TODO: accommodate case without virtual chunk containers.
-    vchunk_container_urls = config.virtual_chunk_containers.keys()
-    print(vchunk_container_urls)
-
-    print(DAACS)
-
-    # check full list of approved container urls against repo
-    # TODO: implement an actual check, for now hardcode for test example.
-    approved_virtual_container_urls: Dict[str, List[str]] = {
-        "PODAAC": ["s3://podaac-ops-cumulus-protected/"]
-    }
-
-    # Provide appropriate auth for approved virtual container urls
-    container_credentials = ic.containers_credentials(
-        {
-            url: ic.s3_refreshable_credentials(
-                S3IcechunkCredentials(daac=daac, provider=None)
-            )  # TODO: get provider from the DAACS
-            for daac, urls in approved_virtual_container_urls.items()
-            for url in urls
-        }
-    )
-    # can we assume that these will always need auth, or will there be public buckets in the mix?
+    virtual_chunk_credentials = get_virtual_chunk_authorization
 
     # open authenticated icechunk repo
     repo = ic.Repository.open(
@@ -107,3 +121,4 @@ def _open_icechunk_from_url(datacube_url: str) -> IcechunkStore:
     # return readonly store from main
     # should this be configurable?
     return repo.readonly_session("main").store
+
