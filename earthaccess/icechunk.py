@@ -28,7 +28,7 @@ def _get_daac_provider_from_url(url: str) -> str:
 
 
 class S3IcechunkCredentials:
-    def __init__(self, daac: Optional[str], provider: Optional[str]):
+    def __init__(self, daac: str | None, provider: str | None):
         if daac is None and provider is None:
             raise ValueError("daac and provider cannot both be None")
         self.daac = daac
@@ -83,7 +83,7 @@ def _open_icechunk_from_url(datacube_url: str) -> IcechunkStore:
 
     # check full list of approved container urls against repo
     # TODO: implement an actual check, for now hardcode for test example.
-    approved_virtual_container_urls: Dict[str, List[str]] = {
+    approved_virtual_container_urls: dict[str, list[str]] = {
         "PODAAC": ["s3://podaac-ops-cumulus-protected/"]
     }
 
