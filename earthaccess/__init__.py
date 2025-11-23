@@ -23,7 +23,7 @@ from .api import (
 )
 from .auth import Auth
 from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
-from .icechunk import _open_icechunk_from_url
+from .icechunk import open_icechunk_from_url
 from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
