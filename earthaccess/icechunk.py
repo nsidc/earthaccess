@@ -78,7 +78,7 @@ def _get_credential_endpoint(url: str) -> str:
             return credential_endpoint_mapping[partial_target]
         components = components[0:-1]
 
-    raise ValueError("Could not find any matching credential enpoint for {url}")
+    raise ValueError("Could not find any matching credential endpoint for {url}")
 
 
 class S3IcechunkCredentials:
@@ -98,7 +98,7 @@ class S3IcechunkCredentials:
 def get_virtual_chunk_credentials(
     storage: ic.Storage,
 ) -> dict[str, ic.AnyCredential | None]:
-    """Function to retrive virtual chunk containers from icechunk storage and authenticate
+    """Function to retrieve virtual chunk containers from icechunk storage and authenticate
     all allowed virtual chunk prefixes using EDL credentials
     """
     # get config and extract virtual containers
@@ -107,9 +107,9 @@ def get_virtual_chunk_credentials(
     vchunk_container_urls = config.virtual_chunk_containers.keys()
 
     # try to build authentication for all virtual chunk containers. If any of the virtual
-    # chunk containes is not 'approved' it will raise an error in `_get_credential_endpoint`.
+    # chunk containers is not 'approved' it will raise an error in `_get_credential_endpoint`.
     # We will catch the error here, warn, and only return the authenticated urls.
-    # Users will then get an error for the remaining containers and need to add thes manually!
+    # Users will then get an error for the remaining containers and need to add those manually!
     failed_container_urls = []
     credential_mapping = {}
     for url in vchunk_container_urls:
@@ -128,7 +128,7 @@ def get_virtual_chunk_credentials(
                       If the URL is a non EDL bucket, you have to manually construct credentials (...)"
         )
 
-    # TODO: Check how easy it is to 'splice' this output with manuall created credentials
+    # TODO: Check how easy it is to 'splice' this output with manually created credentials
     return ic.containers_credentials(credential_mapping)
 
 
