@@ -89,6 +89,7 @@ test = [
   "pytest-cov >=5.0",
   "pytest-watch >=4.2",
   "python-magic >=0.4",
+  "python-magic-bin; sys_platform == 'Windows'",
   "responses >=0.14",
   "types-requests >=0.1",
   "types-setuptools >=0.1",
