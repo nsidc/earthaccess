@@ -181,8 +181,9 @@ def open_virtual_mfdataset(
         # We still need the round trip because: https://github.com/zarr-developers/VirtualiZarr/issues/360
         vmfdataset.virtualize.to_kerchunk(str(ref_), format=reference_format)
 
+        protocol = fs.protocol if isinstance(fs.protocol, str) else fs.protocol[0]
         storage_options = {
-            "remote_protocol": fs.protocol,
+            "remote_protocol": protocol,
             "remote_options": fs.storage_options,
         }
         vds = xr.open_dataset(
