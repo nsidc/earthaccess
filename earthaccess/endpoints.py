@@ -1,6 +1,7 @@
 """
 Crawls NASA CMR API and maps bucket/prefix keys to S3 credentials endpoints.
-Warns about bucket/prefix keys with conflicting endpoints..
+
+Warns about bucket/prefix keys with conflicting endpoints.
 """
 
 import asyncio
@@ -20,19 +21,26 @@ async def fetch_page(
     page_size: int,
     cloud_hosted: bool = True
 ) -> Tuple[int, list, int]:
-    """
-    Fetch a single page from CMR API.
-    
+    """Fetch a single page from CMR API.
+
+    Parameters:
+        session: Active aiohttp client session for making HTTP requests.
+        base_url: CMR API endpoint URL.
+        page_num: Page number to fetch (1-indexed).
+        page_size: Number of results per page.
+        cloud_hosted: Filter for cloud-hosted collections only. Defaults to True.
+
     Returns:
-        Tuple of (page_num, items, total_hits)
+        Tuple of (page_num, items, total_hits) where items is a list of collection
+        records and total_hits is the total number of results available.
     """
     params = {
         "page_size": page_size,
         "page_num": page_num
     }
-    
+
     if cloud_hosted:
-        params["cloud_hosted"] = "true"
+        params["cloud_hosted"] = True
     
     try:
         async with session.get(base_url, params=params, timeout=aiohttp.ClientTimeout(total=30)) as response:
@@ -56,21 +64,21 @@ async def query_cmr_async(
     concurrent_requests: int = 10,
     max_results: int | None = None
 ) -> Dict[str, Dict]:
-    """
-    Asynchronously query CMR API and collect DirectDistributionInformation.
+    """Asynchronously query CMR API and collect DirectDistributionInformation.
 
     The function automatically queries the API to determine total available results,
     then fetches all pages concurrently (or up to max_results if specified).
 
-    Args:
-        base_url: CMR API endpoint
-        cloud_hosted: Filter for cloud-hosted collections
-        page_size: Results per page (default: 100, max: 2000)
-        concurrent_requests: Number of concurrent API requests (default: 10)
-        max_results: Optional limit on total results to fetch (default: None = fetch all)
+    Parameters:
+        base_url: CMR API endpoint. Defaults to the NASA CMR collections endpoint.
+        cloud_hosted: Filter for cloud-hosted collections. Defaults to True.
+        page_size: Results per page (default: 100, max: 2000).
+        concurrent_requests: Number of concurrent API requests. Defaults to 10.
+        max_results: Optional limit on total results to fetch. If None, fetches all
+            available results.
 
     Returns:
-        Dictionary mapping concept_id to DirectDistributionInformation
+        Dictionary mapping concept_id to DirectDistributionInformation.
     """
 
     logger.info(f"Starting CMR query: {page_size=}, {concurrent_requests=}")
@@ -140,20 +148,27 @@ async def query_cmr_async(
 
 
 def extract_bucket_prefix_key(s3_path: str, prefix_depth: int = 0) -> str:
-    """
-    Extract bucket and prefix up to specified depth from S3 path.
-    
-    Args:
-        s3_path: S3 path like 's3://bucket/prefix/component1/component2'
-        prefix_depth: How many prefix components to include (0 = bucket only)
-        
+    """Extract bucket and prefix up to specified depth from S3 path.
+
+    Parameters:
+        s3_path: S3 path like 's3://bucket/prefix/component1/component2'.
+        prefix_depth: How many prefix components to include after the bucket.
+            Defaults to 0 (bucket only).
+
     Returns:
-        String like 'bucket' (depth=0) or 'bucket/prefix/component1' (depth=2)
-        
+        String like 'bucket' (depth=0) or 'bucket/prefix/component1' (depth=2).
+
     Examples:
-        extract_bucket_prefix_key('s3://my-bucket/data/2024/file.txt', 0) -> 'my-bucket'
-        extract_bucket_prefix_key('s3://my-bucket/data/2024/file.txt', 1) -> 'my-bucket/data'
-        extract_bucket_prefix_key('s3://my-bucket/data/2024/file.txt', 2) -> 'my-bucket/data/2024'
+        ```python
+        extract_bucket_prefix_key('s3://my-bucket/data/2024/file.txt', 0)
+        # Returns: 'my-bucket'
+
+        extract_bucket_prefix_key('s3://my-bucket/data/2024/file.txt', 1)
+        # Returns: 'my-bucket/data'
+
+        extract_bucket_prefix_key('s3://my-bucket/data/2024/file.txt', 2)
+        # Returns: 'my-bucket/data/2024'
+        ```
     """
     if s3_path.startswith('s3://'):
         s3_path = s3_path[5:]
@@ -176,25 +191,27 @@ def create_bucket_key_mapping_recursive(
     results: Dict[str, Dict],
     max_depth: int = 5
 ) -> Dict[str, str]:
-    """
-    Create mapping from bucket/prefix key to endpoint.
+    """Create mapping from bucket/prefix key to endpoint.
+
     Recursively increases depth only for keys that have conflicts.
 
     Strategy:
-    1. Start at depth 0 (bucket only)
-    2. For any key with multiple endpoints, increase depth by 1
-    3. Repeat until no conflicts or max_depth reached
-    4. If conflicts remain at max_depth, raise ValueError
+        1. Start at depth 0 (bucket only)
+        2. For any key with multiple endpoints, increase depth by 1
+        3. Repeat until no conflicts or max_depth reached
+        4. If conflicts remain at max_depth, raise ValueError
 
-    Args:
-        results: Dictionary of DirectDistributionInformation
-        max_depth: Maximum prefix depth to try
+    Parameters:
+        results: Dictionary mapping concept IDs to DirectDistributionInformation
+            records from the CMR API.
+        max_depth: Maximum prefix depth to try for conflict resolution.
+            Defaults to 5.
 
     Returns:
-        Dictionary mapping bucket/prefix keys to endpoints
+        Dictionary mapping bucket/prefix keys to S3 credentials API endpoints.
 
     Raises:
-        ValueError: If conflicts cannot be resolved at max_depth
+        ValueError: If conflicts cannot be resolved at max_depth.
     """
 
     logger.info(f"Building bucket/prefix mapping {max_depth=}")
@@ -275,34 +292,36 @@ async def crawl_cmr_endpoints(
     concurrent_requests: int = 10,
     max_results: int | None = None
 ) -> Dict[str, str]:
-    """
-    Crawl NASA CMR API and create a unique mapping from S3 bucket/prefix keys to auth endpoints.
+    """Crawl NASA CMR API and create a unique mapping from S3 bucket/prefix keys to auth endpoints.
 
     This function queries the CMR API for all cloud-hosted collections (or up to max_results)
     and builds a mapping from S3 bucket/prefix combinations to their S3 credentials API endpoints.
     It uses recursive conflict resolution to find the appropriate prefix depth for each bucket.
 
-    Args:
-        max_depth: Maximum prefix depth to try for conflict resolution (default: 5)
-        page_size: Results per page (default: 100, max: 2000)
-        concurrent_requests: Number of concurrent API requests (default: 10)
-        max_results: Optional limit on total results to fetch (default: None = fetch all)
+    Parameters:
+        max_depth: Maximum prefix depth to try for conflict resolution. Defaults to 5.
+        page_size: Results per page (default: 100, max: 2000).
+        concurrent_requests: Number of concurrent API requests. Defaults to 10.
+        max_results: Optional limit on total results to fetch. If None, fetches all
+            available results.
 
     Returns:
-        Dictionary uniquely mapping bucket/prefix keys to S3 credentials API endpoints
+        Dictionary uniquely mapping bucket/prefix keys to S3 credentials API endpoints.
 
     Raises:
-        ValueError: If conflicts remain after reaching max_depth (non-unique mapping)
-        RuntimeError: If no results are collected from CMR API
+        ValueError: If conflicts remain after reaching max_depth (non-unique mapping).
+        RuntimeError: If no results are collected from CMR API.
 
-    Example:
-        >>> # Fetch all results
-        >>> mapping = await crawl_cmr_endpoints(max_depth=5)
-        >>> print(mapping['my-bucket/data'])
-        'https://data.nasa.gov/s3credentials'
+    Examples:
+        ```python
+        # Fetch all results
+        mapping = await crawl_cmr_endpoints(max_depth=5)
+        print(mapping['my-bucket/data'])
+        # Output: 'https://data.nasa.gov/s3credentials'
 
-        >>> # Limit to first 500 results for testing
-        >>> mapping = await crawl_cmr_endpoints(max_depth=5, max_results=500)
+        # Limit to first 500 results for testing
+        mapping = await crawl_cmr_endpoints(max_depth=5, max_results=500)
+        ```
     """
     # Step 1: Query CMR asynchronously
     results = await query_cmr_async(
