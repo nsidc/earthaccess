@@ -85,7 +85,7 @@ jobs:
           mkdir -p ./pr
           echo $PR_NUMBER > ./pr/pr_number
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: matrix.save-pr-number
         with:
           path: pr/
@@ -117,7 +117,7 @@ jobs:
           exit 1
 
       - name: Checkout source
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # Getting the correct commit for a pull_request_target event appears to be
           # a known, problematic issue: https://github.com/actions/checkout/issues/518
