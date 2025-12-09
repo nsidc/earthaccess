@@ -37,7 +37,7 @@ jobs:
 
       - name: Create issue
         id: create_issue
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: "Monthly issue metrics report: ${{ env.last_month }}"
           labels: metrics
