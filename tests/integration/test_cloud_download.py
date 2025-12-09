@@ -48,6 +48,13 @@ daac_list: list[TestParam] = [
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
+    {
+        "provider_name": "LARC_CLOUD",
+        "n_for_top_collections": 3,
+        "granules_count": 100,
+        "granules_sample_size": 2,
+        "granules_max_size_mb": 100,
+    },
 ]
 
 
