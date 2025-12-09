@@ -14,6 +14,14 @@ body:
         - label: I've reviewed existing issues and couldn't find a duplicate for this problem.
           required: true
 
+  - type: checkboxes
+    attributes:
+      label: Have you checked the status of Earthdata services?
+      description: Earthaccess relies on the Common Metadata Repository (CMR) API and the Earthdata Login (EDL) service to provide its functionality. Please check whether these services are working properly before creating an issue.
+      options:
+        - label: I've executed `earthaccess.status()` and both CMR and EDL returned `'OK'`.
+          required: true
+
   - type: textarea
     attributes:
       label: Current Behavior
