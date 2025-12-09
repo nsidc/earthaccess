@@ -104,7 +104,15 @@ def get_virtual_chunk_credentials(
     # get config and extract virtual containers
     config = ic.Repository.fetch_config(storage=storage)
     # TODO: accommodate case without virtual chunk containers.
-    vchunk_container_urls = config.virtual_chunk_containers.keys()
+    if config:
+        vchunk_containers = config.virtual_chunk_containers
+    else:
+        raise ValueError(f"Got empty config from {storage=} and cannot infer chunk containers.")
+    
+    if vchunk_containers:
+        vchunk_container_urls = vchunk_containers.keys()
+    else:
+        raise ValueError("No virtual chunk containers found.")
 
     # try to build authentication for all virtual chunk containers. If any of the virtual
     # chunk containers is not 'approved' it will raise an error in `_get_credential_endpoint`.
@@ -141,11 +149,11 @@ def open_icechunk_from_url(
     """Opener function for 'full' EDL icechunk stores, meaning both the icechunk store and the
     target chunks are in an EDL authenticated bucket.
     In case that you are accessing an icechunk store on another storage location, with
-    virtual chunks pointing to EDL buckets use `earthaccess.icechunk.get_virtual_chunk_credentials`
+    virtual chunks pointing to EDL buckets use `earthaccess.icechunk_opener.get_virtual_chunk_credentials`
     directly:
     ```
     import icechunk as ic
-    from earthaccess.icechunk import get_virtual_chunk_credentials
+    from earthaccess.icechunk_opener import get_virtual_chunk_credentials
     storage = ... # configure your custom icechunk storage
     vchunk_credentials = get_virtual_chunk_credentials(storage)
     repo = ic.Repository.open(storage=storage, authorize_virtual_chunk_access=vchunk_credentials)
@@ -163,7 +171,7 @@ def open_icechunk_from_url(
     prefix = parsed.path.lstrip("/")
 
     # find credential endpoint
-    endpoint = _get_credential_endpoint(url)
+    endpoint = _get_credential_endpoint(datacube_url)
 
     # get auth and init storage for the store based on the protocol
     if protocol == "s3":
