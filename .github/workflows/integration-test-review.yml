@@ -83,15 +83,15 @@ jobs:
             const { owner, repo } = context.repo;
 
             // Read the PR number from the downloaded and unzipped artifact.
-            const pr_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
+            const pull_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
 
             // Get the URL of the PR so we can add a link in the PR comment.
-            const { html_url } = await github.rest.pulls.get({ owner, repo, pr_number });
+            const { data: { html_url } } = await github.rest.pulls.get({ owner, repo, pull_number });
 
             github.rest.issues.createComment({
               owner,
               repo,
-              pr_number,
+              issue_number: pull_number,
               body: "User [${{ github.triggering_actor }}](${{ github.event.workflow_run.head_repository.owner.html_url }})"
                 + " does not have permission to run integration tests. A maintainer must perform a security review of the"
                 + ` [code changes in this pull request](${html_url}/files) and re-run the`

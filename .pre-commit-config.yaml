@@ -25,19 +25,20 @@ repos:
       - id: destroyed-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: docs/LICENSE.txt
       - id: mixed-line-ending
       - id: no-commit-to-branch # protects `main` by default
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.3
+    rev: v0.14.7
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.8.23"
+    rev: "0.9.14"
     hooks:
       # Asserts that the lockfile is valid for pyproject.toml.
       # If it fails, update the lockfile by running:
@@ -51,9 +52,10 @@ repos:
         stages: ["manual"]
 
   - repo: https://github.com/google/yamlfmt
-    rev: v0.17.2
+    rev: v0.20.0
     hooks:
       - id: yamlfmt
+        entry: python scripts/yamlfmt.py
         types_or: [yaml]
         exclude: ".*/vcr_cassettes/.*\\.yaml"
 
