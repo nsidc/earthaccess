@@ -7,6 +7,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Removed
+
+- Removed `keyword` and `type` kwargs from `search_services` documentation to be consistent with `search_for_services` documentation.
+  ([#1093](https://github.com/nsidc/earthaccess/issues/1093))
+  ([@battistowx](https://github.com/battistowx))
+
 ## [v0.15.1] - 2025-09-16
 
 ## Fixed:
