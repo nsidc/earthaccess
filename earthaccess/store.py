@@ -28,6 +28,7 @@ from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
+from .exceptions import EulaException
 
 logger = logging.getLogger(__name__)
 
