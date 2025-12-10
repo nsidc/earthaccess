@@ -24,7 +24,7 @@ from typing_extensions import deprecated
 
 import earthaccess
 
-from .auth import Auth, SessionWithHeaderRedirection
+from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
 from .results import DataGranule
 from .search import DataCollections
@@ -265,9 +265,6 @@ class Store(object):
             url: used to test the credentials and populate the class auth cookies
             method: HTTP method to test, default: "GET"
             bearer_token: if true, will be used for authenticated queries on CMR
-
-        Returns:
-            fsspec HTTPFileSystem (aiohttp client session)
         """
         if not hasattr(self, "_http_session"):
             self._http_session = self.auth.get_session(bearer_token)
@@ -394,7 +391,7 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(self) -> SessionWithHeaderRedirection:
+    def get_requests_session(self) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
 
         This HTTPS session can be used to download granules if we want to use a direct,
@@ -802,7 +799,7 @@ class Store(object):
             )
 
     def _clone_session_in_local_thread(
-        self, original_session: SessionWithHeaderRedirection
+        self, original_session: requests.Session
     ) -> None:
         """Clone the original session and store it in the local thread context.
 
@@ -816,7 +813,7 @@ class Store(object):
             None
         """
         if not hasattr(self.thread_locals, "local_thread_session"):
-            local_thread_session = SessionWithHeaderRedirection()
+            local_thread_session = self.auth.get_session()  # type: ignore
             local_thread_session.headers.update(original_session.headers)
             local_thread_session.cookies.update(original_session.cookies)
             local_thread_session.auth = original_session.auth
