@@ -11,9 +11,9 @@ import responses
 import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
+from earthaccess.exceptions import EulaException
 from earthaccess.store import EarthAccessFile, _open_files
 from pqdm.threads import pqdm
-from earthaccess.exceptions import EulaException
 
 
 class TestEula(unittest.TestCase):

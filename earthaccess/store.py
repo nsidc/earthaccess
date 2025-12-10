@@ -26,9 +26,9 @@ import earthaccess
 
 from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import EulaException
 from .results import DataGranule
 from .search import DataCollections
-from .exceptions import EulaException
 
 logger = logging.getLogger(__name__)
 
@@ -851,6 +851,13 @@ class Store(object):
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
+                if r.status_code in [401, 403]:
+                    text = (r.text or "").lower()
+                    if "eula" in text:
+                        raise EulaException(
+                            "You must accept the EULA to download this data."
+                        )
+
                 r.raise_for_status()
                 with open(path, "wb") as f:
                     # Cap memory usage for large files at 1MB per write to disk per thread
