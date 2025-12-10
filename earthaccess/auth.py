@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import getpass
 import importlib.metadata
 import logging
@@ -6,10 +8,11 @@ import platform
 import shutil
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, Mapping, Optional
 from urllib.parse import urlparse
 
-import requests  # type: ignore
+import requests
+import requests.cookies
 from tinynetrc import Netrc
 from typing_extensions import deprecated
 
@@ -44,46 +47,50 @@ def netrc_path() -> Path:
     return Path(env_netrc) if env_netrc else Path.home() / sys_netrc_name
 
 
+class BasicAuthResponseHook:
+    def __init__(self, hostname: str, auth: tuple[str, str]) -> None:
+        self.hostname = hostname
+        self.auth = auth
+
+    def __call__(self, r: requests.Response, **kwargs: Any) -> requests.Response:
+        from http.cookiejar import CookieJar
+
+        # If the response's URL is not for the EDL system we're authenticating
+        # against, then simply return the response unchanged.  Otherwise, we'll
+        # prepare a new request below with the user's EDL credentials.
+        if urlparse(r.url).hostname != self.hostname:
+            return r
+
+        # Consume content and release the original connection to allow our new
+        # request to reuse the same one.
+        r.content
+        r.close()
+
+        prepared_request = r.request.copy()
+        cookies: CookieJar = prepared_request._cookies  # type: ignore
+        requests.cookies.extract_cookies_to_jar(cookies, r.request, r.raw)
+        prepared_request.prepare_cookies(cookies)
+        prepared_request.prepare_auth(self.auth)
+
+        new_r = r.connection.send(prepared_request, **kwargs)
+        new_r.history.append(r)
+        new_r.request = prepared_request
+
+        return new_r
+
+
 class SessionWithHeaderRedirection(requests.Session):
     """Requests removes auth headers if the redirect happens outside the
     original req domain.
     """
 
-    AUTH_HOSTS: List[str] = [
-        "urs.earthdata.nasa.gov",
-        "cumulus.asf.alaska.edu",
-        "sentinel1.asf.alaska.edu",
-        "datapool.asf.alaska.edu",
-    ]
-
-    def __init__(
-        self,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-    ) -> None:
+    def __init__(self, edl_hostname: str, auth: tuple[str, str] | None = None) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
 
-        if username and password:
-            self.auth = (username, password)
-
-    def rebuild_auth(self, prepared_request: Any, response: Any) -> None:
-        """Overrides from the library to keep headers when redirected to or from the NASA auth host."""
-        headers = prepared_request.headers
-        url = prepared_request.url
-
-        if "Authorization" in headers:
-            original_parsed = urlparse(response.request.url)
-            redirect_parsed = urlparse(url)
-            if (original_parsed.hostname != redirect_parsed.hostname) and (
-                redirect_parsed.hostname not in self.AUTH_HOSTS
-                or original_parsed.hostname not in self.AUTH_HOSTS
-            ):
-                logger.debug(
-                    f"Deleting Auth Headers: {original_parsed.hostname} -> {redirect_parsed.hostname}"
-                )
-                del headers["Authorization"]
-        return
+        if auth:
+            hook = BasicAuthResponseHook(edl_hostname, auth)
+            self.hooks["response"].append(hook)
 
 
 class Auth(object):
@@ -181,7 +188,9 @@ class Auth(object):
             A Python dictionary with the temporary AWS S3 credentials.
         """
         if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password)
+            session = SessionWithHeaderRedirection(
+                self.system.edl_hostname, (self.username, self.password)
+            )
             if endpoint is None:
                 auth_url = self._get_cloud_auth_url(
                     daac_shortname=daac, provider=provider
@@ -233,13 +242,15 @@ class Auth(object):
         Returns:
             class Session instance with Auth and bearer token headers
         """
-        session = SessionWithHeaderRedirection()
+        user, pwd = getattr(self, "username", None), getattr(self, "password", None)
+        auth = (user, pwd) if user and pwd else None
+        session = SessionWithHeaderRedirection(self.system.edl_hostname, auth)
+
         if bearer_token and self.token:
             # This will avoid the use of the netrc after we are logged in
             session.trust_env = False
-            session.headers.update(
-                {"Authorization": f"Bearer {self.token['access_token']}"}
-            )
+            session.headers["Authorization"] = f"Bearer {self.token['access_token']}"
+
         return session
 
     def _interactive(
@@ -337,16 +348,15 @@ class Auth(object):
 
         return self.authenticated
 
-    def _find_or_create_token(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password)
-        auth_resp = session.post(
-            self.EDL_FIND_OR_CREATE_TOKEN_URL,
-            headers={
-                "Accept": "application/json",
-            },
-            timeout=10,
-        )
-        return auth_resp
+    def _find_or_create_token(self, username: str, password: str) -> requests.Response:
+        with SessionWithHeaderRedirection(
+            self.system.edl_hostname, (username, password)
+        ) as session:
+            return session.post(
+                self.EDL_FIND_OR_CREATE_TOKEN_URL,
+                headers={"Accept": "application/json"},
+                timeout=10,
+            )
 
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34

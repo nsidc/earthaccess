@@ -41,6 +41,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   (@chuckwondo)
 - Fix undesirable pre-commit changes when running on Windows
   ([#1143](https://github.com/nsidc/earthaccess/issues/1143)) (@ana-sher)
+- No longer erroneously strip authorization header for valid hosts
+  ([#1130](https://github.com/nsidc/earthaccess/issues/1130)) (@chuckwondo)
 
 ## [0.15.1] - 2025-09-16
 
