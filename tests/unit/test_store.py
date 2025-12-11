@@ -43,7 +43,7 @@ class TestEula(unittest.TestCase):
 
         self.auth = Auth()
         self.auth.login(strategy="environment")
-        self.assertEqual(self.auth.authenticated, True)
+        assert self.auth.authenticated
 
     @responses.activate
     def test_eula_detects_401_errors(self):
@@ -62,7 +62,6 @@ class TestEula(unittest.TestCase):
             status=401,
         )
         store = Store(self.auth)
-        # test
         with self.assertRaises(EulaException):
             store.get([mocked_url], "/tmp")
 
@@ -78,9 +77,9 @@ class TestEula(unittest.TestCase):
             status=200,
         )
         store = Store(self.auth)
-        self.assertTrue(isinstance(store.auth, Auth))
+        assert isinstance(store.auth, Auth)
         https_fs = store.get_fsspec_session()
-        self.assertEqual(type(https_fs), type(fsspec.filesystem("https")))
+        assert type(https_fs) == type(fsspec.filesystem("https"))
         return None
 
 
