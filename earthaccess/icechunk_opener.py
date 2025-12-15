@@ -87,7 +87,11 @@ class S3IcechunkCredentials:
         self.endpoint = endpoint
 
     def __call__(self) -> S3StaticCredentials:
+        # TODO: Is this the right way to ensure that I am authorized? I should prob do that in the tests?
+        earthaccess.login()
         creds = earthaccess.__auth__.get_s3_credentials(endpoint=self.endpoint)
+        if len(creds) == 0:
+            raise ValueError(f"Got no credentials from endpoint {self.endpoint}")
         return S3StaticCredentials(
             access_key_id=creds["accessKeyId"],
             secret_access_key=creds["secretAccessKey"],

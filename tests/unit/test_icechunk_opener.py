@@ -7,6 +7,7 @@ from earthaccess.icechunk_opener import (
     credential_endpoint_mapping as endpoints,
     get_virtual_chunk_credentials,
 )
+from icechunk import S3StaticCredentials
 
 
 @pytest.fixture
@@ -117,8 +118,23 @@ def full_virtual_icechunk(tmp_path):
     ic.Repository.create(
         storage=storage, config=config, authorize_virtual_chunk_access=credentials
     )
-
     return storage
+
+
+class Test_S3IcechunkCredentials:
+    def test_no_creds(self):
+        endpoint = "not.a-valid-enpoint.com"
+        creds_provider = S3IcechunkCredentials(endpoint=endpoint)
+        with pytest.raises(
+            ValueError, match="Got no credentials from endpoint not.a-valid-enpoint.com"
+        ):
+            creds_provider()
+
+    def test_get_valid_creds(self):
+        endpoint = "https://archive.podaac.earthdata.nasa.gov/s3credentials"
+        creds_provider = S3IcechunkCredentials(endpoint=endpoint)
+        creds = creds_provider()
+        assert isinstance(creds, S3StaticCredentials)
 
 
 class Test_get_virtual_chunk_credentials:

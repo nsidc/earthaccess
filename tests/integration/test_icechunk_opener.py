@@ -1,5 +1,8 @@
 import icechunk
-from earthaccess.icechunk_opener import get_virtual_chunk_credentials
+from earthaccess.icechunk_opener import (
+    get_virtual_chunk_credentials,
+    open_icechunk_from_url,
+)
 
 
 def test_mixed_case_mur():
@@ -17,9 +20,9 @@ def test_mixed_case_mur():
 
 def test_native_edl_store():
     """Store and native chunks on EDL bucket."""
-    # waiting for test datasets on PODAAC
-    # open
-    pass
+    open_icechunk_from_url(
+        "s3://podaac-ops-cumulus-public/virtual_collections/earthaccess_integration_testing/icechunk_native/"
+    )
 
 
 def test_full_edl_store():
