@@ -40,9 +40,26 @@ def _granule_to_stac_json(g) -> dict:
         "collection": ...,
         "geometry": {
             "coordinates": [[
-                [..., ...]
-            ]]
+                [..., ...],
+                [..., ...],
+                
+            ]],
+            "type": "Polygon",
         },
+        "links": [
+            {...},
+            {...},
+        ],
+        "properties": {
+            "datetime": ...,
+            "start_datetime": ...,
+            "end_datetime": ...,
+            "eo:cloud_cover": ...,
+            "storage:schemes": {...}, 
+        },
+        "stac_extensions": [..., ...],
+        "stac_version": "1.1.0",
+        "type": "Feature",
 
     }
 
