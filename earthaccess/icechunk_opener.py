@@ -1,7 +1,7 @@
 import warnings
 from datetime import datetime
-from urllib.parse import urlparse
 from typing import List
+from urllib.parse import urlparse
 
 import icechunk as ic
 from icechunk import IcechunkStore, S3StaticCredentials, s3_storage
@@ -89,7 +89,9 @@ class S3IcechunkCredentials:
 
     def __call__(self) -> S3StaticCredentials:
         if not earthaccess.__auth__.authenticated:
-            raise ValueError("A valid Earthdata login instance is required to retrieve credentials for icechunk stores")
+            raise ValueError(
+                "A valid Earthdata login instance is required to retrieve credentials for icechunk stores"
+            )
         creds = earthaccess.__auth__.get_s3_credentials(endpoint=self.endpoint)
         if len(creds) == 0:
             raise ValueError(f"Got no credentials from endpoint {self.endpoint}")
