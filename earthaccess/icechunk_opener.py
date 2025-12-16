@@ -171,7 +171,7 @@ def open_icechunk_from_url(
     """
     # currently only supports s3
     # How would this support e.g. http, which other protocols make sense?
-    # TODO: for now error out on everything that is not s3:
+
     parsed = urlparse(datacube_url)
     protocol = (
         parsed.scheme or "file"
