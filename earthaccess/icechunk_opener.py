@@ -1,6 +1,7 @@
 import warnings
 from datetime import datetime
 from urllib.parse import urlparse
+from typing import List
 
 import icechunk as ic
 from icechunk import IcechunkStore, S3StaticCredentials, s3_storage
@@ -87,8 +88,8 @@ class S3IcechunkCredentials:
         self.endpoint = endpoint
 
     def __call__(self) -> S3StaticCredentials:
-        # TODO: Is this the right way to ensure that I am authorized? I should prob do that in the tests?
-        earthaccess.login()
+        if not earthaccess.__auth__.authenticated:
+            raise ValueError("A valid Earthdata login instance is required to retrieve credentials for icechunk stores")
         creds = earthaccess.__auth__.get_s3_credentials(endpoint=self.endpoint)
         if len(creds) == 0:
             raise ValueError(f"Got no credentials from endpoint {self.endpoint}")
@@ -109,17 +110,16 @@ def get_virtual_chunk_credentials(
     # get config and extract virtual containers
     config = ic.Repository.fetch_config(storage=storage)
     # TODO: accommodate case without virtual chunk containers.
-    if config:
+    if not config:
+        msg = f"Got empty config from {storage=} and will not try to infer chunk containers. If this is a native store this behavior is expected if the config was not persisted to storage."
+        warnings.warn(message=msg)
+        vchunk_container_urls: List[str] = []
+    else:
         vchunk_containers = config.virtual_chunk_containers
-    else:
-        raise ValueError(
-            f"Got empty config from {storage=} and cannot infer chunk containers."
-        )
-
-    if vchunk_containers:
-        vchunk_container_urls = vchunk_containers.keys()
-    else:
-        raise ValueError("No virtual chunk containers found.")
+        if vchunk_containers:
+            vchunk_container_urls = list(vchunk_containers.keys())
+        else:
+            raise ValueError("No virtual chunk containers found.")
 
     # try to build authentication for all virtual chunk containers. If any of the virtual
     # chunk containers is not 'approved' it will raise an error in `_get_credential_endpoint`.
