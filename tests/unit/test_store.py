@@ -11,7 +11,7 @@ import responses
 import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
-from earthaccess.exceptions import EulaException
+from earthaccess.exceptions import EulaNotAccepted
 from earthaccess.store import EarthAccessFile, _open_files
 from pqdm.threads import pqdm
 
@@ -62,7 +62,7 @@ class TestEula(unittest.TestCase):
             status=401,
         )
         store = Store(self.auth)
-        with self.assertRaises(EulaException):
+        with self.assertRaises(EulaNotAccepted):
             store.get([mocked_url], "/tmp")
 
     def tearDown(self):
@@ -79,7 +79,7 @@ class TestEula(unittest.TestCase):
         store = Store(self.auth)
         assert isinstance(store.auth, Auth)
         https_fs = store.get_fsspec_session()
-        assert type(https_fs) == type(fsspec.filesystem("https"))
+        assert type(https_fs) is type(fsspec.filesystem("https"))
         return None
 
 

@@ -47,7 +47,7 @@ class ServiceOutage(Exception):
     pass
 
 
-class EulaException(Exception):
+class EulaNotAccepted(DownloadFailure):
     """The user has not accepted the EULA.
 
     This should be raised when a user attempts to access data that requires

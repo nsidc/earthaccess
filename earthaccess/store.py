@@ -26,7 +26,7 @@ import earthaccess
 
 from .auth import Auth, SessionWithHeaderRedirection
 from .daac import DAAC_TEST_URLS, find_provider
-from .exceptions import EulaException
+from .exceptions import DownloadFailure, EulaNotAccepted
 from .results import DataGranule
 from .search import DataCollections
 
@@ -854,11 +854,12 @@ class Store(object):
                 if r.status_code in [401, 403]:
                     text = (r.text or "").lower()
                     if "eula" in text:
-                        raise EulaException(
-                            "You must accept the EULA to download this data."
-                        )
+                        raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
+                if r.status_code >= 400:
+                    raise DownloadFailure(
+                        f"Download failed for {url}. Status code: {r.status_code}"
+                    )
 
-                r.raise_for_status()
                 with open(path, "wb") as f:
                     # Cap memory usage for large files at 1MB per write to disk per thread
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
