@@ -93,11 +93,13 @@ test = [
   "responses >=0.14",
   "types-requests >=0.1",
   "types-setuptools >=0.1",
+  "types-geopandas",
   "vcrpy >=7.0.0",
   "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
+  "geopandas"
 ]
 docs = [
   "jupyterlab >=3",

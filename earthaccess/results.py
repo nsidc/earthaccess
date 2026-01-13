@@ -391,3 +391,83 @@ class DataGranule(CustomDict):
         """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links
+
+    @property
+    def __geo_interface__(self) -> dict:
+        """Return a GeoJSON representation of this granule.
+
+        Returns:
+            A GeoJSON representation of the HorizontalSpatialDomain of this
+            granule. Geometries are returned as Multi[Point|LineString|Polygon]
+            even if only one shape is present.
+        """
+        try:
+            spatext = self["umm"]["SpatialExtent"]["HorizontalSpatialDomain"][
+                "Geometry"
+            ]
+        except KeyError:
+            raise ValueError("Granule does not have defined spatial extent")
+
+        if "GPolygons" in spatext:
+            geom = {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [p["Longitude"], p["Latitude"]]
+                            for p in poly["Boundary"]["Points"]
+                        ]
+                    ]
+                    for poly in spatext["GPolygons"]
+                ],
+            }
+        elif "BoundingRectangles" in spatext:
+            geom = {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [
+                                rect["WestBoundingCoordinate"],
+                                rect["SouthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["EastBoundingCoordinate"],
+                                rect["SouthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["EastBoundingCoordinate"],
+                                rect["NorthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["WestBoundingCoordinate"],
+                                rect["NorthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["WestBoundingCoordinate"],
+                                rect["SouthBoundingCoordinate"],
+                            ],
+                        ]
+                    ]
+                    for rect in spatext["BoundingRectangles"]
+                ],
+            }
+        elif "Points" in spatext:
+            geom = {
+                "type": "MultiPoint",
+                "coordinates": [
+                    [p["Longitude"], p["Latitude"]] for p in spatext["Points"]
+                ],
+            }
+        elif "Lines" in spatext:
+            geom = {
+                "type": "MultiLineString",
+                "coordinates": [
+                    [[p["Longitude"], p["Latitude"]] for p in line["Points"]]
+                    for line in spatext["Lines"]
+                ],
+            }
+        else:
+            raise NotImplementedError("Unrecognized geometry type:", spatext)
+
+        return geom
