@@ -11,7 +11,7 @@ import responses
 import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
-from earthaccess.exceptions import EulaNotAccepted
+from earthaccess.exceptions import DownloadFailure, EulaNotAccepted
 from earthaccess.store import EarthAccessFile, _open_files
 from pqdm.threads import pqdm
 
@@ -62,7 +62,31 @@ class TestEula(unittest.TestCase):
             status=401,
         )
         store = Store(self.auth)
-        with self.assertRaises(EulaNotAccepted):
+        with self.assertRaisesRegex(
+            EulaNotAccepted, f"Eula Acceptance Failure for {mocked_url}"
+        ):
+            store.get([mocked_url], "/tmp")
+
+    @responses.activate
+    def test_detects_non_eula_errors(self):
+        response = " blah blah error!"
+        mocked_url = "https://example.com/protected_file.nc"
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url=mocked_url,
+            body=response,
+            status=401,
+        )
+        store = Store(self.auth)
+        with self.assertRaisesRegex(
+            DownloadFailure, f"Download failed for {mocked_url}. Status code: 401"
+        ):
             store.get([mocked_url], "/tmp")
 
     def tearDown(self):
