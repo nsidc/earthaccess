@@ -120,6 +120,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get(umm_field, "")
 
+    @property
     def doi(self) -> str | None:
         """Retrieve the Digital Object Identifier (DOI) for this collection.
 
@@ -152,6 +153,7 @@ class DataCollection(CustomDict):
             else _citation(doi=doi, format=format, language=language)
         )
 
+    @property
     def concept_id(self) -> str:
         """Placeholder.
 
@@ -160,6 +162,7 @@ class DataCollection(CustomDict):
         """
         return self["meta"]["concept-id"]
 
+    @property
     def data_type(self) -> str:
         """Placeholder.
 
@@ -172,6 +175,7 @@ class DataCollection(CustomDict):
             .get("FileDistributionInformation", "")
         )
 
+    @property
     def version(self) -> str:
         """Placeholder.
 
@@ -180,6 +184,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get("Version", "")
 
+    @property
     def abstract(self) -> str:
         """Placeholder.
 
@@ -188,6 +193,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get("Abstract", "")
 
+    @property
     def landing_page(self) -> str:
         """Placeholder.
 
@@ -205,6 +211,7 @@ class DataCollection(CustomDict):
         """
         return self._filter_related_links("GET DATA")
 
+    @property
     def s3_bucket(self) -> Dict[str, Any]:
         """Placeholder.
 
