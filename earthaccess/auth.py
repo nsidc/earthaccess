@@ -321,9 +321,7 @@ class Auth(object):
             logger.info("You're now authenticated with NASA Earthdata Login")
 
             token = token_resp.json()
-            logger.debug(
-                "Using token with expiration date: %s", token["expiration_date"]
-            )
+            logger.info("Using token with expiration date %s", token["expiration_date"])
             self.token = token
             self.authenticated = True
 
