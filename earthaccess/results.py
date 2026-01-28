@@ -176,6 +176,18 @@ class DataCollection(CustomDict):
         )
 
     @property
+    def file_format(self) -> List[str]:
+        """Returns file types for collection
+
+        Returns:
+            list of file types
+        """
+        return [data_type['Format'] for data_type in
+                self["umm"]
+                .get("ArchiveAndDistributionInformation", {})
+                .get("FileDistributionInformation", "")]
+
+    @property
     def version(self) -> str:
         """Placeholder.
 
