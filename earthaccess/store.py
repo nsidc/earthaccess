@@ -26,6 +26,7 @@ import earthaccess
 
 from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import DownloadFailure, EulaNotAccepted
 from .results import DataGranule
 from .search import DataCollections
 
@@ -847,7 +848,15 @@ class Store(object):
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
-                r.raise_for_status()
+                if r.status_code in [401, 403]:
+                    text = (r.text or "").lower()
+                    if "eula" in text:
+                        raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
+                if r.status_code >= 400:
+                    raise DownloadFailure(
+                        f"Download failed for {url}. Status code: {r.status_code}"
+                    )
+
                 with open(path, "wb") as f:
                     # Cap memory usage for large files at 1MB per write to disk per thread
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content

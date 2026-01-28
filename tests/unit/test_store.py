@@ -11,8 +11,100 @@ import responses
 import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
+from earthaccess.exceptions import DownloadFailure, EulaNotAccepted
 from earthaccess.store import EarthAccessFile, _open_files
 from pqdm.threads import pqdm
+
+
+class TestEula(unittest.TestCase):
+    @patch.dict(
+        os.environ,
+        {
+            "EARTHDATA_USERNAME": "user_no_eula",
+            "EARTHDATA_PASSWORD": "password",
+        },
+        clear=True,
+    )
+    @responses.activate
+    def setUp(self):
+        json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json=json_response,
+            status=200,
+        )
+        responses.add(
+            responses.POST,
+            "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
+            json=json_response,
+            status=200,
+        )
+
+        self.auth = Auth()
+        self.auth.login(strategy="environment")
+        assert self.auth.authenticated
+
+    @responses.activate
+    def test_eula_detects_401_errors(self):
+        response = " blah blah Eula bing!"
+        mocked_url = "https://example.com/protected_file.nc"
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url=mocked_url,
+            body=response,
+            status=401,
+        )
+        store = Store(self.auth)
+        with self.assertRaisesRegex(
+            EulaNotAccepted, f"Eula Acceptance Failure for {mocked_url}"
+        ):
+            store.get([mocked_url], "/tmp")
+
+    @responses.activate
+    def test_detects_non_eula_errors(self):
+        response = " blah blah error!"
+        mocked_url = "https://example.com/protected_file.nc"
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url=mocked_url,
+            body=response,
+            status=401,
+        )
+        store = Store(self.auth)
+        with self.assertRaisesRegex(
+            DownloadFailure, f"Download failed for {mocked_url}. Status code: 401"
+        ):
+            store.get([mocked_url], "/tmp")
+
+    def tearDown(self):
+        self.auth = None
+
+    @responses.activate
+    def test_store_can_create_https_fsspec_session(self):
+        responses.add(
+            responses.GET,
+            "https://urs.earthdata.nasa.gov/profile",
+            json={},
+            status=200,
+        )
+        store = Store(self.auth)
+        assert isinstance(store.auth, Auth)
+        https_fs = store.get_fsspec_session()
+        assert type(https_fs) is type(fsspec.filesystem("https"))
+        return None
 
 
 class TestStoreSessions(unittest.TestCase):
