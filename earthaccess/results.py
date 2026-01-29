@@ -104,7 +104,7 @@ class DataCollection(CustomDict):
             "entry-title": self.get_umm("EntryTitle"),
             "concept-id": self.concept_id,
             "version": self.version,
-            "file-type": self.data_type,
+            "file-format": self.file_format,
             "get-data": self.get_data(),
         }
         if "Region" in self.s3_bucket:
