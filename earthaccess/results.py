@@ -165,17 +165,18 @@ class DataCollection(CustomDict):
         return self["meta"]["concept-id"]
 
     @property
-    def data_type(self) -> str:
-        """Placeholder.
+    def data_type(self) -> List[Dict, Any]:
+        """Returns umm.ArchiveAndDistributionInformation.FileDistributionInformation
+        for collection.
 
         Returns:
-            The collection data type, i.e. HDF5, CSV etc., if available.
+            List of Dicts containing FormatType, Format, and FormatDescription
+            for collection.  Returns empty list is information not available.
         """
-        return str(
-            self["umm"]
-            .get("ArchiveAndDistributionInformation", {})
-            .get("FileDistributionInformation", "")
-        )
+        return (self["umm"]
+                .get("ArchiveAndDistributionInformation", [])
+                .get("FileDistributionInformation", [])
+                )
 
     @property
     def file_format(self) -> List[str]:
