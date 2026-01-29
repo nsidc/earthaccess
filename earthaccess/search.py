@@ -52,10 +52,9 @@ class DataCollections(CollectionQuery):
         super().__init__(*args, **kwargs)
 
         self.session = (
-            # To search, we need the new bearer tokens from NASA Earthdata
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth and auth.authenticated
-            else requests.session()
+            else requests.sessions.Session()
         )
 
         if auth:
@@ -260,7 +259,9 @@ class DataCollections(CollectionQuery):
     def print_help(self, method: str = "fields") -> None:
         """Prints the help information for a given method."""
         print("Class components: \n")  # noqa: T201
-        print([method for method in dir(self) if method.startswith("_") is False])  # noqa: T201
+        print(  # noqa: T201
+            [method for method in dir(self) if method.startswith("_") is False]
+        )
         help(getattr(self, method))
 
     def fields(self, fields: Optional[List[str]] = None) -> Self:
@@ -429,10 +430,9 @@ class DataGranules(GranuleQuery):
         super().__init__(*args, **kwargs)
 
         self.session = (
-            # To search, we need the new bearer tokens from NASA Earthdata
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth and auth.authenticated
-            else requests.session()
+            else requests.sessions.Session()
         )
 
         if auth:

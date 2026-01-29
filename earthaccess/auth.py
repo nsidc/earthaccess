@@ -99,7 +99,9 @@ class Auth(object):
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
-        self.token: Optional[Mapping[str, str]] = None
+        self.token: Mapping[str, str] | None = None
+        self.username: str | None = None
+        self.password: str | None = None
         self._set_earthdata_system(PROD)
 
     def login(
@@ -187,53 +189,34 @@ class Auth(object):
         Returns:
             A Python dictionary with the temporary AWS S3 credentials.
         """
-        if self.authenticated:
-            session = SessionWithHeaderRedirection(
-                self.system.edl_hostname, (self.username, self.password)
-            )
-            if endpoint is None:
-                auth_url = self._get_cloud_auth_url(
-                    daac_shortname=daac, provider=provider
-                )
-            else:
-                auth_url = endpoint
-            if auth_url.startswith("https://"):
-                cumulus_resp = session.get(auth_url, timeout=15, allow_redirects=True)
-                auth_resp = session.get(
-                    cumulus_resp.url, allow_redirects=True, timeout=15
-                )
-                if not (auth_resp.ok):  # type: ignore
-                    # Let's try to authenticate with Bearer tokens
-                    _session = self.get_session()
-                    cumulus_resp = _session.get(
-                        auth_url, timeout=15, allow_redirects=True
-                    )
-                    auth_resp = _session.get(
-                        cumulus_resp.url, allow_redirects=True, timeout=15
-                    )
-                    if not (auth_resp.ok):
-                        logger.error(
-                            f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
-                        )
-                        logger.error(
-                            f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
-                        )
-                        return {}
-
-                    return auth_resp.json()
-                return auth_resp.json()
-            else:
-                # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
-                # does not have cloud collections yet
-                logger.info(
-                    f"Credentials for the cloud provider {daac} are not available"
-                )
-                return {}
-        else:
+        if not self.authenticated:
             logger.info("We need to authenticate with EDL first")
             return {}
 
-    def get_session(self, bearer_token: bool = True) -> requests.Session:
+        auth_url = endpoint or self._get_cloud_auth_url(
+            daac_shortname=daac, provider=provider
+        )
+
+        if not auth_url.startswith("https://"):
+            # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
+            # does not have cloud collections yet
+            logger.info(f"Credentials for the cloud provider {daac} are not available")
+            return {}
+
+        with self.get_session() as session, session.get(auth_url, timeout=15) as r:
+            if r:
+                return r.json()
+
+            logger.error(
+                f"Authentication with Earthdata Login failed with:\n{r.text[:1000]}"
+            )
+            logger.error(
+                f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
+            )
+
+            return {}
+
+    def get_session(self) -> requests.Session:
         """Returns a new request session instance.
 
         Parameters:
@@ -242,13 +225,11 @@ class Auth(object):
         Returns:
             class Session instance with Auth and bearer token headers
         """
-        user, pwd = getattr(self, "username", None), getattr(self, "password", None)
-        auth = (user, pwd) if user and pwd else None
+        username, password = self.username, self.password
+        auth = (username, password) if username and password else None
         session = SessionWithHeaderRedirection(self.system.edl_hostname, auth)
 
-        if bearer_token and self.token:
-            # This will avoid the use of the netrc after we are logged in
-            session.trust_env = False
+        if self.token:
             session.headers["Authorization"] = f"Bearer {self.token['access_token']}"
 
         return session
@@ -328,7 +309,9 @@ class Auth(object):
             self.token = {"access_token": user_token}
             self.authenticated = True
         elif username is not None and password is not None:
-            token_resp = self._find_or_create_token(username, password)
+            self.username = username
+            self.password = password
+            token_resp = self._find_or_create_token()
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
@@ -336,22 +319,16 @@ class Auth(object):
                 raise LoginAttemptFailure(msg)
 
             logger.info("You're now authenticated with NASA Earthdata Login")
-            self.username = username
-            self.password = password
 
             token = token_resp.json()
-            logger.debug(
-                f"Using token with expiration date: {token['expiration_date']}"
-            )
+            logger.info("Using token with expiration date %s", token["expiration_date"])
             self.token = token
             self.authenticated = True
 
         return self.authenticated
 
-    def _find_or_create_token(self, username: str, password: str) -> requests.Response:
-        with SessionWithHeaderRedirection(
-            self.system.edl_hostname, (username, password)
-        ) as session:
+    def _find_or_create_token(self) -> requests.Response:
+        with self.get_session() as session:
             return session.post(
                 self.EDL_FIND_OR_CREATE_TOKEN_URL,
                 headers={"Accept": "application/json"},

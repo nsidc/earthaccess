@@ -7,6 +7,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Changed
+
+- Improved performance of fetching temporary S3 credentials (roughly 4x speedup)
+  by using EDL user token rather than EDL username/password in request
+  ([#1182](https://github.com/nsidc/earthaccess/issues/1182)) (@chuckwondo)
+
 ### Added
 
 - Added methods `doi` and `citation` to `DataCollection` class.
@@ -43,6 +49,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#1143](https://github.com/nsidc/earthaccess/issues/1143)) (@ana-sher)
 - No longer erroneously strip authorization header for valid hosts
   ([#1130](https://github.com/nsidc/earthaccess/issues/1130)) (@chuckwondo)
+- Fix `AttributeError` raised by `Auth.get_s3_credentials` when
+  `EARTHDATA_TOKEN` environment variable is set, which prevented the `username`
+  attribute from being defined on the `Auth` instance
+  ([#1181](https://github.com/nsidc/earthaccess/issues/1181)) (@chuckwondo)
 
 ## [0.15.1] - 2025-09-16
 

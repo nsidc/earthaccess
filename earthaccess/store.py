@@ -198,7 +198,7 @@ class Store(object):
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
-            self.set_requests_session(oauth_profile, bearer_token=True)
+            self.set_requests_session(oauth_profile)
             if pre_authorize:
                 # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
@@ -253,9 +253,7 @@ class Store(object):
             return True
         return False
 
-    def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = True
-    ) -> None:
+    def set_requests_session(self, url: str, method: str = "get") -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
 
         Mainly used to get the authentication cookies from different DAACs and URS.
@@ -268,7 +266,7 @@ class Store(object):
             bearer_token: if true, will be used for authenticated queries on CMR
         """
         if not hasattr(self, "_http_session"):
-            self._http_session = self.auth.get_session(bearer_token)
+            self._http_session = self.auth.get_session()
 
         resp = self._http_session.request(method, url, allow_redirects=True)
 
