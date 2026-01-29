@@ -89,6 +89,7 @@ class DataCollection(CustomDict):
         "DirectDistributionInformation",
     ]
 
+    @property
     def summary(self) -> Dict[str, Any]:
         """Summary containing short_name, concept-id, file-type, and cloud-info (if cloud-hosted).
 
