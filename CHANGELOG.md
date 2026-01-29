@@ -12,6 +12,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Improved performance of fetching temporary S3 credentials (roughly 4x speedup)
   by using EDL user token rather than EDL username/password in request
   ([#1182](https://github.com/nsidc/earthaccess/issues/1182)) (@chuckwondo)
+- `open_virtual_datasets` now accepts `load=False` to avoid materializing indexes
+  when they are not needed (e.g. xarray pre-processing metadata).
+  Fixes ([#1185](http://github.com/nsidc/earthaccess/issues/1185)) (@betolink)
 
 ### Added
 
