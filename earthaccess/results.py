@@ -100,13 +100,14 @@ class DataCollection(CustomDict):
         summary_dict: Dict[str, Any]
         summary_dict = {
             "short-name": self.get_umm("ShortName"),
-            "concept-id": self.concept_id(),
-            "version": self.version(),
-            "file-type": self.data_type(),
+            "entry-title": self.get_umm("EntryTitle"),
+            "concept-id": self.concept_id,
+            "version": self.version,
+            "file-type": self.data_type,
             "get-data": self.get_data(),
         }
-        if "Region" in self.s3_bucket():
-            summary_dict["cloud-info"] = self.s3_bucket()
+        if "Region" in self.s3_bucket:
+            summary_dict["cloud-info"] = self.s3_bucket
         return summary_dict
 
     def get_umm(self, umm_field: str) -> Union[str, Dict[str, Any]]:
