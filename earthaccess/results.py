@@ -318,6 +318,7 @@ class DataGranule(CustomDict):
                 return link["URL"]
         return None
 
+    @property
     def size(self) -> float:
         """Placeholder.
 
