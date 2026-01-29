@@ -183,7 +183,7 @@ class DataCollection(CustomDict):
         Returns:
             list of file types
         """
-        return [data_type['Format'] for data_type in
+        return [data_type.get('Format', "") for data_type in
                 self["umm"]
                 .get("ArchiveAndDistributionInformation", {})
                 .get("FileDistributionInformation", "")]
