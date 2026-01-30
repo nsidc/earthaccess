@@ -276,7 +276,7 @@ class DataGranule(CustomDict):
         super().__init__(collection)
         self.cloud_hosted = cloud_hosted
         # TODO: maybe add area, start date and all that as an instance value
-        self["size"] = self.size()
+        self["size"] = self.size
         self.uuid = str(uuid.uuid4())
         self.render_dict: Any
         if fields is None:
@@ -297,7 +297,7 @@ class DataGranule(CustomDict):
         Collection: {self["umm"]["CollectionReference"]}
         Spatial coverage: {self["umm"]["SpatialExtent"]}
         Temporal coverage: {self["umm"]["TemporalExtent"]}
-        Size(MB): {self.size()}
+        Size(MB): {self.size}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
         return rep_str
