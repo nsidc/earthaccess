@@ -864,6 +864,5 @@ _Conception!_
 [0.14.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.14.0
 [0.15.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.15.0
 [0.15.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.15.1
-[Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.16.0...HEAD
 [0.16.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.16.0
 [Unreleased]: https://github.com/nsidc/earthaccess/compare/v0.16.0...HEAD
