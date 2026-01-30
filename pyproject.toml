@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "earthaccess"
-version = "0.15.1"
+version = "0.16.0"
 description = "Client library for NASA Earthdata APIs"
 authors = [{ name = "earthaccess contributors" }]
 maintainers = [
@@ -191,7 +191,7 @@ combine-as-imports = true
 convention = "google"
 
 [tool.bumpversion]
-current_version = "0.15.1"
+current_version = "0.16.0"
 commit = false
 tag = false
 regex = true
