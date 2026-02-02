@@ -24,8 +24,8 @@ In order to strengthen the community engagement of earthaccess and lower partici
   when browsing for related projects.
 * Enable bundling related repositories (e.g. the R earthdatalogin project, other
   dependency libraries) under the same org, for example to cross-document project.
-* Preserve community's ability to make its own decisions independent of
-  institutional structure and policy.
+* Preserve community's ability to make decisions based on the interests and needs of users,
+  independent of institutional structure and policy.
 
 ### Historical Context
 
