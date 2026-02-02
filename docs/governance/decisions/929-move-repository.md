@@ -52,7 +52,6 @@ This transfer would be transparent to the earthaccess community in the following
    * All existing issues, pull requests, and other project details (e.g., commit history, branches) will be transferred with the repository and remain intact.
 4. Forks:
    * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "If the transferred repository has any forks, then those forks will remain associated with the repository after the transfer is complete."
-   * In the above documentation, there is also mention of "Single repositories forked from a private upstream network cannot be transferred." but this may not apply to us(?).
 5. PyPI and conda-forge releases:
    * earthaccess publication to both PyPI and conda-forge package managers should continue as expected without any breaking changes.
 
