@@ -53,7 +53,7 @@ This transfer would be transparent to the earthaccess community in the following
 4. Forks:
    * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "If the transferred repository has any forks, then those forks will remain associated with the repository after the transfer is complete."
 5. PyPI and conda-forge releases:
-   * earthaccess publication to both PyPI and conda-forge package managers should continue as expected without any breaking changes.
+   * earthaccess publication to both PyPI and conda-forge package managers will continue as expected without any breaking changes.
 
 This transfer would lead to the following administrative changes:
 
