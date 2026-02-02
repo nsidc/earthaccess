@@ -108,7 +108,6 @@ Cons:
 * May need to align with existing organization's priorities and processes
 
 
-
 ## Decision Outcome
 
 TBD
