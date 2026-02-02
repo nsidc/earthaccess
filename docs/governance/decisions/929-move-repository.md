@@ -59,7 +59,7 @@ This transfer would lead to the following administrative changes:
 
 1. Local Clones:
    * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "All links to the previous repository location are automatically redirected to the new location. When you use git clone, git fetch, or git push on a transferred repository, these commands will redirect to the new repository location or URL. However, to avoid confusion, we strongly recommend updating any existing local clones to point to the new repository URL. You can do this by using git remote on the command line: `git remote set-url origin NEW_URL`
-   * We may want to consider if/how to provide guidance to our community on this recommended update, though we expect this update would cause minimal disruption.
+   * We will create an "explanation" page in our docs as a historical record and include instructions for updating local clones.
 3. Permissions and Access to the new organization:
    * earthaccess maintainers would need to consider updating/reconfiguring permissions and access settings for team members within the new organization.
    * We may need to consider updates to our existing contributor documentation to reflect any applicable changes to our access processes.
