@@ -80,7 +80,7 @@ Cons:
 * Maintains sources of collaboration friction, such as there being no clear path to extend organizational ownership permissions to earthaccess maintainers outside of NSIDC
 * Vulnerability to disruption by changes within the federal government, including shutdowns, funding changes, or dissolution of organizations.
 * This project, and particularly, related repositories are hard to discover within the NSIDC GitHub org or aren't able to be placed within this org.
-* Cross-repository actions and worflows are harder to orchestrate so documenting multiple related projects together (e.g., python_cmr, R earthdatalogin) is challenging
+* Cross-repository actions and workflows are harder to orchestrate so documenting multiple related projects together (e.g., python_cmr, R earthdatalogin) is challenging
 
 ### Option 2: Move to an independent org, e.g. `earthaccess-dev`.
 
