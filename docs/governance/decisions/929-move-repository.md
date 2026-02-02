@@ -1,7 +1,7 @@
 # Decision Record: [#929 Move or fork to independent organization](https://github.com/nsidc/earthaccess/issues/929)
 
 - Status: Ready for Review  <!-- optional -->
-- Deciders: @jhkennedy, @chuckwondo, @mfisher87, @Sherwin-14, @asteiker, @itcarroll, @danielfromearth
+- Deciders: @jhkennedy, @chuckwondo, @mfisher87, @Sherwin-14, @asteiker, @itcarroll, @danielfromearth, @JessicaS11
 - Last updated: 2025-09-30
 <!-- - Tags: [space and/or comma separated list of tags] optional -->
 
