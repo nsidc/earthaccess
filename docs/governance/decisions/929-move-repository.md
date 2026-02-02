@@ -61,7 +61,7 @@ This transfer would lead to the following administrative changes:
    * According to GitHub [Transferring a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository#whats-transferred-with-a-repository) documentation, "All links to the previous repository location are automatically redirected to the new location. When you use git clone, git fetch, or git push on a transferred repository, these commands will redirect to the new repository location or URL. However, to avoid confusion, we strongly recommend updating any existing local clones to point to the new repository URL. You can do this by using git remote on the command line: `git remote set-url origin NEW_URL`
    * We will create an "explanation" page in our docs as a historical record and include instructions for updating local clones.
 3. Permissions and Access to the new organization:
-   * earthaccess maintainers would need to consider updating/reconfiguring permissions and access settings for team members within the new organization.
+   * earthaccess maintainers would need to update permissions and access settings for team members within the new organization, as people who have access solely via NSIDC organization teams would lose access.
    * We may need to consider updates to our existing contributor documentation to reflect any applicable changes to our access processes.
 3. Integrations and Third-Party Tools:
    * This may not apply to earthaccess, but we ought to consider whether any existing integrations in the NSIDC GitHub organization apply and would need to be re-connected to the migrated repository.
