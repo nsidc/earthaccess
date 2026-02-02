@@ -78,6 +78,7 @@ Pros:
 
 Cons:
 * No clear path to extend organizational ownership permissions to earthaccess maintainers outside of NSIDC
+* Vulnerability to disruption by changes within the federal government, including shutdowns, funding changes, or dissolution of organizations.
 
 ### Option 2: Move to an independent org, e.g. `earthaccess-dev`.
 
