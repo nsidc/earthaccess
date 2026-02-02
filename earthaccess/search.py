@@ -5,6 +5,7 @@ from inspect import getmembers, ismethod
 import requests
 from typing_extensions import (
     Any,
+    Iterable,
     List,
     Optional,
     Self,
@@ -51,10 +52,9 @@ class DataCollections(CollectionQuery):
         super().__init__(*args, **kwargs)
 
         self.session = (
-            # To search, we need the new bearer tokens from NASA Earthdata
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth and auth.authenticated
-            else requests.session()
+            else requests.sessions.Session()
         )
 
         if auth:
@@ -259,7 +259,9 @@ class DataCollections(CollectionQuery):
     def print_help(self, method: str = "fields") -> None:
         """Prints the help information for a given method."""
         print("Class components: \n")  # noqa: T201
-        print([method for method in dir(self) if method.startswith("_") is False])  # noqa: T201
+        print(  # noqa: T201
+            [method for method in dir(self) if method.startswith("_") is False]
+        )
         help(getattr(self, method))
 
     def fields(self, fields: Optional[List[str]] = None) -> Self:
@@ -428,10 +430,9 @@ class DataGranules(GranuleQuery):
         super().__init__(*args, **kwargs)
 
         self.session = (
-            # To search, we need the new bearer tokens from NASA Earthdata
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth and auth.authenticated
-            else requests.session()
+            else requests.sessions.Session()
         )
 
         if auth:
@@ -625,7 +626,7 @@ class DataGranules(GranuleQuery):
                 self.params["provider"] = provider
         return self
 
-    def granule_name(self, granule_name: str) -> Self:
+    def granule_name(self, granule_name: str | Iterable[str]) -> Self:
         """Find granules matching either granule ur or producer granule id,
         queries using the readable_granule_name metadata field.
 
@@ -640,10 +641,17 @@ class DataGranules(GranuleQuery):
             self
 
         Raises:
-            TypeError: if `granule_name` is not of type `str`
+            TypeError: if `granule_name` is not of type `str` or `Iterable[str]`.
         """
+        if not isinstance(granule_name, Iterable):
+            raise TypeError(
+                "granule_name must be of type string or Iterable of strings"
+            )
         if not isinstance(granule_name, str):
-            raise TypeError("granule_name must be of type string")
+            # Convert iterable to list of strings. Since str is also Iterable, make
+            # sure we don't do this when granule_name is a string, otherwise
+            # we would get a list of individual characters.
+            granule_name = [str(name) for name in granule_name]
 
         self.params["readable_granule_name"] = granule_name
         self.params["options[readable_granule_name][pattern]"] = True

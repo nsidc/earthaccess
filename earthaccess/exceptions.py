@@ -35,3 +35,23 @@ class DownloadFailure(Exception):
     """
 
     pass
+
+
+class ServiceOutage(Exception):
+    """A service outage has been detected.
+
+    This should be raised when Earthdata services are unavailable or experiencing
+    outages that prevent normal operations.
+    """
+
+    pass
+
+
+class EulaNotAccepted(DownloadFailure):
+    """The user has not accepted the EULA.
+
+    This should be raised when a user attempts to access data that requires
+    EULA acceptance, but they have not accepted the EULA.
+    """
+
+    pass

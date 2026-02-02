@@ -36,14 +36,14 @@ class TestCreateAuth(unittest.TestCase):
 
         # Test
         auth = Auth()
-        session = auth.get_session()
-        headers = session.headers
         self.assertEqual(auth.authenticated, False)
         auth.login(strategy="interactive")
         self.assertEqual(auth.authenticated, True)
         self.assertEqual(auth.token, json_response)
 
         # test that we are creating a session with the proper headers
+        session = auth.get_session()
+        headers = session.headers
         self.assertTrue("User-Agent" in headers)
         self.assertTrue("earthaccess" in headers["User-Agent"])
 
@@ -76,10 +76,9 @@ class TestCreateAuth(unittest.TestCase):
         self.assertEqual(auth.token, json_response)
 
     @responses.activate
+    @mock.patch.dict(os.environ, {"EARTHDATA_TOKEN": "ABCDEFGHIJKLMNOPQ"})
     def test_auth_can_parse_existing_user_token(self):
-        user_token = "ABCDEFGHIJKLMNOPQ"
-        os.environ["EARTHDATA_TOKEN"] = user_token
-        json_response = {"access_token": user_token}
+        json_response = {"access_token": os.environ["EARTHDATA_TOKEN"]}
 
         # Test
         auth = Auth()

@@ -4,6 +4,8 @@ import logging
 import os.path
 
 import earthaccess
+import responses
+from earthaccess.results import DataCollection
 from earthaccess.search import DataCollections
 from vcr.unittest import VCRTestCase  # type: ignore[import-untyped]
 
@@ -224,3 +226,77 @@ class TestResults(VCRTestCase):
             # Verify that Search After was used in all requests except first
             self.assertEqual(first_request, "CMR-Search-After" not in request.headers)
             first_request = False
+
+
+def test_get_doi_returns_doi_when_present():
+    collection = DataCollection(
+        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
+    )
+
+    assert collection.doi() == "doi:10.16904/envidat.lwf.34"
+
+
+def test_get_doi_returns_empty_string_when_doi_missing():
+    collection = DataCollection({"umm": {"DOI": {}}, "meta": {}})
+
+    assert collection.doi() is None
+
+
+def test_get_doi_returns_empty_string_when_doi_key_missing():
+    collection = DataCollection({"umm": {}, "meta": {}})
+
+    assert collection.doi() is None
+
+
+@responses.activate
+def test_get_citation_apa_format():
+    collection = DataCollection(
+        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
+    )
+
+    responses.add(
+        responses.GET,
+        "https://citation.doi.org/format?doi=doi:10.16904/envidat.lwf.34&style=apa&lang=en-US",
+        body="Meusburger, K., Graf Pannatier, E., & Schaub, M. (2019). 10-HS Pfynwald (Version 2019) [Dataset]. EnviDat. https://doi.org/10.16904/ENVIDAT.LWF.34",
+        status=200,
+    )
+
+    citation = collection.citation(format="apa", language="en-US")
+
+    assert (
+        citation
+        == "Meusburger, K., Graf Pannatier, E., & Schaub, M. (2019). 10-HS Pfynwald (Version 2019) [Dataset]. EnviDat. https://doi.org/10.16904/ENVIDAT.LWF.34"
+    )
+
+
+@responses.activate
+def test_get_citation_different_language():
+    collection = DataCollection(
+        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
+    )
+
+    responses.add(
+        responses.GET,
+        "https://citation.doi.org/format?doi=doi:10.16904/envidat.lwf.34&style=apa&lang=fr-FR",
+        body="Meusburger, K., Graf Pannatier, E., & Schaub, M. (2019). 10-HS Pfynwald (Version 2019) [Jeu de données]. EnviDat. https://doi.org/10.16904/ENVIDAT.LWF.34",
+        status=200,
+    )
+
+    citation = collection.citation(format="apa", language="fr-FR")
+
+    assert (
+        citation
+        == "Meusburger, K., Graf Pannatier, E., & Schaub, M. (2019). 10-HS Pfynwald (Version 2019) [Jeu de données]. EnviDat. https://doi.org/10.16904/ENVIDAT.LWF.34"
+    )
+
+
+def test_get_citation_returns_none_when_doi_missing():
+    collection = DataCollection({"umm": {}, "meta": {}})
+
+    assert collection.citation(format="apa", language="en-US") is None
+
+
+def test_get_citation_returns_none_when_doi_empty():
+    collection = DataCollection({"umm": {"DOI": {"DOI": ""}}, "meta": {}})
+
+    assert collection.citation(format="apa", language="en-US") is None

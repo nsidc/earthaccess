@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import getpass
 import importlib.metadata
 import logging
@@ -6,10 +8,11 @@ import platform
 import shutil
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, Mapping, Optional
 from urllib.parse import urlparse
 
-import requests  # type: ignore
+import requests
+import requests.cookies
 from tinynetrc import Netrc
 from typing_extensions import deprecated
 
@@ -44,46 +47,50 @@ def netrc_path() -> Path:
     return Path(env_netrc) if env_netrc else Path.home() / sys_netrc_name
 
 
+class BasicAuthResponseHook:
+    def __init__(self, hostname: str, auth: tuple[str, str]) -> None:
+        self.hostname = hostname
+        self.auth = auth
+
+    def __call__(self, r: requests.Response, **kwargs: Any) -> requests.Response:
+        from http.cookiejar import CookieJar
+
+        # If the response's URL is not for the EDL system we're authenticating
+        # against, then simply return the response unchanged.  Otherwise, we'll
+        # prepare a new request below with the user's EDL credentials.
+        if urlparse(r.url).hostname != self.hostname:
+            return r
+
+        # Consume content and release the original connection to allow our new
+        # request to reuse the same one.
+        r.content
+        r.close()
+
+        prepared_request = r.request.copy()
+        cookies: CookieJar = prepared_request._cookies  # type: ignore
+        requests.cookies.extract_cookies_to_jar(cookies, r.request, r.raw)
+        prepared_request.prepare_cookies(cookies)
+        prepared_request.prepare_auth(self.auth)
+
+        new_r = r.connection.send(prepared_request, **kwargs)
+        new_r.history.append(r)
+        new_r.request = prepared_request
+
+        return new_r
+
+
 class SessionWithHeaderRedirection(requests.Session):
     """Requests removes auth headers if the redirect happens outside the
     original req domain.
     """
 
-    AUTH_HOSTS: List[str] = [
-        "urs.earthdata.nasa.gov",
-        "cumulus.asf.alaska.edu",
-        "sentinel1.asf.alaska.edu",
-        "datapool.asf.alaska.edu",
-    ]
-
-    def __init__(
-        self,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-    ) -> None:
+    def __init__(self, edl_hostname: str, auth: tuple[str, str] | None = None) -> None:
         super().__init__()
         self.headers.update({"User-Agent": user_agent})
 
-        if username and password:
-            self.auth = (username, password)
-
-    def rebuild_auth(self, prepared_request: Any, response: Any) -> None:
-        """Overrides from the library to keep headers when redirected to or from the NASA auth host."""
-        headers = prepared_request.headers
-        url = prepared_request.url
-
-        if "Authorization" in headers:
-            original_parsed = urlparse(response.request.url)
-            redirect_parsed = urlparse(url)
-            if (original_parsed.hostname != redirect_parsed.hostname) and (
-                redirect_parsed.hostname not in self.AUTH_HOSTS
-                or original_parsed.hostname not in self.AUTH_HOSTS
-            ):
-                logger.debug(
-                    f"Deleting Auth Headers: {original_parsed.hostname} -> {redirect_parsed.hostname}"
-                )
-                del headers["Authorization"]
-        return
+        if auth:
+            hook = BasicAuthResponseHook(edl_hostname, auth)
+            self.hooks["response"].append(hook)
 
 
 class Auth(object):
@@ -92,7 +99,9 @@ class Auth(object):
     def __init__(self) -> None:
         # Maybe all these predefined URLs should be in a constants.py file
         self.authenticated = False
-        self.token: Optional[Mapping[str, str]] = None
+        self.token: Mapping[str, str] | None = None
+        self.username: str | None = None
+        self.password: str | None = None
         self._set_earthdata_system(PROD)
 
     def login(
@@ -180,51 +189,34 @@ class Auth(object):
         Returns:
             A Python dictionary with the temporary AWS S3 credentials.
         """
-        if self.authenticated:
-            session = SessionWithHeaderRedirection(self.username, self.password)
-            if endpoint is None:
-                auth_url = self._get_cloud_auth_url(
-                    daac_shortname=daac, provider=provider
-                )
-            else:
-                auth_url = endpoint
-            if auth_url.startswith("https://"):
-                cumulus_resp = session.get(auth_url, timeout=15, allow_redirects=True)
-                auth_resp = session.get(
-                    cumulus_resp.url, allow_redirects=True, timeout=15
-                )
-                if not (auth_resp.ok):  # type: ignore
-                    # Let's try to authenticate with Bearer tokens
-                    _session = self.get_session()
-                    cumulus_resp = _session.get(
-                        auth_url, timeout=15, allow_redirects=True
-                    )
-                    auth_resp = _session.get(
-                        cumulus_resp.url, allow_redirects=True, timeout=15
-                    )
-                    if not (auth_resp.ok):
-                        logger.error(
-                            f"Authentication with Earthdata Login failed with:\n{auth_resp.text[0:1000]}"
-                        )
-                        logger.error(
-                            f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
-                        )
-                        return {}
-
-                    return auth_resp.json()
-                return auth_resp.json()
-            else:
-                # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
-                # does not have cloud collections yet
-                logger.info(
-                    f"Credentials for the cloud provider {daac} are not available"
-                )
-                return {}
-        else:
+        if not self.authenticated:
             logger.info("We need to authenticate with EDL first")
             return {}
 
-    def get_session(self, bearer_token: bool = True) -> requests.Session:
+        auth_url = endpoint or self._get_cloud_auth_url(
+            daac_shortname=daac, provider=provider
+        )
+
+        if not auth_url.startswith("https://"):
+            # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
+            # does not have cloud collections yet
+            logger.info(f"Credentials for the cloud provider {daac} are not available")
+            return {}
+
+        with self.get_session() as session, session.get(auth_url, timeout=15) as r:
+            if r:
+                return r.json()
+
+            logger.error(
+                f"Authentication with Earthdata Login failed with:\n{r.text[:1000]}"
+            )
+            logger.error(
+                f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
+            )
+
+            return {}
+
+    def get_session(self) -> requests.Session:
         """Returns a new request session instance.
 
         Parameters:
@@ -233,13 +225,13 @@ class Auth(object):
         Returns:
             class Session instance with Auth and bearer token headers
         """
-        session = SessionWithHeaderRedirection()
-        if bearer_token and self.token:
-            # This will avoid the use of the netrc after we are logged in
-            session.trust_env = False
-            session.headers.update(
-                {"Authorization": f"Bearer {self.token['access_token']}"}
-            )
+        username, password = self.username, self.password
+        auth = (username, password) if username and password else None
+        session = SessionWithHeaderRedirection(self.system.edl_hostname, auth)
+
+        if self.token:
+            session.headers["Authorization"] = f"Bearer {self.token['access_token']}"
+
         return session
 
     def _interactive(
@@ -316,8 +308,10 @@ class Auth(object):
         if user_token is not None:
             self.token = {"access_token": user_token}
             self.authenticated = True
-        if username is not None and password is not None:
-            token_resp = self._find_or_create_token(username, password)
+        elif username is not None and password is not None:
+            self.username = username
+            self.password = password
+            token_resp = self._find_or_create_token()
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
@@ -325,28 +319,21 @@ class Auth(object):
                 raise LoginAttemptFailure(msg)
 
             logger.info("You're now authenticated with NASA Earthdata Login")
-            self.username = username
-            self.password = password
 
             token = token_resp.json()
-            logger.debug(
-                f"Using token with expiration date: {token['expiration_date']}"
-            )
+            logger.info("Using token with expiration date %s", token["expiration_date"])
             self.token = token
             self.authenticated = True
 
         return self.authenticated
 
-    def _find_or_create_token(self, username: str, password: str) -> Any:
-        session = SessionWithHeaderRedirection(username, password)
-        auth_resp = session.post(
-            self.EDL_FIND_OR_CREATE_TOKEN_URL,
-            headers={
-                "Accept": "application/json",
-            },
-            timeout=10,
-        )
-        return auth_resp
+    def _find_or_create_token(self) -> requests.Response:
+        with self.get_session() as session:
+            return session.post(
+                self.EDL_FIND_OR_CREATE_TOKEN_URL,
+                headers={"Accept": "application/json"},
+                timeout=10,
+            )
 
     def _persist_user_credentials(self, username: str, password: str) -> bool:
         # See: https://github.com/sloria/tinynetrc/issues/34

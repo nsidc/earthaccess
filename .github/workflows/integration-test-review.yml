@@ -31,7 +31,7 @@ jobs:
         # is 'false', it means that the triggering actor does NOT have the required
         # permission.
         if: ${{ !env.ACT && steps.permission.outputs.require-result == 'false' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           # Download the PR artifact that was uploaded in integration-test.yml
           script: |
@@ -73,7 +73,7 @@ jobs:
         # a PR comment indicating a security review is required because we know that
         # the integration tests "failed" due to lack of permission (i.e., they were
         # actually "aborted" without running any tests).
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -83,15 +83,15 @@ jobs:
             const { owner, repo } = context.repo;
 
             // Read the PR number from the downloaded and unzipped artifact.
-            const pr_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
+            const pull_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
 
             // Get the URL of the PR so we can add a link in the PR comment.
-            const { html_url } = await github.rest.pulls.get({ owner, repo, pr_number });
+            const { data: { html_url } } = await github.rest.pulls.get({ owner, repo, pull_number });
 
             github.rest.issues.createComment({
               owner,
               repo,
-              pr_number,
+              issue_number: pull_number,
               body: "User [${{ github.triggering_actor }}](${{ github.event.workflow_run.head_repository.owner.html_url }})"
                 + " does not have permission to run integration tests. A maintainer must perform a security review of the"
                 + ` [code changes in this pull request](${html_url}/files) and re-run the`

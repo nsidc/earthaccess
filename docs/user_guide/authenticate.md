@@ -3,7 +3,7 @@
 You can use `earthaccess` to search for datasets and data without needing to log in.
 However, to access (download or stream) NASA Earth science data, whether from one of the NASA
 Distributed Active Archive Centers (DAACs) on-premises archive or from NASA Earthdata Cloud, you need
-an Earthdata Login account.  You can register for a free Earthdata Login (EDL) account [here](https://urs.earthdata.nasa.gov/).
+an Earthdata Login account.  You can [register for a free Earthdata Login (EDL) account](https://urs.earthdata.nasa.gov/).
 
 Once you have an Earthdata Login account, you may use the `earthaccess.login` method to manage Earthdata Login credentials and, when you are working with cloud-hosted data, cloud credentials.
 
@@ -31,7 +31,7 @@ Enter your Earthdata password:
 
 You don't need to assign the result of `earthaccess.login()` to a variable but doing so enables access to session information.  These are discussed in [Accessing Session Information]().
 
-Setting `earthaccess.login(strategy=interactive)` will force a manual login.
+Setting `earthaccess.login(strategy="interactive")` will force a manual login.
 
 ## Login using a `.netrc`
 
@@ -40,15 +40,16 @@ Setting `earthaccess.login(strategy=interactive)` will force a manual login.
     `earthaccess` does not currently support encrypted `.netrc` files.   This strategy of writing credentials in plain text to disk
     should not be used on untrusted machines or shared user accounts.
 
-
 ### Creating a `.netrc` file
 
 #### Using `earthaccess.login` to create a `.netrc` file
 
 You can use `earthaccess.login` to create a `.netrc` for you.
+
 ```
 earthaccess.login(persist=True)
 ```
+
 You will then be prompted for your Earthdata Login username and password.  A `.netrc` (or `_netrc`) file will be created automatically.
 
 #### Manually creating a `.netrc` file for Earthdata Login Credentials
@@ -75,10 +76,13 @@ You will then be prompted for your Earthdata Login username and password.  A `.n
     In a `CMD` session, create a `%HOME%` environment variable.  The following line
     creates `%HOME%` from the path in `%USERPROFILE%`, which looks something like
     `C:\Users\"username"`.
+
     ```
     setx HOME %USERPROFILE%
     ```
+
     You now need to create a `_netrc` file in `%HOME%`.
+
     ```
     echo "machine urs.earthdata.nasa.gov login <username> password <password>" >> %HOME%\_netrc
     ```
@@ -89,38 +93,45 @@ Alternatively, Earthdata Login credentials can be created as environment variabl
 
 === "MacOS"
     If you want to set the environment variables for the current shell session, type the following on the command line.
+
     ```
     export EARTHDATA_USERNAME="username"
     export EARTHDATA_PASSWORD="password"
     ```
-    If you want to set these environmental variables permanently, add these two lines to the appropriate configuration files for your operating system.
 
+    If you want to set these environmental variables permanently, add these two lines to the appropriate configuration files for your operating system.
 
 === "Linux"
     If you want to set the environment variables for the current shell session, type the following on the command line.
+
     ```
     export EARTHDATA_USERNAME="username"
     export EARTHDATA_PASSWORD="password"
     ```
+
     If you use `bash` and would like to set these environmental variables permanently, add these two lines to your `~/.profile` file:
+
     ```
     EARTHDATA_USERNAME="username"
     EARTHDATA_PASSWORD="password"
     ```
+
     For other shells, use the recommended method to persistently set these environment variables for whichever shell you use.
 
 === "Windows"
     To set the environment variables for the current `CMD` session, type the following:
+
     ```
     setx EARTHDATA_USERNAME "username"
     setx EARTHDATA_PASSWORD "password"
     ```
-    To set these environmental variables permanently
+
+    To set these environmental variables permanently:
+
     1. Open the start menu.
     2. Search for the "Advanced System Settings" control panel and click on it.
     3. Click on the "Environment Variables" button toward the bottom of the screen.
     4. Follow the prompts to add the variable to the user table.
-
 
 ## Accessing different endpoints
 
@@ -134,14 +145,13 @@ by setting the `system` argument at login, as follows:
 import earthaccess
 
 earthaccess.login(system=earthaccess.UAT)
-
 ```
 
 ## Using `earthaccess` to get S3 credentials
 
 `earthaccess.login` is a very convenient way to manage and provide Earthdata Login credentials.  `earthaccess.login` can also be used to obtain S3 credentials to access NASA Earthdata Cloud.  If you use `earthaccess` to access data in the cloud, you do not have to use this option, `earthaccess` handles this.  However, if you are using other packages, such as `h5coro`, `earthaccess` can save a lot of time.
 
-```
+```python
 import earthaccess
 import xarray as xr
 import h5coro
