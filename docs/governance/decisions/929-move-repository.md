@@ -18,8 +18,8 @@ For example, we require organization owner permission for certain actions, teams
 
 In order to strengthen the community engagement of earthaccess and lower participation barriers, moving the `earthaccess` repo to another GitHub organization will:
 
-* Reduce friction to collaboration by allowing us to self-determine our
-  community members' access and privileges.
+* Reduce friction to collaboration by allowing the community to self-determine its
+  members' access and privileges.
 * Improve discoverability by reducing the amount of irrelevant items
   when browsing for related projects.
 * Enable bundling related repositories (e.g. the R earthdatalogin project, other
