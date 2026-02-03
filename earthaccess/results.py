@@ -165,7 +165,7 @@ class DataCollection(CustomDict):
         return self["meta"]["concept-id"]
 
     @property
-    def data_type(self) -> List[Dict, Any]:
+    def data_type(self) -> List[Union[Dict, None]]:
         """Returns umm.ArchiveAndDistributionInformation.FileDistributionInformation
         for collection.
 
