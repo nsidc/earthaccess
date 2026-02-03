@@ -29,7 +29,7 @@ In order to strengthen the community engagement of earthaccess and lower partici
 
 ### Historical Context
 
-A presentation by several earthaccess maintainers to NASA ESDIS on 11 February 2025 provided additional context and benefits of "repotting" the earthaccess repository, in order to learn more about their stance on moving and how this might impact future funding opportunities. This presentation highlighted other key benefits of repotting the repository, including:
+A [presentation by several earthaccess maintainers to NASA ESDIS on 11 February 2025](https://docs.google.com/presentation/d/1d9nSqfuMWUJP39n43Vg5xIqxXtk1Wy_5Q7Cd9L3Q02Q/edit?slide=id.p#slide=id.p) provided additional context and benefits of "repotting" the earthaccess repository, in order to learn more about their stance on moving and how this might impact future funding opportunities. This presentation highlighted other key benefits of repotting the repository, including:
 
 * Accelerating development via broader participation.
 * Lowering the cost:value even further for NASA ESDIS by enabling rapid innovation and improved security through rapid bug fixes.
