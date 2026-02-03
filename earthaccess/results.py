@@ -151,7 +151,7 @@ class DataCollection(CustomDict):
         """
         return (
             None
-            if not (doi := self.doi())
+            if not (doi := self.doi)
             else _citation(doi=doi, format=format, language=language)
         )
 
