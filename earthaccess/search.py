@@ -952,7 +952,7 @@ class DataGranules(GranuleQuery):
         # TODO consider raising an exception when there are multiple collections, since
         # we can't know which one the user wants, and choosing one is arbitrary.
         if len(collection) > 0:
-            concept_id = collection[0].concept_id()
+            concept_id = collection[0].concept_id
             self.params["concept_id"] = concept_id
         else:
             # TODO consider removing this print statement since we don't print such
