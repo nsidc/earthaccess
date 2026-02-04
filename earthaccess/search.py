@@ -149,6 +149,24 @@ class DataCollections(CollectionQuery):
 
         Returns:
             self
+
+        By default, `keyword` searches for collections that contain all words a string.
+
+            results = earthaccess.search_datasets(
+                keyword='sea ice thickness',
+            )
+
+        will return datasets that contain "sea" AND "ice" AND "thickness".
+
+        To search for datasets with fields that contain the phrase "sea ice thickness",
+        the phrase needs to contained in `"`, which must be escaped, e.g. `\"`.
+
+            results = earthaccess.search_datasets(
+                keyword='\"sea ice thickness\"',
+            )
+
+        ???+ Note
+            This behaviour may change in the future.
         """
         return super().keyword(text)
 
