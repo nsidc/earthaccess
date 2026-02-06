@@ -128,9 +128,6 @@ def _open_files(
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     open_kwargs: Optional[Dict[str, Any]] = None,
-    # Doesn't do anything. Included for compatibility with other
-    # file openers that also download files.
-    force: bool = False,
 ) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
@@ -416,7 +413,6 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: bool = False,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -432,7 +428,6 @@ class Store(object):
                 See pqdm documentation for available options. Default is to use immediate exception behavior.
             open_kwargs: Additional keyword arguments to pass to `fsspec.open`, such as `cache_type` and `block_size`.
                 Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
-            force: Force a redownload of files. By default, existing files are not overwritten.
 
         Returns:
             A list of "file pointers" to remote (i.e. `s3://` or `https://`) files.
@@ -453,7 +448,6 @@ class Store(object):
                 credentials_endpoint=credentials_endpoint,
                 pqdm_kwargs=pqdm_kwargs,
                 open_kwargs=open_kwargs,
-                force=force,
             )
         return []
 
@@ -466,7 +460,6 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: bool = False,
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -479,7 +472,6 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: bool = False,
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -515,7 +507,6 @@ class Store(object):
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
                         open_kwargs=open_kwargs,
-                        force=force,
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -528,7 +519,6 @@ class Store(object):
                     url_mapping,
                     pqdm_kwargs=pqdm_kwargs,
                     open_kwargs=open_kwargs,
-                    force=force,
                 )
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
@@ -536,7 +526,6 @@ class Store(object):
                 url_mapping,
                 pqdm_kwargs=pqdm_kwargs,
                 open_kwargs=open_kwargs,
-                force=force,
             )
 
         return fileset
@@ -550,7 +539,6 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: bool = False,
     ) -> List[Any]:
         fileset: List = []
         s3_fs = None
@@ -581,7 +569,6 @@ class Store(object):
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
                         open_kwargs=open_kwargs,
-                        force=force,
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -602,7 +589,8 @@ class Store(object):
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
             fileset = self._open_urls_https(
-                url_mapping, pqdm_kwargs=pqdm_kwargs, force=force
+                url_mapping,
+                pqdm_kwargs=pqdm_kwargs,
             )
             return fileset
 
@@ -959,7 +947,6 @@ class Store(object):
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: bool = False,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
 
@@ -969,7 +956,6 @@ class Store(object):
                 https_fs,
                 pqdm_kwargs=pqdm_kwargs,
                 open_kwargs=open_kwargs,
-                force=force,
             )
         except Exception:
             logger.exception(

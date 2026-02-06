@@ -13,7 +13,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
-- Added `force` kwarg to `download()` and `open()` to force redownloads.
+- Added `force` kwarg to `download()` to force redownloads.
 
 ## [v0.16.0] - 2026-01-30
 
