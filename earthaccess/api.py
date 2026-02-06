@@ -390,7 +390,7 @@ def download(
     show_progress: Optional[bool] = None,
     credentials_endpoint: Optional[str] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-    force: Boolean = False,
+    force: bool = False,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
@@ -456,7 +456,7 @@ def open(
     show_progress: Optional[bool] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     open_kwargs: Optional[Dict[str, Any]] = None,
-    force: Boolean = False,
+    force: bool = False,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.

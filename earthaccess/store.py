@@ -413,7 +413,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[fsspec.spec.AbstractBufferedFile]:
         """Returns a list of file-like objects that can be used to access files
         hosted on S3 or HTTPS by third party libraries like xarray.
@@ -463,7 +463,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Any]:
         raise NotImplementedError("granules should be a list of DataGranule or URLs")
 
@@ -476,7 +476,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Any]:
         fileset: List = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
@@ -541,7 +541,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Any]:
         fileset: List = []
         s3_fs = None
@@ -605,7 +605,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
 
@@ -673,7 +673,7 @@ class Store(object):
         *,
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
 
@@ -705,7 +705,7 @@ class Store(object):
         retry=retry_if_exception_type(Exception),
     )
     def download_cloud_file(
-            self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path, force: Boolean = False,
+            self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path, force: bool = False,
     ) -> Path:
         file_name = local_path / Path(file).name
         if file_name.exists() or force:
@@ -729,7 +729,7 @@ class Store(object):
         *,
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Path]:
         data_links = granules
         s3_fs = s3fs.S3FileSystem()
@@ -774,7 +774,7 @@ class Store(object):
         *,
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Path]:
         data_links: List = []
         provider = granules[0]["meta"]["provider-id"]
@@ -844,7 +844,7 @@ class Store(object):
         wait=wait_exponential(multiplier=1, min=1, max=10),
         retry=retry_if_exception_type(Exception),
     )
-    def _download_file(self, url: str, directory: Path, force: Boolean = False) -> Path:
+    def _download_file(self, url: str, directory: Path, force: bool = False) -> Path:
         """Download a single file using a bearer token.
 
         Parameters:
@@ -896,7 +896,7 @@ class Store(object):
         directory: Path,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[Any]:
         """Downloads a list of URLS into the data directory.
 
@@ -938,7 +938,7 @@ class Store(object):
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
         open_kwargs: Optional[Dict[str, Any]] = None,
-        force: Boolean = False,
+        force: bool = False,
     ) -> List[fsspec.AbstractFileSystem]:
         https_fs = self.get_fsspec_session()
 
