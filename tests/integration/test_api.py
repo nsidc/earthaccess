@@ -189,6 +189,34 @@ def test_download(tmp_path, selection, use_url):
     assert all(Path(f).exists() for f in files)
 
 
+@pytest.mark.parametrize("force", [True, False])
+def test_force_download(tmp_path, force):
+    results = earthaccess.search_data(
+        count=2,
+        short_name="ATL08",
+        cloud_hosted=True,
+        bounding_box=(-92.86, 16.26, -91.58, 16.97),
+    )
+    files = earthaccess.download(results, str(tmp_path), force=force)
+    assert isinstance(files, list)
+    assert all(Path(f).exists() for f in files)
+
+    # Verify force behavior
+    first_mtimes = [f.stat().st_mtime for f in files]
+    second_files = earthaccess.download(results, str(tmp_path), force=force)
+    second_mtimes = [f.stat().st_mtime for f in second_files]
+    if force:
+        # Redownloading should update all of the mtimes
+        assert all(
+            mtime1 < mtime2 for mtime1, mtime2 in zip(first_mtimes, second_mtimes)
+        )
+    else:
+        # No forced downloading, so no change in any mtimes.
+        assert all(
+            mtime1 == mtime2 for mtime1, mtime2 in zip(first_mtimes, second_mtimes)
+        )
+
+
 def fail_to_download_file(*args, **kwargs):
     raise IOError("Download failed")
 

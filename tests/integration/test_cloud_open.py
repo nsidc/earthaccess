@@ -110,7 +110,8 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
                 logger.warning(f"File could not be open: {file}")
 
 
-def test_multi_file_granule():
+@pytest.mark.parametrize("force", [True, False])
+def test_multi_file_granule(force):
     # Ensure granules that contain multiple files are handled correctly
     granules = earthaccess.search_data(short_name="HLSL30", count=1)
     assert len(granules) == 1
@@ -118,3 +119,18 @@ def test_multi_file_granule():
     assert len(urls) > 1
     files = earthaccess.open(granules)
     assert set(urls) == {f.path for f in files}
+
+    # Verify force behavior
+    first_mtimes = [f.stat().st_mtime for f in files]
+    second_files = earthaccess.open(granules, force=force)
+    second_mtimes = [f.stat().st_mtime for f in second_files]
+    if force:
+        # Redownloading should update all of the mtimes
+        assert all(
+            mtime1 < mtime2 for mtime1, mtime2 in zip(first_mtimes, second_mtimes)
+        )
+    else:
+        # No forced downloading, so no change in any mtimes.
+        assert all(
+            mtime1 == mtime2 for mtime1, mtime2 in zip(first_mtimes, second_mtimes)
+        )
