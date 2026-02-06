@@ -128,6 +128,9 @@ def _open_files(
     *,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     open_kwargs: Optional[Dict[str, Any]] = None,
+    # Doesn't do anything. Included for compatibility with other
+    # file openers that also download files.
+    force: bool = False,
 ) -> List[fsspec.spec.AbstractBufferedFile]:
     def multi_thread_open(data: tuple[str, Optional[DataGranule]]) -> EarthAccessFile:
         url, granule = data
