@@ -390,6 +390,7 @@ def download(
     show_progress: Optional[bool] = None,
     credentials_endpoint: Optional[str] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    force: Boolean = False,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
@@ -413,6 +414,7 @@ def download(
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        force: Force a redownload. By default, existing local files are not overwritten.
 
     Returns:
         List of downloaded files
@@ -436,6 +438,7 @@ def download(
             credentials_endpoint=credentials_endpoint,
             show_progress=show_progress,
             pqdm_kwargs=pqdm_kwargs,
+            force=force,
         )
     except AttributeError as err:
         logger.error(
@@ -453,6 +456,7 @@ def open(
     show_progress: Optional[bool] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
     open_kwargs: Optional[Dict[str, Any]] = None,
+    force: Boolean = False,
 ) -> List[AbstractFileSystem]:
     """Returns a list of file-like objects that can be used to access files
     hosted on S3 or HTTPS by third party libraries like xarray.
@@ -468,6 +472,7 @@ def open(
             and the number of jobs specified by the `threads` parameter.
         open_kwargs: Additional keyword arguments to pass to `fsspec.open`, such as `cache_type` and `block_size`.
             Defaults to using `blockcache` with a block size determined by the file size (4 to 16MB).
+        force: Force a redownload. By default, existing local files are not overwritten.
 
     Returns:
         A list of "file pointers" to remote (i.e. s3 or https) files.
@@ -479,6 +484,7 @@ def open(
         show_progress=show_progress,
         pqdm_kwargs=pqdm_kwargs,
         open_kwargs=open_kwargs,
+        force=force,
     )
 
 
