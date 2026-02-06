@@ -512,7 +512,7 @@ class Store(object):
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
                         open_kwargs=open_kwargs,
-                        force=force
+                        force=force,
                     )
                 except Exception as e:
                     raise RuntimeError(
@@ -522,12 +522,18 @@ class Store(object):
                     ) from e
             else:
                 fileset = self._open_urls_https(
-                    url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs, force=force
+                    url_mapping,
+                    pqdm_kwargs=pqdm_kwargs,
+                    open_kwargs=open_kwargs,
+                    force=force,
                 )
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
             fileset = self._open_urls_https(
-                url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs, force=force,
+                url_mapping,
+                pqdm_kwargs=pqdm_kwargs,
+                open_kwargs=open_kwargs,
+                force=force,
             )
 
         return fileset
@@ -592,7 +598,9 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs, force=force)
+            fileset = self._open_urls_https(
+                url_mapping, pqdm_kwargs=pqdm_kwargs, force=force
+            )
             return fileset
 
     def get(
@@ -705,13 +713,17 @@ class Store(object):
         retry=retry_if_exception_type(Exception),
     )
     def download_cloud_file(
-            self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path, force: bool = False,
+        self,
+        s3_fs: fsspec.AbstractFileSystem,
+        file: str,
+        local_path: Path,
+        force: bool = False,
     ) -> Path:
         file_name = local_path / Path(file).name
         if file_name.exists() or force:
             return file_name  # Skip if already exists
 
-        # Save the file with a .part suffix in case of incomplete downloads 
+        # Save the file with a .part suffix in case of incomplete downloads
         temp_name = file_name.with_name(file_name.name + ".part")
         s3_fs.get([file], str(temp_name), recursive=False)
         # Rename successful downloads to the finalized name.
@@ -762,7 +774,10 @@ class Store(object):
         else:
             # if we are not in AWS
             return self._download_onprem_granules(
-                data_links, local_path, pqdm_kwargs=pqdm_kwargs, force=force,
+                data_links,
+                local_path,
+                pqdm_kwargs=pqdm_kwargs,
+                force=force,
             )
 
     @_get.register
@@ -814,7 +829,10 @@ class Store(object):
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
             return self._download_onprem_granules(
-                data_links, local_path, pqdm_kwargs=pqdm_kwargs, force=force,
+                data_links,
+                local_path,
+                pqdm_kwargs=pqdm_kwargs,
+                force=force,
             )
 
     def _clone_session_in_local_thread(
@@ -944,7 +962,11 @@ class Store(object):
 
         try:
             return _open_files(
-                url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs, force=force,
+                url_mapping,
+                https_fs,
+                pqdm_kwargs=pqdm_kwargs,
+                open_kwargs=open_kwargs,
+                force=force,
             )
         except Exception:
             logger.exception(
