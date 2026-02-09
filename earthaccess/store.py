@@ -184,8 +184,7 @@ def _get_url_granule_mapping(
 
 @contextmanager
 def _sibling_tempfile(sibling: Path) -> Path:
-    """
-    Save the file to a temporary name in case of incomplete download.
+    """Save the file to a temporary name in case of incomplete download.
     Temp file is in the same directory to guarantee atomic replacement,
     and is automatically removed upon exit of the context manager if the
     download raises an exception.
@@ -214,7 +213,7 @@ def _sibling_tempfile(sibling: Path) -> Path:
         if temp_path.exists():
             try:
                 temp_path.unlink()
-            except OSError as err:
+            except OSError:
                 # Swallow this exception. Not critical, just warn.
                 logger.warning("Could not remove temporary file: %s", temp_path)
         raise
