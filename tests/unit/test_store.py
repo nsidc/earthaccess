@@ -393,4 +393,3 @@ def test_sibling_tempfile_error(tmp_path):
     assert not temp_file.exists()
     assert trg_file.exists()
     assert trg_file.read_text() == orig_text
-
