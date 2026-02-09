@@ -711,7 +711,7 @@ class Store(object):
         force: bool = False,
     ) -> Path:
         file_name = local_path / Path(file).name
-        if file_name.exists() or force:
+        if file_name.exists() and not force:
             return file_name  # Skip if already exists
 
         # Save the file with a .part suffix in case of incomplete downloads
