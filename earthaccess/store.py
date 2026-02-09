@@ -1,7 +1,9 @@
 import datetime
 import logging
+import tempfile
 import threading
 import traceback
+from contextlib import contextmanager
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
@@ -178,6 +180,44 @@ def _get_url_granule_mapping(
         for url in granule.data_links(access=access):
             url_mapping[url] = granule
     return url_mapping
+
+
+@contextmanager
+def _sibling_tempfile(sibling: Path) -> Path:
+    """
+    Save the file to a temporary name in case of incomplete download.
+    Temp file is in the same directory to guarantee atomic replacement,
+    and is automatically removed upon exit of the context manager if the
+    download raises an exception.
+    """
+    # Make sure the sibling file's parent directory exists.  This is thread-
+    # safe, as mkdir is atomic, and only one thread will succeed in making the
+    # directory if it does not already exist.  Others succeed due to exist_ok.
+    sibling.parent.mkdir(parents=True, exist_ok=True)
+
+    temp_fh = tempfile.NamedTemporaryFile(
+        dir=sibling.parent,
+        prefix="delete_me_",  # In case auto-delete fails, make it obvious to users
+        delete_on_close=False,
+    )
+    temp_path = Path(temp_fh.name)
+
+    try:
+        # On some systems, a process can't have two handles open for writting to the same file,
+        # so we need to close the file (hence why we don't "delete_on_close" above).
+        temp_fh.close()
+        yield temp_path
+        # Atomically rename successful uses of the temporary file
+        temp_path.replace(sibling)
+    except Exception:
+        # Something went terribly wrong. Clean up if we can.
+        if temp_path.exists():
+            try:
+                temp_path.unlink()
+            except OSError as err:
+                # Swallow this exception. Not critical, just warn.
+                logger.warning("Could not remove temporary file: %s", temp_path)
+        raise
 
 
 class Store(object):
@@ -714,12 +754,8 @@ class Store(object):
         if file_name.exists() and not force:
             return file_name  # Skip if already exists and not forcing re-download
 
-        # Save the file with a .part suffix in case of incomplete downloads
-        temp_name = file_name.with_name(file_name.name + ".part")
-        s3_fs.get([file], str(temp_name), recursive=False)
-        # Rename successful downloads to the finalized name.
-        # TODO: Do we want rename() or replace()?
-        temp_name.replace(file_name)
+        with _sibling_tempfile(file_name) as temp_name:
+            s3_fs.get([file], str(temp_name), recursive=False)
         logger.info(f"Downloading: {file_name}")
         return file_name
 
@@ -885,16 +921,12 @@ class Store(object):
                         f"Download failed for {url}. Status code: {r.status_code}"
                     )
 
-                # Save the file with a .part suffix so that incomplete downloads won't
-                # look like complete downloads, and can still be inspected.
-                temp_path = path.with_name(path.name + ".part")
-                with open(temp_path, "wb") as f:
-                    # Cap memory usage for large files at 1MB per write to disk per thread
-                    # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                    for chunk in r.iter_content(chunk_size=1024 * 1024):
-                        f.write(chunk)
-                # Rename successful downloads to the final name.
-                temp_path.replace(path)
+                with _sibling_tempfile(path) as temp_path:
+                    with open(temp_path, "wb") as f:
+                        # Cap memory usage for large files at 1MB per write to disk per thread
+                        # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            f.write(chunk)
         else:
             logger.info(f"File {local_filename} already downloaded")
         return path
