@@ -380,6 +380,7 @@ def test_sibling_tempfile_nominal(tmp_path):
     assert trg_file.exists()
     assert trg_file.read_text() == new_text
 
+
 def test_sibling_tempfile_error(tmp_path):
     trg_file = tmp_path / "target.txt"
     orig_text = "Should get replaced"

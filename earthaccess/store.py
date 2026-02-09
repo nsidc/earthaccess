@@ -203,7 +203,7 @@ def _sibling_tempfile(sibling: Path) -> Path:
     temp_path = Path(temp_fh.name)
 
     try:
-        # On some systems, a process can't have two handles open for writting to the same file,
+        # On some systems, a process can't have two handles open for writing to the same file,
         # so we need to close the file (hence why we don't "delete_on_close" above).
         temp_fh.close()
         yield temp_path
