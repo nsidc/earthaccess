@@ -1,28 +1,28 @@
 # Decision Record: [#929 Move or fork to independent organization](https://github.com/nsidc/earthaccess/issues/929)
 
-- Status: Ready for Review  <!-- optional -->
+- Status: Accepted  <!-- optional -->
 - Deciders: @jhkennedy, @chuckwondo, @mfisher87, @Sherwin-14, @asteiker, @itcarroll, @danielfromearth, @JessicaS11
-- Last updated: 2025-09-30
+- Last updated: 2025-02-09
 <!-- - Tags: [space and/or comma separated list of tags] optional -->
 
 Technical Story: [#929 Move or fork to independent organization](https://github.com/nsidc/earthaccess/issues/929)
 
 ## Context and Problem Statement
 
-`earthaccess` currently lives under the `nsidc` organization.
+`earthaccess` currently lives under the [`nsidc`](https://github.com/nsidc/) GitHub organization which is owned and managed by [NISDC](https://nsidc.org/home), a part of [CIRES at the University of Colorado Boulder](https://cires.colorado.edu/), and a [NASA DAAC](https://nsidc.org/data/data-programs/nsidc-daac).
 
-While the `earthaccess` community lives under the ownership of a private
+While the `earthaccess` community lives under the ownership of a "private"
 organization, GitHub's design prevents us from administrating our project
-independently.
+effectively.
 For example, we require organization owner permission for certain actions, teams are managed at the organization level, and our project is mixed with a large number of other projects (making it less discoverable).
 
-In order to strengthen the community engagement of earthaccess and lower participation barriers, moving the `earthaccess` repo to another GitHub organization will:
+In order to strengthen the community engagement of earthaccess and lower participation barriers, moving the `earthaccess` repo to a community-owned GitHub organization will:
 
 * Reduce friction to collaboration by allowing the community to self-determine its
   members' access and privileges.
 * Improve discoverability by reducing the amount of irrelevant items
   when browsing for related projects.
-* Enable bundling related repositories (e.g. the R earthdatalogin project, other
+* Enable bundling related repositories (e.g. the [R earthdatalogin](https://cran.r-project.org/web/packages/earthdatalogin/index.html) project, other
   dependency libraries) under the same org, for example to cross-document project.
 * Preserve community's ability to make decisions based on the interests and needs of users,
   independent of institutional structure and policy.
@@ -36,13 +36,13 @@ A [presentation by several earthaccess maintainers to NASA ESDIS on 11 February 
 * Promoting NASA’s partnerships with other community members based on shared goals, by actively recognizing the critical contributions of those members and increasing transparency and trust.
 * Meeting NASA Open Source Science goals.
 
-Subsequent discussion included positive feedback from ESDIS on the value of earthaccess, and the desire to not disrupt the existing community development and engagement. An outcome of this meeting was to pursue a cross-DAAC proposal for sustained ESDIS funding, retaining the existing community ownership model while enhancing the communication of feature development across the earthaccess community and ESDIS. While inter-community support reduces ESDIS/NASA required support, we acknowledged in the proposal that increased ESDIS funding will also help us sustain the library. Although a proposal draft was developed, ESDIS asked for this effort to be paused in summer 2025. earthaccess is currently listed by ESDIS as an approved, operational Enterprise Solution, and was considered out of scope in broader tool and service convergence activities across other enterprise components. Regardless of the repository migration approach we choose, we will continue acknowledging ESDIS support through our ESDIS-funded contributors and the valuable facilitation role of NASA Openscapes.
+Importantly, we will continue acknowledging ESDIS support through our ESDIS-funded contributors and the valuable facilitation role of NASA Openscapes, regardless of the repository migration approach we choose.
 
 ### Migration effort tasks
 
 Options 2 and 3 below would involve the movement of the existing earthaccess repository into another GitHub organization.
 
-This transfer would be transparent to the earthaccess community in the following ways:
+This [transfer](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository) would be transparent to the earthaccess community in the following ways:
 
 1. Repository URL (https://github.com/nsidc/earthaccess):
    * While the repository's URL will change to reflect the new organization, GitHub provides redirects from the old URL. Users who bookmark the old URL should not be negatively impacted.
@@ -112,4 +112,4 @@ Cons:
 
 ## Decision Outcome
 
-TBD
+The voting deciders unanimously voted for Option 2, moving to an independent GitHub Organization, and [`earthaccess-dev`](https://github.com/earthaccess-dev) was chosen as the new org.
