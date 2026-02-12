@@ -1,4 +1,4 @@
-# How to collaborate with the _earthaccess_ team
+# Community calendar
 
 Join one of our events!
 
