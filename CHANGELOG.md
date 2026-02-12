@@ -9,7 +9,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
-- Local files are saved with ".part" suffixes while downloading.
+- While downloading, files will have temporary names until download completes.
 
 ### Added
 

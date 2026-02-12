@@ -3,6 +3,7 @@ import logging
 import tempfile
 import threading
 import traceback
+from collections.abc import Generator
 from contextlib import contextmanager
 from functools import lru_cache
 from itertools import chain
@@ -183,7 +184,7 @@ def _get_url_granule_mapping(
 
 
 @contextmanager
-def _sibling_tempfile(sibling: Path) -> Path:
+def _sibling_tempfile(sibling: Path) -> Generator[Path, None, None]:
     """Save the file to a temporary name in case of incomplete download.
     Temp file is in the same directory to guarantee atomic replacement,
     and is automatically removed upon exit of the context manager if the
@@ -196,8 +197,8 @@ def _sibling_tempfile(sibling: Path) -> Path:
 
     temp_fh = tempfile.NamedTemporaryFile(
         dir=sibling.parent,
-        prefix="delete_me_",  # In case auto-delete fails, make it obvious to users
-        delete_on_close=False,
+        prefix="partial_",  # In case auto-delete fails, make it obvious to users
+        delete=False,
     )
     temp_path = Path(temp_fh.name)
 
@@ -920,12 +921,14 @@ class Store(object):
                         f"Download failed for {url}. Status code: {r.status_code}"
                     )
 
-                with _sibling_tempfile(path) as temp_path:
-                    with open(temp_path, "wb") as f:
-                        # Cap memory usage for large files at 1MB per write to disk per thread
-                        # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
-                        for chunk in r.iter_content(chunk_size=1024 * 1024):
-                            f.write(chunk)
+                with (
+                    _sibling_tempfile(path) as temp_path,
+                    open(temp_path, "wb") as f,
+                ):
+                    # Cap memory usage for large files at 1MB per write to disk per thread
+                    # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
+                    for chunk in r.iter_content(chunk_size=1024 * 1024):
+                        f.write(chunk)
         else:
             logger.info(f"File {local_filename} already downloaded")
         return path

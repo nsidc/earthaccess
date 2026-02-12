@@ -1,5 +1,7 @@
 import logging
+import operator as op
 import os
+from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
 
@@ -189,8 +191,16 @@ def test_download(tmp_path, selection, use_url):
     assert all(Path(f).exists() for f in files)
 
 
-@pytest.mark.parametrize("force", [True, False])
-def test_force_download(tmp_path, force):
+@pytest.mark.parametrize(
+    ("force", "cmp"),
+    [
+        # Redownloading should update all of the mtimes, so first list of mtimes will be less than second list of mtimes
+        (True, op.lt),
+        # No forced downloading, so first list of mtimes will be the same as the second list of mtimes
+        (False, op.eq),
+    ],
+)
+def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], bool]):
     results = earthaccess.search_data(
         count=2,
         short_name="ATL08",
@@ -201,20 +211,14 @@ def test_force_download(tmp_path, force):
     assert isinstance(files, list)
     assert all(Path(f).exists() for f in files)
 
-    # Verify force behavior
+    # Make sure no temp files are left behind
+    assert len(os.listdir(tmp_path)) == len(files)
+
+    # Verify force behavior by calling download again and checking mtimes
     first_mtimes = [f.stat().st_mtime for f in files]
     second_files = earthaccess.download(results, str(tmp_path), force=force)
     second_mtimes = [f.stat().st_mtime for f in second_files]
-    if force:
-        # Redownloading should update all of the mtimes
-        assert all(
-            mtime1 < mtime2 for mtime1, mtime2 in zip(first_mtimes, second_mtimes)
-        )
-    else:
-        # No forced downloading, so no change in any mtimes.
-        assert all(
-            mtime1 == mtime2 for mtime1, mtime2 in zip(first_mtimes, second_mtimes)
-        )
+    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes))
 
 
 def fail_to_download_file(*args, **kwargs):
