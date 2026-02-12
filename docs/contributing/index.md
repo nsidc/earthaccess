@@ -18,7 +18,7 @@ Then, you can:
   questions, share insights, or connect with others about Earth data access (broadly)
 - Open [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas) to suggest
   new features or improvements, and find collaborators and coordinate the work
-- Join [a "hack day"](our-meet-ups.md) to meet other users/developers/maintainers and get help on, or give help to,
+- Join [a Collaboration Café](calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
   anything related to Earth data access
 
 You can also directly [open a pull request](#steps-to-a-pull-request) after you've reviewed this whole contributing guide.
@@ -41,7 +41,7 @@ relevant tab to proceed.
     The smaller the pull request, the easier it is to review and test, and the more likely it is to be successful. For more details, check out this [helpful YouTube video by the author of pre-commit](https://www.youtube.com/watch?v=Gu6XrmfwivI).
 
     For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
-    or [coming to a "hack day"](our-meet-ups.md) and describing your contribution so we can help guide and/or collaborate
+    or coming to [a Collaboration Café](calendar.md) and describing your contribution so we can help guide and/or collaborate
     on the work.
 
 === "Fixing an Issue or Bug"
