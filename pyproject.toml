@@ -74,6 +74,8 @@ virtualizarr = [
   "numcodecs >= 0.16.2",
   "xarray",
 ]
+
+[dependency-groups]
 dev = [
   "bump-my-version >=0.10.0",
   "nox",
