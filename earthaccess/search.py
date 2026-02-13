@@ -851,6 +851,26 @@ class DataGranules(GranuleQuery):
         """
         return super().point(lon, lat)
 
+    def multipoint(self, lon_lat_pairs: Sequence[PointLike]) -> Self:
+        """Filter by granules that include multiple geographic points.
+
+        Parameters:
+            lon_lat_pairs: sequence of (lon, lat) tuples
+
+        Returns:
+            self
+        """
+        points = []
+
+        for x, y in lon_lat_pairs:
+            self.point(x, y)
+            points.append(self.params.pop('point')[0])
+        
+        self.params['point'] = points
+        self.options['point'] = {'or': True}        
+        return self
+
+
     @override
     def polygon(self, coordinates: Sequence[PointLike]) -> Self:
         """Filter by granules that overlap a polygonal area. Must be used in combination
@@ -868,6 +888,25 @@ class DataGranules(GranuleQuery):
                 first and last coordinate pairs are not equal.
         """
         return super().polygon(coordinates)
+
+    def multipolygon(self, multi_coordinates: Sequence[Sequence[PointLike]]) -> Self:
+        """Filter by granules that overlap any polygonal area from an input list.
+
+        Parameters:
+            multi_coordinates: list of lists of (lon, lat) tuples
+
+        Returns:
+            self
+        """
+        polygons = []
+                
+        for polygon in multi_coordinates:
+            self.polygon(polygon)
+            polygons.append(self.params.pop('polygon'))
+        
+        self.params['polygon'] = polygons
+        self.options['polygon'] = {'or': True}        
+        return self
 
     @override
     def bounding_box(
@@ -895,6 +934,25 @@ class DataGranules(GranuleQuery):
         return super().bounding_box(
             lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat
         )
+        
+    def multi_bounding_box(self, boxes: Sequence[Tuple[FloatLike, FloatLike, FloatLike, FloatLike]]) -> Self:
+        """Filter by granules that overlap any bounding box from an input list.
+
+        Parameters:
+            boxes: list of tuples of (lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)
+
+        Returns:
+            self
+        """
+        bboxes = []
+                
+        for box in boxes:
+            self.bounding_box(*box)
+            bboxes.append(self.params.pop('bounding_box'))
+        
+        self.params['bounding_box'] = bboxes
+        self.options['bounding_box'] = {'or': True}
+        return self
 
     @override
     def line(self, coordinates: Sequence[PointLike]) -> Self:
@@ -913,6 +971,44 @@ class DataGranules(GranuleQuery):
                 pairs, or a coordinate could not be converted to a float.
         """
         return super().line(coordinates)
+    
+    def multiline(self, multi_coordinates: Sequence[Sequence[PointLike]]) -> Self:
+        """Filter by granules that overlap any series of connected points from an input list.
+
+        Parameters:
+            multi_coordinates: a list of lists of (lon, lat) tuples
+
+        Returns:
+            self
+        """
+        lines = []
+                
+        for line in multi_coordinates:
+            self.line(line)
+            lines.append(self.params.pop('line'))
+        
+        self.params['line'] = lines
+        self.options['line'] = {'or': True}
+        return self
+
+    def multicircle(self, multi_circles: Sequence[Tuple[FloatLike,FloatLike,FloatLike]]) -> Self:
+        """Filter by granules that overlap any circle from an input list.
+
+        Parameters:
+            multi_circles: list of tuples of (lon, lat, radius)
+
+        Returns:
+            self
+        """
+        circles = []
+
+        for circle in multi_circles:
+            self.circle(*circle)
+            circles.append(self.params.pop('circle'))
+
+        self.params['circle'] = circles
+        self.options['circle'] = {'or': True}
+        return self
 
     @override
     def downloadable(self, downloadable: bool = True) -> Self:
