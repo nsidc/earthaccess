@@ -182,7 +182,7 @@ def open_virtual_mfdataset(
         vmfdataset.virtualize.to_kerchunk(str(ref_), format=reference_format)
 
         storage_options = {
-            "remote_protocol": fs.protocol,
+            "remote_protocol": "s3" if access == "direct" else "https",
             "remote_options": fs.storage_options,
         }
         vds = xr.open_dataset(
@@ -197,6 +197,7 @@ def open_virtual_mfdataset(
 
 def open_virtual_dataset(
     granule: earthaccess.DataGranule,
+    load: bool = True,
     group: str | None = None,
     access: str = "indirect",
 ) -> xr.Dataset:
@@ -238,6 +239,7 @@ def open_virtual_dataset(
     """
     return open_virtual_mfdataset(
         granules=[granule],
+        load=load,
         group=group,
         access=access,
         parallel=False,

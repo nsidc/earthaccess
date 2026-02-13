@@ -21,10 +21,10 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v6.8.0
+        uses: astral-sh/setup-uv@v7.2.1
         with:
           enable-cache: true
 
@@ -34,7 +34,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install minimum-compatible dependencies
-        run: uv sync --resolution lowest-direct --extra test
+        run: uv sync --resolution lowest-direct --group test
 
       - name: Test
         run: uv run pytest tests/unit --verbose --cov=earthaccess --cov=tests --cov-report=term-missing --capture=no --color=yes --tb=native --log-cli-level=INFO

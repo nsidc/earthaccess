@@ -24,8 +24,9 @@ from typing_extensions import deprecated
 
 import earthaccess
 
-from .auth import Auth, SessionWithHeaderRedirection
+from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import DownloadFailure, EulaNotAccepted
 from .results import DataGranule
 from .search import DataCollections
 
@@ -197,7 +198,7 @@ class Store(object):
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
-            self.set_requests_session(oauth_profile, bearer_token=True)
+            self.set_requests_session(oauth_profile)
             if pre_authorize:
                 # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
@@ -252,9 +253,7 @@ class Store(object):
             return True
         return False
 
-    def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = True
-    ) -> None:
+    def set_requests_session(self, url: str, method: str = "get") -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
 
         Mainly used to get the authentication cookies from different DAACs and URS.
@@ -265,12 +264,9 @@ class Store(object):
             url: used to test the credentials and populate the class auth cookies
             method: HTTP method to test, default: "GET"
             bearer_token: if true, will be used for authenticated queries on CMR
-
-        Returns:
-            fsspec HTTPFileSystem (aiohttp client session)
         """
         if not hasattr(self, "_http_session"):
-            self._http_session = self.auth.get_session(bearer_token)
+            self._http_session = self.auth.get_session()
 
         resp = self._http_session.request(method, url, allow_redirects=True)
 
@@ -394,7 +390,7 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(self) -> SessionWithHeaderRedirection:
+    def get_requests_session(self) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
 
         This HTTPS session can be used to download granules if we want to use a direct,
@@ -802,7 +798,7 @@ class Store(object):
             )
 
     def _clone_session_in_local_thread(
-        self, original_session: SessionWithHeaderRedirection
+        self, original_session: requests.Session
     ) -> None:
         """Clone the original session and store it in the local thread context.
 
@@ -816,7 +812,7 @@ class Store(object):
             None
         """
         if not hasattr(self.thread_locals, "local_thread_session"):
-            local_thread_session = SessionWithHeaderRedirection()
+            local_thread_session = self.auth.get_session()  # type: ignore
             local_thread_session.headers.update(original_session.headers)
             local_thread_session.cookies.update(original_session.cookies)
             local_thread_session.auth = original_session.auth
@@ -850,7 +846,15 @@ class Store(object):
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
-                r.raise_for_status()
+                if r.status_code in [401, 403]:
+                    text = (r.text or "").lower()
+                    if "eula" in text:
+                        raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
+                if r.status_code >= 400:
+                    raise DownloadFailure(
+                        f"Download failed for {url}. Status code: {r.status_code}"
+                    )
+
                 with open(path, "wb") as f:
                     # Cap memory usage for large files at 1MB per write to disk per thread
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content

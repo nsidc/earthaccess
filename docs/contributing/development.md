@@ -41,7 +41,7 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     Then install `earthaccess` into the environment in editable mode with the optional development dependencies:
 
     ```bash
-    python -m pip install --editable ".[dev,test,docs]"
+    python -m pip install --editable . --group dev --group test --group docs
     ```
 
 === "`conda`/`mamba`"

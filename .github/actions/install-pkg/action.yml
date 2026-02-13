@@ -32,4 +32,4 @@ runs:
 
     - name: Install package and test dependencies
       shell: bash
-      run: uv sync --extra test
+      run: uv sync --group test

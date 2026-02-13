@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 dataset_valid_params = [
     {"data_center": "NSIDC", "cloud_hosted": True},
     {"keyword": "aerosol", "cloud_hosted": False},
-    {"daac": "NSIDC", "keyword": "ocean"},
+    {"daac": "NSIDC", "keyword": "ocean", "cloud_hosted": True},
 ]
 
 granules_valid_params = [
