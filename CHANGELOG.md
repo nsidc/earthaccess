@@ -7,6 +7,14 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Changed
+
+- While downloading, files will have temporary names until download completes.
+
+### Added
+
+- Added `force` kwarg to `download()` to force redownloads.
+
 ## [v0.16.0] - 2026-01-30
 
 ### Changed
