@@ -50,6 +50,7 @@ plugins:
   - redirects:
       redirect_maps:
         "CODE_OF_CONDUCT.md": "contributing/code-of-conduct.md"
+        "contributing/our-meet-ups.md": "contributing/calendar.md"
   - mkdocs-jupyter:
       execute: true
       ignore:
@@ -65,13 +66,13 @@ nav:
   - "Quick start": "quick-start.md"
   - "Work with us":
       - "contributing/index.md" # << Link target of the parent node
+      - "Community calendar": "contributing/calendar.md"
       - "Development Guide": "contributing/development.md"
       - "Releasing Guide": "contributing/releasing.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Triaging Guide": "contributing/triaging.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
       - "Contributing naming convention": "contributing/naming-convention.md"
-      - "Meet-ups": "contributing/our-meet-ups.md"
       - "Topics":
           - "Naming conventions": "contributing/naming-convention.md"
           - "Integration tests": "contributing/integration-tests.md"

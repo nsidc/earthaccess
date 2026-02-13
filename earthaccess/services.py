@@ -28,9 +28,8 @@ class DataServices(ServiceQuery):
         super().__init__(*args, **kwargs)
         self._debug = False
 
-        # To search, we need the new bearer tokens from NASA Earthdata
         self.session = (
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth is not None and auth.authenticated
             else requests.sessions.Session()
         )
