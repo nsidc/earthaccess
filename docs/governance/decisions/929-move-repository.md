@@ -113,3 +113,13 @@ Cons:
 ## Decision Outcome
 
 The voting deciders unanimously voted for Option 2, moving to an independent GitHub Organization, and [`earthaccess-dev`](https://github.com/earthaccess-dev) was chosen as the new org.
+
+### Checklist
+
+- [ ] Migrate `earthaccess-support` team from `nsidc` -> `earthaccess-dev`
+- [ ] Update all links in repo to new GitHub URL
+- [ ] Migrate ReadTheDocs to new repo
+- [ ] Migrate pre-commit to new repo
+- [ ] Announce on Zulip
+  - Link to Zulip announcement in Slack
+- [ ] Add documentation page including migration instructions for contributors
