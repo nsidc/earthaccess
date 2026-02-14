@@ -68,6 +68,7 @@ nav:
       - "contributing/index.md" # << Link target of the parent node
       - "Community calendar": "contributing/calendar.md"
       - "Development Guide": "contributing/development.md"
+      - "Pull Request (PR) Guide": "contributing/pr-guide.md"
       - "Releasing Guide": "contributing/releasing.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Triaging Guide": "contributing/triaging.md"
