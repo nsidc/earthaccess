@@ -4,7 +4,11 @@ after completing the draft checklist.
 
 At this stage, maintainers will give your PR their attention, and will support any items
 in the merge checklist you need help with.
+--->
 
+## Description
+
+<!--
 Replace this text, including the symbols above and below it, with descriptive text about
 the change you are proposing. Please include a reference to any issues addressed or
 resolved in that text, for example "resolves #1".
