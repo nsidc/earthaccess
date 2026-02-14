@@ -20,7 +20,7 @@ resolved in that text, for example "resolves #1".
 #### Pull Request (PR) draft checklist
 
 - [ ] Please review our [contributing documentation](https://earthaccess.readthedocs.io/en/latest/contributing/)!
-- [ ] Populate a descriptive title. For example, instead of "Updated README.md", use a title such as "Add testing details to the contributor section of the README".
+- [ ] Populate a descriptive title. For example, instead of `Updated README.md`, use `Add testing details to the contributor section of the README`.
       Example: [#763](https://github.com/nsidc/earthaccess/pull/763)
 - [ ] Populate the body of the pull request with:
     - A clear description of the change you are proposing.
