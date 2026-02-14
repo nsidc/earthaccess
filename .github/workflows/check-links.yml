@@ -21,5 +21,7 @@ jobs:
       - uses: jupyterlab/maintainer-tools/.github/actions/check-links@v1
         with:
           # Allow absolute links; any broken internal links will get caught in the docs build
+          # Ignore failed checks on earthdata.nasa.gov: They 403 on requests based on user agent. Nothing we can do short of spoofing.
           ignore_links: >-
             ^/.*
+            ^https://www\.earthdata\.nasa\.gov/.*
