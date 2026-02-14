@@ -7,7 +7,7 @@ strict: false
 
 theme:
   name: "material"
-  logo: earth.png
+  logo: logo.png
   favicon: earth.png
   palette:
     - scheme: default
