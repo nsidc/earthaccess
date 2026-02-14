@@ -30,12 +30,12 @@ contributions.
   contributor section of the README`.
   Example: [#763](https://github.com/nsidc/earthaccess/pull/763)
 * **Body**:
-  * Populate a clear description of the change you're proposing. What did you do, and
-    **why**?
-  * Link to any issues that describe the problem being solved.
-  * Links to any issues resolved by this PR with text in the PR description, for example
-    `closes #1`.
-    See more in [GitHub docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
+    * Populate a clear description of the change you're proposing. What did you do, and
+      **why**?
+    * Link to any issues that describe the problem being solved.
+    * Links to any issues resolved by this PR with text in the PR description, for example
+      `closes #1`.
+      See more in [GitHub docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 
 
 ### Update documentation
