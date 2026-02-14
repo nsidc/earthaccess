@@ -1,22 +1,13 @@
 <!--
+IMPORTANT: Please open your PR in draft mode to start; only mark it "ready for review"
+after completing the draft checklist.
+
+At this stage, maintainers will give your PR their attention, and will support any items
+in the merge checklist you need help with.
+
 Replace this text, including the symbols above and below it, with descriptive text about
 the change you are proposing. Please include a reference to any issues addressed or
 resolved in that text, for example "resolves #1".
--->
-
-<!--
-IMPORTANT: As a contributor, we would like as much help as you can offer, but we only
-expect you to complete the steps in the "PR draft checklist" below. Maintainers are
-willing and ready to help pick it up from there!
-
-Please start by opening this Pull Request as a "draft". You can do this by
-clicking the arrow on the right side of the green "Create pull request" button. While
-your pull request is in "draft" state, maintainers will assume the PR isn't ready for
-their attention unless they are specifically summoned using GitHub's @ system.
-
-Follow the draft checklist below to move the PR out of draft state. If you accidentally
-created the PR as a non-draft, don't worry, you can still change it to a draft using the
-"Convert to draft" button on  the right side panel under the "Reviewers" section.
 -->
 
 ### Pull Request (PR) draft checklist
