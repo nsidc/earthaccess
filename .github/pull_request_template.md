@@ -17,7 +17,7 @@ resolved in that text, for example "resolves #1".
 
 ---
 
-### Pull Request (PR) draft checklist
+#### Pull Request (PR) draft checklist
 
 - [ ] Please review our [contributing documentation](https://earthaccess.readthedocs.io/en/latest/contributing/)!
 - [ ] Populate a descriptive title. For example, instead of "Updated README.md", use a title such as "Add testing details to the contributor section of the README".
@@ -31,7 +31,7 @@ resolved in that text, for example "resolves #1".
 - [ ] Finally, click the "Ready for review" button at the bottom of this page!
 
 
-### Pull Request (PR) merge checklist
+#### Pull Request (PR) merge checklist
 
 If you need help with any of these
 requirements, you can ping the `@nsidc/earthaccess-support` team in a comment and we
