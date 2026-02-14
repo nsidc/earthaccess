@@ -219,9 +219,6 @@ class Auth(object):
     def get_session(self) -> requests.Session:
         """Returns a new request session instance.
 
-        Parameters:
-            bearer_token: whether to include bearer token
-
         Returns:
             class Session instance with Auth and bearer token headers
         """
