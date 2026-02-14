@@ -233,19 +233,19 @@ def test_get_doi_returns_doi_when_present():
         {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
     )
 
-    assert collection.doi() == "doi:10.16904/envidat.lwf.34"
+    assert collection.doi == "doi:10.16904/envidat.lwf.34"
 
 
 def test_get_doi_returns_empty_string_when_doi_missing():
     collection = DataCollection({"umm": {"DOI": {}}, "meta": {}})
 
-    assert collection.doi() is None
+    assert collection.doi is None
 
 
 def test_get_doi_returns_empty_string_when_doi_key_missing():
     collection = DataCollection({"umm": {}, "meta": {}})
 
-    assert collection.doi() is None
+    assert collection.doi is None
 
 
 @responses.activate
