@@ -72,6 +72,9 @@ nav:
       - "What is earthaccess?": "index.md"
       - "Resources": "resources.md"
       - "About Us": "about-us.md"
+      - Governance:
+          - Decision records: "governance/decisions/"
+
   - User guide:
       - "user_guide/index.md"
       - "Quick start": "quick-start.md"
