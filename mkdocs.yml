@@ -63,9 +63,54 @@ plugins:
         - "howto/edl.ipynb"
 
 nav:
-  - "What is earthaccess?": "index.md"
-  - "Quick start": "quick-start.md"
-  - "Work with us":
+  - Overview:
+      - "What is earthaccess?": "index.md"
+      - "Resources": "resources.md"
+      - "About Us": "about-us.md"
+  - User guide:
+      - "user_guide/index.md"
+      - "Quick start": "quick-start.md"
+      - "Authentication": "user_guide/authenticate.md"
+      - "Status": "user_guide/status.md"
+      - "Search": "user_guide/search.md"
+      - "Access": "user_guide/access.md"
+      - "Backwards Compatibility": "user_guide/backwards-compatibility.md"
+      - How-tos:
+          - "Authenticate with Earthdata Login": "howto/authenticate.md"
+          - "Search NASA datasets using filters": "howto/search-collections.md"
+          - "Search for data using filters": "howto/search-granules.md"
+          - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
+          - "Access data": "howto/access-data.md"
+          - "Using authenticated sessions to access data": "howto/edl.ipynb"
+          - "Remote access and caching with earthaccess": "user_guide/fsspec.ipynb"
+          - "Download data from on-prem location": "howto/onprem.md"
+          - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
+          - "Search for services": "howto/search-services.md"
+      - Tutorials:
+          - "Accessing remote NASA data with fsspec": "tutorials/file-access.ipynb"
+          - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
+          # - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb" TODO: make this faster
+          - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
+          - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
+      - Reference:
+          - API:
+              - "Search and Access": "user-reference/api/api.md"
+          - Modules:
+              - Collections:
+                  - "Collection Queries": "user-reference/collections/collections-query.md"
+                  - "Collection Results": "user-reference/collections/collections.md"
+                  - "Collection Services": "user-reference/collections/collections-services.md"
+              - Granules:
+                  - "Granule Queries": "user-reference/granules/granules-query.md"
+                  - "Granule Results": "user-reference/granules/granules.md"
+              - Store:
+                  - "Store": "user-reference/store/store.md"
+              - Auth:
+                  - "Auth": "user-reference/auth/auth.md"
+          - Glossary:
+              - "NASA Glossary": "user-reference/glossary/nasa-glossary.md"
+              - "Cloud Computing Terminology": "user-reference/glossary/cloud-glossary.md"
+  - Contributor guide:
       - "contributing/index.md" # << Link target of the parent node
       - "Community calendar": "contributing/calendar.md"
       - "Development Guide": "contributing/development.md"
@@ -73,54 +118,9 @@ nav:
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Triaging Guide": "contributing/triaging.md"
       - "Code of Conduct": "contributing/code-of-conduct.md"
-      - "Contributing naming convention": "contributing/naming-convention.md"
       - "Topics":
           - "Naming conventions": "contributing/naming-convention.md"
           - "Integration tests": "contributing/integration-tests.md"
-  - "Resources": "resources.md"
-  - USER GUIDE:
-      - "user_guide/index.md"
-      - "Authentication": "user_guide/authenticate.md"
-      - "Status": "user_guide/status.md"
-      - "Search": "user_guide/search.md"
-      - "Access": "user_guide/access.md"
-      - "Backwards Compatibility": "user_guide/backwards-compatibility.md"
-  - HOW-TO:
-      - "Authenticate with Earthdata Login": "howto/authenticate.md"
-      - "Search NASA datasets using filters": "howto/search-collections.md"
-      - "Search for data using filters": "howto/search-granules.md"
-      - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
-      - "Access data": "howto/access-data.md"
-      - "Using authenticated sessions to access data": "howto/edl.ipynb"
-      - "Remote access and caching with earthaccess": "user_guide/fsspec.ipynb"
-      - "Download data from on-prem location": "howto/onprem.md"
-      - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
-      - "Search for services": "howto/search-services.md"
-  - TUTORIALS:
-      - "Accessing remote NASA data with fsspec": "tutorials/file-access.ipynb"
-      - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
-      # - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb" TODO: make this faster
-      - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
-      - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
-  - USER REFERENCE:
-      - API:
-          - "Search and Access": "user-reference/api/api.md"
-      - Modules:
-          - Collections:
-              - "Collection Queries": "user-reference/collections/collections-query.md"
-              - "Collection Results": "user-reference/collections/collections.md"
-              - "Collection Services": "user-reference/collections/collections-services.md"
-          - Granules:
-              - "Granule Queries": "user-reference/granules/granules-query.md"
-              - "Granule Results": "user-reference/granules/granules.md"
-          - Store:
-              - "Store": "user-reference/store/store.md"
-          - Auth:
-              - "Auth": "user-reference/auth/auth.md"
-      - Glossary:
-          - "NASA Glossary": "user-reference/glossary/nasa-glossary.md"
-          - "Cloud Computing Terminology": "user-reference/glossary/cloud-glossary.md"
-  - "About Us": "about-us.md"
 
 markdown_extensions:
   - admonition
