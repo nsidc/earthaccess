@@ -50,17 +50,18 @@ plugins:
   - autorefs
   - redirects:
       redirect_maps:
-        "CODE_OF_CONDUCT.md": "contributing/code-of-conduct.md"
-        "contributing/our-meet-ups.md": "contributing/calendar.md"
+        "CODE_OF_CONDUCT.md": "contributor/code-of-conduct.md"
+        "contributing/our-meet-ups.md": "contributor/calendar.md"
   - mkdocs-jupyter:
-      execute: true
+      execute: false
       ignore:
-        - "tutorials/dask.ipynb"
+        - "**/*"
         - "**/.ipynb_checkpoints/*"
-        - "user_guide/fsspec.ipynb"
-        - "tutorials/SSL.ipynb"
-        - "tutorials/dmrpp-virtualizarr.ipynb"
-        - "howto/edl.ipynb"
+        - "user/fsspec.ipynb"
+        - "user/tutorials/SSL.ipynb"
+        - "user/tutorials/dmrpp-virtualizarr.ipynb"
+        - "user/tutorials/dask.ipynb"
+        - "user/howto/edl.ipynb"
 
 nav:
   - Overview:
@@ -71,59 +72,59 @@ nav:
           - Decision records: "governance/decisions/"
 
   - User guide:
-      - "user_guide/index.md"
-      - "Quick start": "quick-start.md"
-      - "Authentication": "user_guide/authenticate.md"
-      - "Status": "user_guide/status.md"
-      - "Search": "user_guide/search.md"
-      - "Access": "user_guide/access.md"
-      - "Backwards Compatibility": "user_guide/backwards-compatibility.md"
+      - "user/index.md"
+      - "Quick start": "user/quick-start.md"
+      - "Authentication": "user/authenticate.md"
+      - "Status": "user/status.md"
+      - "Search": "user/search.md"
+      - "Access": "user/access.md"
+      - "Backwards Compatibility": "user/backwards-compatibility.md"
       - How-tos:
-          - "Authenticate with Earthdata Login": "howto/authenticate.md"
-          - "Search NASA datasets using filters": "howto/search-collections.md"
-          - "Search for data using filters": "howto/search-granules.md"
-          - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
-          - "Access data": "howto/access-data.md"
-          - "Using authenticated sessions to access data": "howto/edl.ipynb"
-          - "Remote access and caching with earthaccess": "user_guide/fsspec.ipynb"
-          - "Download data from on-prem location": "howto/onprem.md"
-          - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
-          - "Search for services": "howto/search-services.md"
+          - "Authenticate with Earthdata Login": "user/howto/authenticate.md"
+          - "Search NASA datasets using filters": "user/howto/search-collections.md"
+          - "Search for data using filters": "user/howto/search-granules.md"
+          - "Determine if a dataset is available in the cloud": "user/howto/storage-location.md"
+          - "Access data": "user/howto/access-data.md"
+          - "Using authenticated sessions to access data": "user/howto/edl.ipynb"
+          - "Remote access and caching with earthaccess": "user/howto/fsspec.ipynb"
+          - "Download data from on-prem location": "user/howto/onprem.md"
+          - "Direct S3 access - Open/stream files in the cloud": "user/howto/cloud.md"
+          - "Search for services": "user/howto/search-services.md"
       - Tutorials:
-          - "Accessing remote NASA data with fsspec": "tutorials/file-access.ipynb"
-          - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
+          - "Accessing remote NASA data with fsspec": "user/tutorials/file-access.ipynb"
+          - "Search and access of restricted datasets": "user/tutorials/restricted-datasets.ipynb"
           # - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb" TODO: make this faster
-          - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
-          - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
+          - "Accessing and visualizing EMIT data with a few lines of code": "user/tutorials/emit-earthaccess.ipynb"
+          - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "user/tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
       - Reference:
           - API:
-              - "Search and Access": "user-reference/api/api.md"
+              - "Search and Access": "user/reference/api/api.md"
           - Modules:
               - Collections:
-                  - "Collection Queries": "user-reference/collections/collections-query.md"
-                  - "Collection Results": "user-reference/collections/collections.md"
-                  - "Collection Services": "user-reference/collections/collections-services.md"
+                  - "Collection Queries": "user/reference/collections/collections-query.md"
+                  - "Collection Results": "user/reference/collections/collections.md"
+                  - "Collection Services": "user/reference/collections/collections-services.md"
               - Granules:
-                  - "Granule Queries": "user-reference/granules/granules-query.md"
-                  - "Granule Results": "user-reference/granules/granules.md"
+                  - "Granule Queries": "user/reference/granules/granules-query.md"
+                  - "Granule Results": "user/reference/granules/granules.md"
               - Store:
-                  - "Store": "user-reference/store/store.md"
+                  - "Store": "user/reference/store/store.md"
               - Auth:
-                  - "Auth": "user-reference/auth/auth.md"
+                  - "Auth": "user/reference/auth/auth.md"
           - Glossary:
-              - "NASA Glossary": "user-reference/glossary/nasa-glossary.md"
-              - "Cloud Computing Terminology": "user-reference/glossary/cloud-glossary.md"
+              - "NASA Glossary": "user/reference/glossary/nasa-glossary.md"
+              - "Cloud Computing Terminology": "user/reference/glossary/cloud-glossary.md"
   - Contributor guide:
-      - "contributing/index.md" # << Link target of the parent node
-      - "Community calendar": "contributing/calendar.md"
-      - "Development Guide": "contributing/development.md"
-      - "Releasing Guide": "contributing/releasing.md"
-      - "Maintainers Guide": "contributing/maintainers-guide.md"
-      - "Triaging Guide": "contributing/triaging.md"
-      - "Code of Conduct": "contributing/code-of-conduct.md"
+      - "contributor/index.md" # << Link target of the parent node
+      - "Community calendar": "contributor/calendar.md"
+      - "Development Guide": "contributor/development.md"
+      - "Releasing Guide": "contributor/releasing.md"
+      - "Maintainers Guide": "contributor/maintainers-guide.md"
+      - "Triaging Guide": "contributor/triaging.md"
+      - "Code of Conduct": "contributor/code-of-conduct.md"
       - "Topics":
-          - "Naming conventions": "contributing/naming-convention.md"
-          - "Integration tests": "contributing/integration-tests.md"
+          - "Naming conventions": "contributor/naming-convention.md"
+          - "Integration tests": "contributor/integration-tests.md"
 
 markdown_extensions:
   - admonition
