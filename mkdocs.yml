@@ -26,6 +26,8 @@ theme:
     - navigation.indexes
     # Enable navigation breadcrumbs
     - navigation.path
+    # Display top-level nav elements in the top bar
+    - navigation.tabs
 
 repo_name: nsidc/earthaccess
 repo_url: https://github.com/nsidc/earthaccess
