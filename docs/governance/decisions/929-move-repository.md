@@ -91,7 +91,7 @@ Pros:
 
 Cons:
 * Migration effort
-* Potential for reduced developer time without institutional org backing.
+* Potential for reduced developer time without institutional backing.
 
 
 ### Option 3: Move to a sponsor / incubator org, e.g. `pangeo`, `openscapes`.
