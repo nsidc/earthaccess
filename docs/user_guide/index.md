@@ -1,4 +1,4 @@
-# Overview
+# User guide
 
 `earthaccess` enables authentication, search and access for NASA Earth science data.  The package enables users to find, and download or stream data archived both at NASA DAACs and in the AWS-hosted Earthdata Cloud.  The User Guide introduces these three functions.
 
