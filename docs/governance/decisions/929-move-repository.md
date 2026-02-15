@@ -115,6 +115,15 @@ Cons:
 The voting deciders unanimously selected Option 2, moving to an independent GitHub Organization.
 [`earthaccess-dev`](https://github.com/earthaccess-dev) was chosen as the new org.
 
+Aside from migration effort, the only con to worry about is the potential for reduced
+institutional support.
+While this outcome would impact the project, based on conversations with management and
+the adoption of earthaccess we feel it is extremely unlikely to happen due to moving the
+repository.
+If this occurs, it will much more likely be because of federal funding decisions, and
+moving the repository will increase our resilience to changes in the federal funding
+landscape.
+
 
 ### Checklist
 
