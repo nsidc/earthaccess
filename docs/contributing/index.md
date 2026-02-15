@@ -1,4 +1,4 @@
-# Contributing
+# Contributor guide
 
 Thank you for your interest in contributing to _earthaccess_! We're excited for your contribution,
 whether you're finding bugs, adding new features, fixing anything broken, or improving documentation.
