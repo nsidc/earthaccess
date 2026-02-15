@@ -30,4 +30,4 @@ resolved in that text, for example "resolves #1".
 - [ ] If needed, docs and/or `README.md` updated
 - [ ] If needed, unit tests added
 - [ ] All checks passing (comment `pre-commit.ci autofix` if pre-commit is failing)
-- [ ] At least one approval.
+- [ ] At least one approval
