@@ -57,7 +57,7 @@ plugins:
       execute: true
       ignore:
         - "**/.ipynb_checkpoints/*"
-        - "user/fsspec.ipynb"
+        - "user/howto/fsspec.ipynb"
         - "user/tutorials/SSL.ipynb"
         - "user/tutorials/dmrpp-virtualizarr.ipynb"
         - "user/tutorials/dask.ipynb"
