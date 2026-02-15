@@ -1,4 +1,4 @@
-# Decision Record: [#231 AWS us-west-2 checking method](https://github.com/nsidc/earthaccess/issues/231)
+# [#231](https://github.com/nsidc/earthaccess/issues/231) AWS us-west-2 checking method
 
 - Status: Accepted  <!-- optional -->
 - Deciders: @jhkennedy, @chuckwondo, @mfisher87, @Sherwin-14, @asteiker, @itcarroll

@@ -3,9 +3,11 @@ revision = 3
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.14' and platform_python_implementation == 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation == 'PyPy'",
     "python_full_version >= '3.14' and platform_python_implementation != 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation != 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation != 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation == 'PyPy'",
 ]
@@ -211,8 +213,10 @@ name = "argon2-cffi-bindings"
 version = "25.1.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation == 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation != 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation != 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation == 'PyPy'",
 ]
@@ -1114,6 +1118,7 @@ docs = [
     { name = "markdown-include" },
     { name = "matplotlib" },
     { name = "mkdocs" },
+    { name = "mkdocs-awesome-nav" },
     { name = "mkdocs-jupyter" },
     { name = "mkdocs-material" },
     { name = "mkdocs-mermaid2-plugin" },
@@ -1198,6 +1203,7 @@ docs = [
     { name = "markdown-include", specifier = ">=0.6" },
     { name = "matplotlib", specifier = ">=3.3" },
     { name = "mkdocs", specifier = ">=1.2,!=1.6.0" },
+    { name = "mkdocs-awesome-nav", specifier = ">=3.3.0" },
     { name = "mkdocs-jupyter", specifier = ">=0.19.0" },
     { name = "mkdocs-material", specifier = ">=9.7.1,<10.0" },
     { name = "mkdocs-mermaid2-plugin", specifier = ">=1.2.1" },
@@ -2450,6 +2456,21 @@ wheels = [
 ]
 
 [[package]]
+name = "mkdocs-awesome-nav"
+version = "3.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mkdocs" },
+    { name = "natsort" },
+    { name = "pydantic" },
+    { name = "wcmatch" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1f/96/d581c9ceae7d8c08c7456d1d2befbf3e9c7a52a6b03aebbe6dc1d46ffdac/mkdocs_awesome_nav-3.3.0.tar.gz", hash = "sha256:330edf4129995a7be8a9751edd8739d312fddf591c6cbd95ec80f12f4bfe8578", size = 9112, upload-time = "2025-12-02T20:10:46.11Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/98/dc154a7f0bb25827d988dc31992917606d1ca9f5349077db045bb5cd9dbc/mkdocs_awesome_nav-3.3.0-py3-none-any.whl", hash = "sha256:bf80f14bff9571df79129bbdf103b4198589ee7616f8a29720ae2e7ac2455930", size = 12891, upload-time = "2025-12-02T20:10:45.054Z" },
+]
+
+[[package]]
 name = "mkdocs-get-deps"
 version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2749,6 +2770,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/a2/6e/371856a3fb9d31ca8dac321cda606860fa4548858c0cc45d9d1d4ca2628b/mypy_extensions-1.1.0.tar.gz", hash = "sha256:52e68efc3284861e772bbcd66823fde5ae21fd2fdb51c62a211403730b916558", size = 6343, upload-time = "2025-04-22T14:54:24.164Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/79/7b/2c79738432f5c924bef5071f933bcc9efd0473bac3b4aa584a6f7c1c8df8/mypy_extensions-1.1.0-py3-none-any.whl", hash = "sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505", size = 4963, upload-time = "2025-04-22T14:54:22.983Z" },
+]
+
+[[package]]
+name = "natsort"
+version = "8.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/a9/a0c57aee75f77794adaf35322f8b6404cbd0f89ad45c87197a937764b7d0/natsort-8.4.0.tar.gz", hash = "sha256:45312c4a0e5507593da193dedd04abb1469253b601ecaf63445ad80f0a1ea581", size = 76575, upload-time = "2023-06-20T04:17:19.925Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ef/82/7a9d0550484a62c6da82858ee9419f3dd1ccc9aa1c26a1e43da3ecd20b0d/natsort-8.4.0-py3-none-any.whl", hash = "sha256:4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c", size = 38268, upload-time = "2023-06-20T04:17:17.522Z" },
 ]
 
 [[package]]
@@ -4468,7 +4498,8 @@ version = "2.31.0.6"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.14' and platform_python_implementation == 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation == 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation == 'PyPy'",
 ]
 dependencies = [
@@ -4485,7 +4516,8 @@ version = "2.32.4.20250809"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.14' and platform_python_implementation != 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation != 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation != 'PyPy'",
 ]
 dependencies = [
@@ -4652,7 +4684,8 @@ version = "1.26.20"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.14' and platform_python_implementation == 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation == 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation == 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation == 'PyPy'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e4/e8/6ff5e6bc22095cfc59b6ea711b687e2b7ed4bdb373f7eeec370a97d7392f/urllib3-1.26.20.tar.gz", hash = "sha256:40c2dc0c681e47eb8f90e7e27bf6ff7df2e677421fd46756da1161c39ca70d32", size = 307380, upload-time = "2024-08-29T15:43:11.37Z" }
@@ -4666,7 +4699,8 @@ version = "2.5.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.14' and platform_python_implementation != 'PyPy'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.13.*' and platform_python_implementation != 'PyPy'",
+    "python_full_version == '3.12.*' and platform_python_implementation != 'PyPy'",
     "python_full_version < '3.12' and platform_python_implementation != 'PyPy'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz", hash = "sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760", size = 393185, upload-time = "2025-06-18T14:07:41.644Z" }

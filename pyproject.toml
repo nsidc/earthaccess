@@ -139,6 +139,7 @@ docs = [
   "earthaccess[virtualizarr]",
   "cftime>=1.6.4",
   "cartopy>=0.24.1",
+  "mkdocs-awesome-nav>=3.3.0",
 ]
 
 
