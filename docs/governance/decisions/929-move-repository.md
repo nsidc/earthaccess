@@ -112,7 +112,7 @@ Cons:
 
 ## Decision Outcome
 
-The voting deciders unanimously voted for Option 2, moving to an independent GitHub Organization.
+The voting deciders unanimously selected Option 2, moving to an independent GitHub Organization.
 [`earthaccess-dev`](https://github.com/earthaccess-dev) was chosen as the new org.
 
 
