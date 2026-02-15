@@ -17,7 +17,7 @@ NASA also offers a number of services to subset and transform data.  These servi
 
 ### A basic search
 
-[`search_datasets`](../user-reference/api/api.md/#earthaccess.api.search_datasets) allows you to search for NASA datasets using combinations of keywords.  As a simple example, we use the `keyword` keyword to search for all datasets matching `icesat-2`.
+[`search_datasets`](/user/reference/api/api.md/#earthaccess.api.search_datasets) allows you to search for NASA datasets using combinations of keywords.  As a simple example, we use the `keyword` keyword to search for all datasets matching `icesat-2`.
 
 ```python
 results = earthaccess.search_datasets(
@@ -40,7 +40,7 @@ print(len(result))
 
 ### Refine the search by adding more keywords
 
-The number of datasets returned can be refined by using additional keywords.  For a full list of keywords accepted by `search_datasets` see the [User Reference](../user-reference/api/api.md/#earthaccess.api.search_datasets).  Here, we use `cloud_hosted` and `downloadable` to restrict datasets returned to only those that can be downloaded from the AWS-hosted NASA Earthdata Cloud.
+The number of datasets returned can be refined by using additional keywords.  For a full list of keywords accepted by `search_datasets` see the [User Reference](/user/reference/api/api.md/#earthaccess.api.search_datasets).  Here, we use `cloud_hosted` and `downloadable` to restrict datasets returned to only those that can be downloaded from the AWS-hosted NASA Earthdata Cloud.
 
 ```python
 results = earthaccess.search_datasets(
