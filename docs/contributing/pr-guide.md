@@ -102,6 +102,5 @@ relevant tab to proceed.
     - Create a branch for your documentation changes in your fork
     - Update the documentation [following our style guide](development.md#documentation)
     - Preview the documentation [by rendering it locally](development.md#documentation). If you're not comfortable with this step, we'd rather you skip it and open a PR anyway! Our GitHub automations will generate a documentation preview. Please mark your PR as a draft until you've checked the preview and it looks OK. Don't hesitate to reach out for help!
-    - Describe your changes in the `CHANGELOG.md`
 
 Once you've completed these steps, you are ready to submit your pull request.
