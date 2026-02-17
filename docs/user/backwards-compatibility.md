@@ -15,7 +15,7 @@ We use [Semantic Versioning (SemVer)](https://semver.org/) to tell users what to
 
 ### Versioning
 
-We will follow SemVer. All version changes will consider [this to be the public API documentation](/user/reference/api/api) for the purposes of deciding whether a change is breaking or non-breaking.
+We will follow SemVer. All version changes will consider [this to be the public API documentation](/api/api) for the purposes of deciding whether a change is breaking or non-breaking.
 
 ### Release Communication
 
