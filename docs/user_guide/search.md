@@ -2,7 +2,7 @@
 
 ## Overview
 
-Searching for NASA Earthdata is the core function is `earthaccess`.  NASA organizes Earthdata into [_collections_](<link-to-glossary>).  An example of a collection is the [MODIS/TERRA Global Daily Snow Cover](https://nsidc.org/data/mod10a1/versions/61).  You can think of a collection as a dataset.  Collections contain many data _granules_, each granule is a file.  For the MODIS snow cover data, each granule (or file) contains data for one day for a 10&deg; x 10&deg; area of the globe.
+Searching for NASA Earthdata is the core function is `earthaccess`.  NASA organizes Earthdata into [_collections_](/user-reference/glossary/nasa-glossary.md).  An example of a collection is the [MODIS/TERRA Global Daily Snow Cover](https://nsidc.org/data/mod10a1/versions/61).  You can think of a collection as a dataset.  Collections contain many data _granules_, each granule is a file.  For the MODIS snow cover data, each granule (or file) contains data for one day for a 10&deg; x 10&deg; area of the globe.
 
 Using `earthaccess`, you can search for datasets using [`search_datasets`](#search-for-datasets-using-search_datasets) or search for files (or granules) within a dataset using [`search_data`](#search-for-data-granules-using-search_data).  For example, you may want snow cover data or perhaps data for ocean color but not know a specific dataset that contains this data.  `search_datasets` allows you to search by keywords.  Or you may want data about canopy height in the Amazon rain forest for a given date but do not know what datasets are available for this region of time range.  `search_datasets` allows you to define a region of interest and a time range of interest to your search.  Alternatively, you might know you want to work with data from the MODIS snow cover dataset, in the example above, but want to find out which version of that data is available.
 
@@ -123,7 +123,7 @@ The `summary` method returns the **short-name** for the dataset; the **concept-i
 
     You can search for datasets and data without logging in to NASA's Earthdata Login but you must login before you download data.  `earthaccess` makes this easy with the `login` method.  See the [Authentication section](./authenticate.md) for more information.
 
-In addition to the `summary` method, there are methods to return the dataset [`concept_id`](<link-to-glossary-entry>), `data_type`, `version`, the dataset `abstract`, the url for the dataset `landing_page`, urls for data links - `get_data`, information about the S3 bucket containing the data granules - `s3_bucket`, and a list of services available for the dataset `services`.
+In addition to the `summary` method, there are methods to return the dataset [`concept_id`](/user-reference/glossary/nasa-glossary.md), `data_type`, `version`, the dataset `abstract`, the url for the dataset `landing_page`, urls for data links - `get_data`, information about the S3 bucket containing the data granules - `s3_bucket`, and a list of services available for the dataset `services`.
 
 The `concept_id` is one way to search for granules in a dataset using `search_data`.
 

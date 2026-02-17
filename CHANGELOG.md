@@ -838,19 +838,15 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([`92d2919`](https://github.com/nsidc/earthaccess/commit/92d291962e5b72b458c2971eae8a6b813d4bae39))
   ([@betolink](https://github.com/betolink))
 
-## [0.1.0-beta.1] - 2021-09-21
-
-_Conception!_
 
 ### Added
 
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[0.1.0-beta.1]: https://github.com/betolink/earthaccess/releases/tag/v0.1.0-beta.1
-[0.2.1]: https://github.com/betolink/earthaccess/releases/tag/v0.2.1
-[0.2.2]: https://github.com/betolink/earthaccess/releases/tag/v0.2.2
-[0.3.0]: https://github.com/betolink/earthaccess/releases/tag/v0.3.0
+[0.2.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.2.1
+[0.2.2]: https://github.com/nsidc/earthaccess/releases/tag/v0.2.2
+[0.3.0]: https://github.com/nsidc/earthaccess/releases/tag/v0.3.0
 [0.4.1]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.1
 [0.4.6]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.6
 [0.4.7]: https://github.com/nsidc/earthaccess/releases/tag/v0.4.7

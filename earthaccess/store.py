@@ -303,7 +303,6 @@ class Store(object):
         Parameters:
             url: used to test the credentials and populate the class auth cookies
             method: HTTP method to test, default: "GET"
-            bearer_token: if true, will be used for authenticated queries on CMR
         """
         if not hasattr(self, "_http_session"):
             self._http_session = self.auth.get_session()
