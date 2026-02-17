@@ -31,6 +31,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Added methods `doi` and `citation` to `DataCollection` class.
   ([#203](https://github.com/nsidc/earthaccess/issues/203))
   (@Sherwin-14, @chuckwondo)
+- Added the NASA Atmospheric Science Data Center's cloud
+  provider to the integration tests.
+  ([#460](https://github.com/nsidc/earthaccess/issues/460))
+  ([@danielfromearth](https://github.com/danielfromearth))
 
 ### Removed
 
