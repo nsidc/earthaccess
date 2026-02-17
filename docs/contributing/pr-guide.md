@@ -6,6 +6,10 @@ However, our maintainers are mostly volunteers.
 In order to make the best use of their limited time, we ask that you follow this guide
 when opening a PR.
 
+When you open a PR, the description field will be auto-populated with some reminders and
+checklists to that effect.
+Please read them carefully!
+
 
 ## Checklist
 
