@@ -6,6 +6,21 @@ nav:
       - Governance:
           - Decisions: "governance/decisions/"
 
+  - API reference:
+      - Search and Access: "user/reference/api/api.md"
+      - Modules:
+          - Collections:
+              - "Collection Queries": "user/reference/collections/collections-query.md"
+              - "Collection Results": "user/reference/collections/collections.md"
+              - "Collection Services": "user/reference/collections/collections-services.md"
+          - Granules:
+              - "Granule Queries": "user/reference/granules/granules-query.md"
+              - "Granule Results": "user/reference/granules/granules.md"
+          - Store:
+              - "Store": "user/reference/store/store.md"
+          - Auth:
+              - "Auth": "user/reference/auth/auth.md"
+
   - User guide:
       - "user/index.md"
       - "Quick start": "user/quick-start.md"
@@ -32,20 +47,6 @@ nav:
           - "Accessing and visualizing EMIT data with a few lines of code": "user/tutorials/emit-earthaccess.ipynb"
           - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "user/tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
       - Reference:
-          - API:
-              - "Search and Access": "user/reference/api/api.md"
-          - Modules:
-              - Collections:
-                  - "Collection Queries": "user/reference/collections/collections-query.md"
-                  - "Collection Results": "user/reference/collections/collections.md"
-                  - "Collection Services": "user/reference/collections/collections-services.md"
-              - Granules:
-                  - "Granule Queries": "user/reference/granules/granules-query.md"
-                  - "Granule Results": "user/reference/granules/granules.md"
-              - Store:
-                  - "Store": "user/reference/store/store.md"
-              - Auth:
-                  - "Auth": "user/reference/auth/auth.md"
           - Glossary:
               - "NASA Glossary": "user/reference/glossary/nasa-glossary.md"
               - "Cloud Computing Terminology": "user/reference/glossary/cloud-glossary.md"
