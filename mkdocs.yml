@@ -54,13 +54,14 @@ plugins:
         "contributing/our-meet-ups.md": "contributing/calendar.md"
   - mkdocs-jupyter:
       execute: true
-      ignore:
+      execute_ignore:
         - "tutorials/dask.ipynb"
-        - "**/.ipynb_checkpoints/*"
         - "user_guide/fsspec.ipynb"
         - "tutorials/SSL.ipynb"
         - "tutorials/dmrpp-virtualizarr.ipynb"
         - "howto/edl.ipynb"
+      ignore:
+        - "**/.ipynb_checkpoints/*"
 
 nav:
   - "What is earthaccess?": "index.md"
