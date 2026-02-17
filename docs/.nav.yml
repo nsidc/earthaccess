@@ -7,7 +7,7 @@ nav:
           - Decisions: "governance/decisions/"
 
   - API reference:
-      - Search and Access: "api/api.md"
+      - Search and Access: "api/index.md"
       - Modules:
           - Collections:
               - "Collection Queries": "api/collections/collections-query.md"
