@@ -23,7 +23,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Added methods `doi` and `citation` to `DataCollection` class.
   ([#203](https://github.com/nsidc/earthaccess/issues/203))
   (@Sherwin-14, @chuckwondo)
-- Added method `__geo_interface__` to `DataGranule` class. (@s-kganz)
+- Added property `__geo_interface__` to `DataGranule` class.
+  ([#1179](https://github.com/nsidc/earthaccess/pull/1179)) (@s-kganz)
 
 ### Removed
 
