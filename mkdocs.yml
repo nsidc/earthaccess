@@ -35,6 +35,7 @@ theme:
 
 repo_name: "nsidc/earthaccess"
 repo_url: "https://github.com/nsidc/earthaccess"
+edit_uri: "edit/main/docs/"
 
 extra_css:
   - css/styles.css
