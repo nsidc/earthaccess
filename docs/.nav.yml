@@ -7,19 +7,19 @@ nav:
           - Decisions: "governance/decisions/"
 
   - API reference:
-      - Search and Access: "user/reference/api/api.md"
+      - Search and Access: "api/api.md"
       - Modules:
           - Collections:
-              - "Collection Queries": "user/reference/collections/collections-query.md"
-              - "Collection Results": "user/reference/collections/collections.md"
-              - "Collection Services": "user/reference/collections/collections-services.md"
+              - "Collection Queries": "api/collections/collections-query.md"
+              - "Collection Results": "api/collections/collections.md"
+              - "Collection Services": "api/collections/collections-services.md"
           - Granules:
-              - "Granule Queries": "user/reference/granules/granules-query.md"
-              - "Granule Results": "user/reference/granules/granules.md"
+              - "Granule Queries": "api/granules/granules-query.md"
+              - "Granule Results": "api/granules/granules.md"
           - Store:
-              - "Store": "user/reference/store/store.md"
+              - "Store": "api/store/store.md"
           - Auth:
-              - "Auth": "user/reference/auth/auth.md"
+              - "Auth": "api/auth/auth.md"
 
   - User guide:
       - "user/index.md"
