@@ -12,7 +12,7 @@ import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
 from earthaccess.exceptions import DownloadFailure, EulaNotAccepted
-from earthaccess.store import EarthAccessFile, _open_files
+from earthaccess.store import EarthAccessFile, _open_files, _sibling_tempfile
 from pqdm.threads import pqdm
 
 
@@ -364,3 +364,32 @@ def test_open_files_parametrized(
         isinstance(expected_block_size, float)
         and abs(kwargs["block_size"] - expected_block_size) < 1e5
     )
+
+
+def test_sibling_tempfile_nominal(tmp_path):
+    trg_file = tmp_path / "target.txt"
+    orig_text = "Should get replaced"
+    new_text = "New-fangled text"
+    trg_file.write_text(orig_text)
+    with _sibling_tempfile(trg_file) as temp_file:
+        assert temp_file.exists()
+        assert trg_file.exists()
+        assert trg_file.read_text() == orig_text
+        temp_file.write_text(new_text)
+    assert not temp_file.exists()
+    assert trg_file.exists()
+    assert trg_file.read_text() == new_text
+
+
+def test_sibling_tempfile_error(tmp_path):
+    trg_file = tmp_path / "target.txt"
+    orig_text = "Should get replaced"
+    new_text = "New-fangled text"
+    trg_file.write_text(orig_text)
+    with pytest.raises(Exception, match="Some error to trigger cleanup"):
+        with _sibling_tempfile(trg_file) as temp_file:
+            temp_file.write_text(new_text)
+            raise Exception("Some error to trigger cleanup")
+    assert not temp_file.exists()
+    assert trg_file.exists()
+    assert trg_file.read_text() == orig_text

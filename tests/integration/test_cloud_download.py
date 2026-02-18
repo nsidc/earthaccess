@@ -1,5 +1,8 @@
 import logging
+import operator as op
+import os
 import shutil
+from collections.abc import Callable
 from pathlib import Path
 
 import earthaccess
@@ -117,7 +120,16 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
             )
 
 
-def test_multi_file_granule(tmp_path):
+@pytest.mark.parametrize(
+    ("force", "cmp"),
+    [
+        # Redownloading should update all of the mtimes, so first list of mtimes will be less than second list of mtimes
+        (True, op.lt),
+        # No forced downloading, so first list of mtimes will be the same as the second list of mtimes
+        (False, op.eq),
+    ],
+)
+def test_multi_file_granule(tmp_path, force: bool, cmp: Callable[[float, float], bool]):
     # Ensure granules that contain multiple files are handled correctly
     granules = earthaccess.search_data(short_name="HLSL30", count=1)
     assert len(granules) == 1
@@ -125,3 +137,12 @@ def test_multi_file_granule(tmp_path):
     assert len(urls) > 1
     files = earthaccess.download(granules, str(tmp_path))
     assert {Path(f).name for f in urls} == {Path(f).name for f in files}
+
+    # Make sure no temp files are left behind
+    assert len(os.listdir(tmp_path)) == len(files)
+
+    # Verify force behavior by calling download again and checking mtimes
+    first_mtimes = [f.stat().st_mtime for f in files]
+    second_files = earthaccess.download(granules, str(tmp_path), force=force)
+    second_mtimes = [f.stat().st_mtime for f in second_files]
+    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes))
