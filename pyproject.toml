@@ -112,7 +112,7 @@ docs = [
   # break with a ModuleNotFoundError.
   # for notebook integrations and documentation examples
   "mkdocs >=1.2,!=1.6.0",
-  "mkdocs-material >=7.1,<10.0",
+  "mkdocs-material >=9.7.1,<10.0",
   "mkdocs-redirects >=1.2.1",
   "markdown-callouts >=0.2.0",
   "markdown-include >=0.6",
