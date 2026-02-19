@@ -3,11 +3,12 @@ site_description: Client library for NASA Earthdata APIs
 site_url: https://github.com/nsidc/earthaccess
 
 # Fail on broken links
-strict: false
+# Do not disable if the build fails! Fix the broken links :)
+strict: true
 
 theme:
   name: "material"
-  logo: earth.png
+  logo: logo.png
   favicon: earth.png
   palette:
     - scheme: default
@@ -53,13 +54,14 @@ plugins:
         "contributing/our-meet-ups.md": "contributing/calendar.md"
   - mkdocs-jupyter:
       execute: true
-      ignore:
+      execute_ignore:
         - "tutorials/dask.ipynb"
-        - "**/.ipynb_checkpoints/*"
         - "user_guide/fsspec.ipynb"
         - "tutorials/SSL.ipynb"
         - "tutorials/dmrpp-virtualizarr.ipynb"
         - "howto/edl.ipynb"
+      ignore:
+        - "**/.ipynb_checkpoints/*"
 
 nav:
   - "What is earthaccess?": "index.md"
@@ -68,6 +70,7 @@ nav:
       - "contributing/index.md" # << Link target of the parent node
       - "Community calendar": "contributing/calendar.md"
       - "Development Guide": "contributing/development.md"
+      - "Pull Request (PR) Guide": "contributing/pr-guide.md"
       - "Releasing Guide": "contributing/releasing.md"
       - "Maintainers Guide": "contributing/maintainers-guide.md"
       - "Triaging Guide": "contributing/triaging.md"
