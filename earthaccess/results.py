@@ -89,6 +89,7 @@ class DataCollection(CustomDict):
         "DirectDistributionInformation",
     ]
 
+    @property
     def summary(self) -> Dict[str, Any]:
         """Summary containing short_name, concept-id, file-type, and cloud-info (if cloud-hosted).
 
@@ -100,13 +101,14 @@ class DataCollection(CustomDict):
         summary_dict: Dict[str, Any]
         summary_dict = {
             "short-name": self.get_umm("ShortName"),
-            "concept-id": self.concept_id(),
-            "version": self.version(),
-            "file-type": self.data_type(),
+            "entry-title": self.get_umm("EntryTitle"),
+            "concept-id": self.concept_id,
+            "version": self.version,
+            "file-format": self.file_format,
             "get-data": self.get_data(),
         }
-        if "Region" in self.s3_bucket():
-            summary_dict["cloud-info"] = self.s3_bucket()
+        if "Region" in self.s3_bucket:
+            summary_dict["cloud-info"] = self.s3_bucket
         return summary_dict
 
     def get_umm(self, umm_field: str) -> Union[str, Dict[str, Any]]:
@@ -120,6 +122,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get(umm_field, "")
 
+    @property
     def doi(self) -> str | None:
         """Retrieve the Digital Object Identifier (DOI) for this collection.
 
@@ -148,10 +151,11 @@ class DataCollection(CustomDict):
         """
         return (
             None
-            if not (doi := self.doi())
+            if not (doi := self.doi)
             else _citation(doi=doi, format=format, language=language)
         )
 
+    @property
     def concept_id(self) -> str:
         """Placeholder.
 
@@ -160,18 +164,33 @@ class DataCollection(CustomDict):
         """
         return self["meta"]["concept-id"]
 
-    def data_type(self) -> str:
-        """Placeholder.
+    @property
+    def data_type(self) -> List[Union[Dict, None]]:
+        """Returns umm.ArchiveAndDistributionInformation.FileDistributionInformation
+        for collection.
 
         Returns:
-            The collection data type, i.e. HDF5, CSV etc., if available.
+            List of Dicts containing FormatType, Format, and FormatDescription
+            for collection.  Returns empty list is information not available.
         """
-        return str(
-            self["umm"]
-            .get("ArchiveAndDistributionInformation", {})
-            .get("FileDistributionInformation", "")
-        )
+        return (self["umm"]
+                .get("ArchiveAndDistributionInformation", [])
+                .get("FileDistributionInformation", [])
+                )
 
+    @property
+    def file_format(self) -> List[str]:
+        """Returns file types for collection
+
+        Returns:
+            list of file types
+        """
+        return [data_type.get('Format', "") for data_type in
+                self["umm"]
+                .get("ArchiveAndDistributionInformation", {})
+                .get("FileDistributionInformation", "")]
+
+    @property
     def version(self) -> str:
         """Placeholder.
 
@@ -180,6 +199,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get("Version", "")
 
+    @property
     def abstract(self) -> str:
         """Placeholder.
 
@@ -188,6 +208,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get("Abstract", "")
 
+    @property
     def landing_page(self) -> str:
         """Placeholder.
 
@@ -205,6 +226,7 @@ class DataCollection(CustomDict):
         """
         return self._filter_related_links("GET DATA")
 
+    @property
     def s3_bucket(self) -> Dict[str, Any]:
         """Placeholder.
 
@@ -254,7 +276,7 @@ class DataGranule(CustomDict):
         super().__init__(collection)
         self.cloud_hosted = cloud_hosted
         # TODO: maybe add area, start date and all that as an instance value
-        self["size"] = self.size()
+        self["size"] = self.size
         self.uuid = str(uuid.uuid4())
         self.render_dict: Any
         if fields is None:
@@ -275,7 +297,7 @@ class DataGranule(CustomDict):
         Collection: {self["umm"]["CollectionReference"]}
         Spatial coverage: {self["umm"]["SpatialExtent"]}
         Temporal coverage: {self["umm"]["TemporalExtent"]}
-        Size(MB): {self.size()}
+        Size(MB): {self.size}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
         return rep_str
@@ -298,6 +320,7 @@ class DataGranule(CustomDict):
                 return link["URL"]
         return None
 
+    @property
     def size(self) -> float:
         """Placeholder.
 
