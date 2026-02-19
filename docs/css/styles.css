@@ -7,3 +7,18 @@
   border-radius: 2px;
   border-style: solid;
 }
+
+.md-tabs__link {
+  /* Improve readability of top-navigation tabs */
+  opacity: 1;
+  font-size: 0.75rem;
+}
+
+.md-tabs__item--active > .md-tabs__link {
+  /* The active tab is normally indicated by changing its opacity
+   * to 1, but now all tabs have 1 opacity.
+   * So we need a different indicator of the selected tab.
+   */
+  border-bottom: 3px solid currentColor;
+  padding-bottom: 0;
+}

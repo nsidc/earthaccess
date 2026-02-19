@@ -47,7 +47,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 `earthaccess` allows you to search for and access data in as little as three steps.  We
 give a very quick example below.  These three steps allow you to get data whether you
 are working in the cloud or on your local laptop or workstation.  Read the
-[User Guide](user_guide/index.md) for more information.  If you want to quickly find how
+[User Guide](/user/index.md) for more information.  If you want to quickly find how
 to perform some common searches and data access, take a look at our how-to guides in the
 sidebar.
 
@@ -100,7 +100,7 @@ files = earthaccess.download(results, "./local_folder")
     `.`).  If that directory doesn't exist, it will be created automatically.
 
 Data can also be opened in-memory with `earthaccess.open()`. See [our API
-docs](user-reference/api/api.md) for more.
+docs](/api/index.md) for more.
 
 
 We value your feedback! We want to hear all about your experience using earthaccess. Even if you're not noticing any issues or bugs, we want to know... what annoys you? What feels great? We'd love if you would share an experience [report](https://github.com/nsidc/earthaccess/issues/new/choose) with us!
