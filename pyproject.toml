@@ -84,6 +84,7 @@ dev = [
   "uv >=0.4.7",
 ]
 test = [
+  "aioresponses>=0.7.8",
   "zarr >=3.1.1",
   "numpy >=1.26.4",
   "mypy >=1.11.2",
@@ -142,8 +143,11 @@ docs = [
 ]
 
 
-[tool.pytest]
+[tool.pytest.ini_options]
 filterwarnings = ["error::UserWarning"]
+markers = [
+    "realapi: marks tests that hit the real CMR API (deselect with '-m \"not realapi\"')",
+]
 
 [tool.mypy]
 python_version = "3.11"
