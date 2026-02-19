@@ -1199,7 +1199,7 @@ docs = [
     { name = "matplotlib", specifier = ">=3.3" },
     { name = "mkdocs", specifier = ">=1.2,!=1.6.0" },
     { name = "mkdocs-jupyter", specifier = ">=0.19.0" },
-    { name = "mkdocs-material", specifier = ">=7.1,<10.0" },
+    { name = "mkdocs-material", specifier = ">=9.7.1,<10.0" },
     { name = "mkdocs-mermaid2-plugin", specifier = ">=1.2.1" },
     { name = "mkdocs-redirects", specifier = ">=1.2.1" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.19.0" },
@@ -2482,12 +2482,11 @@ wheels = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.6.18"
+version = "9.7.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel" },
     { name = "backrefs" },
-    { name = "click" },
     { name = "colorama" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -2498,9 +2497,9 @@ dependencies = [
     { name = "pymdown-extensions" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e6/46/db0d78add5aac29dfcd0a593bcc6049c86c77ba8a25b3a5b681c190d5e99/mkdocs_material-9.6.18.tar.gz", hash = "sha256:a2eb253bcc8b66f8c6eaf8379c10ed6e9644090c2e2e9d0971c7722dc7211c05", size = 4034856, upload-time = "2025-08-22T08:21:47.575Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/34/57/5d3c8c9e2ff9d66dc8f63aa052eb0bac5041fecff7761d8689fe65c39c13/mkdocs_material-9.7.2.tar.gz", hash = "sha256:6776256552290b9b7a7aa002780e25b1e04bc9c3a8516b6b153e82e16b8384bd", size = 4097818, upload-time = "2026-02-18T15:53:07.763Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/22/0b/545a4f8d4f9057e77f1d99640eb09aaae40c4f9034707f25636caf716ff9/mkdocs_material-9.6.18-py3-none-any.whl", hash = "sha256:dbc1e146a0ecce951a4d84f97b816a54936cdc9e1edd1667fc6868878ac06701", size = 9232642, upload-time = "2025-08-22T08:21:44.52Z" },
+    { url = "https://files.pythonhosted.org/packages/cd/19/d194e75e82282b1d688f0720e21b5ac250ed64ddea333a228aaf83105f2e/mkdocs_material-9.7.2-py3-none-any.whl", hash = "sha256:9bf6f53452d4a4d527eac3cef3f92b7b6fc4931c55d57766a7d87890d47e1b92", size = 9305052, upload-time = "2026-02-18T15:53:05.221Z" },
 ]
 
 [[package]]
