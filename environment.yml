@@ -8,6 +8,8 @@ dependencies:
   - python
   - pip
   - pip:
+      - pystac
+      - pystac-client
       - --editable ".[dev,test,docs]"
 variables:
   # Allow pip installs when conda environment is active
