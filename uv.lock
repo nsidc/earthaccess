@@ -1202,7 +1202,7 @@ docs = [
     { name = "markdown-callouts", specifier = ">=0.2.0" },
     { name = "markdown-include", specifier = ">=0.6" },
     { name = "matplotlib", specifier = ">=3.3" },
-    { name = "mkdocs", specifier = ">=1.2,!=1.6.0" },
+    { name = "mkdocs", specifier = ">=1.2,!=1.6.0,<2.0" },
     { name = "mkdocs-awesome-nav", specifier = ">=3.3.0" },
     { name = "mkdocs-jupyter", specifier = ">=0.19.0" },
     { name = "mkdocs-material", specifier = ">=9.7.1,<10.0" },
