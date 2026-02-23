@@ -28,10 +28,14 @@ theme:
     - navigation.path
     # Display top-level nav elements in the top bar
     - navigation.tabs
+    # Add "Edit this page" button
+    - content.action.edit
+    # Add "View source" buton
+    - content.action.view
 
-repo_name: nsidc/earthaccess
-repo_url: https://github.com/nsidc/earthaccess
-edit_uri: ""
+repo_name: "nsidc/earthaccess"
+repo_url: "https://github.com/nsidc/earthaccess"
+edit_uri: "edit/main/docs/"
 
 extra_css:
   - css/styles.css
