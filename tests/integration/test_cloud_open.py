@@ -5,13 +5,13 @@ import magic
 import pytest
 from earthaccess import Auth, DataGranules, Store
 
-from .param import TestParam
+from .param import ProviderParam
 from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
 
-daacs_list: list[TestParam] = [
+daacs_list: list[ProviderParam] = [
     {
         "provider_name": "NSIDC_CPRD",
         "n_for_top_collections": 2,
