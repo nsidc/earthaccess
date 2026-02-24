@@ -77,7 +77,7 @@ results = earthaccess.search_data(
 files = earthaccess.download(results, "/tmp/my-download-folder")
 ```
 
-Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/quick-start/) for more details.
+Visit [our quick start guide](https://earthaccess.readthedocs.io/en/latest/user/quick-start/) for more details.
 
 
 ## Help!
@@ -104,7 +104,7 @@ The _minimum_ supported Python version is **3.11**.
 
 ## How to Contribute to `earthaccess`
 
-If you want to contribute to `earthaccess` checkout the [Contributing Guide](https://earthaccess.readthedocs.io/en/latest/contributing/).
+If you want to contribute to `earthaccess` checkout the [Contributing Guide](https://earthaccess.readthedocs.io/en/latest/contributor/).
 
 
 ### Contributors
