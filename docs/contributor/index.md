@@ -18,7 +18,7 @@ Then, you can:
   questions, share insights, or connect with others about Earth data access (broadly)
 - Open [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas) to suggest
   new features or improvements, and find collaborators and coordinate the work
-- Join [a Collaboration Café](calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
+- Join [a Collaboration Café](/calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
   anything related to Earth data access
 
 You can also open a pull request!

@@ -60,7 +60,7 @@ plugins:
   - redirects:
       redirect_maps:
         "CODE_OF_CONDUCT.md": "contributor/code-of-conduct.md"
-        "contributing/our-meet-ups.md": "contributor/calendar.md"
+        "contributing/our-meet-ups.md": "calendar.md"
   - mkdocs-jupyter:
       execute: true
       execute_ignore:
