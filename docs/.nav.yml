@@ -1,7 +1,7 @@
 nav:
   - Overview:
       - "What is earthaccess?": "index.md"
-      - "Community calendar": "contributor/calendar.md"
+      - "Community calendar": "calendar.md"
       - "Resources": "resources.md"
       - "About Us": "about-us.md"
       - Governance:
