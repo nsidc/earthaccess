@@ -37,7 +37,7 @@
 
 Visit [our documentation](https://earthaccess.readthedocs.io/en/latest) to learn more!
 
-Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/earthaccess/main)
+Try it in your browser without installing anything! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/earthaccess-dev/earthaccess/main)
 
 ## Why `earthaccess`
 
@@ -87,10 +87,10 @@ We're here for you!
 opened a similar one.**
 
 :bug: If you've found a bug or mistake, please use
-[GitHub issues](https://github.com/nsidc/earthaccess/issues).
+[GitHub issues](https://github.com/earthaccess-dev/earthaccess/issues).
 
 :bulb: If you'd like to request a feature or ask a question, please use
-[GitHub discussions](https://github.com/nsidc/earthaccess/discussions).
+[GitHub discussions](https://github.com/earthaccess-dev/earthaccess/discussions).
 
 :left_speech_bubble: If you prefer real-time chat, please visit us in our
 [Zulip chat space](https://earthaccess.zulipchat.com)!
@@ -109,7 +109,7 @@ If you want to contribute to `earthaccess` checkout the [Contributing Guide](htt
 
 ### Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=nsidc/earthaccess)](https://github.com/nsidc/earthaccess/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=earthaccess-dev/earthaccess)](https://github.com/earthaccess-dev/earthaccess/graphs/contributors)
 
 
-### [Project Board](https://github.com/nsidc/earthdata/discussions).
+### [Project Board](https://github.com/earthaccess-dev/earthdata/discussions).
