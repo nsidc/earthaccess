@@ -112,4 +112,4 @@ If you want to contribute to `earthaccess` checkout the [Contributing Guide](htt
 [![Contributors](https://contrib.rocks/image?repo=earthaccess-dev/earthaccess)](https://github.com/earthaccess-dev/earthaccess/graphs/contributors)
 
 
-### [Project Board](https://github.com/earthaccess-dev/earthdata/discussions).
+### [Project Board](https://github.com/earthaccess-dev/earthaccess/discussions).
