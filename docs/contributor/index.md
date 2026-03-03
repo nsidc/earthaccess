@@ -12,11 +12,11 @@ When contributing we recommend:
 
 Then, you can:
 
-- Open [a GitHub issue](https://github.com/nsidc/earthaccess/issues) to report a bug, unexpected behavior, a stumbling block in our documentation, or any
+- Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to report a bug, unexpected behavior, a stumbling block in our documentation, or any
   other problem.
-- Open [a Q&A GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/categories/new?category=q-a) to ask
+- Open [a Q&A GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/categories/new?category=q-a) to ask
   questions, share insights, or connect with others about Earth data access (broadly)
-- Open [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas) to suggest
+- Open [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas) to suggest
   new features or improvements, and find collaborators and coordinate the work
 - Join [a Collaboration Café](/calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
   anything related to Earth data access

@@ -32,7 +32,7 @@ contributions.
 
 * **Title**: For example, instead of `Updated README.md`, use `Add testing details to the
   contributor section of the README`.
-  Example: [#763](https://github.com/nsidc/earthaccess/pull/763)
+  Example: [#763](https://github.com/earthaccess-dev/earthaccess/pull/763)
 * **Body**:
     * Populate a clear description of the change you're proposing. What did you do, and
       **why**?
@@ -48,7 +48,7 @@ contributions.
   entry), add details about your change in a section titled `## Unreleased`.
   If such a section does not exist, please create one at the top of the file.
   Follow [Common Changelog](https://common-changelog.org/) for your additions.
-  Example: [#763](https://github.com/nsidc/earthaccess/pull/763)
+  Example: [#763](https://github.com/earthaccess-dev/earthaccess/pull/763)
 * **`README.md`**: Update as needed, for example if installation or usage instructions
   need to change.
 
@@ -58,13 +58,13 @@ contributions.
 Once you select "Ready for review", maintainers will give your PR their attention and
 help complete any remaining steps if needed!
 
-If you're not getting the help you need, please mention `@nsidc/earthaccess-support` in
+If you're not getting the help you need, please mention `@earthaccess-dev/maintainers` in
 a comment in your PR.
 
 
 ## Detailed guide
 
-First, [fork this repository](https://github.com/nsidc/earthaccess/fork) and set up your [development environment](./development.md).
+First, [fork this repository](https://github.com/earthaccess-dev/earthaccess/fork) and set up your [development environment](./development.md).
 
 From here, you might want to fix and issue or bug, or add a new feature. Jump to the
 relevant tab to proceed.
@@ -73,7 +73,7 @@ relevant tab to proceed.
 
     The smaller the pull request, the easier it is to review and test, and the more likely it is to be successful. For more details, check out this [helpful YouTube video by the author of pre-commit](https://www.youtube.com/watch?v=Gu6XrmfwivI).
 
-    For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
+    For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas)
     or coming to [a Collaboration Café](/calendar.md) and describing your contribution so we can help guide and/or collaborate
     on the work.
 
@@ -81,7 +81,7 @@ relevant tab to proceed.
 
     - Create a [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example), a.k.a. a Minimal Complete Verifiable Example (MCVE),
       a Minimal Working Example (MWE), an SSCCE (Short, Self Contained, Complete Example), or a "reprex",
-      and include it in [a GitHub issue](https://github.com/nsidc/earthaccess/issues) (recommended) or in your pull request.
+      and include it in [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) (recommended) or in your pull request.
     - Create a branch to resolve your issue
     - Run the existing unit tests successfully in your branch
     - Create one or more new tests to demonstrate the bug and observe them fail
@@ -92,7 +92,7 @@ relevant tab to proceed.
 
 === "Contributing a New Feature"
 
-    - We recommend you create [an Ideas GitHub Discussion](https://github.com/nsidc/earthaccess/discussions/new?category=ideas)
+    - We recommend you create [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas)
       describing the feature's scope and its fit for this package with the team.
     - Create a branch for your new feature in your fork
     - Run the unit tests successfully in your branch

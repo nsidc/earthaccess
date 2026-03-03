@@ -1,6 +1,6 @@
 site_name: earthaccess
 site_description: Client library for NASA Earthdata APIs
-site_url: https://github.com/nsidc/earthaccess
+site_url: https://github.com/earthaccess-dev/earthaccess
 
 # Fail on broken links
 # Do not disable if the build fails! Fix the broken links :)
@@ -33,8 +33,8 @@ theme:
     # Add "View source" buton
     - content.action.view
 
-repo_name: "nsidc/earthaccess"
-repo_url: "https://github.com/nsidc/earthaccess"
+repo_name: "earthaccess-dev/earthaccess"
+repo_url: "https://github.com/earthaccess-dev/earthaccess"
 edit_uri: "edit/main/docs/"
 
 extra_css:
