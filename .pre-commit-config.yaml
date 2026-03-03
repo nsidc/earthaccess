@@ -31,14 +31,14 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.15.4
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.9.28"
+    rev: "0.10.7"
     hooks:
       # Asserts that the lockfile is valid for pyproject.toml.
       # If it fails, update the lockfile by running:
