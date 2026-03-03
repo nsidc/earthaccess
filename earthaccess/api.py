@@ -293,8 +293,14 @@ def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
         count:
             maximum number of services to fetch (if less than 1, all services
             matching specified criteria are fetched [default])
-        kwargs:
-            keyword arguments accepted by the CMR for searching services
+        kwargs (Dict):
+            arguments to CMR:
+
+            * **name**: (str) Filter granules by product short name; e.g. ATL08
+            * **provider**: (str) Only match granules from a given provider.  A DAAC can
+              have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and NSIDC_CPRD.
+            * **native_id**: (str) An alternative name of the service, e.g "POCLOUD_podaac_swodlr" 
+            * **concept_id**: (str) The concept ID of the service, e.g. "S3084748458-POCLOUD" (starts with a "S")
 
     Returns:
         list of services (possibly empty) matching specified criteria, in UMM
@@ -302,7 +308,7 @@ def search_services(count: int = -1, **kwargs: Any) -> List[Any]:
 
     Examples:
         ```python
-        services = search_services(provider="POCLOUD", keyword="COG")
+        services = search_services(provider="POCLOUD")
         ```
     """
     query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
