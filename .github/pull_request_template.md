@@ -2,7 +2,7 @@
 IMPORTANT: Please open your PR in draft mode. Only mark it "Ready for review" after
 completing the "Ready for review" checklist.
 
-If you read the guide and your question isn't answered, please ping `@nsidc/earthaccess-support` in a comment!
+If you read the guide and your question isn't answered, please ping `@earthaccess-dev/maintainers` in a comment!
 --->
 
 ## Description
