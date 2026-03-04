@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -eux
+python -m pip install --editable ".[dev,test,docs]"
