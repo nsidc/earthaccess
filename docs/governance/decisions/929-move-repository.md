@@ -2,7 +2,7 @@
 
 - Status: Accepted  <!-- optional -->
 - Deciders: @jhkennedy, @chuckwondo, @mfisher87, @Sherwin-14, @asteiker, @itcarroll, @danielfromearth, @JessicaS11
-- Last updated: 2025-02-09
+- Last updated: 2026-02-16
 <!-- - Tags: [space and/or comma separated list of tags] optional -->
 
 Technical Story: [#929 Move or fork to independent organization](https://github.com/earthaccess-dev/earthaccess/issues/929)
