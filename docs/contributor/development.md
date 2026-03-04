@@ -2,7 +2,7 @@
 
 ## Getting the code
 
-1. [Fork nsidc/earthaccess](https://github.com/nsidc/earthaccess/fork)
+1. [Fork earthaccess-dev/earthaccess](https://github.com/earthaccess-dev/earthaccess/fork)
 1. Clone your fork:
    ```bash
    git clone git@github.com:{my-username}/earthaccess

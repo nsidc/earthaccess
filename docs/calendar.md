@@ -18,7 +18,7 @@ They...
 * Include live demos on request!
 
 For a glimpse in to the work we do on a typical hack day, please visit our
-[hack day share-out space in GitHub Discussions](https://github.com/nsidc/earthaccess/discussions/categories/hack-days)!
+[hack day share-out space in GitHub Discussions](https://github.com/earthaccess-dev/earthaccess/discussions/categories/hack-days)!
 
 Meeting details (zoom room and time) will always be in the calendar above for easy access.
 Anyone with an interest in earthaccess is welcome to join!

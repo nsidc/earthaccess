@@ -48,10 +48,10 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/nsidc/earthaccess"
+Repository = "https://github.com/earthaccess-dev/earthaccess"
 Documentation = "https://earthaccess.readthedocs.io"
-"Bug Tracker" = "https://github.com/nsidc/earthaccess/issues"
-Changelog = "https://github.com/nsidc/earthaccess/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/earthaccess-dev/earthaccess/issues"
+Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 kerchunk = [
