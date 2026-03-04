@@ -2,10 +2,8 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  # This environment bootstraps pip, the actual dev environment
-  # is installed and managed with pip
   - python==3.11
-  - pip
+  - pip>=25.1
 variables:
   # Allow pip installs when conda environment is active
   PIP_REQUIRE_VENV: 0
