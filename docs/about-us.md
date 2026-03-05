@@ -1,5 +1,12 @@
-Open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an efficient and reproducible way. Unfortunately —as it stands today— scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
+## Motivation
 
+Open science only reaches its full potential if we have easy-to-use workflows that facilitate research in an efficient and reproducible way. Unfortunately — as it stands today — scientists and students alike face a steep learning curve adapting to systems that have grown too complex and end up spending more time on the technicalities of the tools, cloud and NASA APIs than focusing on their important science.
+
+## Creating `earthaccess`
 During several workshops organized by [NASA Openscapes](https://nasa-openscapes.github.io/events.html), the need to provide easy-to-use tools to our users became evident. Open science is a collaborative effort; it involves people from different technical backgrounds, and the data analysis to solve the pressing problems we face cannot be limited by the complexity of the underlying systems. Therefore, providing easy access to NASA Earthdata regardless of the data storage location (hosted within or outside of the cloud) was a main motivation behind this Python library.
 
 Originally spearheaded by [NASA Openscapes](https://nasa-openscapes.github.io/), an open source community supporting users across the NASA Earth science data centers (Distributed Active Archive Centers (DAACs)), today `earthaccess` is a community-driven project, built on top of several NASA APIs and libraries along with many other open-source packages.
+
+## Migrating to the [`earthaccess-dev`](https://github.com/earthaccess-dev) GitHub Organization
+
+To strengthen the community engagement and lower participation barriers that arose as the community grew, in March 2026 the `earthaccess` repository moved to a community-owned GitHub organization, [earthaccess-dev](https://github.com/earthaccess-dev). It was previously housed in the National Snow and Ice Data Center (NSIDC) GitHub organization. The decision-making process for this "repotting" is documented [here](./governance/decisions/929-move-repository.md).
