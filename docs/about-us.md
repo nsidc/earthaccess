@@ -7,6 +7,6 @@ During several workshops organized by [NASA Openscapes](https://nasa-openscapes.
 
 Originally spearheaded by [NASA Openscapes](https://nasa-openscapes.github.io/), an open source community supporting users across the NASA Earth science data centers (Distributed Active Archive Centers (DAACs)), today `earthaccess` is a community-driven project, built on top of several NASA APIs and libraries along with many other open-source packages.
 
-## Migrating to the earthaccess-dev GitHub Organization
+## Migrating to the [`earthaccess-dev`](https://github.com/earthaccess-dev) GitHub Organization
 
 To strengthen the community engagement and lower participation barriers that arose as the community grew, in March 2026 the `earthaccess` repository moved to a community-owned GitHub organization, [earthaccess-dev](https://github.com/earthaccess-dev). It was previously housed in the National Snow and Ice Data Center (NSIDC) GitHub organization. The decision-making process for this "repotting" is documented [here](./governance/decisions/929-move-repository.md).
