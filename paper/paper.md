@@ -208,6 +208,15 @@ VirtualiZarr and kerchunk for virtual datasets -- rather than reimplementing the
 functionality. The library's unique contribution is the NASA-specific integration
 layer that binds these tools together.
 
+**Contribute upstream, don't accumulate.** When community discussions surface
+features that belong in a dependency, the project contributes that work upstream
+rather than absorbing it. Advanced CMR query capabilities were developed in
+`python-cmr` rather than duplicated in `earthaccess`, and aspects of DMR++ parsing and
+multi-file virtual dataset functionality were migrated to VirtualiZarr where
+they could benefit the wider community. This upstream-first discipline avoids
+scope creep, reduces maintenance burden, and strengthens the broader ecosystem
+that `earthaccess` depends on.
+
 **Location-transparent access.** The same user code works whether the computation runs
 in the cloud or on a local workstation. The library automatically selects the optimal
 access path without requiring code changes, reflecting the reality that researchers
