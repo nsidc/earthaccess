@@ -232,7 +232,10 @@ including studies on multi-sensor drought observations in forested environments
 repositories (as of 5 March 2026), spanning data analysis workflows, Jupyter-based tutorials, and
 downstream libraries. It is distributed through both PyPI and conda-forge, and has
 been installed and used in cloud-hosted Jupyter environments provided by NASA and
-partner organizations.
+partner organizations. As one example of downstream adoption, icepack -- a finite
+element library for ice sheet and glacier modeling [@shapero2021] -- replaced its
+hand-written NSIDC data-fetching routines with `earthaccess` calls, eliminating
+hard-coded URLs and custom authentication logic.
 
 **Multi-institutional development.** Contributors span NASA's Distributed Active Archive Centers (DAACs) — including ASDC, ASF, GES DISC, LP DAAC, NSIDC, OB.DAAC, ORNL DAAC, and PO.DAAC — as well as other federal and academic institutions (USGS,
 University of New Hampshire), private industry (Coiled, Development Seed),
