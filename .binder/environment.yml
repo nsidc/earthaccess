@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python==3.11
+  - pip>=25.1
+variables:
+  # Allow pip installs when conda environment is active
+  PIP_REQUIRE_VENV: 0
+  PIP_REQUIRE_VIRTUALENV: 0

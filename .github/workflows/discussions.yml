@@ -1,4 +1,4 @@
-name: Generate Discussion Thread for Hackdays
+name: Generate Discussion Thread for Collaboration Cafes
 
 on:
   workflow_dispatch:
@@ -12,14 +12,14 @@ jobs:
 
     steps:
 
-      - name: Generate the Hackathon title
+      - name: Generate the Collaboration Cafe title
         run: |
           DATE=$(date --iso-8601 | sed 's|-|/|g')
-          echo "DISCUSSION_TITLE=Hackathon $DATE" >> $GITHUB_ENV
+          echo "DISCUSSION_TITLE=Collaboration Cafe $DATE" >> $GITHUB_ENV
 
-      - name: Set the Hackathon description
+      - name: Set the Collaboration Cafe description
         run: |
-          echo "DISCUSSION_BODY=Reporting out on earthaccess hack days. Use the 'comment' button at the very bottom to send a message. Additionally, consider sending issues and PRs relevant to your work to help make the job of future readers easier. It is okay to duplicate information here! Use the reply feature to have a discussion under any comment. Enjoy!" >> $GITHUB_ENV
+          echo "DISCUSSION_BODY=Reporting out on earthaccess Collaboration Cafes. Use the 'comment' button at the very bottom to send a message. Additionally, consider sending issues and PRs relevant to your work to help make the job of future readers easier. It is okay to duplicate information here! Use the reply feature to have a discussion under any comment. Enjoy!" >> $GITHUB_ENV
 
       - name: Create Discussions
         env:

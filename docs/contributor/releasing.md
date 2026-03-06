@@ -27,7 +27,7 @@
 
 1. Open a pull request with the changes. **Review, and merge.**
 
-1. [Create a new GitHub Release](https://github.com/nsidc/earthaccess/releases/new).
+1. [Create a new GitHub Release](https://github.com/earthaccess-dev/earthaccess/releases/new).
    In the "Choose a tag" dialog, enter a new tag prefixed with `v`, for example
    `v1.3.0`.
 
