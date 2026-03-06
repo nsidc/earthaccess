@@ -137,6 +137,15 @@ or virtual dataset construction for large-scale analysis.
 
 # State of the field
 
+The scholarly contribution of `earthaccess` is the _integration_ of search,
+authentication, and access into a coherent abstraction that masks the heterogeneity
+of NASA's data infrastructure. No existing tool provides this end-to-end,
+provider-agnostic workflow. Rather than reinventing query or filesystem libraries,
+`earthaccess` composes and extends existing open-source tools and contributes the
+NASA-specific domain knowledge (DAAC configurations, credential endpoints,
+authentication flows, cloud-detection logic) that binds them into a usable
+data access layer.
+
 Several tools exist for accessing NASA Earth science data, each addressing a specific
 slice of the workflow:
 
@@ -163,15 +172,6 @@ slice of the workflow:
   own access workflows using these general-purpose filesystem libraries. However, this
   requires extensive knowledge of NASA's authentication flow, DAAC-specific credential
   endpoints, and the mapping between on-premises and cloud-hosted data links.
-
-The scholarly contribution of `earthaccess` is the _integration_ of search,
-authentication, and access into a coherent abstraction that masks the heterogeneity
-of NASA's data infrastructure. No existing tool provides this end-to-end,
-provider-agnostic workflow. Rather than reinventing query or filesystem libraries,
-`earthaccess` composes and extends existing open-source tools and contributes the
-NASA-specific domain knowledge (DAAC configurations, credential endpoints,
-authentication flows, cloud-detection logic) that binds them into a usable
-data access layer.
 
 
 # Software design
@@ -260,7 +260,7 @@ The development of `earthaccess` was supported by NASA's Earth Science Data Syst
 Lowndes and Erin Robinson). We thank NASA Openscapes for the community workshops, collaborative working environment, and people-first approach that have motivated and continue to support this work. We are grateful to the
 National Snow and Ice Data Center (NSIDC) for hosting the repository during its initial
 development, and to all contributors who have shaped `earthaccess` through code,
-documentation, issue reports, and community engagement. We also thank Allison Horst
+documentation, issue reports, and community engagement. People have been able to contribute to earthaccess as adopters and developers as part of their jobs across the NASA ecosystem as well as outside of it, and this has been critical to making this shared resource successful. We appreciate everyone who had advocated and approved time to make this possible. We also thank Allison Horst
 for the `earthaccess` artwork.
 
 
