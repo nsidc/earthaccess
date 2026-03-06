@@ -2,7 +2,14 @@
 
 See the calendar below for what we currently have going on, and feel free to pop in!
 
-<iframe src="https://calendar.google.com/calendar/embed?src=3c5b3d775cb2521f9a7143d9a5ab2a76eca8f3ebaecc24feaf5b74e49b7174cc%40group.calendar.google.com" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+<iframe
+    src="https://calendar.google.com/calendar/embed?src=3c5b3d775cb2521f9a7143d9a5ab2a76eca8f3ebaecc24feaf5b74e49b7174cc%40group.calendar.google.com&ctz=America%2FDenver"
+    style="border: 0"
+    width="800"
+    height="600"
+    frameborder="0"
+    scrolling="no">
+</iframe>
 
 
 ## Bi-weekly (alternating weeks) _earthaccess_ Collaboration Cafés
