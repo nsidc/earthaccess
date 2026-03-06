@@ -147,7 +147,7 @@ slice of the workflow:
   download, or cloud access -- the areas where researchers face many workflow difficulties.
 
 - **harmony-py** [@harmony_py] is NASA's client for the Harmony data transformation
-  service, which provides, e.g., server-side subsetting, reformatting, and reprojection.
+  service, which provides, for example, server-side subsetting, reformatting, and reprojection services.
   It addresses a complementary use case; `earthaccess` focuses on direct data access
   and client-side analysis.
 
@@ -240,7 +240,7 @@ and independent open-source contributors. This breadth reflects both the library
 relevance across domains and the health of its contributor community.
 
 **Integration with the NASA ecosystem.** `earthaccess` is featured in official NASA
-Earthdata tutorials, has been presented at AGU Fall Meetings, and was the subject of
+Earthdata tutorials including <https://www.earthdata.nasa.gov/data/tools/earthaccess>, has been presented at AGU Fall Meetings, and was the subject of
 a NASA ESDS Tech Spotlight presentation. The documentation includes executable Jupyter
 notebooks demonstrating workflows with ICESat-2, EMIT, TEMPO, SMAP, and other missions,
 providing reproducible entry points for researchers.
