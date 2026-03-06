@@ -24,7 +24,7 @@ authors:
   - given-names: "Matt"
     surname: "Fisher"
     orcid: "https://orcid.org/0000-0003-3260-5445"
-    affiliation: "1"
+    affiliation: "10"
   - given-names: "Daniel E."
     surname: "Kaufman"
     orcid: "https://orcid.org/0000-0002-1487-7298"
@@ -79,6 +79,9 @@ affiliations:
    ror: 02q4hks80
  - name: "Independent Contributor"
    index: 9
+ - name: "Schmidt Center for Data Science and Environment (DSE), University of California Berkeley"
+   index: 10
+   ror: "01an7q238"
 date: 05 March 2026
 bibliography: paper.bib
 ---
