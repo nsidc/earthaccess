@@ -37,7 +37,7 @@ def _repr_granule_html(granule: Any) -> str:
             for link in granule.data_links()
         ]
     )
-    granule_size = round(granule.size(), 2)
+    granule_size = round(granule.size, 2)
 
     # TODO: probably this needs to be integrated on a list data structure
     return f"""

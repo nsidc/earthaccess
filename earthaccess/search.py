@@ -148,6 +148,24 @@ class DataCollections(CollectionQuery):
 
         Returns:
             self
+
+        By default, `keyword` searches for collections that contain all words a string.
+
+            results = earthaccess.search_datasets(
+                keyword='sea ice thickness',
+            )
+
+        will return datasets that contain "sea" AND "ice" AND "thickness".
+
+        To search for datasets with fields that contain the phrase "sea ice thickness",
+        the phrase needs to contained in `"`, which must be escaped, e.g. `\"`.
+
+            results = earthaccess.search_datasets(
+                keyword='\"sea ice thickness\"',
+            )
+
+        ???+ Note
+            This behaviour may change in the future.
         """
         return super().keyword(text)
 
@@ -952,7 +970,7 @@ class DataGranules(GranuleQuery):
         # TODO consider raising an exception when there are multiple collections, since
         # we can't know which one the user wants, and choosing one is arbitrary.
         if len(collection) > 0:
-            concept_id = collection[0].concept_id()
+            concept_id = collection[0].concept_id
             self.params["concept_id"] = concept_id
         else:
             # TODO consider removing this print statement since we don't print such

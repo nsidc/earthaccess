@@ -271,7 +271,7 @@ def get_granule_credentials_endpoint_and_region(
             count=1,
             concept_id=granule["meta"]["collection-concept-id"],
         )
-        collection_s3_bucket = collection_results[0].s3_bucket()
+        collection_s3_bucket = collection_results[0].s3_bucket
         credentials_endpoint = collection_s3_bucket.get("S3CredentialsAPIEndpoint")
         region = collection_s3_bucket.get("Region", "us-west-2")
 
