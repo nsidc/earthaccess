@@ -658,3 +658,19 @@ def auth_environ() -> Dict[str, str]:
             "`auth_environ()` requires you to first authenticate with `earthaccess.login()`"
         )
     return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}
+
+
+def in_us_west_2() -> str:
+    """Returns a message indicating if the user is in AWS region us-west-2
+
+    Returns:
+        str: string indicating if the user is in AWS region us-west-2
+    """
+    if earthaccess.__store__._running_in_us_west_2() is True:
+        return "You are running in AWS region 'us-west-2'"
+    else:
+        raise ValueError(
+            "Your instance is not running inside the"
+            " AWS us-west-2 region."
+            " You will not be able to directly access NASA Earthdata S3 buckets."
+        )
