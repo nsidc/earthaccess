@@ -21,18 +21,25 @@ authors:
     surname: "Bourbeau"
     orcid: "https://orcid.org/0000-0003-2164-7789"
     affiliation: "3"
+  - given-names: "Ian"
+    surname: "Carroll"
+    orcid: "https://orcid.org/0000-0002-3616-810X"
+    affiliation: "4"
+  - given-names: "Chuck"
+    surname: "Daniels"
+    affiliation: "5"
   - given-names: "Matt"
     surname: "Fisher"
     orcid: "https://orcid.org/0000-0003-3260-5445"
-    affiliation: "10"
+    affiliation: "6"
   - given-names: "Daniel E."
     surname: "Kaufman"
     orcid: "https://orcid.org/0000-0002-1487-7298"
-    affiliation: "4, 5"
+    affiliation: "7, 8"
   - given-names: "Joseph H."
     surname: "Kennedy"
     orcid: "https://orcid.org/0000-0002-9348-693X"
-    affiliation: "6"
+    affiliation: "9"
   - given-names: "Luis"
     surname: "Lopez"
     orcid: "https://orcid.org/0000-0003-4896-3263"
@@ -40,11 +47,11 @@ authors:
   - given-names: "Julia S."
     surname: "Lowndes"
     orcid: "https://orcid.org/0000-0003-1682-3872"
-    affiliation: "7"
+    affiliation: "10"
   - given-names: "Jessica"
     surname: "Scheick"
     orcid: "https://orcid.org/0000-0002-3421-4459"
-    affiliation: "8"
+    affiliation: "11"
   - given-names: "Amy"
     surname: "Steiker"
     orcid: "https://orcid.org/0000-0002-3039-0260"
@@ -52,36 +59,41 @@ authors:
   - given-names: "Sherwin"
     surname: "Varghese"
     orcid: "https://orcid.org/0009-0005-7030-213X"
-    affiliation: "9"
+    affiliation: "12"
 affiliations:
  - name: "National Snow and Ice Data Center (NSIDC), Cooperative Institute for Research in Environmental Sciences (CIRES), University of Colorado Boulder, Boulder, CO, USA"
    index: 1
    ror: 02s376052
- - name: "Goddard Space Flight Center, National Aeronautics and Space Administration, Greenbelt, MD, USA"
+ - name: "NASA Goddard Space Flight Center, Goddard Earth Sciences Data and Information Services Center (GES DISC), Greenbelt, MD, USA"
    index: 2
    ror: 0171mag52
  - name: "Coiled Computing, Inc."
    index: 3
- - name: "NASA Langley Research Center, Atmospheric Science Data Center, Hampton, VA, USA"
+ - name: "NASA Goddard Space Flight Center, Ocean Biology Distributed Active Archive Center (OB.DAAC), Greenbelt, MD, USA"
    index: 4
+   ror: 0171mag52
+ - name: "Development Seed, Inc."
+   index: 5
+ - name: "Schmidt Center for Data Science and Environment (DSE), University of California Berkeley"
+   index: 6
+   ror: "01an7q238"
+ - name: "NASA Langley Research Center, Atmospheric Science Data Center (ASDC), Hampton, VA, USA"
+   index: 7
    ror: 0399mhs52
  - name: "Booz Allen Hamilton, Inc., McLean, VA, USA"
-   index: 5
+   index: 8
    ror: 051rcp357
  - name: "University of Alaska Fairbanks, Fairbanks, AK, USA"
-   index: 6
+   index: 9
    ror: 01j7nq853
  - name: "Openscapes and National Center for Ecological Analysis and Synthesis (NCEAS), University of California Santa Barbara, Santa Barbara, CA, USA"
-   index: 7
+   index: 10
    ror: 02t274463
  - name: "University of New Hampshire, Durham, NH, USA"
-   index: 8
+   index: 11
    ror: 02q4hks80
  - name: "Independent Contributor"
-   index: 9
- - name: "Schmidt Center for Data Science and Environment (DSE), University of California Berkeley"
-   index: 10
-   ror: "01an7q238"
+   index: 12
 date: 05 March 2026
 bibliography: paper.bib
 ---
