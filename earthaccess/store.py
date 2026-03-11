@@ -307,12 +307,16 @@ class Store(object):
         if not hasattr(self, "_http_session"):
             self._http_session = self.auth.get_session()
 
-        resp = self._http_session.request(method, url, allow_redirects=True)
+        resp = self._http_session.request(method, url, allow_redirects=True, timeout=10)
 
         if resp.status_code in [400, 401, 403]:
             new_session = requests.Session()
             resp_req = new_session.request(
-                method, url, allow_redirects=True, cookies=self._requests_cookies
+                method,
+                url,
+                allow_redirects=True,
+                cookies=self._requests_cookies,
+                timeout=10,
             )
             if resp_req.status_code in [400, 401, 403]:
                 resp.raise_for_status()
