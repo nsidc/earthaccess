@@ -26,4 +26,4 @@ jobs:
           ignore_links: >-
             ^/.*
             ^https://www\.earthdata\.nasa\.gov/.*
-            ^https://github\.com/.*/discussions/categories/.*
+            ^https://github\.com/.*
