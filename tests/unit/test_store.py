@@ -3,10 +3,12 @@ import os
 import threading
 import unittest
 from pathlib import Path
+from typing import Any, cast
 from unittest.mock import MagicMock, patch
 
 import fsspec
 import pytest
+import requests
 import responses
 import s3fs
 from earthaccess import Auth, Store
@@ -393,3 +395,87 @@ def test_sibling_tempfile_error(tmp_path):
     assert not temp_file.exists()
     assert trg_file.exists()
     assert trg_file.read_text() == orig_text
+
+
+@pytest.fixture
+@responses.activate
+def store_with_auth(monkeypatch) -> Store:
+    monkeypatch.setenv("EARTHDATA_USERNAME", "user")
+    monkeypatch.setenv("EARTHDATA_PASSWORD", "password")
+
+    json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
+    responses.add(
+        responses.POST,
+        "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
+        json=json_response,
+        status=200,
+    )
+    responses.add(
+        responses.GET,
+        "https://urs.earthdata.nasa.gov/profile",
+        json={},
+        status=200,
+    )
+
+    auth = Auth()
+    auth.login(strategy="environment")
+
+    return Store(auth)
+
+
+@pytest.mark.parametrize(
+    "env_timeout, first_status, second_status, expected_timeout, expected_calls",
+    [
+        ("25", 200, None, 25, 1),
+        ("25", 401, 200, 25, 2),
+        ("NaN", 200, None, 10, 1),
+    ],
+)
+@responses.activate
+def test_set_requests_session_timeout_configuration(
+    env_timeout,
+    first_status,
+    second_status,
+    expected_timeout,
+    expected_calls,
+    monkeypatch,
+    store_with_auth: Store,
+):
+    store = store_with_auth
+    url = "https://example.com"
+    responses.add(responses.GET, url, status=first_status)
+    if second_status is not None:
+        responses.add(responses.GET, url, status=second_status)
+
+    before_calls = len(responses.calls)
+    monkeypatch.setenv("EARTHACCESS_REQUEST_TIMEOUT", env_timeout)
+    store.set_requests_session(url)
+    new_calls = [responses.calls[i] for i in range(before_calls, len(responses.calls))]
+
+    assert len(new_calls) == expected_calls
+    for call in new_calls:
+        req_kwargs = cast(dict[str, Any], getattr(call.request, "req_kwargs", {}))
+        assert req_kwargs.get("timeout") == expected_timeout
+
+
+@responses.activate
+def test_set_requests_session_timeout_warns_override(
+    caplog,
+    monkeypatch,
+    store_with_auth: Store,
+):
+    monkeypatch.setenv("EARTHACCESS_REQUEST_TIMEOUT", "25")
+    store = store_with_auth
+    url = "https://example.com"
+
+    responses.add(
+        responses.GET,
+        url,
+        body=requests.Timeout("timed out"),
+    )
+
+    with pytest.raises(requests.Timeout):
+        store.set_requests_session(url)
+
+    assert "EARTHACCESS_REQUEST_TIMEOUT" in caplog.text
+    assert "Currently 25 seconds." in caplog.text

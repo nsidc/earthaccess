@@ -1,5 +1,6 @@
 import datetime
 import logging
+import os
 import tempfile
 import threading
 import traceback
@@ -34,6 +35,27 @@ from .results import DataGranule
 from .search import DataCollections
 
 logger = logging.getLogger(__name__)
+
+DEFAULT_REQUEST_TIMEOUT = 10  # seconds
+
+
+def _request_timeout_seconds() -> int:
+    """Return request timeout for Store HTTP session setup.
+
+    If EARTHACCESS_REQUEST_TIMEOUT environment variable is set, its value is used.
+    Otherwise, a default of 10 seconds is used.
+    This timeout applies to requests made during the setup of the HTTP session in the Store class.
+
+    Returns:
+        int: The request timeout in seconds.
+    """
+    timeout_str = os.getenv("EARTHACCESS_REQUEST_TIMEOUT")
+    timeout = (
+        int(timeout_str)
+        if timeout_str and timeout_str.isdigit()
+        else DEFAULT_REQUEST_TIMEOUT
+    )
+    return timeout
 
 
 def _is_interactive() -> bool:
@@ -307,21 +329,38 @@ class Store(object):
         if not hasattr(self, "_http_session"):
             self._http_session = self.auth.get_session()
 
-        resp = self._http_session.request(method, url, allow_redirects=True)
-
-        if resp.status_code in [400, 401, 403]:
-            new_session = requests.Session()
-            resp_req = new_session.request(
-                method, url, allow_redirects=True, cookies=self._requests_cookies
+        timeout = _request_timeout_seconds()
+        try:
+            resp = self._http_session.request(
+                method,
+                url,
+                allow_redirects=True,
+                timeout=timeout,
             )
-            if resp_req.status_code in [400, 401, 403]:
-                resp.raise_for_status()
+
+            if resp.status_code in [400, 401, 403]:
+                new_session = requests.Session()
+                resp_req = new_session.request(
+                    method,
+                    url,
+                    allow_redirects=True,
+                    cookies=self._requests_cookies,
+                    timeout=timeout,
+                )
+                if resp_req.status_code in [400, 401, 403]:
+                    resp.raise_for_status()
+                else:
+                    self._requests_cookies.update(new_session.cookies.get_dict())
+            elif 200 <= resp.status_code < 300:
+                self._requests_cookies = self._http_session.cookies.get_dict()
             else:
-                self._requests_cookies.update(new_session.cookies.get_dict())
-        elif 200 <= resp.status_code < 300:
-            self._requests_cookies = self._http_session.cookies.get_dict()
-        else:
-            resp.raise_for_status()
+                resp.raise_for_status()
+        except requests.Timeout:
+            logger.warning(
+                "If needed, raise EARTHACCESS_REQUEST_TIMEOUT to a larger value. Currently %s seconds.",
+                timeout,
+            )
+            raise
 
     @deprecated("Use get_s3_filesystem instead")
     def get_s3fs_session(
