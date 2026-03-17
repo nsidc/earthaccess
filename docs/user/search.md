@@ -97,27 +97,39 @@ results[0].concept_id
 
 ### Accessing and understanding the search results
 
-Each element of the `results` list is a `earthaccess.results.DataCollection` object.  A summary showing key fields for each result in `results` can be displayed using the `summary` method.  Each result in `results` is accessed in the same way you access elements in a Python list; by giving an index.
+Each element of the `results` list is a `earthaccess.results.DataCollection` object.  A summary showing key fields for each result in `results` can be displayed from the `summary` attribute.  Each result in `results` is accessed in the same way you access elements in a Python list; by giving an index.
 
 ```python
 # Add code for getting summary etc
-pprint(result[0].summary())
+pprint(result[0].summary)
 ```
 ```
 {
     'short-name': 'ATL07',
-    'concept-id': 'C2564625052-NSIDC_ECS',
-    'version': '006',
-    'file-type': "[{'FormatType': 'Native', 'Format': 'HDF5', 'FormatDescription': 'HTTPS'}]",
+    'entry-title': 'ATLAS/ICESat-2 L3A Sea Ice Height V007',
+    'concept-id': 'C3564876395-NSIDC_CPRD',
+    'version': '007',
+    'file-format': ['HDF5'],
     'get-data': [
-        'https://n5eil01u.ecs.nsidc.org/ATLAS/ATL07.006/',
-        'https://search.earthdata.nasa.gov/search?q=ATL07+V006',
-        'https://nsidc.org/data/data-access-tool/ATL07/versions/6/'
-        ]
+        'https://search.earthdata.nasa.gov/search/granules?p=C3564876395-NSIDC_CPRD',
+        'https://openaltimetry.earthdatacloud.nasa.gov/data/',
+        'https://cmr.earthdata.nasa.gov/virtual-directory/collections/C3564876395-NSIDC_CPRD',
+        'https://nsidc.org/data/data-access-tool/ATL07/versions/7/',
+        'https://earthaccess.readthedocs.io/en/stable/'
+        ],
+    'cloud-info': {
+        'Region': 'us-west-2',
+        'S3BucketAndObjectPrefixNames': [
+             'nsidc-cumulus-prod-protected/ATLAS/ATL07/007',
+             'nsidc-cumulus-prod-public/ATLAS/ATL07/007'
+             ],
+        'S3CredentialsAPIEndpoint': 'https://data.nsidc.earthdatacloud.nasa.gov/s3credentials',
+        'S3CredentialsAPIDocumentationURL': 'https://data.nsidc.earthdatacloud.nasa.gov/s3credentialsREADME'
+        }
 }
 ```
 
-The `summary` method returns the **short-name** for the dataset; the **concept-id**, a unique identifier for the dataset; the dataset **version**; the **file-type** of the files in the dataset; and a set of links to access the data files.
+The `summary` attribute returns the **short-name** for the dataset; the **entry-title**, which is the name of the dataset; the **concept-id**, a unique identifier for the dataset; the dataset **version**; the **file-format** of the files in the dataset; and a set of links to access the data files.  If the dataset is hosted in the cloud, the AWS region, S3 buckets and credential endpoints are also returned.
 
 !!!note "You need to login to use the **get-data** links"
 
