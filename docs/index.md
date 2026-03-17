@@ -33,7 +33,7 @@ We can use `earthaccess` to do impactful science, faster:
 
 `earthaccess` development is facilitated by [NASA Openscapes](https://nasa-openscapes.github.io/), an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud.
 
-- [earthaccess at ESIP Funding Friday](growing/esip-funding-friday-song-lyrics.md) - Our winning "pitch" for growing the `earthaccess` family!
+- [ESIP FUNding Friday](growing/esip-funding-friday-song-lyrics.md) - Our winning "pitch" for growing the `earthaccess` family!
 
 - [earthaccess NASA Blog post](https://www.earthdata.nasa.gov/news/blog/earthaccess-earth-science-data-simplified)
 
