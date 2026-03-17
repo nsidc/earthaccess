@@ -24,7 +24,7 @@ authors:
   - given-names: "Ian"
     surname: "Carroll"
     orcid: "https://orcid.org/0000-0002-3616-810X"
-    affiliation: "4"
+    affiliation: "4, 13"
   - given-names: "Chuck"
     surname: "Daniels"
     affiliation: "5"
@@ -69,7 +69,7 @@ affiliations:
    ror: 0171mag52
  - name: "Coiled Computing, Inc."
    index: 3
- - name: "NASA Goddard Space Flight Center, Ocean Biology Distributed Active Archive Center (OB.DAAC), Greenbelt, MD, USA"
+ - name: "Ocean Ecology Lab, NASA Goddard Space Flight Center, Greenbelt, MD, USA"
    index: 4
    ror: 0171mag52
  - name: "Development Seed, Inc."
@@ -94,6 +94,9 @@ affiliations:
    ror: 02q4hks80
  - name: "Independent Contributor"
    index: 12
+ - name: "GESTAR II, University of Maryland Baltimore County, Baltimore, MD, USA"
+   index: 13
+   ror: 02qskvh78
 date: 05 March 2026
 bibliography: paper.bib
 ---
