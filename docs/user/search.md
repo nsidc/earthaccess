@@ -422,7 +422,7 @@ results = earthaccess.search_datasets(
 
 ```python
 for dataset in datasets:
-    print(dataset.services())
+    print(dataset.services)
 ```
 
 The other way to use the `search_services` function.  This takes the following keywords:
