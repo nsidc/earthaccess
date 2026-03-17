@@ -8,7 +8,7 @@ In 2025 Seattle, we won $5K for our idea! This is a short way to document what w
 
 ## Brief timeline
 
-Showing the power of the social infrastructure and open community collaboration, with folks contributing asyncronously and synchronously, remotely and in person at conference as they are available, and contributing different skills and handoffs to deliver on a short deadline.
+Showing the power of the social infrastructure and open community collaboration, with folks contributing asynchronously and synchronously, remotely and in person at conference as they are available, and contributing different skills and handoffs to deliver on a short deadline.
 
 **July 23: Scoping ideas**
 
