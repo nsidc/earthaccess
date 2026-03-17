@@ -54,3 +54,8 @@ Our project follows the [SPEC0](https://scientific-python.org/specs/spec-0000/) 
   except Exception:
       pass
   ```
+
+### 1.0.0
+
+* The following methods of `DataCollection` are now properties: `summary()`, `concept_id()`,
+  `version()`, `data_type()`, `s3_bucket()`, `doi()`, `abstract()`, `landing_page()`.  For example,   use `DataCollection.summary` **not** `DataCollection.summary()`
