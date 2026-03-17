@@ -218,6 +218,7 @@ class DataCollection(CustomDict):
         links = self._filter_related_links("LANDING PAGE")
         return links[0] if len(links) > 0 else ""
 
+    @property
     def get_data(self) -> List[str]:
         """Placeholder.
 
