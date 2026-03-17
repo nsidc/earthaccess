@@ -85,10 +85,10 @@ len(results)
 1
 ```
 
-The concept-id can be accessed directly using the `concept_id` method.
+The concept-id can be accessed directly from the `concept_id` attribute.
 
 ```
-results[0].concept_id()
+results[0].concept_id
 ```
 ```
 'C3326974349-NSIDC_CPRD'
