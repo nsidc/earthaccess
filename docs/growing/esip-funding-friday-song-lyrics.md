@@ -22,7 +22,7 @@ Showing the power of the social infrastructure and open community collaboration,
 - User testing: what does the poster say? "access". Ah, we need to redo "earth" so it reads "earthaccess"
 - Joe Kennedy and Julie Lowndes start writing lyrics. Steve Young (retired EPA) comes by, asks questions that establish what we'll use the funding for, timeline, and outcomes. Joe Kennedy is an excellent songwriter.
 
-![developing song lyrics on buther paper](/images/lyrics_v01_review.jpg){ align=center }
+![Developing song lyrics on butcher paper with literal cutting and pasting.](../images/lyrics_v01_review.jpg)
 
 
 **July 25: The pitch**
@@ -53,4 +53,4 @@ We want a prototype in an afternoon in our plans
 We want a roadmap in an afternoon in our plans
 We want the whole world in our hands
 
-![hand printed lyrics](/images/lyrics_v02_presented.jpg){ align=center }
+![Nicely hand printed lyrics used during the presentation.](../images/lyrics_v02_presented.jpg)
