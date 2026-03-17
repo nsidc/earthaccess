@@ -236,6 +236,7 @@ class DataCollection(CustomDict):
         """
         return self["umm"].get("DirectDistributionInformation", {})
 
+    @property
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """Return list of services available for this collection."""
         services = self.get("meta", {}).get("associations", {}).get("services", [])
