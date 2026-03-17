@@ -13,7 +13,7 @@ Showing the power of the social infrastructure and open community collaboration,
 **July 23: Scoping ideas**
 
 - Aaron Friesz reminds Julie Lowndes of FUNding Friday, Julie thinks of `earthaccess`. Wonders a low-key way to get input about what is a good scope to pitch for `earthaccess` from the NASA Openscapes Mentors. Ah, they are meeting in 5 minutes at a regular Mentors Call, Julie writes a note in the agenda doc.
-- Stef Butland (Openscapes), Danny Kaufman (ASDC), Amy Steiker (NSIDC DAAC), Liz Neeley (Openscapes), Mikala Beig (NSIDC DAAC), Michele Thornton (ORNL DAAC) meet during the Mentors Call and see Julie's note; they scope ideas publicly in https://github.com/nsidc/earthaccess/discussions/1054; other contributors including Matt Fisher (UC Berkeley) and Eli Holmes (NOAA Fisheries) weigh in
+- Stef Butland (Openscapes), Danny Kaufman (ASDC), Amy Steiker (NSIDC DAAC), Liz Neeley (Openscapes), Mikala Beig (NSIDC DAAC), Michele Thornton (ORNL DAAC) meet during the Mentors Call and see Julie's note; they scope ideas publicly in https://github.com/nsidc/earthaccess/discussions/1054; other contributors including Matt Fisher (UC Berkeley) and Eli Holmes (NOAA Fisheries) weigh in.
 
 **July 24: Poster-making**
 
@@ -21,6 +21,9 @@ Showing the power of the social infrastructure and open community collaboration,
 - Eli Holmes has to leave. Before she does, suggests we sing a song. "We've got the whole world in our hands"
 - User testing: what does the poster say? "access". Ah, we need to redo "earth" so it reads "earthaccess"
 - Joe Kennedy and Julie Lowndes start writing lyrics. Steve Young (retired EPA) comes by, asks questions that establish what we'll use the funding for, timeline, and outcomes. Joe Kennedy is an excellent songwriter.
+
+![developing song lyrics on buther paper](images/lyrics_v01_review.jpg){ align=center }
+
 
 **July 25: The pitch**
 
@@ -49,3 +52,5 @@ We want a hackday at AGU in our plans
 We want a prototype in an afternoon in our plans
 We want a roadmap in an afternoon in our plans
 We want the whole world in our hands
+
+![hand printed lyrics](images/lyrics_v02_presented.jpg){ align=center }
