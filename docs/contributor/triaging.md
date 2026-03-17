@@ -40,7 +40,7 @@ When referencing a label in a GitHub issue or discussion, it will be  useful to 
 
 ### Syntax
 
-To link to a label in GitHub Markdown, copy-and-paste the URL to the label by right-clicking [any label](https://github.com/nsidc/earthaccess/labels) and selecting "Copy Link". Then, paste that label in a GitHub issue, PR, discussion, or Markdown document:
+To link to a label in GitHub Markdown, copy-and-paste the URL to the label by right-clicking [any label](https://github.com/earthaccess-dev/earthaccess/labels) and selecting "Copy Link". Then, paste that label in a GitHub issue, PR, discussion, or Markdown document:
 
 ```
 https://github.com/username/repository/labels/label-name
@@ -48,10 +48,10 @@ https://github.com/username/repository/labels/label-name
 
 ### Example
 
-For example, to link to the "good first issue" label in the nsidc/earthaccess repository, you would use the URL:
+For example, to link to the "good first issue" label in the earthaccess-dev/earthaccess repository, you would use the URL:
 
 ```
-https://github.com/nsidc/earthaccess/labels/good%20first%20issue
+https://github.com/earthaccess-dev/earthaccess/labels/good%20first%20issue
 ```
 
 

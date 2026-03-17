@@ -3,5 +3,5 @@
 _earthaccess_ is community-owned and welcomes all forms of contributions from the public.
 
 Please view
-[our documentation's "contributing" page](https://earthaccess.readthedocs.io/en/latest/contributing)
+[our documentation's Contributor Guide](https://earthaccess.readthedocs.io/en/latest/contributor)
 to learn more!

@@ -390,6 +390,7 @@ def download(
     show_progress: Optional[bool] = None,
     credentials_endpoint: Optional[str] = None,
     pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+    force: bool = False,
 ) -> List[Path]:
     """Retrieves data granules from a remote storage system. Provide the optional `local_path` argument to prevent repeated downloads.
 
@@ -413,6 +414,7 @@ def download(
         pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
             See pqdm documentation for available options. Default is to use immediate exception behavior
             and the number of jobs specified by the `threads` parameter.
+        force: Force a redownload. By default, existing local files are not overwritten.
 
     Returns:
         List of downloaded files
@@ -436,6 +438,7 @@ def download(
             credentials_endpoint=credentials_endpoint,
             show_progress=show_progress,
             pqdm_kwargs=pqdm_kwargs,
+            force=force,
         )
     except AttributeError as err:
         logger.error(

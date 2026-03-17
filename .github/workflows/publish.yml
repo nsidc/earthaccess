@@ -19,18 +19,15 @@ jobs:
     name: Publish to PyPI
     needs: ["build"]
     runs-on: ubuntu-latest
-    environment: pypi
+    environment:
+      name: pypi
+      url: https://pypi.org/p/earthaccess
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: Packages
           path: dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1
-        # NOTE: This is not the current best practice. Instead, we should use
-        # "trusted publishing":
-        # https://github.com/pypa/gh-action-pypi-publish?tab=readme-ov-file#trusted-publishing
-        with:
-          password: ${{ secrets.PYPI_TOKEN }}
