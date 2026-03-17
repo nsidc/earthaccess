@@ -10,10 +10,16 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Changed
 
 - While downloading, files will have temporary names until download completes.
+- The following methods of `DataCollection` are now properties: `concept_id()`,
+  `version()`, `data_type()`, `s3_bucket()`, `doi()`, `abstract()`, `land_page()`.
+  These are now called without `()`.
+  ([#999](https://github.com/earthaccess-dev/earthaccess/issues/999) (@andypbarrett)
 
 ### Added
 
 - Added `force` kwarg to `download()` to force redownloads.
+- Added `DataCollection.file_format` property.
+- Added `file_format` and `entry_title` to summary
 
 ## [v0.16.0] - 2026-01-30
 
