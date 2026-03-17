@@ -1,8 +1,8 @@
-# FUNding Friday Song Lyrics for `earthaccess` hackday, 2025 
+# FUNding Friday Song Lyrics for `earthaccess` hackday, 2025
 
-At the Earth Science Information Partners (ESIP) Summer Meeting, [FUNding Friday](https://wiki.esipfed.org/FUNding_Friday_Projects) is a way to pitch an idea and win $5K for an idea. Participants from the conference make posters the evening before at a social hour. 
+At the Earth Science Information Partners (ESIP) Summer Meeting, [FUNding Friday](https://wiki.esipfed.org/FUNding_Friday_Projects) is a way to pitch an idea and win $5K for an idea. Participants from the conference make posters the evening before at a social hour.
 
-In 2025 Seattle, we won $5K for our idea! This is a short way to document what we did, and to credit non-traditional contributors and contributions. We pitched an idea through song; lyrics below, along with a 1.5 min ([video](https://photos.app.goo.gl/851mfZrWPdfmZjcq6)), and then summarized: 
+In 2025 Seattle, we won $5K for our idea! This is a short way to document what we did, and to credit non-traditional contributors and contributions. We pitched an idea through song; lyrics below, along with a 1.5 min ([video](https://photos.app.goo.gl/851mfZrWPdfmZjcq6)), and then summarized:
 
 > `earthaccess` is a Python library that enables authentication, search, and access for NASA Earth science data with just a few lines of code. We see great potential for growing the family to include data from NOAA, USGS, and Copernicus in Europe. We would use FUNding Friday funds for a hackday, virtual and in person, at AGU in December. We expect a workable prototype and roadmap in an afternoon. Thank you.
 
@@ -33,19 +33,19 @@ Showing the power of the social infrastructure and open community collaboration,
 
 v0.3 (best to sing if the opportunity rises again)
 
-Hello. We are earthaccess. We are growing the family. 
+Hello. We are earthaccess. We are growing the family.
 
-We've got NASA CMR in our hands  
-We've got an open contributor community in our hands  
-We're seeing the whole world in separate catalogs  
-We want the whole world in our hands  
+We've got NASA CMR in our hands
+We've got an open contributor community in our hands
+We're seeing the whole world in separate catalogs
+We want the whole world in our hands
 
-We want NOAA CMR in our hands  
-We want USGS STAC in our hands  
-We want Copernicus STAC in our hands  
-We want the whole world in our hands  
+We want NOAA CMR in our hands
+We want USGS STAC in our hands
+We want Copernicus STAC in our hands
+We want the whole world in our hands
 
-We want a hackday at AGU in our plans  
-We want a prototype in an afternoon in our plans  
-We want a roadmap in an afternoon in our plans  
-We want the whole world in our hands  
+We want a hackday at AGU in our plans
+We want a prototype in an afternoon in our plans
+We want a roadmap in an afternoon in our plans
+We want the whole world in our hands
