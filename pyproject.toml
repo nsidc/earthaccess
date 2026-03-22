@@ -45,6 +45,7 @@ dependencies = [
   "multimethod >=1.8",
   "importlib-resources >=6.3.2",
   "typing_extensions >=4.10.0",
+  "python-dotenv>=1.1.1",
 ]
 
 [project.urls]

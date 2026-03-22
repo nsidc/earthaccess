@@ -3,6 +3,8 @@ import threading
 from importlib.metadata import version
 from typing import Optional
 
+from dotenv import load_dotenv
+
 from .api import (
     auth_environ,
     collection_query,
@@ -30,6 +32,8 @@ from .store import Store
 from .system import PROD, UAT
 
 logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 __all__ = [
     # api.py

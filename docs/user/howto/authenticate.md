@@ -24,8 +24,8 @@ auth = earthaccess.login(strategy="netrc")
 ```
 
 If your Earthdata Login credentials are set as the environment variables
-`EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`, you can explicitly specify their
-use:
+`EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`, either in a `.env` file
+or your local environment, you can explicitly specify their use:
 
 ```py
 auth = earthaccess.login(strategy="environment")
