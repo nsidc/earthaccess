@@ -14,7 +14,11 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Added
 
 - Added `force` kwarg to `download()` to force redownloads.
-
+- Added `FutureWarning` to `DataCollections` and `DataGranules` methods
+  in preparation for merge of #1187 in version 1.0.
+  ([#1267](https://github.com/earthaccess-dev/earthaccess/pull/1267))
+  (@andypbarrett)
+	
 ## [v0.16.0] - 2026-01-30
 
 ### Changed
