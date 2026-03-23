@@ -139,7 +139,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.doi` will be accessed as an "
                       "attribute; e.g. use `DataCollection.doi` **not** "
-                      "`DataCollection.doi()",
+                      "`DataCollection.doi()`",
                       category=FutureWarning, stacklevel=2)
 
         doi = self["umm"].get("DOI", {})
@@ -176,7 +176,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.concept_id` will be accessed as an "
                       "attribute; e.g. use `DataCollection.concept_id` **not** "
-                      "`DataCollection.concept_id()",
+                      "`DataCollection.concept_id()`",
                       category=FutureWarning, stacklevel=2)
 
         return self["meta"]["concept-id"]
@@ -189,7 +189,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.data_type` will be accessed as an "
                       "attribute; e.g. use `DataCollection.data_type` **not** "
-                      "`DataCollection.data_type()",
+                      "`DataCollection.data_type()`",
                       category=FutureWarning, stacklevel=2)
 
         return str(
@@ -206,7 +206,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.version` will be accessed as an "
                       "attribute; e.g. use `DataCollection.version` **not** "
-                      "`DataCollection.version()",
+                      "`DataCollection.version()`",
                       category=FutureWarning, stacklevel=2)
 
         return self["umm"].get("Version", "")
@@ -219,7 +219,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.abstract` will be accessed as an "
                       "attribute; e.g. use `DataCollection.abstract` **not** "
-                      "`DataCollection.abstract()",
+                      "`DataCollection.abstract()`",
                       category=FutureWarning, stacklevel=2)
 
         return self["umm"].get("Abstract", "")
@@ -232,7 +232,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.landing_page` will be accessed as an "
                       "attribute; e.g. use `DataCollection.landing_page` **not** "
-                      "`DataCollection.landing_page()",
+                      "`DataCollection.landing_page()`",
                       category=FutureWarning, stacklevel=2)
 
         links = self._filter_related_links("LANDING PAGE")
@@ -246,7 +246,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.get_data` will be accessed as an "
                       "attribute; e.g. use `DataCollection.get_data` **not** "
-                      "`DataCollection.get_data()",
+                      "`DataCollection.get_data()`",
                       category=FutureWarning, stacklevel=2)
 
         return self._filter_related_links("GET DATA")
@@ -259,7 +259,7 @@ class DataCollection(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataCollection.s3_bucket` will be accessed as an "
                       "attribute; e.g. use `DataCollection.s3_bucket` **not** "
-                      "`DataCollection.s3_bucket()",
+                      "`DataCollection.s3_bucket()`",
                       category=FutureWarning, stacklevel=2)
 
         return self["umm"].get("DirectDistributionInformation", {})
@@ -268,7 +268,7 @@ class DataCollection(CustomDict):
         """Return list of services available for this collection."""
         warnings.warn("As of version 1.0, `DataCollection.services` will be accessed as an "
                       "attribute; e.g. use `DataCollection.services` **not** "
-                      "`DataCollection.services()",
+                      "`DataCollection.services()`",
                       category=FutureWarning, stacklevel=2)
 
         services = self.get("meta", {}).get("associations", {}).get("services", [])
@@ -362,7 +362,7 @@ class DataGranule(CustomDict):
         """
         warnings.warn("As of version 1.0, `DataGranule.size` will be accessed as an "
                       "attribute; e.g. use `DataCollection.size` **not** "
-                      "`DataCollection.size()",
+                      "`DataCollection.size()`",
                       category=FutureWarning, stacklevel=2)
 
         try:
