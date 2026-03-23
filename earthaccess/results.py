@@ -261,6 +261,11 @@ class DataCollection(CustomDict):
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """Return list of services available for this collection."""
+        warnings.warn("As of version 1.0, `DataCollection.services` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.services` **not** "
+                      "`DataCollection.services()",
+                      category=FutureWarning, stacklevel=2)
+
         services = self.get("meta", {}).get("associations", {}).get("services", [])
         queries = (
             DataServices(auth=earthaccess.__auth__).parameters(concept_id=service)
