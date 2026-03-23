@@ -100,19 +100,24 @@ class DataCollection(CustomDict):
 
         warnings.warn("As of version 1.0, `DataCollection.summary` will be accessed as an "
                       "attribute; e.g. use `DataCollection.summary` **not** "
-                      "`DataCollection.summary()",
+                      "`DataCollection.summary()`",
                       category=FutureWarning, stacklevel=2)
 
-        summary_dict: Dict[str, Any]
-        summary_dict = {
-            "short-name": self.get_umm("ShortName"),
-            "concept-id": self.concept_id(),
-            "version": self.version(),
-            "file-type": self.data_type(),
-            "get-data": self.get_data(),
-        }
-        if "Region" in self.s3_bucket():
-            summary_dict["cloud-info"] = self.s3_bucket()
+        # Only issue a single FutureWarning
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=FutureWarning)
+
+            summary_dict: Dict[str, Any]
+            summary_dict = {
+                "short-name": self.get_umm("ShortName"),
+                "concept-id": self.concept_id(),
+                "version": self.version(),
+                "file-type": self.data_type(),
+                "get-data": self.get_data(),
+                }
+            if "Region" in self.s3_bucket():
+                summary_dict["cloud-info"] = self.s3_bucket()
+
         return summary_dict
 
     def get_umm(self, umm_field: str) -> Union[str, Dict[str, Any]]:
