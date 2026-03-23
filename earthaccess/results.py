@@ -212,6 +212,11 @@ class DataCollection(CustomDict):
         Returns:
             The abstract of a collection.
         """
+        warnings.warn("As of version 1.0, `DataCollection.abstract` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.abstract` **not** "
+                      "`DataCollection.abstract()",
+                      category=FutureWarning, stacklevel=2)
+
         return self["umm"].get("Abstract", "")
 
     def landing_page(self) -> str:
