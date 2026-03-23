@@ -252,6 +252,11 @@ class DataCollection(CustomDict):
         Returns:
             The S3 bucket information if the collection has it (**cloud hosted collections only**).
         """
+        warnings.warn("As of version 1.0, `DataCollection.s3_bucket` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.s3_bucket` **not** "
+                      "`DataCollection.s3_bucket()",
+                      category=FutureWarning, stacklevel=2)
+
         return self["umm"].get("DirectDistributionInformation", {})
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
