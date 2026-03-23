@@ -199,6 +199,11 @@ class DataCollection(CustomDict):
         Returns:
             The collection's version.
         """
+        warnings.warn("As of version 1.0, `DataCollection.version` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.version` **not** "
+                      "`DataCollection.version()",
+                      category=FutureWarning, stacklevel=2)
+
         return self["umm"].get("Version", "")
 
     def abstract(self) -> str:
