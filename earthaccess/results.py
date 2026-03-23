@@ -132,6 +132,11 @@ class DataCollection(CustomDict):
         Returns:
             This collection's DOI information, or `None`, if it has none.
         """
+        warnings.warn("As of version 1.0, `DataCollection.doi` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.doi` **not** "
+                      "`DataCollection.doi()",
+                      category=FutureWarning, stacklevel=2)
+
         doi = self["umm"].get("DOI", {})
         if isinstance(doi, dict):
             return doi.get("DOI", None)
