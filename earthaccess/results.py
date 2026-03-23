@@ -225,6 +225,11 @@ class DataCollection(CustomDict):
         Returns:
             The first landing page for the collection (can be many), if available.
         """
+        warnings.warn("As of version 1.0, `DataCollection.landing_page` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.landing_page` **not** "
+                      "`DataCollection.landing_page()",
+                      category=FutureWarning, stacklevel=2)
+
         links = self._filter_related_links("LANDING PAGE")
         return links[0] if len(links) > 0 else ""
 
@@ -234,6 +239,11 @@ class DataCollection(CustomDict):
         Returns:
             The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
+        warnings.warn("As of version 1.0, `DataCollection.get_data` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.get_data` **not** "
+                      "`DataCollection.get_data()",
+                      category=FutureWarning, stacklevel=2)
+
         return self._filter_related_links("GET DATA")
 
     def s3_bucket(self) -> Dict[str, Any]:
