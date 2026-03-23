@@ -169,6 +169,11 @@ class DataCollection(CustomDict):
         Returns:
             A collection's `concept_id`.This id is the most relevant search field on granule queries.
         """
+        warnings.warn("As of version 1.0, `DataCollection.concept_id` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.concept_id` **not** "
+                      "`DataCollection.concept_id()",
+                      category=FutureWarning, stacklevel=2)
+
         return self["meta"]["concept-id"]
 
     def data_type(self) -> str:
