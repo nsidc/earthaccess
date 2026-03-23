@@ -355,6 +355,11 @@ class DataGranule(CustomDict):
         Returns:
             The total size for the granule in MB.
         """
+        warnings.warn("As of version 1.0, `DataGranule.size` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.size` **not** "
+                      "`DataCollection.size()",
+                      category=FutureWarning, stacklevel=2)
+
         try:
             data_granule = self["umm"]["DataGranule"]
             total_size = sum(
