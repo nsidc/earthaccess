@@ -182,6 +182,11 @@ class DataCollection(CustomDict):
         Returns:
             The collection data type, i.e. HDF5, CSV etc., if available.
         """
+        warnings.warn("As of version 1.0, `DataCollection.data_type` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.data_type` **not** "
+                      "`DataCollection.data_type()",
+                      category=FutureWarning, stacklevel=2)
+
         return str(
             self["umm"]
             .get("ArchiveAndDistributionInformation", {})
