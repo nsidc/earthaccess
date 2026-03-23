@@ -105,7 +105,7 @@ class DataCollection(CustomDict):
             "concept-id": self.concept_id,
             "version": self.version,
             "file-format": self.file_format,
-            "get-data": self.get_data(),
+            "get-data": self.get_data,
         }
         if "Region" in self.s3_bucket:
             summary_dict["cloud-info"] = self.s3_bucket
