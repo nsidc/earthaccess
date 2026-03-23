@@ -2,6 +2,7 @@ import json
 import uuid
 from functools import cache
 from typing import Any, Dict, List, Optional, Union
+import warnings
 
 import requests
 
@@ -96,6 +97,11 @@ class DataCollection(CustomDict):
             A summary of the collection metadata.
         """
         # we can print only the concept-id
+
+        warnings.warn("As of version 1.0, `DataCollection.summary` will be accessed as an "
+                      "attribute; e.g. use `DataCollection.summary` **not** "
+                      "`DataCollection.summary()",
+                      category=FutureWarning, stacklevel=2)
 
         summary_dict: Dict[str, Any]
         summary_dict = {
