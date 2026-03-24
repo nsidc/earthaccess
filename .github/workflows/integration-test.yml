@@ -131,6 +131,7 @@ jobs:
           # is apparently less than ideal, but seems to be the best we can muster at
           # this point.
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
 
       - name: Install package with dependencies
         uses: ./.github/actions/install-pkg

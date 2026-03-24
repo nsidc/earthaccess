@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Install package with dependencies
         uses: ./.github/actions/install-pkg
