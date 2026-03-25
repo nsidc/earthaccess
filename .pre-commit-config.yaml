@@ -72,3 +72,8 @@ repos:
       - id: "validate-cff"
         args:
           - "--verbose"
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: "1de4a94008448d1ffa57080fbf183feb615ee165"
+    hooks:
+      - id: shellcheck
