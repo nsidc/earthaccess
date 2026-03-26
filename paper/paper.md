@@ -138,8 +138,8 @@ credentials when accessing cloud-hosted data. Each step introduces opportunities
 error, and DAAC-specific configurations further compound the challenge.
 
 NASA's ongoing migration to the Earthdata Cloud adds further complexity, as researchers
-must now contend with two possible access paradigms (traditional HTTPS downloads and S3-based
-access), and sometimes even within a single analysis workflow. During workshops organized by NASA
+must now contend with two possible access paradigms, traditional HTTPS downloads and S3-based
+access. These both may even occur within a single analysis workflow. During workshops organized by NASA
 Openscapes [@nasa_openscapes; @lowndes2019], the need for simpler tools became evident.
 `earthaccess` was created to address this gap: it provides uniform access to NASA
 Earthdata regardless of data storage location, enabling researchers to focus on science
@@ -270,7 +270,7 @@ and independent open-source contributors. This breadth reflects both the library
 relevance across domains and the health of its contributor community.
 
 **Integration with the NASA ecosystem.** `earthaccess` is featured in official NASA
-Earthdata tutorials including <https://www.earthdata.nasa.gov/data/tools/earthaccess>, has been presented at AGU Fall Meetings, and was the subject of
+Earthdata tutorials, including <https://www.earthdata.nasa.gov/data/tools/earthaccess>, has been presented at multiple large professional meetings (including several American Geophysical Union Annual and Earth System Information Partnership (ESIP) meetings), and was the subject of
 a NASA ESDS Tech Spotlight presentation. The documentation includes executable Jupyter
 notebooks demonstrating workflows with ICESat-2, EMIT, TEMPO, SMAP, and other missions,
 providing reproducible entry points for researchers.
@@ -278,7 +278,7 @@ providing reproducible entry points for researchers.
 
 # AI usage disclosure
 
-No generative AI tools were used in the development of the earthaccess software; all architectural and design decisions were made exclusively by the authors and contributors.
+No generative AI tools were used in the development of the `earthaccess` software; all architectural and design decisions were made exclusively by the authors and contributors.
 
 Preparation of this manuscript was assisted by Claude [Sonnet 4.6 and Opus 4.6] (Anthropic), which was applied to the full manuscript using the repository source code, documentation, commit history, and project metadata as context. Assistance was used for manuscript drafting and editorial revision. All content was reviewed, revised, and verified for accuracy by the authors, who bear full responsibility for the submitted work.
 
@@ -289,8 +289,8 @@ The development of `earthaccess` was supported by NASA's Earth Science Data Syst
 (ESDS) program through the Openscapes project (NASA award **______**, PIs Julia
 Lowndes and Erin Robinson). We thank NASA Openscapes for the community workshops, collaborative working environment, and people-first approach that have motivated and continue to support this work. We are grateful to the
 National Snow and Ice Data Center (NSIDC) for hosting the repository during its initial
-development, and to all contributors who have shaped `earthaccess` through code,
-documentation, issue reports, and community engagement. People have been able to contribute to earthaccess as adopters and developers as part of their jobs across the NASA ecosystem as well as outside of it, and this has been critical to making this shared resource successful. We appreciate everyone who had advocated and approved time to make this possible. We also thank Allison Horst
+development, and to all contributors who have shaped `earthaccess` through contributing code,
+documentation, issue reports, and community engagement. People have been able to contribute to earthaccess as adopters and developers as part of their jobs across the NASA ecosystem as well as outside of it, and this has been critical to making this shared resource successful. We appreciate everyone who advocates for and uses approved time to make this possible. We also thank Allison Horst
 for the `earthaccess` artwork.
 
 
