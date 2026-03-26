@@ -8,7 +8,7 @@ dependencies:
   - python
   - pip
   - pip:
-      - --editable ".[dev,test,docs]"
+      - --group dev --group test --group docs --editable .
 variables:
   # Allow pip installs when conda environment is active
   PIP_REQUIRE_VENV: 0

@@ -1,7 +1,10 @@
 import datetime
 import logging
+import tempfile
 import threading
 import traceback
+from collections.abc import Generator
+from contextlib import contextmanager
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
@@ -24,8 +27,9 @@ from typing_extensions import deprecated
 
 import earthaccess
 
-from .auth import Auth, SessionWithHeaderRedirection
+from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
+from .exceptions import DownloadFailure, EulaNotAccepted
 from .results import DataGranule
 from .search import DataCollections
 
@@ -179,6 +183,43 @@ def _get_url_granule_mapping(
     return url_mapping
 
 
+@contextmanager
+def _sibling_tempfile(sibling: Path) -> Generator[Path, None, None]:
+    """Save the file to a temporary name in case of incomplete download.
+    Temp file is in the same directory to guarantee atomic replacement,
+    and is automatically removed upon exit of the context manager if the
+    download raises an exception.
+    """
+    # Make sure the sibling file's parent directory exists.  This is thread-
+    # safe, as mkdir is atomic, and only one thread will succeed in making the
+    # directory if it does not already exist.  Others succeed due to exist_ok.
+    sibling.parent.mkdir(parents=True, exist_ok=True)
+
+    temp_fh = tempfile.NamedTemporaryFile(
+        dir=sibling.parent,
+        prefix="partial_",  # In case auto-delete fails, make it obvious to users
+        delete=False,
+    )
+    temp_path = Path(temp_fh.name)
+
+    try:
+        # On some systems, a process can't have two handles open for writing to the same file,
+        # so we need to close the file (hence why we don't "delete_on_close" above).
+        temp_fh.close()
+        yield temp_path
+        # Atomically rename successful uses of the temporary file
+        temp_path.replace(sibling)
+    except Exception:
+        # Something went terribly wrong. Clean up if we can.
+        if temp_path.exists():
+            try:
+                temp_path.unlink()
+            except OSError:
+                # Swallow this exception. Not critical, just warn.
+                logger.warning("Could not remove temporary file: %s", temp_path)
+        raise
+
+
 class Store(object):
     """Store class to access granules on-prem or in the cloud."""
 
@@ -197,7 +238,7 @@ class Store(object):
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
             self._requests_cookies: Dict[str, Any] = {}
-            self.set_requests_session(oauth_profile, bearer_token=True)
+            self.set_requests_session(oauth_profile)
             if pre_authorize:
                 # collect cookies from other DAACs
                 for url in DAAC_TEST_URLS:
@@ -252,9 +293,7 @@ class Store(object):
             return True
         return False
 
-    def set_requests_session(
-        self, url: str, method: str = "get", bearer_token: bool = True
-    ) -> None:
+    def set_requests_session(self, url: str, method: str = "get") -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
 
         Mainly used to get the authentication cookies from different DAACs and URS.
@@ -264,13 +303,9 @@ class Store(object):
         Parameters:
             url: used to test the credentials and populate the class auth cookies
             method: HTTP method to test, default: "GET"
-            bearer_token: if true, will be used for authenticated queries on CMR
-
-        Returns:
-            fsspec HTTPFileSystem (aiohttp client session)
         """
         if not hasattr(self, "_http_session"):
-            self._http_session = self.auth.get_session(bearer_token)
+            self._http_session = self.auth.get_session()
 
         resp = self._http_session.request(method, url, allow_redirects=True)
 
@@ -394,7 +429,7 @@ class Store(object):
         session = fsspec.filesystem("https", client_kwargs=client_kwargs)
         return session
 
-    def get_requests_session(self) -> SessionWithHeaderRedirection:
+    def get_requests_session(self) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
 
         This HTTPS session can be used to download granules if we want to use a direct,
@@ -520,12 +555,16 @@ class Store(object):
                     ) from e
             else:
                 fileset = self._open_urls_https(
-                    url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs
+                    url_mapping,
+                    pqdm_kwargs=pqdm_kwargs,
+                    open_kwargs=open_kwargs,
                 )
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
             fileset = self._open_urls_https(
-                url_mapping, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs
+                url_mapping,
+                pqdm_kwargs=pqdm_kwargs,
+                open_kwargs=open_kwargs,
             )
 
         return fileset
@@ -588,7 +627,10 @@ class Store(object):
                 raise ValueError(
                     "We cannot open S3 links when we are not in-region, try using HTTPS links"
                 )
-            fileset = self._open_urls_https(url_mapping, pqdm_kwargs=pqdm_kwargs)
+            fileset = self._open_urls_https(
+                url_mapping,
+                pqdm_kwargs=pqdm_kwargs,
+            )
             return fileset
 
     def get(
@@ -601,6 +643,7 @@ class Store(object):
         credentials_endpoint: Optional[str] = None,
         show_progress: Optional[bool] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        force: bool = False,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
 
@@ -627,6 +670,7 @@ class Store(object):
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
+            force: Force a redownload. By default, existing files are not overwritten.
 
         Returns:
             List of downloaded files
@@ -655,6 +699,7 @@ class Store(object):
             provider,
             credentials_endpoint=credentials_endpoint,
             pqdm_kwargs=pqdm_kwargs,
+            force=force,
         )
 
     @singledispatchmethod
@@ -666,6 +711,7 @@ class Store(object):
         *,
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        force: bool = False,
     ) -> List[Path]:
         """Retrieves data granules from a remote storage system.
 
@@ -683,6 +729,7 @@ class Store(object):
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
+            force: Force a redownload. By default, an existing file is not overwritten.
 
         Returns:
             None
@@ -696,13 +743,18 @@ class Store(object):
         retry=retry_if_exception_type(Exception),
     )
     def download_cloud_file(
-        self, s3_fs: fsspec.AbstractFileSystem, file: str, local_path: Path
+        self,
+        s3_fs: fsspec.AbstractFileSystem,
+        file: str,
+        local_path: Path,
+        force: bool = False,
     ) -> Path:
         file_name = local_path / Path(file).name
-        if file_name.exists():
-            return file_name  # Skip if already exists
+        if file_name.exists() and not force:
+            return file_name  # Skip if already exists and not forcing re-download
 
-        s3_fs.get([file], str(local_path), recursive=False)
+        with _sibling_tempfile(file_name) as temp_name:
+            s3_fs.get([file], str(temp_name), recursive=False)
         logger.info(f"Downloading: {file_name}")
         return file_name
 
@@ -715,6 +767,7 @@ class Store(object):
         *,
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        force: bool = False,
     ) -> List[Path]:
         data_links = granules
         s3_fs = s3fs.S3FileSystem()
@@ -739,7 +792,7 @@ class Store(object):
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             def _download(file: str) -> Union[Path, None]:
-                return self.download_cloud_file(s3_fs, file, local_path)
+                return self.download_cloud_file(s3_fs, file, local_path, force=force)
 
             results = pqdm(data_links, _download, **pqdm_kwargs)
             return [r for r in results if r is not None]
@@ -747,7 +800,10 @@ class Store(object):
         else:
             # if we are not in AWS
             return self._download_onprem_granules(
-                data_links, local_path, pqdm_kwargs=pqdm_kwargs
+                data_links,
+                local_path,
+                pqdm_kwargs=pqdm_kwargs,
+                force=force,
             )
 
     @_get.register
@@ -759,6 +815,7 @@ class Store(object):
         *,
         credentials_endpoint: Optional[str] = None,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        force: bool = False,
     ) -> List[Path]:
         data_links: List = []
         provider = granules[0]["meta"]["provider-id"]
@@ -789,7 +846,7 @@ class Store(object):
             local_path.mkdir(parents=True, exist_ok=True)
 
             def _download(file: str) -> Union[Path, None]:
-                return self.download_cloud_file(s3_fs, file, local_path)
+                return self.download_cloud_file(s3_fs, file, local_path, force=force)
 
             results = pqdm(data_links, _download, **pqdm_kwargs)
             return [r for r in results if r is not None]
@@ -798,11 +855,14 @@ class Store(object):
             # if the data are cloud-based, but we are not in AWS,
             # it will be downloaded as if it was on prem
             return self._download_onprem_granules(
-                data_links, local_path, pqdm_kwargs=pqdm_kwargs
+                data_links,
+                local_path,
+                pqdm_kwargs=pqdm_kwargs,
+                force=force,
             )
 
     def _clone_session_in_local_thread(
-        self, original_session: SessionWithHeaderRedirection
+        self, original_session: requests.Session
     ) -> None:
         """Clone the original session and store it in the local thread context.
 
@@ -816,7 +876,7 @@ class Store(object):
             None
         """
         if not hasattr(self.thread_locals, "local_thread_session"):
-            local_thread_session = SessionWithHeaderRedirection()
+            local_thread_session = self.auth.get_session()  # type: ignore
             local_thread_session.headers.update(original_session.headers)
             local_thread_session.cookies.update(original_session.cookies)
             local_thread_session.auth = original_session.auth
@@ -828,12 +888,13 @@ class Store(object):
         wait=wait_exponential(multiplier=1, min=1, max=10),
         retry=retry_if_exception_type(Exception),
     )
-    def _download_file(self, url: str, directory: Path) -> Path:
+    def _download_file(self, url: str, directory: Path, force: bool = False) -> Path:
         """Download a single file using a bearer token.
 
         Parameters:
             url: the granule url
             directory: local directory
+            force: Force a redownload. By default, existing files are not overwritten.
 
         Returns:
             A local filepath or an exception.
@@ -843,15 +904,26 @@ class Store(object):
             url = url.replace(".html", "")
         local_filename = url.split("/")[-1]
         path = directory / Path(local_filename)
-        if not path.exists():
+        if not path.exists() or force:
             original_session = self.get_requests_session()
             # This reuses the auth cookie, we make sure we only authenticate N threads instead
             # of one per file, see #913
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
-                r.raise_for_status()
-                with open(path, "wb") as f:
+                if r.status_code in [401, 403]:
+                    text = (r.text or "").lower()
+                    if "eula" in text:
+                        raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
+                if r.status_code >= 400:
+                    raise DownloadFailure(
+                        f"Download failed for {url}. Status code: {r.status_code}"
+                    )
+
+                with (
+                    _sibling_tempfile(path) as temp_path,
+                    open(temp_path, "wb") as f,
+                ):
                     # Cap memory usage for large files at 1MB per write to disk per thread
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                     for chunk in r.iter_content(chunk_size=1024 * 1024):
@@ -866,6 +938,7 @@ class Store(object):
         directory: Path,
         *,
         pqdm_kwargs: Optional[Mapping[str, Any]] = None,
+        force: bool = False,
     ) -> List[Any]:
         """Downloads a list of URLS into the data directory.
 
@@ -875,6 +948,7 @@ class Store(object):
             pqdm_kwargs: Additional keyword arguments to pass to pqdm, a parallel processing library.
                 See pqdm documentation for available options. Default is to use immediate exception behavior
                 and the number of jobs specified by the `threads` parameter.
+            force: Force redownload. By default, existing files are not overwritten.
 
         Returns:
             A list of local filepaths to which the files were downloaded.
@@ -887,7 +961,7 @@ class Store(object):
             )
         directory.mkdir(parents=True, exist_ok=True)
 
-        arguments = [(url, directory) for url in urls]
+        arguments = [(url, directory, force) for url in urls]
 
         pqdm_kwargs = {
             "exception_behaviour": "immediate",
@@ -911,7 +985,10 @@ class Store(object):
 
         try:
             return _open_files(
-                url_mapping, https_fs, pqdm_kwargs=pqdm_kwargs, open_kwargs=open_kwargs
+                url_mapping,
+                https_fs,
+                pqdm_kwargs=pqdm_kwargs,
+                open_kwargs=open_kwargs,
             )
         except Exception:
             logger.exception(

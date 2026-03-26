@@ -2,7 +2,7 @@
 
 ## Getting the code
 
-1. [Fork nsidc/earthaccess](https://github.com/nsidc/earthaccess/fork)
+1. [Fork earthaccess-dev/earthaccess](https://github.com/earthaccess-dev/earthaccess/fork)
 1. Clone your fork:
    ```bash
    git clone git@github.com:{my-username}/earthaccess
@@ -41,7 +41,7 @@ manage one yourself and use `pipx` to run tests and build docs with `nox`.
     Then install `earthaccess` into the environment in editable mode with the optional development dependencies:
 
     ```bash
-    python -m pip install --editable ".[dev,test,docs]"
+    python -m pip install --editable . --group dev --group test --group docs
     ```
 
 === "`conda`/`mamba`"

@@ -391,3 +391,119 @@ class DataGranule(CustomDict):
         """
         links = self._filter_related_links("GET RELATED VISUALIZATION")
         return links
+
+    @property
+    def __geo_interface__(self) -> dict[str, object]:
+        """A GeoJSON representation of this granule.
+
+        This granule must contain a `dict` value at the path
+        `self["umm"]["SpatialExtent"]["HorizontalSpatialDomain"]["Geometry"]`.
+        It is assumed that the `dict` contains only a single key-value pair,
+        and this property is the result of converting the value of that pair
+        into an equivalent GeoJSON structure, depending on the key, as follows:
+
+        |Key                   |Value converted to GeoJSON|
+        |:---------------------|:-------------------------|
+        |`"Lines"`             |`"MultiLineString"`       |
+        |`"Points"`            |`"MultiPoint"`            |
+        |`"BoundingRectangles"`|`"MultiPolygon"`          |
+        |`"GPolygons"`         |`"MultiPolygon"`          |
+
+        Raises:
+            ValueError: If this granule does not contain a value at the path
+                `self["umm"]["SpatialExtent"]["HorizontalSpatialDomain"]["Geometry"]`,
+                or the value there is not a `dict` containing a value for one of
+                `"Points"`, `"Lines"`, `"BoundingRectangles"`, or `"GPolygons"`.
+
+        See Also:
+            - [`__geo_interface__` Specification](https://gist.github.com/sgillies/2217756)
+            - [NASA UMM-G JSON Schema](https://git.earthdata.nasa.gov/projects/EMFD/repos/unified-metadata-model/browse/granule/v1.6.6/umm-g-json-schema.json)
+            - [The GeoJSON Format](https://datatracker.ietf.org/doc/html/rfc7946)
+        """
+        try:
+            geometry = self["umm"]["SpatialExtent"]["HorizontalSpatialDomain"][
+                "Geometry"
+            ]
+        except KeyError:
+            raise ValueError("Granule has no horizontal spatial extent") from None
+
+        if "GPolygons" in geometry:
+            return {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        # Outer ring (counterclockwise)
+                        [
+                            [point["Longitude"], point["Latitude"]]
+                            for point in poly["Boundary"]["Points"]
+                        ],
+                        # Inner rings (clockwise)
+                        *(
+                            [
+                                [point["Longitude"], point["Latitude"]]
+                                # In UMM-G, boundary points are always counterclockwise,
+                                # but GeoJSON wants inner rings to be clockwise, so we
+                                # must reverse the points in ExclusiveZone Boundaries.
+                                for point in reversed(boundary["Points"])
+                            ]
+                            # In UMM-G, ExclusiveZone is optional.
+                            for boundary in poly.get("ExclusiveZone", {}).get(
+                                "Boundaries", []
+                            )
+                        ),
+                    ]
+                    for poly in geometry["GPolygons"]
+                ],
+            }
+
+        if "BoundingRectangles" in geometry:
+            return {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [
+                                rect["WestBoundingCoordinate"],
+                                rect["SouthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["EastBoundingCoordinate"],
+                                rect["SouthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["EastBoundingCoordinate"],
+                                rect["NorthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["WestBoundingCoordinate"],
+                                rect["NorthBoundingCoordinate"],
+                            ],
+                            [
+                                rect["WestBoundingCoordinate"],
+                                rect["SouthBoundingCoordinate"],
+                            ],
+                        ]
+                    ]
+                    for rect in geometry["BoundingRectangles"]
+                ],
+            }
+
+        if "Points" in geometry:
+            return {
+                "type": "MultiPoint",
+                "coordinates": [
+                    [p["Longitude"], p["Latitude"]] for p in geometry["Points"]
+                ],
+            }
+
+        if "Lines" in geometry:
+            return {
+                "type": "MultiLineString",
+                "coordinates": [
+                    [[p["Longitude"], p["Latitude"]] for p in line["Points"]]
+                    for line in geometry["Lines"]
+                ],
+            }
+
+        msg = f"Invalid Geometry in granule's horizontal spatial extent: {geometry}"
+        raise ValueError(msg)

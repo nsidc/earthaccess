@@ -26,12 +26,14 @@ We can use `earthaccess` to do impactful science, faster:
 - **Access data**: Download data to your local machine or stream it directly into your Python scripts through [`fsspec`](https://github.com/fsspec/filesystem_spec).
 - **Authenticate**: Manage your [NASA Earthdata Login (EDL)](https://urs.earthdata.nasa.gov) and Earthdata Cloud credentials.
 
-`earthaccess` is an open-source community effort under an [MIT license](LICENSE.txt).  We welcome contributions to improve `earthaccess`.  Please see the [Contributing Guide](contributing/index.md) to learn how to get involved.
+`earthaccess` is an open-source community effort under an [MIT license](LICENSE.txt).  We welcome contributions to improve `earthaccess`.  Please see the [Contributing Guide](contributor/index.md) to learn how to get involved.
 
 
 # Community Resources
 
 `earthaccess` development is facilitated by [NASA Openscapes](https://nasa-openscapes.github.io/), an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud.
+
+- [ESIP FUNding Friday](growing/esip-funding-friday-song-lyrics.md) - Our winning "pitch" for growing the `earthaccess` family!
 
 - [earthaccess NASA Blog post](https://www.earthdata.nasa.gov/news/blog/earthaccess-earth-science-data-simplified)
 
