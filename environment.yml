@@ -5,7 +5,7 @@ channels:
 dependencies:
   # This environment bootstraps pip, the actual dev environment
   # is installed and managed with pip
-  - python
+  - python=3.13
   - pip
   - pip:
       - --group dev --group test --group docs --editable .

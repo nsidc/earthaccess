@@ -2,9 +2,16 @@
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+path = "earthaccess/__init__.py"
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "earthaccess/_version.py"
+
 [project]
 name = "earthaccess"
-version = "0.16.0"
+dynamic = ["version"]
 description = "Client library for NASA Earthdata APIs"
 authors = [{ name = "earthaccess contributors" }]
 maintainers = [
@@ -53,20 +60,6 @@ Documentation = "https://earthaccess.readthedocs.io"
 "Bug Tracker" = "https://github.com/earthaccess-dev/earthaccess/issues"
 Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.md"
 
-[project.optional-dependencies]
-virtualizarr = [
-  "numpy >=1.26.4",
-  "zarr >=3.1.1",
-  "virtualizarr >=2.1.2",
-  "kerchunk>=0.2.9",
-  "dask",
-  "h5py >=3.14.0",
-  "obstore >= 0.8.0",
-  "fastparquet >= 2023.4.0",
-  "numcodecs >= 0.16.2",
-  "xarray",
-]
-
 [dependency-groups]
 dev = ["bump-my-version >=0.10.0", "nox", "pre-commit >=2.4", "ruff >=0.6.3"]
 test = [
@@ -83,7 +76,6 @@ test = [
   "types-setuptools >=0.1",
   "types-geopandas",
   "vcrpy >=7.0.0",
-  "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
   "h5netcdf",
@@ -129,24 +121,12 @@ docs = [
   "cartopy>=0.24.1",
   "mkdocs-awesome-nav>=3.3.0",
 ]
-virtualizarr = [
-  "numpy >=1.26.4",
-  "zarr >=3.1.1",
-  "virtualizarr >=2.1.2",
-  "kerchunk>=0.2.9",
-  "dask",
-  "h5py >=3.14.0",
-  "obstore >= 0.8.0",
-  "fastparquet >= 2023.4.0",
-  "numcodecs >= 0.16.2",
-  "xarray",
-]
 
-[tool.pytest]
+[tool.pytest.ini_options]
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
@@ -194,35 +174,30 @@ combine-as-imports = true
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.bumpversion]
-current_version = "0.16.0"
+[tool.bump-my-version]
 commit = false
-tag = false
-regex = true
+tag = true
+tag-message = "v{new_version}"
+regex = false
 
-[[tool.bumpversion.files]]
-filename = "pyproject.toml"
-search = '^version = "{current_version}"$'
-replace = 'version = "{new_version}"'
-
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CHANGELOG.md"
 regex = true
 search = "^## \\[Unreleased\\]"
 replace = "## [Unreleased]\n\n## [v{new_version}] - {now:%Y-%m-%d}"
 
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CHANGELOG.md"
 regex = true
 search = "\\[Unreleased\\]: (https://.+?)v{current_version}\\.\\.\\.HEAD"
 replace = "[Unreleased]: \\1v{new_version}...HEAD\n[{new_version}]: \\1v{current_version}...v{new_version}"
 
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CITATION.cff"
 search = 'version: "{current_version}"'
 replace = 'version: "{new_version}"'
 
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CITATION.cff"
 search = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
 replace = 'date-released: "{now:%Y-%m-%d}"'

@@ -65,7 +65,11 @@ __all__ = [
     "UAT",
 ]
 
-__version__ = version("earthaccess")
+try:
+    from ._version import version as __version__
+except ImportError:
+    from importlib.metadata import version as __version__
+    __version__ = __version__("earthaccess")
 
 _auth = Auth()
 _store: Optional[Store] = None

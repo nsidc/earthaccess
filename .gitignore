@@ -21,6 +21,7 @@ build/
 docs/tutorials/data
 tests/integration/data
 .ruff_cache
+earthaccess/_version.py
 
 notebooks/data/
 
