@@ -4,7 +4,6 @@ import unittest
 import earthaccess
 import pytest
 
-
 logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
 

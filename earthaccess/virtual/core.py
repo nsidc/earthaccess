@@ -17,6 +17,9 @@ from earthaccess.virtual._credentials import build_obstore_registry
 from earthaccess.virtual._parser import get_urls_for_parser, resolve_parser
 from earthaccess.virtual._types import (
     AccessType,
+    CombineAttrsType,
+    CompatType,
+    DataVarsType,
     ParallelType,
     ParserType,
     ReferenceFormatType,
@@ -36,10 +39,10 @@ def virtualize(
     group: str = "/",
     concat_dim: str | None = None,
     preprocess: Callable[[xr.Dataset], xr.Dataset] | None = None,
-    data_vars: str = "all",
+    data_vars: DataVarsType = "all",
     coords: str = "different",
-    compat: str = "no_conflicts",
-    combine_attrs: str = "drop_conflicts",
+    compat: CompatType = "no_conflicts",
+    combine_attrs: CombineAttrsType = "drop_conflicts",
     parallel: ParallelType = "dask",
     parser: ParserType = "DMRPPParser",
     reference_dir: str | None = None,
@@ -206,10 +209,10 @@ def _open_virtual_mfdataset(
     concat_dim: str | None,
     preprocess: Callable | None,
     parallel: ParallelType,
-    data_vars: str,
+    data_vars: DataVarsType,
     coords: str,
-    compat: str,
-    combine_attrs: str,
+    compat: CompatType,
+    combine_attrs: CombineAttrsType,
     **xr_combine_kwargs: Any,
 ) -> xr.Dataset:
     """Thin wrapper around ``vz.open_virtual_mfdataset`` for testability."""

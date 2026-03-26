@@ -10,10 +10,17 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Changed
 
 - While downloading, files will have temporary names until download completes.
+- **BREAKING**: refactored virtualization, now we have a unified virtualize() method that's
+  compatible with VirtualiZarr 2.x and is open to most parsers not just dmrpp ([#1271](https://github.com/earthaccess-dev/earthaccess/discussions/1271)) (@betolink)
 
 ### Added
 
 - Added `force` kwarg to `download()` to force redownloads.
+
+### Removed
+
+- `consolidate_metadata()`, `open_virtual_dataset()` and `open_virtual_mfdataset()` have been removed
+  in favor of a single `virtualize()` method
 
 ## [v0.16.0] - 2026-01-30
 

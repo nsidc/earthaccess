@@ -71,9 +71,9 @@ def resolve_parser(
         from virtualizarr.parsers import (
             DMRPPParser,
             HDFParser,
-            NetCDF3Parser,
             KerchunkJSONParser,
             KerchunkParquetParser,
+            NetCDF3Parser,
         )
     except ImportError as exc:
         raise ImportError(

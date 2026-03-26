@@ -1141,6 +1141,18 @@ test = [
     { name = "xarray" },
     { name = "zarr" },
 ]
+virtualizarr = [
+    { name = "dask" },
+    { name = "fastparquet" },
+    { name = "h5py" },
+    { name = "kerchunk" },
+    { name = "numcodecs" },
+    { name = "numpy" },
+    { name = "obstore" },
+    { name = "virtualizarr" },
+    { name = "xarray" },
+    { name = "zarr" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -1216,6 +1228,18 @@ test = [
     { name = "types-requests", specifier = ">=0.1" },
     { name = "types-setuptools", specifier = ">=0.1" },
     { name = "vcrpy", specifier = ">=7.0.0" },
+    { name = "xarray" },
+    { name = "zarr", specifier = ">=3.1.1" },
+]
+virtualizarr = [
+    { name = "dask" },
+    { name = "fastparquet", specifier = ">=2023.4.0" },
+    { name = "h5py", specifier = ">=3.14.0" },
+    { name = "kerchunk", specifier = ">=0.2.9" },
+    { name = "numcodecs", specifier = ">=0.16.2" },
+    { name = "numpy", specifier = ">=1.26.4" },
+    { name = "obstore", specifier = ">=0.8.0" },
+    { name = "virtualizarr", specifier = ">=2.1.2" },
     { name = "xarray" },
     { name = "zarr", specifier = ">=3.1.1" },
 ]
