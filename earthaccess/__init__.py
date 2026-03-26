@@ -1,6 +1,5 @@
 import logging
 import threading
-from importlib.metadata import version
 from typing import Optional
 
 from .api import (
