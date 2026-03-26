@@ -89,7 +89,7 @@ affiliations:
  - name: "Openscapes and National Center for Ecological Analysis and Synthesis (NCEAS), University of California Santa Barbara, Santa Barbara, CA, USA"
    index: 10
    ror: 02t274463
- - name: "University of New Hampshire, Durham, NH, USA"
+ - name: "University of New Hampshire, Durham, NH, USA and eScience Institute, University of Washington, Seattle, WA, USA"
    index: 11
    ror: 02q4hks80
  - name: "Independent Contributor"
