@@ -14,13 +14,11 @@ import logging
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
-from virtualizarr.registry import ObjectStoreRegistry
-
 import earthaccess
 from earthaccess.virtual._types import AccessType
 
 if TYPE_CHECKING:
-    pass
+    from virtualizarr.registry import ObjectStoreRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -88,9 +86,9 @@ def build_obstore_registry(
         ImportError: If ``earthaccess[virtualizarr]`` is not installed.
     """
     try:
-        from obspec_utils.registry import ObjectStoreRegistry
         from obstore.auth.earthdata import NasaEarthdataCredentialProvider
         from obstore.store import HTTPStore, S3Store
+        from virtualizarr.registry import ObjectStoreRegistry
     except ImportError as exc:
         raise ImportError(
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"

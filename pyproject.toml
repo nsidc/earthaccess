@@ -165,6 +165,7 @@ module = [
   "s3fs",
   "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
   "vcr.unittest", # TODO: generate stubs for vcr and remove this line
+  "obspec_utils.*", # transitive dep of newer virtualizarr; not present in 2.1.2
 ]
 ignore_missing_imports = true
 
