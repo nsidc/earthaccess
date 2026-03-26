@@ -22,7 +22,7 @@ If you forget this step, you can "convert to draft" towards the top of the right
 panel.
 
 
-### Review [contributing documentation](/contributing/index.md)
+### Review [contributing documentation](index.md)
 
 If you're new to our community, please ensure you're aware of how we organize
 contributions.
@@ -74,7 +74,7 @@ relevant tab to proceed.
     The smaller the pull request, the easier it is to review and test, and the more likely it is to be successful. For more details, check out this [helpful YouTube video by the author of pre-commit](https://www.youtube.com/watch?v=Gu6XrmfwivI).
 
     For large contributions, consider opening  [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas)
-    or coming to [a Collaboration Café](/calendar.md) and describing your contribution so we can help guide and/or collaborate
+    or coming to [a Collaboration Café](../calendar.md) and describing your contribution so we can help guide and/or collaborate
     on the work.
 
 === "Fixing an Issue or Bug"

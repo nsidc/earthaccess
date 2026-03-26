@@ -1113,6 +1113,7 @@ docs = [
     { name = "mkdocs-jupyter" },
     { name = "mkdocs-material" },
     { name = "mkdocs-mermaid2-plugin" },
+    { name = "mkdocs-pandoc" },
     { name = "mkdocs-redirects" },
     { name = "mkdocstrings", extra = ["python"] },
     { name = "pygments" },
@@ -1203,6 +1204,7 @@ docs = [
     { name = "mkdocs-jupyter", specifier = ">=0.19.0" },
     { name = "mkdocs-material", specifier = ">=9.7.1,<10.0" },
     { name = "mkdocs-mermaid2-plugin", specifier = ">=1.2.1" },
+    { name = "mkdocs-pandoc", specifier = ">=0.2.0" },
     { name = "mkdocs-redirects", specifier = ">=1.2.1" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.19.0" },
     { name = "pygments", specifier = ">=2.11.1" },
@@ -2555,6 +2557,16 @@ sdist = { url = "https://files.pythonhosted.org/packages/3e/1a/f580733da1924ebc9
 wheels = [
     { url = "https://files.pythonhosted.org/packages/24/ce/c8a41cb0f3044990c8afbdc20c853845a9e940995d4e0cffecafbb5e927b/mkdocs_mermaid2_plugin-1.2.1-py3-none-any.whl", hash = "sha256:22d2cf2c6867d4959a5e0903da2dde78d74581fc0b107b791bc4c7ceb9ce9741", size = 17260, upload-time = "2024-11-02T06:27:34.652Z" },
 ]
+
+[[package]]
+name = "mkdocs-pandoc"
+version = "0.2.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "markdown-include" },
+    { name = "mkdocs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/81/7c/365872e88418e2028937c780c942bc728dab98ec2ab4ed3261dfa86cc552/mkdocs-pandoc-0.2.6.tar.gz", hash = "sha256:fad91d1101e09e4d6ab4ccfd6b82601b3211712dc7d72fdec79bc3d974f17dd3", size = 8284, upload-time = "2016-03-14T20:24:20.076Z" }
 
 [[package]]
 name = "mkdocs-redirects"

@@ -18,11 +18,11 @@ Then, you can:
   questions, share insights, or connect with others about Earth data access (broadly)
 - Open [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas) to suggest
   new features or improvements, and find collaborators and coordinate the work
-- Join [a Collaboration Café](/calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
+- Join [a Collaboration Café](../calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
   anything related to Earth data access
 
 You can also open a pull request!
-Please review our [pull request guide](/contributing/pr-guide.md) first.
+Please review our [pull request guide](pr-guide.md) first.
 
 If you're not sure what to do, _don't worry_, and just pick whichever suits you best. The community will help you out!
 

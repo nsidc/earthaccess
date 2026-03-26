@@ -103,6 +103,7 @@ docs = [
   "markdown-include >=0.6",
   "mkdocs-jupyter >=0.19.0",
   "mkdocs-mermaid2-plugin >=1.2.1",
+  "mkdocs-pandoc >=0.2.0",
   "mkdocstrings[python] >=0.19.0",
   "pymdown-extensions >=9.2",
   "pygments >=2.11.1",
@@ -163,8 +164,8 @@ module = [
   "dask.*",
   "pqdm.*",
   "s3fs",
-  "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
-  "vcr.unittest", # TODO: generate stubs for vcr and remove this line
+  "tinynetrc.*",    # TODO: generate stubs for tinynetrc and remove this line
+  "vcr.unittest",   # TODO: generate stubs for vcr and remove this line
   "obspec_utils.*", # transitive dep of newer virtualizarr; not present in 2.1.2
 ]
 ignore_missing_imports = true
