@@ -19,7 +19,7 @@ resolved in that text, for example "resolves #1".
 #### "Ready for review" checklist
 
 - [ ] Open PR as draft
-- [ ] Please review our [Pull Request Guide](https://earthaccess.readthedocs.io/en/latest/contributing/pr-guide/)
+- [ ] Please review our [Pull Request Guide](https://earthaccess.readthedocs.io/en/latest/contributor/pr-guide/)
 - [ ] Mark "ready for review" after following instructions in the guide
 
 #### Merge checklist
