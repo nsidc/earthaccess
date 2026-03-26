@@ -9,6 +9,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Changed
 
+- Fixed mypy type errors for missing stubs (virtualizarr, obstore, requests, xarray, etc.)
 - While downloading, files will have temporary names until download completes.
 - **BREAKING**: refactored virtualization, now we have a unified virtualize() method that's
   compatible with VirtualiZarr 2.x and is open to most parsers not just dmrpp ([#1271](https://github.com/earthaccess-dev/earthaccess/discussions/1271)) (@betolink)

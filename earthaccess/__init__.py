@@ -67,9 +67,9 @@ __all__ = [
 try:
     from ._version import version as __version__
 except ImportError:
-    from importlib.metadata import version as __version__
+    from importlib.metadata import version as get_version
 
-    __version__ = __version__("earthaccess")
+    __version__ = get_version("earthaccess")
 
 _auth = Auth()
 _store: Optional[Store] = None

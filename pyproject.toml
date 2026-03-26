@@ -60,6 +60,28 @@ Documentation = "https://earthaccess.readthedocs.io"
 "Bug Tracker" = "https://github.com/earthaccess-dev/earthaccess/issues"
 Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.md"
 
+[project.optional-dependencies]
+kerchunk = [
+  "kerchunk>=0.2.9",
+  "dask",
+  "h5py >=3.14.0",
+  "h5netcdf",
+  "xarray >=2025.04.0",
+  "zarr >=3.1.1",
+]
+virtualizarr = [
+  "numpy >=1.26.4",
+  "zarr >=3.1.1",
+  "virtualizarr >=2.1.2",
+  "kerchunk>=0.2.9",
+  "dask",
+  "h5py >=3.14.0",
+  "obstore >= 0.8.0",
+  "fastparquet >= 2023.4.0",
+  "numcodecs >= 0.16.2",
+  "xarray",
+]
+
 [dependency-groups]
 dev = ["bump-my-version >=0.10.0", "nox", "pre-commit >=2.4", "ruff >=0.6.3"]
 test = [
@@ -146,9 +168,9 @@ module = [
   "dask.*",
   "pqdm.*",
   "s3fs",
-  "tinynetrc.*",    # TODO: generate stubs for tinynetrc and remove this line
-  "vcr.unittest",   # TODO: generate stubs for vcr and remove this line
-  "obspec_utils.*", # transitive dep of newer virtualizarr; not present in 2.1.2
+  "tinynetrc.*",
+  "vcr.unittest",
+  "obspec_utils.*",
 ]
 ignore_missing_imports = true
 
