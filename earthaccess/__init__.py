@@ -68,6 +68,7 @@ try:
     from ._version import version as __version__
 except ImportError:
     from importlib.metadata import version as __version__
+
     __version__ = __version__("earthaccess")
 
 _auth = Auth()
