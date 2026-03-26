@@ -1076,14 +1076,6 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
-kerchunk = [
-    { name = "dask" },
-    { name = "h5netcdf" },
-    { name = "h5py" },
-    { name = "kerchunk" },
-    { name = "xarray" },
-    { name = "zarr" },
-]
 virtualizarr = [
     { name = "dask" },
     { name = "fastparquet" },
@@ -1131,7 +1123,7 @@ docs = [
 ]
 test = [
     { name = "dask", extra = ["distributed"] },
-    { name = "earthaccess", extra = ["kerchunk", "virtualizarr"] },
+    { name = "earthaccess", extra = ["virtualizarr"] },
     { name = "geopandas" },
     { name = "mypy" },
     { name = "numpy" },
@@ -1152,15 +1144,11 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "dask", marker = "extra == 'kerchunk'" },
     { name = "dask", marker = "extra == 'virtualizarr'" },
     { name = "fastparquet", marker = "extra == 'virtualizarr'", specifier = ">=2023.4.0" },
     { name = "fsspec", specifier = ">=2025.2" },
-    { name = "h5netcdf", marker = "extra == 'kerchunk'" },
-    { name = "h5py", marker = "extra == 'kerchunk'", specifier = ">=3.14.0" },
     { name = "h5py", marker = "extra == 'virtualizarr'", specifier = ">=3.14.0" },
     { name = "importlib-resources", specifier = ">=6.3.2" },
-    { name = "kerchunk", marker = "extra == 'kerchunk'", specifier = ">=0.2.9" },
     { name = "kerchunk", marker = "extra == 'virtualizarr'", specifier = ">=0.2.9" },
     { name = "multimethod", specifier = ">=1.8" },
     { name = "numcodecs", marker = "extra == 'virtualizarr'", specifier = ">=0.16.2" },
@@ -1174,12 +1162,10 @@ requires-dist = [
     { name = "tinynetrc", specifier = ">=1.3.1" },
     { name = "typing-extensions", specifier = ">=4.10.0" },
     { name = "virtualizarr", marker = "extra == 'virtualizarr'", specifier = ">=2.1.2" },
-    { name = "xarray", marker = "extra == 'kerchunk'", specifier = ">=2025.4.0" },
     { name = "xarray", marker = "extra == 'virtualizarr'" },
-    { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=3.1.1" },
 ]
-provides-extras = ["kerchunk", "virtualizarr"]
+provides-extras = ["virtualizarr"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -1216,7 +1202,6 @@ docs = [
 ]
 test = [
     { name = "dask", extras = ["distributed"], specifier = ">=2025.7.0" },
-    { name = "earthaccess", extras = ["kerchunk"] },
     { name = "earthaccess", extras = ["virtualizarr"] },
     { name = "geopandas" },
     { name = "mypy", specifier = ">=1.11.2" },

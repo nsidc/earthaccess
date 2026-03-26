@@ -54,14 +54,6 @@ Documentation = "https://earthaccess.readthedocs.io"
 Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
-kerchunk = [
-  "kerchunk>=0.2.9",
-  "dask",
-  "h5py >=3.14.0",
-  "h5netcdf",
-  "xarray >=2025.04.0",
-  "zarr >=3.1.1",
-]
 virtualizarr = [
   "numpy >=1.26.4",
   "zarr >=3.1.1",
@@ -76,12 +68,7 @@ virtualizarr = [
 ]
 
 [dependency-groups]
-dev = [
-  "bump-my-version >=0.10.0",
-  "nox",
-  "pre-commit >=2.4",
-  "ruff >=0.6.3",
-]
+dev = ["bump-my-version >=0.10.0", "nox", "pre-commit >=2.4", "ruff >=0.6.3"]
 test = [
   "zarr >=3.1.1",
   "numpy >=1.26.4",
@@ -96,11 +83,10 @@ test = [
   "types-setuptools >=0.1",
   "types-geopandas",
   "vcrpy >=7.0.0",
-  "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
-  "geopandas"
+  "geopandas",
 ]
 docs = [
   "jupyterlab >=3",
@@ -140,7 +126,18 @@ docs = [
   "cartopy>=0.24.1",
   "mkdocs-awesome-nav>=3.3.0",
 ]
-
+virtualizarr = [
+  "numpy >=1.26.4",
+  "zarr >=3.1.1",
+  "virtualizarr >=2.1.2",
+  "kerchunk>=0.2.9",
+  "dask",
+  "h5py >=3.14.0",
+  "obstore >= 0.8.0",
+  "fastparquet >= 2023.4.0",
+  "numcodecs >= 0.16.2",
+  "xarray",
+]
 
 [tool.pytest]
 filterwarnings = ["error::UserWarning"]
@@ -164,7 +161,6 @@ module = [
   "fsspec.*",
   "h5netcdf.*",
   "dask.*",
-  "kerchunk.*",
   "pqdm.*",
   "s3fs",
   "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line

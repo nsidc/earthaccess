@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
 import pytest
-from earthaccess.dmrpp_zarr import get_granule_credentials_endpoint_and_region
 from earthaccess.results import DataCollection, DataGranule
+from earthaccess.virtual._credentials import get_granule_credentials_endpoint_and_region
 
 granule_no_credentials_endpoint = DataGranule(
     {

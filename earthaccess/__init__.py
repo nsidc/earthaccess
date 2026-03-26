@@ -22,12 +22,11 @@ from .api import (
     status,
 )
 from .auth import Auth
-from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
-from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
 from .system import PROD, UAT
+from .virtual import virtualize
 
 logger = logging.getLogger(__name__)
 
@@ -59,11 +58,9 @@ __all__ = [
     "Auth",
     # store.py
     "Store",
-    # kerchunk
-    "consolidate_metadata",
-    # virtualizarr
-    "open_virtual_dataset",
-    "open_virtual_mfdataset",
+    # virtual
+    "virtualize",
+    # system.py
     "PROD",
     "UAT",
 ]
