@@ -86,6 +86,7 @@ test = [
   "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
+  "h5netcdf",
   "geopandas",
 ]
 docs = [
@@ -108,6 +109,7 @@ docs = [
   "pymdown-extensions >=9.2",
   "pygments >=2.11.1",
   "xarray",
+  "h5netcdf",
   "matplotlib >=3.3",
   "h5netcdf >=0.11",
   "pyproj >=3.5.0; python_version < '3.12'",
