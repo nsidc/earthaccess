@@ -34,5 +34,6 @@ resolved in that text, for example "resolves #1".
 
 > **Need help?** We welcome contributions at every experience level. You don't have to
 > write tests alone — open your PR and ask for help. It's also fine to let GitHub run tests
-> for you instead of running them locally. If anything fails and you're not sure why, just
+> for you, via [Continuous Integration (CI)](https://github.com/resources/articles/ci-cd),
+> instead of running them locally. If anything fails and you're not sure why, just
 > mention `@earthaccess-dev/maintainers` in a comment and we'll work with you!
