@@ -18,7 +18,7 @@ resolved in that text, for example "resolves #1".
 
 #### "Ready for review" checklist
 
-- [ ] Open PR as draft
+- [ ] Open this Pull Request (PR) as a draft
 - [ ] Please review our [Pull Request Guide](https://earthaccess.readthedocs.io/en/latest/contributor/pr-guide/)
 - [ ] Mark "ready for review" after following instructions in the guide
 
@@ -33,6 +33,6 @@ resolved in that text, for example "resolves #1".
 - [ ] At least one approval
 
 > **Need help?** We welcome contributions at every experience level. You don't have to
-> write tests alone — open your PR and ask for help. It's also fine to let CI/CD run tests
+> write tests alone — open your PR and ask for help. It's also fine to let GitHub run tests
 > for you instead of running them locally. If anything fails and you're not sure why, just
 > mention `@earthaccess-dev/maintainers` in a comment and we'll work with you!
