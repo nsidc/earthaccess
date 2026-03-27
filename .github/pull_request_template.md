@@ -29,7 +29,7 @@ resolved in that text, for example "resolves #1".
 - [ ] If needed, `CHANGELOG.md` updated
 - [ ] If needed, docs and/or `README.md` updated
 - [ ] If needed, unit tests added *(unsure how? see below!)*
-- [ ] All checks passing *(tip: `pre-commit.ci autofix`)*
+- [ ] All checks passing *(tip: comment `pre-commit.ci autofix` if pre-commit is failing)*
 - [ ] At least one approval
 
 > **Need help?** We welcome contributions at every experience level. You don't have to
