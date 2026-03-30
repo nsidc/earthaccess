@@ -56,7 +56,7 @@ def resolve_parser(
 
     Returns:
         An instantiated VirtualiZarr parser ready to be passed to
-        ``vz.open_virtual_mfdataset``.
+        ``virtualizarr.open_virtual_mfdataset``.
 
     Raises:
         ValueError: If ``parser`` is a string not in ``SUPPORTED_PARSERS`` and
@@ -78,7 +78,7 @@ def resolve_parser(
     except ImportError as exc:
         raise ImportError(
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
-        ) from exc
+        ) from None
 
     # Normalise to canonical name (try aliases for lowercase input).
     canonical = _ALIASES.get(parser, parser)

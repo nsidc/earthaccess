@@ -11,6 +11,7 @@ Provides two public helpers:
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
@@ -65,7 +66,7 @@ def get_granule_credentials_endpoint_and_region(
 
 
 def build_obstore_registry(
-    granules: list[earthaccess.DataGranule],
+    granules: Sequence[earthaccess.DataGranule],
     access: AccessType,
 ) -> ObjectStoreRegistry:
     """Build an obstore ``ObjectStoreRegistry`` for the given granules.
@@ -92,7 +93,7 @@ def build_obstore_registry(
     except ImportError as exc:
         raise ImportError(
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
-        ) from exc
+        ) from None
 
     parsed_url = urlparse(granules[0].data_links(access=access)[0])
     auth = earthaccess.__auth__
@@ -102,8 +103,7 @@ def build_obstore_registry(
             "You must be logged in to use indirect access. "
             "Call earthaccess.login() first."
         )
-    else:
-        token: str = edl_token["access_token"]
+    token: str = edl_token["access_token"]
 
     if access == "direct":
         credentials_endpoint, region = get_granule_credentials_endpoint_and_region(
