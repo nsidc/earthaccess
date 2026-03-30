@@ -65,6 +65,26 @@ def get_granule_credentials_endpoint_and_region(
     return credentials_endpoint, region
 
 
+def validate_granules(
+    granules: Sequence[earthaccess.DataGranule],
+) -> None:
+    """Validate that the given granules are suitable for virtualizing.
+    Parameters:
+        granules: The granules to validate.
+
+    Raises:
+        ValueError: If the list of granules is empty.
+        ValueError: If any granule does not have data links.
+    """
+    if not granules or len(granules) == 0:
+        raise ValueError("No valid granules provided.")
+    for granule in granules:
+        if not granule.data_links():
+            raise ValueError(
+                f"Granule {granule['meta']['concept-id']} has no data links."
+            )
+
+
 def build_obstore_registry(
     granules: Sequence[earthaccess.DataGranule],
     access: AccessType,
@@ -90,10 +110,12 @@ def build_obstore_registry(
         from obstore.auth.earthdata import NasaEarthdataCredentialProvider
         from obstore.store import HTTPStore, S3Store
         from virtualizarr.registry import ObjectStoreRegistry
-    except ImportError as exc:
+    except ImportError:
         raise ImportError(
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
         ) from None
+
+    validate_granules(granules)
 
     parsed_url = urlparse(granules[0].data_links(access=access)[0])
     auth = earthaccess.__auth__
