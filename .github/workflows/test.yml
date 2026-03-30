@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           persist-credentials: false
 
@@ -36,4 +36,4 @@ jobs:
       - name: Upload coverage
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5
