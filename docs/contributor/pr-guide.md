@@ -6,9 +6,17 @@ However, our maintainers are mostly volunteers.
 In order to make the best use of their limited time, we ask that you follow this guide
 when opening a PR.
 
-When you open a PR, the description field will be auto-populated with some reminders and
-checklists to that effect.
+When you open a PR, the description field will be auto-populated with a checklist and
+helpful reminders — including where to ask for help.
 Please read them carefully!
+
+!!! info "We welcome contributions at every experience level"
+
+    If you're not comfortable writing tests, setting up a local dev environment, or
+    debugging CI failures — **we still want your contribution!** Please open your PR
+    anyway and ask for help in a comment. A maintainer or community member will do
+    their best to work with you. Bug fixes and features do need tests before they can
+    be merged, but you don't have to write them alone.
 
 
 ## Checklist
@@ -22,7 +30,7 @@ If you forget this step, you can "convert to draft" towards the top of the right
 panel.
 
 
-### Review [contributing documentation](/contributing/index.md)
+### Review [contributing documentation](/contributor/index.md)
 
 If you're new to our community, please ensure you're aware of how we organize
 contributions.
@@ -83,11 +91,10 @@ relevant tab to proceed.
       a Minimal Working Example (MWE), an SSCCE (Short, Self Contained, Complete Example), or a "reprex",
       and include it in [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) (recommended) or in your pull request.
     - Create a branch to resolve your issue
-    - Run the existing unit tests successfully in your branch
-    - Create one or more new tests to demonstrate the bug and observe them fail
     - Update the relevant code to fix the issue
-    - Successfully run your new unit tests
-    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit)
+    - If you're comfortable writing tests: create one or more new tests to demonstrate the bug, verify they fail before your fix, and pass after. It's fine to let PR CI/CD run the tests for you instead of running them locally.
+    - If you're **not** comfortable writing tests: that's OK! Open your PR anyway and note that you'd like help with tests. We'll work with you to get them added before merging.
+    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit) (or comment `pre-commit.ci autofix` on your PR to have it done automatically)
     - Describe your changes in the `CHANGELOG.md`
 
 === "Contributing a New Feature"
@@ -95,10 +102,10 @@ relevant tab to proceed.
     - We recommend you create [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas)
       describing the feature's scope and its fit for this package with the team.
     - Create a branch for your new feature in your fork
-    - Run the unit tests successfully in your branch
     - Write the code to implement your new feature in a backwards compatible manner. If breaking changes are necessary, discuss your strategy with the team first.
-    - Create at least one test that exercises your feature and run the test suite
-    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit)
+    - If you're comfortable writing tests: create at least one test that exercises your feature. It's fine to let PR CI/CD run the test suite for you instead of running it locally.
+    - If you're **not** comfortable writing tests: that's OK! Open your PR anyway and note that you'd like help with tests. We'll work with you to get them added before merging.
+    - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit) (or comment `pre-commit.ci autofix` on your PR to have it done automatically)
     - Describe your changes in the `CHANGELOG.md`
 
 === "Contributing to Documentation"
@@ -108,3 +115,6 @@ relevant tab to proceed.
     - Preview the documentation [by rendering it locally](development.md#documentation). If you're not comfortable with this step, we'd rather you skip it and open a PR anyway! Our GitHub automations will generate a documentation preview. Please mark your PR as a draft until you've checked the preview and it looks OK. Don't hesitate to reach out for help!
 
 Once you've completed these steps, you are ready to submit your pull request.
+The PR template will guide you through a checklist — see
+[the checklist on GitHub](https://github.com/earthaccess-dev/earthaccess/blob/main/.github/pull_request_template.md)
+for a preview of what to expect.
