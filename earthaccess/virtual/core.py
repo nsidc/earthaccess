@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 def virtualize(
-    granules: Sequence[earthaccess.DataGranule],
+    granules: list[earthaccess.DataGranule],
     *,
     access: AccessType = "direct",
     load: bool = False,
