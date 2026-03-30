@@ -75,7 +75,7 @@ def resolve_parser(
             KerchunkParquetParser,
             NetCDF3Parser,
         )
-    except ImportError as exc:
+    except ImportError:
         raise ImportError(
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
         ) from None
