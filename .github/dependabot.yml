@@ -13,6 +13,8 @@ updates:
       pip-dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 14
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -21,3 +23,5 @@ updates:
       gha-dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 14
