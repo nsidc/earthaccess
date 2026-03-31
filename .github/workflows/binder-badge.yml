@@ -5,7 +5,11 @@ on:
 jobs:
   badge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
-      - uses: manics/action-binderbadge@v3.0.0
+      - uses: manics/action-binderbadge@99560b89939071823821e105afc83aaa87927e03 # v3.0.0
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}

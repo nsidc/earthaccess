@@ -1,7 +1,7 @@
 from typing import TypedDict
 
 
-class TestParam(TypedDict):
+class ProviderParam(TypedDict):
     provider_name: str
 
     # How many of the top collections we will test, e.g. top 3 collections

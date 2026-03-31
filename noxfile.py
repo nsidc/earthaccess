@@ -16,14 +16,14 @@ nox.options.default_venv_backend = "uv|virtualenv"
 @nox.session
 def typecheck(session: nox.Session) -> None:
     """Typecheck with mypy."""
-    session.install("--editable", ".[test]")
+    session.install("--editable", ".", "--group", "test")
     session.run("mypy")
 
 
 @nox.session
 def tests(session: nox.Session) -> None:
     """Run the unit tests."""
-    session.install("--editable", ".[test]")
+    session.install("--editable", ".", "--group", "test")
     session.run(
         "pytest",
         "tests/unit",
@@ -35,7 +35,14 @@ def tests(session: nox.Session) -> None:
 @nox.session(name="test-min-deps", python="3.11", venv_backend="uv")
 def test_min_deps(session: nox.Session) -> None:
     """Run the unit tests using the lowest compatible version of all direct dependencies."""
-    session.install("--resolution", "lowest-direct", "--editable", ".[test]")
+    session.install(
+        "--resolution",
+        "lowest-direct",
+        "--editable",
+        ".",
+        "--group",
+        "test",
+    )
     session.run(
         "pytest",
         "tests/unit",
@@ -47,7 +54,7 @@ def test_min_deps(session: nox.Session) -> None:
 @nox.session(name="integration-tests")
 def integration_tests(session: nox.Session) -> None:
     """Run the integration tests."""
-    session.install("--editable", ".[test]")
+    session.install("--editable", ".", "--group", "test")
     session.run(
         "pytest",
         "tests/integration",
@@ -74,5 +81,5 @@ def build_pkg(session: nox.Session) -> None:
 @nox.session(name="serve-docs")
 def serve_docs(session: nox.Session) -> None:
     """Build the documentation and serve it."""
-    session.install("--editable", ".[docs]")
+    session.install("--editable", ".", "--group", "docs")
     session.run("mkdocs", "serve", *session.posargs)
