@@ -1,6 +1,5 @@
 import logging
 import threading
-from importlib.metadata import version
 from typing import Optional
 
 from .api import (
@@ -22,12 +21,11 @@ from .api import (
     status,
 )
 from .auth import Auth
-from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
-from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
 from .system import PROD, UAT
+from .virtual import virtualize
 
 logger = logging.getLogger(__name__)
 
@@ -59,16 +57,19 @@ __all__ = [
     "Auth",
     # store.py
     "Store",
-    # kerchunk
-    "consolidate_metadata",
-    # virtualizarr
-    "open_virtual_dataset",
-    "open_virtual_mfdataset",
+    # virtual
+    "virtualize",
+    # system.py
     "PROD",
     "UAT",
 ]
 
-__version__ = version("earthaccess")
+try:
+    from ._version import version as __version__
+except ImportError:
+    from importlib.metadata import version as get_version
+
+    __version__ = get_version("earthaccess")
 
 _auth = Auth()
 _store: Optional[Store] = None

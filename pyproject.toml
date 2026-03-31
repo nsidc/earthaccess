@@ -2,9 +2,16 @@
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+path = "earthaccess/__init__.py"
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "earthaccess/_version.py"
+
 [project]
 name = "earthaccess"
-version = "0.16.0"
+dynamic = ["version"]
 description = "Client library for NASA Earthdata APIs"
 authors = [{ name = "earthaccess contributors" }]
 maintainers = [
@@ -76,12 +83,7 @@ virtualizarr = [
 ]
 
 [dependency-groups]
-dev = [
-  "bump-my-version >=0.10.0",
-  "nox",
-  "pre-commit >=2.4",
-  "ruff >=0.6.3",
-]
+dev = ["bump-my-version >=0.10.0", "nox", "pre-commit >=2.4", "ruff >=0.6.3"]
 test = [
   "zarr >=3.1.1",
   "numpy >=1.26.4",
@@ -96,11 +98,10 @@ test = [
   "types-setuptools >=0.1",
   "types-geopandas",
   "vcrpy >=7.0.0",
-  "earthaccess[kerchunk]",
-  "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
-  "geopandas"
+  "h5netcdf",
+  "geopandas",
 ]
 docs = [
   "jupyterlab >=3",
@@ -117,10 +118,12 @@ docs = [
   "markdown-include >=0.6",
   "mkdocs-jupyter >=0.19.0",
   "mkdocs-mermaid2-plugin >=1.2.1",
+  "mkdocs-pandoc >=0.2.0",
   "mkdocstrings[python] >=0.19.0",
   "pymdown-extensions >=9.2",
   "pygments >=2.11.1",
   "xarray",
+  "h5netcdf",
   "matplotlib >=3.3",
   "h5netcdf >=0.11",
   "pyproj >=3.5.0; python_version < '3.12'",
@@ -141,12 +144,11 @@ docs = [
   "mkdocs-awesome-nav>=3.3.0",
 ]
 
-
-[tool.pytest]
+[tool.pytest.ini_options]
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
@@ -164,11 +166,11 @@ module = [
   "fsspec.*",
   "h5netcdf.*",
   "dask.*",
-  "kerchunk.*",
   "pqdm.*",
   "s3fs",
-  "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
-  "vcr.unittest", # TODO: generate stubs for vcr and remove this line
+  "tinynetrc.*",
+  "vcr.unittest",
+  "obspec_utils.*",
 ]
 ignore_missing_imports = true
 
@@ -194,35 +196,30 @@ combine-as-imports = true
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.bumpversion]
-current_version = "0.16.0"
+[tool.bump-my-version]
 commit = false
-tag = false
-regex = true
+tag = true
+tag-message = "v{new_version}"
+regex = false
 
-[[tool.bumpversion.files]]
-filename = "pyproject.toml"
-search = '^version = "{current_version}"$'
-replace = 'version = "{new_version}"'
-
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CHANGELOG.md"
 regex = true
 search = "^## \\[Unreleased\\]"
 replace = "## [Unreleased]\n\n## [v{new_version}] - {now:%Y-%m-%d}"
 
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CHANGELOG.md"
 regex = true
 search = "\\[Unreleased\\]: (https://.+?)v{current_version}\\.\\.\\.HEAD"
 replace = "[Unreleased]: \\1v{new_version}...HEAD\n[{new_version}]: \\1v{current_version}...v{new_version}"
 
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CITATION.cff"
 search = 'version: "{current_version}"'
 replace = 'version: "{new_version}"'
 
-[[tool.bumpversion.files]]
+[[tool.bump-my-version.files]]
 filename = "CITATION.cff"
 search = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
 replace = 'date-released: "{now:%Y-%m-%d}"'
