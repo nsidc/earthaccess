@@ -7,7 +7,7 @@ from unittest import mock
 import pytest
 import responses
 from earthaccess import Auth
-from earthaccess.exceptions import LoginAttemptFailure
+from earthaccess.exceptions import LoginAttemptFailure, LoginStrategyUnavailable
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +85,29 @@ class TestCreateAuth(unittest.TestCase):
         auth.login(strategy="environment")
         self.assertEqual(auth.authenticated, True)
         self.assertEqual(auth.token, json_response)
+
+    @responses.activate
+    @mock.patch.dict(
+        os.environ, {"EARTHDATA_USERNAME": "user", "EARTHDATA_PASSWORD": "password"}
+    )
+    def test_auth_environment_with_username_password(self):
+        json_response = {"access_token": "EDL-token-1", "expiration_date": "12/15/2021"}
+        responses.add(
+            responses.POST,
+            "https://urs.earthdata.nasa.gov/api/users/find_or_create_token",
+            json=json_response,
+            status=200,
+        )
+        auth = Auth()
+        auth.login(strategy="environment")
+        self.assertEqual(auth.authenticated, True)
+        self.assertEqual(auth.token, json_response)
+
+    @mock.patch.dict(os.environ, {}, clear=True)
+    def test_auth_environment_missing_credentials(self):
+        auth = Auth()
+        with pytest.raises(LoginStrategyUnavailable):
+            auth.login(strategy="environment")
 
     @responses.activate
     @mock.patch("getpass.getpass")

@@ -13,6 +13,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
+- Added .env file support for environment login strategy.
+  ([#748](https://github.com/earthaccess-dev/earthaccess/issues/748)) (@Sherwin-14)
+
 - Added `force` kwarg to `download()` to force redownloads.
 
 ## [v0.16.0] - 2026-01-30

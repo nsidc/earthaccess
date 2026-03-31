@@ -61,8 +61,7 @@ The following steps can be executed in a Python interpreter, a Python file, or a
 
 To access NASA data, you have to login using your Earth Data Login credentials.  You can register for a free Earth Data Login account [here](https://urs.earthdata.nasa.gov/).
 
-By default, `earthaccess` will look for your Earth Data Login credentials in a `.netrc` file, or in environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`.  If you don't
-have either of these set up, you can login manually.  See [Authenticating](howto/authenticate.md) to learn how to create a `.netrc` file or environment variables.
+By default, `earthaccess` will look for your Earth Data Login credentials in a `.netrc` file, or as environment variables `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD` (which can also be specified in a `.env` file).  If you don't have either of these set up, you can login manually.  See [Authenticating](howto/authenticate.md) to learn how to create a `.netrc` file or environment variables.
 
 ```python
 import earthaccess
