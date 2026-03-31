@@ -59,3 +59,29 @@ def test_deprecation_warning_for_store(auth):
         # Verify some things
         assert issubclass(w[0].category, DeprecationWarning)
         assert "Use get_s3_filesystem instead" in str(w[0].message)
+
+
+# ---------------------------------------------------------------------------
+# Breaking-change assertions: removed names must not appear on the namespace
+# ---------------------------------------------------------------------------
+
+
+def test_open_virtual_mfdataset_removed_from_namespace() -> None:
+    """open_virtual_mfdataset is no longer exported from earthaccess."""
+    assert not hasattr(earthaccess, "open_virtual_mfdataset")
+
+
+def test_open_virtual_dataset_removed_from_namespace() -> None:
+    """open_virtual_dataset is no longer exported from earthaccess."""
+    assert not hasattr(earthaccess, "open_virtual_dataset")
+
+
+def test_consolidate_metadata_removed_from_namespace() -> None:
+    """consolidate_metadata is no longer exported from earthaccess."""
+    assert not hasattr(earthaccess, "consolidate_metadata")
+
+
+def test_virtualize_present_on_namespace() -> None:
+    """earthaccess.virtualize is the new primary virtual-dataset entry point."""
+    assert hasattr(earthaccess, "virtualize")
+    assert callable(earthaccess.virtualize)

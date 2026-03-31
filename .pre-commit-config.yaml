@@ -1,5 +1,5 @@
 ci:
-  autoupdate_schedule: "monthly" # Like dependabot
+  autoupdate_schedule: "quarterly"
   autoupdate_commit_msg: "chore: update pre-commit hooks"
   autofix_prs: false # Comment "pre-commit.ci autofix" on a PR to trigger
 
@@ -31,14 +31,14 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.15.4
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.9.28"
+    rev: "0.10.7"
     hooks:
       # Asserts that the lockfile is valid for pyproject.toml.
       # If it fails, update the lockfile by running:
@@ -72,3 +72,8 @@ repos:
       - id: "validate-cff"
         args:
           - "--verbose"
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: "1de4a94008448d1ffa57080fbf183feb615ee165"
+    hooks:
+      - id: shellcheck

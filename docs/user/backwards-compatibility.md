@@ -8,18 +8,18 @@ We use [Semantic Versioning (SemVer)](https://semver.org/) to tell users what to
 
     1. There are 3 version parts: `MAJOR.MINOR.PATCH` (e.g. `1.2.3` is major version `1`, minor release `2`, patch release `3`).
     2. When the major version changes, anything can break! Always visit this documentation when doing a major upgrade.
-    3. When the minor version changes, new features should be available, but nothing should break. Visit the documentation to learn about new features. If you discover any breaking changes, please [open a bug report](https://github.com/nsidc/earthaccess/issues/new)!
+    3. When the minor version changes, new features should be available, but nothing should break. Visit the documentation to learn about new features. If you discover any breaking changes, please [open a bug report](https://github.com/earthaccess-dev/earthaccess/issues/new)!
     4. When the patch version changes, only bugfixes should be included. Visit the CHANGELOG to learn more about the fixes.
 
 ## Our commitments
 
 ### Versioning
 
-We will follow SemVer. All version changes will consider [this to be the public API documentation](/api/index.md) for the purposes of deciding whether a change is breaking or non-breaking.
+We will follow SemVer. All version changes will consider [this to be the public API documentation](../api/index.md) for the purposes of deciding whether a change is breaking or non-breaking.
 
 ### Release Communication
 
-1. We will announce releases on the following channel: [Github Releases](https://github.com/nsidc/earthaccess/releases)
+1. We will announce releases on the following channel: [Github Releases](https://github.com/earthaccess-dev/earthaccess/releases)
 2. Release announcements will include a prominent notification of breaking changes, including migration instructions.
 
 ### CHANGELOG
@@ -35,7 +35,7 @@ We will follow SemVer. All version changes will consider [this to be the public 
 
 3. Our maintenance team will always welcome outside contributions towards this goal.
 
-4. Please use a [GitHub Issue](https://github.com/nsidc/earthaccess/issues) to communicate about this work.
+4. Please use a [GitHub Issue](https://github.com/earthaccess-dev/earthaccess/issues) to communicate about this work.
 
 ## Our Python and dependency support policy
 

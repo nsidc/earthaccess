@@ -16,9 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
-      - uses: jupyterlab/maintainer-tools/.github/actions/check-links@v1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@7bebe19dab1c58587eb734aca9184d8e59fdf911 # v1
+      - uses: jupyterlab/maintainer-tools/.github/actions/check-links@7bebe19dab1c58587eb734aca9184d8e59fdf911 # v1
         with:
           # Allow absolute links; any broken internal links will get caught in the docs build
           # Ignore failed checks on earthdata.nasa.gov: They 403 on requests based on user agent. Nothing we can do short of spoofing.
@@ -26,4 +28,4 @@ jobs:
           ignore_links: >-
             ^/.*
             ^https://www\.earthdata\.nasa\.gov/.*
-            ^https://github\.com/.*/discussions/categories/.*
+            ^https://github\.com/.*

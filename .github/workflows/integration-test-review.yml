@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Fetch user permission
         id: permission
-        uses: actions-cool/check-user-permission@v2
+        uses: actions-cool/check-user-permission@c21884f3dda18dafc2f8b402fe807ccc9ec1aa5e # v2
         with:
           require: write
           username: ${{ github.triggering_actor }}
@@ -31,7 +31,7 @@ jobs:
         # is 'false', it means that the triggering actor does NOT have the required
         # permission.
         if: ${{ !env.ACT && steps.permission.outputs.require-result == 'false' }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           # Download the PR artifact that was uploaded in integration-test.yml
           script: |
@@ -73,7 +73,7 @@ jobs:
         # a PR comment indicating a security review is required because we know that
         # the integration tests "failed" due to lack of permission (i.e., they were
         # actually "aborted" without running any tests).
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

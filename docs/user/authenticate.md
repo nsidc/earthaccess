@@ -15,7 +15,7 @@ Once you have an Earthdata Login account, you may use the `earthaccess.login` me
 
 By default, `earthaccess.login()` will look for a `.netrc` or environment variables first.  If neither of these are found, it will prompt you to enter your username and password.  The three methods are described in detail below.
 
-`earthaccess.login` can also be used to login to [different endpoints](#accessing-different-endpoints) and [get S3 credentials](#using-earthaccess-to-get-credentials).
+`earthaccess.login` can also be used to login to [different endpoints](#accessing-different-endpoints) and [get S3 credentials](#using-earthaccess-to-get-s3-credentials).
 
 ## Login Interactively
 

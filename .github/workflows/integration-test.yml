@@ -85,7 +85,7 @@ jobs:
           mkdir -p ./pr
           echo $PR_NUMBER > ./pr/pr_number
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         if: matrix.save-pr-number
         with:
           path: pr/
@@ -94,7 +94,7 @@ jobs:
       - name: Fetch user permission
         if: github.event_name == 'pull_request_target'
         id: permission
-        uses: actions-cool/check-user-permission@v2
+        uses: actions-cool/check-user-permission@c21884f3dda18dafc2f8b402fe807ccc9ec1aa5e # v2
         with:
           require: write
           username: ${{ github.triggering_actor }}
@@ -117,7 +117,7 @@ jobs:
           exit 1
 
       - name: Checkout source
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           # Getting the correct commit for a pull_request_target event appears to be
           # a known, problematic issue: https://github.com/actions/checkout/issues/518
@@ -131,6 +131,7 @@ jobs:
           # is apparently less than ideal, but seems to be the best we can muster at
           # this point.
           ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
 
       - name: Install package with dependencies
         uses: ./.github/actions/install-pkg
@@ -156,4 +157,4 @@ jobs:
       - name: Upload coverage report
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5
