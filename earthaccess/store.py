@@ -794,7 +794,7 @@ class Store(object):
             def _download(file: str) -> Union[Path, None]:
                 return self.download_cloud_file(s3_fs, file, local_path, force=force)
 
-            results = pqdm(data_links, _download, **pqdm_kwargs)
+            results = pqdm(data_links, _download, **(pqdm_kwargs or {}))
             return [r for r in results if r is not None]
 
         else:
@@ -848,7 +848,7 @@ class Store(object):
             def _download(file: str) -> Union[Path, None]:
                 return self.download_cloud_file(s3_fs, file, local_path, force=force)
 
-            results = pqdm(data_links, _download, **pqdm_kwargs)
+            results = pqdm(data_links, _download, **(pqdm_kwargs or {}))
             return [r for r in results if r is not None]
 
         else:

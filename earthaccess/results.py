@@ -1,5 +1,6 @@
 import json
 import uuid
+import warnings
 from functools import cache
 from typing import Any, Dict, List, Optional, Union
 
@@ -97,16 +98,29 @@ class DataCollection(CustomDict):
         """
         # we can print only the concept-id
 
-        summary_dict: Dict[str, Any]
-        summary_dict = {
-            "short-name": self.get_umm("ShortName"),
-            "concept-id": self.concept_id(),
-            "version": self.version(),
-            "file-type": self.data_type(),
-            "get-data": self.get_data(),
-        }
-        if "Region" in self.s3_bucket():
-            summary_dict["cloud-info"] = self.s3_bucket()
+        warnings.warn(
+            "As of version 1.0, `DataCollection.summary` will be accessed as an "
+            "attribute; e.g. use `DataCollection.summary` **not** "
+            "`DataCollection.summary()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
+        # Only issue a single FutureWarning
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=FutureWarning)
+
+            summary_dict: Dict[str, Any]
+            summary_dict = {
+                "short-name": self.get_umm("ShortName"),
+                "concept-id": self.concept_id(),
+                "version": self.version(),
+                "file-type": self.data_type(),
+                "get-data": self.get_data(),
+            }
+            if "Region" in self.s3_bucket():
+                summary_dict["cloud-info"] = self.s3_bucket()
+
         return summary_dict
 
     def get_umm(self, umm_field: str) -> Union[str, Dict[str, Any]]:
@@ -126,6 +140,14 @@ class DataCollection(CustomDict):
         Returns:
             This collection's DOI information, or `None`, if it has none.
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.doi` will be accessed as an "
+            "attribute; e.g. use `DataCollection.doi` **not** "
+            "`DataCollection.doi()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         doi = self["umm"].get("DOI", {})
         if isinstance(doi, dict):
             return doi.get("DOI", None)
@@ -158,6 +180,14 @@ class DataCollection(CustomDict):
         Returns:
             A collection's `concept_id`.This id is the most relevant search field on granule queries.
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.concept_id` will be accessed as an "
+            "attribute; e.g. use `DataCollection.concept_id` **not** "
+            "`DataCollection.concept_id()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         return self["meta"]["concept-id"]
 
     def data_type(self) -> str:
@@ -166,6 +196,14 @@ class DataCollection(CustomDict):
         Returns:
             The collection data type, i.e. HDF5, CSV etc., if available.
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.data_type` will be accessed as an "
+            "attribute; e.g. use `DataCollection.data_type` **not** "
+            "`DataCollection.data_type()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         return str(
             self["umm"]
             .get("ArchiveAndDistributionInformation", {})
@@ -178,6 +216,14 @@ class DataCollection(CustomDict):
         Returns:
             The collection's version.
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.version` will be accessed as an "
+            "attribute; e.g. use `DataCollection.version` **not** "
+            "`DataCollection.version()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         return self["umm"].get("Version", "")
 
     def abstract(self) -> str:
@@ -186,6 +232,14 @@ class DataCollection(CustomDict):
         Returns:
             The abstract of a collection.
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.abstract` will be accessed as an "
+            "attribute; e.g. use `DataCollection.abstract` **not** "
+            "`DataCollection.abstract()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         return self["umm"].get("Abstract", "")
 
     def landing_page(self) -> str:
@@ -194,6 +248,14 @@ class DataCollection(CustomDict):
         Returns:
             The first landing page for the collection (can be many), if available.
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.landing_page` will be accessed as an "
+            "attribute; e.g. use `DataCollection.landing_page` **not** "
+            "`DataCollection.landing_page()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         links = self._filter_related_links("LANDING PAGE")
         return links[0] if len(links) > 0 else ""
 
@@ -203,6 +265,14 @@ class DataCollection(CustomDict):
         Returns:
             The GET DATA links (usually a landing page link, a DAAC portal, or an FTP location).
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.get_data` will be accessed as an "
+            "attribute; e.g. use `DataCollection.get_data` **not** "
+            "`DataCollection.get_data()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         return self._filter_related_links("GET DATA")
 
     def s3_bucket(self) -> Dict[str, Any]:
@@ -211,10 +281,26 @@ class DataCollection(CustomDict):
         Returns:
             The S3 bucket information if the collection has it (**cloud hosted collections only**).
         """
+        warnings.warn(
+            "As of version 1.0, `DataCollection.s3_bucket` will be accessed as an "
+            "attribute; e.g. use `DataCollection.s3_bucket` **not** "
+            "`DataCollection.s3_bucket()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         return self["umm"].get("DirectDistributionInformation", {})
 
     def services(self) -> Dict[Any, List[Dict[str, Any]]]:
         """Return list of services available for this collection."""
+        warnings.warn(
+            "As of version 1.0, `DataCollection.services` will be accessed as an "
+            "attribute; e.g. use `DataCollection.services` **not** "
+            "`DataCollection.services()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         services = self.get("meta", {}).get("associations", {}).get("services", [])
         queries = (
             DataServices(auth=earthaccess.__auth__).parameters(concept_id=service)
@@ -304,6 +390,14 @@ class DataGranule(CustomDict):
         Returns:
             The total size for the granule in MB.
         """
+        warnings.warn(
+            "As of version 1.0, `DataGranule.size` will be accessed as an "
+            "attribute; e.g. use `DataCollection.size` **not** "
+            "`DataCollection.size()`",
+            category=FutureWarning,
+            stacklevel=2,
+        )
+
         try:
             data_granule = self["umm"]["DataGranule"]
             total_size = sum(
