@@ -21,9 +21,7 @@ from .api import (
     status,
 )
 from .auth import Auth
-from .dmrpp_zarr import open_virtual_dataset, open_virtual_mfdataset
 from .icechunk_opener import open_icechunk_from_url
-from .kerchunk import consolidate_metadata
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
