@@ -10,6 +10,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Changed
 
 - While downloading, files will have temporary names until download completes.
+- Set timeout on requests in `Store.set_requests_session`.
 
 ### Added
 
