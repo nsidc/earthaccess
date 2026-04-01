@@ -198,7 +198,7 @@ convention = "google"
 
 [tool.bumpversion]
 current_version = "0.16.0"
-commit = true
+commit = false
 tag = true
 allow_dirty = false
 tag_name = "v{new_version}"
