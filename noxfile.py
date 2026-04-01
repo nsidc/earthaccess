@@ -16,14 +16,19 @@ nox.options.default_venv_backend = "uv|virtualenv"
 @nox.session
 def typecheck(session: nox.Session) -> None:
     """Typecheck with mypy."""
-    session.install("--editable", ".", "--group", "test")
+    # We must install all of the extras groups so mypy can find everything it
+    # needs; otherwise, it will complain about missing type stubs.
+    session.install("--group", "test", ".[kerchunk,virtualizarr]")
     session.run("mypy")
 
 
 @nox.session
 def tests(session: nox.Session) -> None:
     """Run the unit tests."""
-    session.install("--editable", ".", "--group", "test")
+    # We must install all of the extras groups because there are tests that
+    # test additional functionality available when the user has the extras
+    # installed.
+    session.install("--group", "test", ".[kerchunk,virtualizarr]")
     session.run(
         "pytest",
         "tests/unit",
