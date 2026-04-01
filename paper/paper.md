@@ -195,12 +195,12 @@ slice of the workflow:
 # Software design
 
 `earthaccess` is organized into four core layers, each encapsulating a distinct
-concern of the data access workflow:
+component of the data access workflow:
 
 1. **Authentication**: Manages the full lifecycle of NASA Earthdata Login credentials,
    supporting environment variables, `.netrc` files, and interactive prompts. Once
    authenticated, the library creates HTTP sessions that correctly handle NASA's
-   cross-domain redirects and retrieves temporary AWS S3 credentials for in-region
+   cross-domain redirects and retrieves and renews temporary AWS S3 credentials for in-region
    cloud access.
 
 2. **Search**: Extends `python-cmr` with DAAC-aware provider resolution, cloud-hosting
@@ -261,15 +261,15 @@ downstream libraries. It is distributed through both PyPI and conda-forge, and h
 been installed and used in cloud-hosted Jupyter environments provided by NASA and
 partner organizations. As one example of downstream adoption, icepack -- a finite
 element library for ice sheet and glacier modeling [@shapero2021] -- replaced its
-hand-written NSIDC data-fetching routines with `earthaccess` calls, eliminating
+hand-written NSIDC DAAC data-fetching routines with `earthaccess` calls, eliminating
 hard-coded URLs and custom authentication logic. `earthaccess` has replaced tens of lines of code across countless NASA data access tutorials, increasing user accessibility and reducing the amount of "getting started" overhead.
 
-**Multi-institutional development.** Contributors span NASA's Distributed Active Archive Centers (DAACs) — including ASDC, ASF, GES DISC, LP DAAC, NSIDC, OB.DAAC, ORNL DAAC, and PO.DAAC — as well as other federal and academic institutions (USGS,
+**Multi-institutional development.** Contributors span NASA's Distributed Active Archive Centers (DAACs) — including ASDC, ASF, GES DISC, LP DAAC, NSIDC DAAC, OB.DAAC, ORNL DAAC, and PO.DAAC — as well as other federal and academic institutions (USGS,
 University of New Hampshire), private industry (Coiled, Development Seed),
 and independent open-source contributors. This breadth reflects both the library's
 relevance across domains and the health of its contributor community.
 
-**Integration with the NASA ecosystem.** `earthaccess` is featured in official NASA
+**Integration with the NASA ecosystem.** `earthaccess` is featured in the official NASA
 Earthdata tutorials, including <https://www.earthdata.nasa.gov/data/tools/earthaccess>, has been presented at multiple large professional meetings (including several American Geophysical Union Annual and Earth System Information Partnership (ESIP) meetings), and was the subject of
 a NASA ESDS Tech Spotlight presentation. The documentation includes executable Jupyter
 notebooks demonstrating workflows with ICESat-2, EMIT, TEMPO, SMAP, and other missions,
