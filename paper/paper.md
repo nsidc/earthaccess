@@ -105,7 +105,7 @@ bibliography: paper.bib
 
 `earthaccess` is an open-source Python library that simplifies the discovery, authentication,
 and access of NASA Earth science data. NASA's Earth Observing System Data and Information System
-(EOSDIS) distributes over 100 petabytes of data across 12 Distributed Active Archive Centers
+(EOSDIS) distributes over 100 petabytes of data across 11 Distributed Active Archive Centers
 (DAACs) [@nasa_earthdata], encompassing satellite imagery, climate records, atmospheric
 measurements, and other geospatial datasets critical to Earth science research. Accessing these
 data programmatically has historically required researchers to navigate multiple authentication
@@ -118,10 +118,10 @@ workflow to just a few lines of code. The library handles authentication with NA
 Earthdata Login (EDL) service [@nasa_edl], exposes NASA's Common Metadata Repository
 (CMR) [@nasa_cmr] for data discovery, and transparently manages data retrieval via
 either HTTPS download or direct S3 access when running in the Amazon Web Services (AWS)
-`us-west-2` region -- where NASA's cloud-hosted data resides. `earthaccess` also supports
+`us-west-2` region -- where data within NASA's Earthdata Cloud reside. `earthaccess` also supports
 streaming data directly into analysis-ready formats using `fsspec` [@fsspec] and
 constructing virtual Zarr stores from archival formats (e.g., HDF5 and NetCDF4) using
-DMR++ metadata [@dmrpp], powered by VirtualiZarr [@virtualizarr] and kerchunk [@kerchunk].
+DMR++ metadata [@dmrpp], powered by VirtualiZarr [@virtualizarr] and kerchunk [@kerchunk], enabling drastic improvements in access performance. 
 
 
 # Statement of need
@@ -142,9 +142,7 @@ must now contend with two possible access paradigms, traditional HTTPS downloads
 access. These both may even occur within a single analysis workflow. During workshops organized by NASA
 Openscapes [@nasa_openscapes; @lowndes2019], the need for simpler tools became evident.
 `earthaccess` was created to address this gap: it provides uniform access to NASA
-Earthdata regardless of data storage location, enabling researchers to focus on science
-rather than data engineering.
-
+Earthdata regardless of data storage location and handles authentication, credentials, and tokening behind the scenes, enabling researchers to focus more on scientific interpretation and discovery.
 The target audience includes Earth scientists, remote sensing researchers, climate modelers,
 hydrologists, ecologists, and any researcher, application developer, or educator who needs
 to work with NASA Earth science data. The library is designed to be approachable for those new to Python -- with a
@@ -157,14 +155,14 @@ or virtual dataset construction for large-scale analysis.
 
 The scholarly contribution of `earthaccess` is the _integration_ of search,
 authentication, and access into a coherent abstraction that masks the heterogeneity
-of NASA's data infrastructure. No existing tool provides this end-to-end,
+of NASA Earthdata's infrastructure. No existing tool provides this end-to-end,
 provider-agnostic workflow. Rather than reinventing query or filesystem libraries,
 `earthaccess` composes and extends existing open-source tools and contributes the
 NASA-specific domain knowledge (DAAC configurations, credential endpoints,
 authentication flows, cloud-detection logic) that binds them into a usable
 data access layer.
 
-Several tools exist for accessing NASA Earth science data, each addressing a specific
+Several tools exist for accessing NASA Earth science data, each only addressing a specific
 slice of the workflow:
 
 - **python-cmr** [@python_cmr] provides a Python wrapper around the CMR API for dataset
@@ -173,7 +171,7 @@ slice of the workflow:
   encapsulate metadata. However, `python-cmr` does not handle authentication, data
   download, or cloud access -- the areas where researchers face many workflow difficulties.
 
-- **harmony-py** [@harmony_py] is NASA's client for the Harmony data transformation
+- **harmony-py** [@harmony_py] is NASA Earthdata's client for the Harmony data transformation
   service, which provides, for example, server-side subsetting, reformatting, and reprojection services.
   It addresses a complementary use case; `earthaccess` focuses on direct data access
   and client-side analysis.
