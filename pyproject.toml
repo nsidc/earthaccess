@@ -203,7 +203,6 @@ tag = true
 allow_dirty = false
 tag_name = "v{new_version}"
 tag_message = "v{new_version}"
-message = "Release v{new_version}"
 
 [[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
