@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Verify tag: Ensure that the versions in various files match the current tag. Used to prevent publishing with incorrect versions.
 
 # Strict mode: fail on errors, unassigned variables, and pipe failures
 set -euo pipefail
