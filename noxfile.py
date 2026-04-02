@@ -18,7 +18,7 @@ def typecheck(session: nox.Session) -> None:
     """Typecheck with mypy."""
     # We must install all of the extras groups so mypy can find everything it
     # needs; otherwise, it will complain about missing type stubs.
-    session.install("--group", "test", ".[kerchunk,virtualizarr]")
+    session.install("--group", "test", ".[all]")
     session.run("mypy")
 
 
@@ -28,7 +28,7 @@ def tests(session: nox.Session) -> None:
     # We must install all of the extras groups because there are tests that
     # test additional functionality available when the user has the extras
     # installed.
-    session.install("--group", "test", ".[kerchunk,virtualizarr]")
+    session.install("--group", "test", ".[all]")
     session.run(
         "pytest",
         "tests/unit",
