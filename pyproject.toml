@@ -196,31 +196,34 @@ combine-as-imports = true
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.bump-my-version]
+[tool.bumpversion]
+current_version = "0.16.0"
 commit = false
 tag = true
-tag-message = "v{new_version}"
-regex = false
+allow_dirty = false
+tag_name = "v{new_version}"
+tag_message = "v{new_version}"
 
-[[tool.bump-my-version.files]]
+[[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
 regex = true
 search = "^## \\[Unreleased\\]"
 replace = "## [Unreleased]\n\n## [v{new_version}] - {now:%Y-%m-%d}"
 
-[[tool.bump-my-version.files]]
+[[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
 regex = true
 search = "\\[Unreleased\\]: (https://.+?)v{current_version}\\.\\.\\.HEAD"
 replace = "[Unreleased]: \\1v{new_version}...HEAD\n[{new_version}]: \\1v{current_version}...v{new_version}"
 
-[[tool.bump-my-version.files]]
+[[tool.bumpversion.files]]
 filename = "CITATION.cff"
 search = 'version: "{current_version}"'
 replace = 'version: "{new_version}"'
 
-[[tool.bump-my-version.files]]
+[[tool.bumpversion.files]]
 filename = "CITATION.cff"
+regex = true
 search = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
 replace = 'date-released: "{now:%Y-%m-%d}"'
 
