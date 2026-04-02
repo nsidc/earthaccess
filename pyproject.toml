@@ -69,6 +69,10 @@ kerchunk = [
   "xarray >=2025.04.0",
   "zarr >=3.1.1",
 ]
+icechunk = [
+  "icechunk >= 1.0.0",
+  "zarr >= 3.0.0"
+]
 virtualizarr = [
   "numpy >=1.26.4",
   "zarr >=3.1.1",
@@ -98,6 +102,9 @@ test = [
   "types-setuptools >=0.1",
   "types-geopandas",
   "vcrpy >=7.0.0",
+  #"earthaccess[kerchunk]",
+  "earthaccess[icechunk]",
+  "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
   "h5netcdf",

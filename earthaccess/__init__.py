@@ -21,6 +21,7 @@ from .api import (
     status,
 )
 from .auth import Auth
+from .icechunk_opener import open_icechunk_from_url
 from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
@@ -57,6 +58,7 @@ __all__ = [
     "Auth",
     # store.py
     "Store",
+    "open_icechunk_from_url",
     # virtual
     "virtualize",
     # system.py
