@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.17.0] - 2026-04-02
+
 ### Changed
 
 - Fixed mypy type errors for missing stubs (virtualizarr, obstore, requests, xarray, etc.) ([@betolink](https://github.com/betolink))
@@ -650,4 +652,5 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 [0.15.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.15.0
 [0.15.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.15.1
 [0.16.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.16.0
-[Unreleased]: https://github.com/earthaccess-dev/earthaccess/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/earthaccess-dev/earthaccess/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/earthaccess-dev/earthaccess/compare/v0.16.0...v0.17.0
