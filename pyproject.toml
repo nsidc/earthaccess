@@ -61,6 +61,13 @@ Documentation = "https://earthaccess.readthedocs.io"
 Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
+# IMPORTANT: When adding a new optional dependencies group, include it in this
+# "all" optional dependencies group.
+all = [
+  "earthaccess[kerchunk]",
+  "earthaccess[virtualizarr]",
+]
+
 kerchunk = [
   "kerchunk>=0.2.9",
   "dask",
