@@ -44,16 +44,9 @@ We can use `earthaccess` to do impactful science, faster:
 - [earthaccess — helping users leverage the awesomeness of NASA Earthdata](https://nasa-openscapes.github.io/news/2025-08-01-earthaccess-awesomeness-nasa-earthdata/) - Amy Steiker, Luis López, Danny Kaufman, Joe Kennedy, Chris Battisto, Andy Teucher, Stefanie Butland, Julie Lowndes, and the earthaccess and NASA Openscapes communities. July 29, 2025. Openscapes Community Call.
 
 
-# Supported By
+# Supported by
 
-<p align="center">
-<img alt="Openscapes" src="logos/openscapes_hex-logo.png" width="18%" />
-<img alt="NASA logo" src="nasa-logo.png" width="25%" />
-<img alt="NSIDC" src="nsidc-logo.png" width="20%" />
-<img alt="GES DISC" src="logos/gesdisc-logo.png" width="20%" />
-<img alt="ORNLdaac" src="logos/ornl-logo.jpg" width="20%" />
-<img alt="podaac" src="logos/podaac-logo.png" width="20%" />
-<img alt="Development Seed" src="logos/devseed-logo.png" width="20%" />
+`earthaccess` is supported by [NASA](https://www.nasa.gov/), [Openscapes](https://openscapes.org/), [NSIDC](https://nsidc.org/), and other organizations. [See all supporters](supported-by.md).
 <img alt="ESDIS logo" src="logos/earthdata-logo.jpg" width="20%" />
 
 <img alt="ASF" src="logos/asf-logo.png" width="20%" />
