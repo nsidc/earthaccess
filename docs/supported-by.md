@@ -10,6 +10,8 @@
 ![ORNL DAAC](logos/ornl-logo.jpg){width="18%"}
 ![PO.DAAC](logos/podaac-logo.png){width="18%"}
 ![Development Seed](logos/devseed-logo.png){width="18%"}
+
+[![Zulip is an organized team chat app designed for efficient communication](https://raw.githubusercontent.com/zulip/zulip/refs/heads/main/static/images/logo/zulip-icon-circle.svg){width="18%"}](https://zulip.com)
 </p>
 
 ## Zulip
