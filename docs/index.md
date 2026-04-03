@@ -47,12 +47,3 @@ We can use `earthaccess` to do impactful science, faster:
 # Supported by
 
 `earthaccess` is supported by [NASA](https://www.nasa.gov/), [Openscapes](https://openscapes.org/), [NSIDC](https://nsidc.org/), and other organizations. [See all supporters](supported-by.md).
-<img alt="ESDIS logo" src="logos/earthdata-logo.jpg" width="20%" />
-
-<img alt="ASF" src="logos/asf-logo.png" width="20%" />
-<img alt="ASDC" src="logos/asdc-logo.png" width="20%" />
-<img alt="lpdaac" src="logos/lpdaac-logo.png" width="20%" />
-<img alt="OB.DAAC" src="logos/obdaac-logo.svg" width="20%" />
-<img alt="Coiled" src="logos/coiled-logo.png" width="20%" />
-
-</p>

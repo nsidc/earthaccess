@@ -3,6 +3,7 @@
 `earthaccess` is made possible by the support of these organizations.
 
 <p align="center" markdown>
+
 ![Openscapes](logos/openscapes_hex-logo.png){width="18%"}
 ![NASA](nasa-logo.png){width="18%"}
 ![NSIDC](nsidc-logo.png){width="18%"}
@@ -10,6 +11,14 @@
 ![ORNL DAAC](logos/ornl-logo.jpg){width="18%"}
 ![PO.DAAC](logos/podaac-logo.png){width="18%"}
 ![Development Seed](logos/devseed-logo.png){width="18%"}
+![ESDIS logo](logos/earthdata-logo.jpg){width="20%"}
+![ASF](logos/asf-logo.png){width="20%"}
+![ASDC](logos/asdc-logo.png){width="20%"}
+![lpdaac](logos/lpdaac-logo.png){width="20%"}
+![OB.DAAC](logos/obdaac-logo.svg" width="20%"}
+![Coiled](logos/coiled-logo.png){width="20%"}
+
+</p>
 
 [![Zulip is an organized team chat app designed for efficient communication](https://raw.githubusercontent.com/zulip/zulip/refs/heads/main/static/images/logo/zulip-icon-circle.svg){width="18%"}](https://zulip.com)
 </p>
