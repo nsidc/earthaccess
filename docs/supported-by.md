@@ -18,8 +18,6 @@
 ![OB.DAAC](logos/obdaac-logo.svg"){width="20%"}
 ![Coiled](logos/coiled-logo.png){width="20%"}
 
-</p>
-
 [![Zulip is an organized team chat app designed for efficient communication](https://raw.githubusercontent.com/zulip/zulip/refs/heads/main/static/images/logo/zulip-icon-circle.svg){width="18%"}](https://zulip.com)
 </p>
 
