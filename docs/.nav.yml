@@ -6,7 +6,8 @@ nav:
       - "About Us": "about-us.md"
       - "Supported By": "supported-by.md"
       - Governance:
-          - Decisions: "governance/decisi
+          - Decisions: "governance/decisions/"
+
   - API reference:
       - Search and Access: "api/index.md"
       - Modules:
