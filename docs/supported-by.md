@@ -2,13 +2,15 @@
 
 `earthaccess` is made possible by the support of these organizations.
 
-![Openscapes](logos/openscapes_hex-logo.png)
-![NASA](nasa-logo.png)
-![NSIDC](nsidc-logo.png)
-![GES DISC](logos/gesdisc-logo.png)
-![ORNL DAAC](logos/ornl-logo.jpg)
-![PO.DAAC](logos/podaac-logo.png)
-![Development Seed](logos/devseed-logo.png)
+<p align="center">
+![Openscapes](logos/openscapes_hex-logo.png){width="18%"}
+![NASA](nasa-logo.png){width="18%"}
+![NSIDC](nsidc-logo.png){width="18%"}
+![GES DISC](logos/gesdisc-logo.png){width="18%"}
+![ORNL DAAC](logos/ornl-logo.jpg){width="18%"}
+![PO.DAAC](logos/podaac-logo.png){width="18%"}
+![Development Seed](logos/devseed-logo.png){width="18%"}
+</p>
 
 ## Zulip
 
