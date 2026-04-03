@@ -2,7 +2,7 @@
 
 `earthaccess` is made possible by the support of these organizations.
 
-<p align="center">
+<p align="center" markdown>
 ![Openscapes](logos/openscapes_hex-logo.png){width="18%"}
 ![NASA](nasa-logo.png){width="18%"}
 ![NSIDC](nsidc-logo.png){width="18%"}
