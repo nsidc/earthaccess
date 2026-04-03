@@ -121,14 +121,14 @@ either HTTPS download or direct S3 access when running in the Amazon Web Service
 `us-west-2` region -- where data within NASA's Earthdata Cloud reside. `earthaccess` also supports
 streaming data directly into analysis-ready formats using `fsspec` [@fsspec] and
 constructing virtual Zarr stores from archival formats (e.g., HDF5 and NetCDF4) using
-DMR++ metadata [@dmrpp], powered by VirtualiZarr [@virtualizarr] and kerchunk [@kerchunk], enabling drastic improvements in access performance. 
+DMR++ metadata [@dmrpp], powered by VirtualiZarr [@virtualizarr] and kerchunk [@kerchunk], enabling drastic improvements in access performance.
 
 
 # Statement of need
 
 NASA's Earth science data archive is one of the largest and most diverse collections of
-Earth observation data in the world, used by tens of thousands of researchers, educators,
-and decision-makers globally. However, the complexity of the underlying data infrastructure
+Earth observation data in the world, used by over ten million researchers, educators,
+and decision-makers globally [@nasa_esds_data_metrics]. However, the complexity of the underlying data infrastructure
 presents a significant barrier to scientific productivity. A typical data access workflow
 requires a researcher to: (1) authenticate with NASA Earthdata Login; (2) discover
 relevant datasets and granules through the CMR API; (3) parse metadata to obtain download
