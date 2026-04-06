@@ -31,14 +31,14 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.4
+    rev: v0.15.9
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.10.7"
+    rev: "0.11.3"
     hooks:
       # Asserts that the lockfile is valid for pyproject.toml.
       # If it fails, update the lockfile by running:
@@ -60,7 +60,7 @@ repos:
         exclude: ".*/vcr_cassettes/.*\\.yaml"
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.4.1"
+    rev: "v2.4.2"
     hooks:
       - id: "codespell"
         exclude: ".codespellignore|tests/.*"
@@ -74,6 +74,6 @@ repos:
           - "--verbose"
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: "1de4a94008448d1ffa57080fbf183feb615ee165"
+    rev: "v0.11.0.1"
     hooks:
       - id: shellcheck
