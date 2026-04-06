@@ -1,6 +1,8 @@
-# Triaging guide
+# Issue Triaging and Prioritization Guide
 
-With constant influx of new issues, it's essential to prioritize and categorize them efficiently to ensure that the most important problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized and up-to-date issue tracker.
+With constant influx of new issues, it's essential to prioritize and categorize them efficiently to ensure that the most important problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized, prioritized, and up-to-date issue tracker via the `earthaccess` [GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1). 
+
+We hope that this guide will help empower anyone to contribute to issue triaging, and ultimately address a common question for both new and veteran contributors: "I'm interested in working on important issues that will fix or improve `earthaccess`. Where do I begin?"
 
 ## Labeling Issues
 
