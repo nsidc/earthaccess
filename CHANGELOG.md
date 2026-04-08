@@ -7,6 +7,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Changed
+
+- Relocated community resources section from overview page to resources page ([#1253](https://github.com/earthaccess-dev/earthaccess/discussions/1253)) ([@Sherwin-14](https://github.com/Sherwin-14))
+
 ## [v0.17.0] - 2026-04-02
 
 ### Changed

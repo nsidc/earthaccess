@@ -2,7 +2,7 @@ nav:
   - Overview:
       - "What is earthaccess?": "index.md"
       - "Community calendar": "calendar.md"
-      - "Resources": "resources.md"
+      - "External resources": "resources.md"
       - "About Us": "about-us.md"
       - Governance:
           - Decisions: "governance/decisions/"
