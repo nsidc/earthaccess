@@ -1,4 +1,4 @@
-# Community support
+# Supported by
 
 `earthaccess` is made possible by the support of these organizations:
 

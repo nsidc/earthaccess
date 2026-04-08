@@ -4,7 +4,7 @@ nav:
       - "Community calendar": "calendar.md"
       - "Resources": "resources.md"
       - "About Us": "about-us.md"
-      - "Community support": "supported-by.md"
+      - "Supported by": "supported-by.md"
       - Governance:
           - Decisions: "governance/decisions/"
 
