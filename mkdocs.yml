@@ -74,6 +74,7 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - attr_list
   - callouts
   - pymdownx.details
   - meta
