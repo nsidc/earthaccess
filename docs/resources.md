@@ -1,4 +1,4 @@
-# Earthaccess Community Resources & Presentations
+# External Resources for Earthdata Users
 
 `earthaccess` development is facilitated by [NASA Openscapes](https://nasa-openscapes.github.io/), an initiative to support researchers using data distributed by NASA Distributed Active Archive Centers (DAACs) as they migrate workflows to the cloud.
 
