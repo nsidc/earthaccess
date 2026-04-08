@@ -20,3 +20,10 @@
 
 [![Zulip is an organized team chat app designed for efficient communication](https://raw.githubusercontent.com/zulip/zulip/refs/heads/main/static/images/logo/zulip-icon-circle.svg){width="18%"}](https://zulip.com)
 </p>
+
+## Zulip
+
+[Zulip](https://zulip.com/) sponsors the `earthaccess` community chat.
+Zulip is an open-source team collaboration tool with topic-based threading that keeps conversations organized.
+
+Join our community chat: [earthaccess.zulipchat.com](https://earthaccess.zulipchat.com/)
