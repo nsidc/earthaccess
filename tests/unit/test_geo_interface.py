@@ -32,15 +32,15 @@ TEST_CASES = {
                         {"Longitude": -10.5, "Latitude": -20.9},
                         {"Longitude": 1.5, "Latitude": 5.6},
                         {"Longitude": 13.9, "Latitude": 15.6},
-                    ]
+                    ],
                 },
                 {
                     "Points": [
                         {"Longitude": 2.8, "Latitude": 33.4},
                         {"Longitude": -9.2, "Latitude": 21.1},
-                    ]
+                    ],
                 },
-            ]
+            ],
         },
         "geojson": {
             "type": "MultiLineString",
@@ -65,7 +65,7 @@ TEST_CASES = {
                     "EastBoundingCoordinate": 99.2,
                     "NorthBoundingCoordinate": 30.3,
                 },
-            ]
+            ],
         },
         "geojson": {
             "type": "MultiPolygon",
@@ -100,10 +100,10 @@ TEST_CASES = {
                             {"Longitude": -52.2, "Latitude": -45.3},
                             {"Longitude": -50.2, "Latitude": -40.3},
                             {"Longitude": -42.2, "Latitude": -35.3},
-                        ]
+                        ],
                     },
                 },
-            ]
+            ],
         },
         "geojson": {
             "type": "MultiPolygon",
@@ -113,7 +113,7 @@ TEST_CASES = {
                         [-52.2, -45.3],
                         [-50.2, -40.3],
                         [-42.2, -35.3],
-                    ]
+                    ],
                 ],
             ],
         },
@@ -128,7 +128,7 @@ TEST_CASES = {
                             {"Longitude": 82.5, "Latitude": -40.3},
                             {"Longitude": 82.5, "Latitude": -45.9},
                             {"Longitude": -89.9, "Latitude": -40.3},
-                        ]
+                        ],
                     },
                     "ExclusiveZone": {
                         "Boundaries": [
@@ -137,19 +137,19 @@ TEST_CASES = {
                                     {"Longitude": -79.2, "Latitude": -40.1},
                                     {"Longitude": -70.8, "Latitude": -32.3},
                                     {"Longitude": -79.2, "Latitude": -32.3},
-                                ]
+                                ],
                             },
                             {
                                 "Points": [
                                     {"Longitude": 52.2, "Latitude": 25.3},
                                     {"Longitude": 54.2, "Latitude": 29.3},
                                     {"Longitude": 52.2, "Latitude": 29.3},
-                                ]
+                                ],
                             },
-                        ]
+                        ],
                     },
                 },
-            ]
+            ],
         },
         "geojson": {
             "type": "MultiPolygon",
@@ -190,7 +190,7 @@ TEST_CASES = {
                             {"Longitude": -52.2, "Latitude": -45.3},
                             {"Longitude": -50.2, "Latitude": -40.3},
                             {"Longitude": -42.2, "Latitude": -35.3},
-                        ]
+                        ],
                     },
                 },
                 {
@@ -200,7 +200,7 @@ TEST_CASES = {
                             {"Longitude": 82.5, "Latitude": -40.3},
                             {"Longitude": 82.5, "Latitude": -45.9},
                             {"Longitude": -89.9, "Latitude": -40.3},
-                        ]
+                        ],
                     },
                     "ExclusiveZone": {
                         "Boundaries": [
@@ -209,19 +209,19 @@ TEST_CASES = {
                                     {"Longitude": -79.2, "Latitude": -40.1},
                                     {"Longitude": -70.8, "Latitude": -32.3},
                                     {"Longitude": -79.2, "Latitude": -32.3},
-                                ]
+                                ],
                             },
                             {
                                 "Points": [
                                     {"Longitude": 52.2, "Latitude": 25.3},
                                     {"Longitude": 54.2, "Latitude": 29.3},
                                     {"Longitude": 52.2, "Latitude": 29.3},
-                                ]
+                                ],
                             },
-                        ]
+                        ],
                     },
                 },
-            ]
+            ],
         },
         "geojson": {
             "type": "MultiPolygon",
@@ -231,7 +231,7 @@ TEST_CASES = {
                         [-52.2, -45.3],
                         [-50.2, -40.3],
                         [-42.2, -35.3],
-                    ]
+                    ],
                 ],
                 [
                     [
@@ -268,7 +268,7 @@ def test_geo_interface(test_case: dict[str, object]):
     geometry = test_case["geometry"]
     geojson = test_case["geojson"]
     granule = DataGranule(
-        {"umm": {"SpatialExtent": {"HorizontalSpatialDomain": {"Geometry": geometry}}}}
+        {"umm": {"SpatialExtent": {"HorizontalSpatialDomain": {"Geometry": geometry}}}},
     )
 
     assert granule.__geo_interface__ == geojson

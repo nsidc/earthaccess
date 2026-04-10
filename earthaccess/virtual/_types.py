@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Literal, Union
+from collections.abc import Callable
+from typing import Any, Literal, Union
 
 # A VirtualiZarr parser: either a canonical class-name string or a pre-built
 # parser instance.  The strings are the exact class names exported from

@@ -1,8 +1,7 @@
 """Earthdata Environments/Systems module."""
 
 from dataclasses import dataclass
-
-from typing_extensions import NewType
+from typing import NewType
 
 from cmr import CMR_OPS, CMR_UAT
 

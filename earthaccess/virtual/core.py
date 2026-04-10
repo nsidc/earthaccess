@@ -9,8 +9,9 @@ from __future__ import annotations
 import logging
 import tempfile
 import warnings
+from collections.abc import Callable
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 import earthaccess
 from earthaccess.virtual._credentials import build_obstore_registry
@@ -128,7 +129,7 @@ def virtualize(
     if len(granules) > 1 and concat_dim is None:
         raise ValueError(
             "concat_dim is required when virtualizing more than one granule. "
-            "Pass concat_dim='<dimension_name>' to specify how to concatenate."
+            "Pass concat_dim='<dimension_name>' to specify how to concatenate.",
         )
 
     # Validate / resolve parser early so callers get a clear error before any
@@ -165,7 +166,8 @@ def virtualize(
             stacklevel=2,
         )
         resolved_parser = resolve_parser(
-            "HDFParser", group=group if group != "/" else None
+            "HDFParser",
+            group=group if group != "/" else None,
         )
         registry = build_obstore_registry(granules, access=access)
         vds = _open_virtual_mfdataset(
@@ -220,7 +222,7 @@ def _open_virtual_mfdataset(
         import virtualizarr as vz
     except ImportError as exc:
         raise ImportError(
-            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`",
         ) from exc
 
     urls = get_urls_for_parser(granules, parser, access=access)

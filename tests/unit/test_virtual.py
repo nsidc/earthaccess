@@ -32,11 +32,11 @@ def _make_granules(n: int = 1, base_url: str = "s3://bucket/file") -> list[DataG
                 "meta": {
                     "collection-concept-id": f"C{i}-PODAAC",
                     "provider-id": "PODAAC",
-                }
-            }[key]
+                },
+            }[key],
         )
         granules.append(g)
-    return cast(list[DataGranule], granules)
+    return cast("list[DataGranule]", granules)
 
 
 def _patch_internals(mock_vds: MagicMock | None = None):
@@ -45,10 +45,12 @@ def _patch_internals(mock_vds: MagicMock | None = None):
         mock_vds = MagicMock()
     return (
         patch(
-            "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock()
+            "earthaccess.virtual.core.build_obstore_registry",
+            return_value=MagicMock(),
         ),
         patch(
-            "earthaccess.virtual.core._open_virtual_mfdataset", return_value=mock_vds
+            "earthaccess.virtual.core._open_virtual_mfdataset",
+            return_value=mock_vds,
         ),
     )
 
@@ -62,7 +64,7 @@ def test_virtualize_empty_granules_raises() -> None:
     """virtualize() raises ValueError when granules list is empty."""
     from earthaccess.virtual.core import virtualize
 
-    with pytest.raises(ValueError, match="[Nn]o granules"):
+    with pytest.raises(ValueError, match=r"[Nn]o granules"):
         virtualize([])
 
 
@@ -71,7 +73,8 @@ def test_virtualize_multi_granule_no_concat_dim_raises() -> None:
     from earthaccess.virtual.core import virtualize
 
     with patch(
-        "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock()
+        "earthaccess.virtual.core.build_obstore_registry",
+        return_value=MagicMock(),
     ):
         with pytest.raises(ValueError, match="concat_dim"):
             virtualize(_make_granules(2))
@@ -116,7 +119,9 @@ def test_virtualize_load_true_delegates_to_kerchunk(tmp_path) -> None:
             return_value=expected_ds,
         ) as mock_load:
             result = virtualize(
-                _make_granules(1), load=True, reference_dir=str(tmp_path)
+                _make_granules(1),
+                load=True,
+                reference_dir=str(tmp_path),
             )
 
     mock_load.assert_called_once()
@@ -142,10 +147,12 @@ def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
         return mock_vds_hdf
 
     with patch(
-        "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock()
+        "earthaccess.virtual.core.build_obstore_registry",
+        return_value=MagicMock(),
     ):
         with patch(
-            "earthaccess.virtual.core._open_virtual_mfdataset", side_effect=side_effect
+            "earthaccess.virtual.core._open_virtual_mfdataset",
+            side_effect=side_effect,
         ):
             with pytest.warns(UserWarning, match="HDFParser"):
                 result = virtualize(_make_granules(1), parser="DMRPPParser")
@@ -196,10 +203,12 @@ def test_get_urls_dmrpp_appends_dmrpp_suffix() -> None:
     """get_urls_for_parser with DMRPPParser appends '.dmrpp' to each URL."""
     from earthaccess.virtual._parser import get_urls_for_parser, resolve_parser
 
-    granule = cast(DataGranule, MagicMock())
+    granule = cast("DataGranule", MagicMock())
     granule.data_links.return_value = ["s3://bucket/file.nc"]  # type: ignore[attr-defined]
     urls = get_urls_for_parser(
-        [granule], resolve_parser("DMRPPParser"), access="direct"
+        [granule],
+        resolve_parser("DMRPPParser"),
+        access="direct",
     )
     assert urls == ["s3://bucket/file.nc.dmrpp"]
 
@@ -210,7 +219,7 @@ def test_get_urls_passes_access_to_data_links() -> None:
 
     mock = MagicMock()
     mock.data_links.return_value = ["https://example.com/file.h5"]
-    granule = cast(DataGranule, mock)
+    granule = cast("DataGranule", mock)
     get_urls_for_parser([granule], resolve_parser("HDFParser"), access="indirect")
     mock.data_links.assert_called_once_with(access="indirect")
 
@@ -287,7 +296,7 @@ def test_credentials_endpoint_from_collection(mock_search_datasets) -> None:
                         "S3CredentialsAPIEndpoint": coll_endpoint,
                     },
                 },
-            }
+            },
         ),
     ]
 
@@ -317,7 +326,7 @@ def test_credentials_collection_missing_region_defaults_to_us_west_2(
                         "S3CredentialsAPIEndpoint": coll_endpoint,
                     },
                 },
-            }
+            },
         ),
     ]
 
@@ -337,7 +346,7 @@ def test_credentials_raises_when_no_endpoint_anywhere(mock_search_datasets) -> N
             {
                 "meta": {"concept-id": "C1234-PROV"},
                 "umm": {"DirectDistributionInformation": {"Region": "us-east-1"}},
-            }
+            },
         ),
     ]
 

@@ -6,9 +6,10 @@ import logging
 import os
 import platform
 import shutil
+from collections.abc import Mapping
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any, Dict, Mapping, Optional
+from typing import Any
 from urllib.parse import urlparse
 
 import requests
@@ -93,7 +94,7 @@ class SessionWithHeaderRedirection(requests.Session):
             self.hooks["response"].append(hook)
 
 
-class Auth(object):
+class Auth:
     """Authentication class for operations that require Earthdata login (EDL)."""
 
     def __init__(self) -> None:
@@ -108,7 +109,7 @@ class Auth(object):
         self,
         strategy: str = "netrc",
         persist: bool = False,
-        system: Optional[System] = None,
+        system: System | None = None,
     ) -> Any:
         """Authenticate with Earthdata login.
 
@@ -173,10 +174,10 @@ class Auth(object):
 
     def get_s3_credentials(
         self,
-        daac: Optional[str] = None,
-        provider: Optional[str] = None,
-        endpoint: Optional[str] = None,
-    ) -> Dict[str, str]:
+        daac: str | None = None,
+        provider: str | None = None,
+        endpoint: str | None = None,
+    ) -> dict[str, str]:
         """Gets AWS S3 credentials for a given NASA cloud provider.
 
         The easier way is to use the DAAC short name; provider is optional if we know it.
@@ -194,7 +195,8 @@ class Auth(object):
             return {}
 
         auth_url = endpoint or self._get_cloud_auth_url(
-            daac_shortname=daac, provider=provider
+            daac_shortname=daac,
+            provider=provider,
         )
 
         if not auth_url.startswith("https://"):
@@ -208,10 +210,10 @@ class Auth(object):
                 return r.json()
 
             logger.error(
-                f"Authentication with Earthdata Login failed with:\n{r.text[:1000]}"
+                f"Authentication with Earthdata Login failed with:\n{r.text[:1000]}",
             )
             logger.error(
-                f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}"
+                f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}",
             )
 
             return {}
@@ -253,13 +255,13 @@ class Auth(object):
             raise LoginStrategyUnavailable(f"No .netrc found at {netrc_loc}") from err
         except NetrcParseError as err:
             raise LoginStrategyUnavailable(
-                f"Unable to parse .netrc file {netrc_loc}"
+                f"Unable to parse .netrc file {netrc_loc}",
             ) from err
 
         creds = my_netrc[self.system.edl_hostname]
         if creds is None:
             raise LoginStrategyUnavailable(
-                f"Earthdata Login hostname {self.system.edl_hostname} not found in .netrc file {netrc_loc}"
+                f"Earthdata Login hostname {self.system.edl_hostname} not found in .netrc file {netrc_loc}",
             )
 
         username = creds["login"]
@@ -267,11 +269,11 @@ class Auth(object):
 
         if username is None:
             raise LoginStrategyUnavailable(
-                f"Username not found in .netrc file {netrc_loc}"
+                f"Username not found in .netrc file {netrc_loc}",
             )
         if password is None:
             raise LoginStrategyUnavailable(
-                f"Password not found in .netrc file {netrc_loc}"
+                f"Password not found in .netrc file {netrc_loc}",
             )
 
         authenticated = self._get_credentials(username, password, None)
@@ -290,7 +292,7 @@ class Auth(object):
             raise LoginStrategyUnavailable(
                 "Either the environment variables EARTHDATA_USERNAME and "
                 "EARTHDATA_PASSWORD must both be set, or EARTHDATA_TOKEN must be set for "
-                "the 'environment' login strategy."
+                "the 'environment' login strategy.",
             )
 
         logger.debug("Using environment variables for EDL")
@@ -298,9 +300,9 @@ class Auth(object):
 
     def _get_credentials(
         self,
-        username: Optional[str],
-        password: Optional[str],
-        user_token: Optional[str],
+        username: str | None,
+        password: str | None,
+        user_token: str | None,
     ) -> bool:
         if user_token is not None:
             self.token = {"access_token": user_token}
@@ -375,13 +377,13 @@ class Auth(object):
         return True
 
     def _get_cloud_auth_url(
-        self, daac_shortname: Optional[str] = "", provider: Optional[str] = ""
+        self,
+        daac_shortname: str | None = "",
+        provider: str | None = "",
     ) -> str:
         for daac in DAACS:
-            if (
-                daac_shortname == daac["short-name"]
-                or provider in daac["cloud-providers"]
-                and len(daac["s3-credentials"]) > 0
+            if daac_shortname == daac["short-name"] or (
+                provider in daac["cloud-providers"] and len(daac["s3-credentials"]) > 0
             ):
                 return str(daac["s3-credentials"])
         return ""

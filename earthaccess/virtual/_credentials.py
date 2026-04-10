@@ -59,7 +59,7 @@ def get_granule_credentials_endpoint_and_region(
     if credentials_endpoint is None:
         raise ValueError(
             "The collection did not provide an S3CredentialsAPIEndpoint. "
-            "Direct S3 access is not available for this granule."
+            "Direct S3 access is not available for this granule.",
         )
 
     return credentials_endpoint, region
@@ -81,7 +81,7 @@ def validate_granules(
     for granule in granules:
         if not granule.data_links():
             raise ValueError(
-                f"Granule {granule['meta']['concept-id']} has no data links."
+                f"Granule {granule['meta']['concept-id']} has no data links.",
             )
 
 
@@ -112,7 +112,7 @@ def build_obstore_registry(
         from virtualizarr.registry import ObjectStoreRegistry
     except ImportError:
         raise ImportError(
-            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`",
         ) from None
 
     validate_granules(granules)
@@ -123,20 +123,21 @@ def build_obstore_registry(
     if not edl_token or "access_token" not in edl_token:
         raise ValueError(
             "You must be logged in to use indirect access. "
-            "Call earthaccess.login() first."
+            "Call earthaccess.login() first.",
         )
     token: str = edl_token["access_token"]
 
     if access == "direct":
         credentials_endpoint, region = get_granule_credentials_endpoint_and_region(
-            granules[0]
+            granules[0],
         )
         bucket = parsed_url.netloc
         s3_store = S3Store(
             bucket=bucket,
             region=region,
             credential_provider=NasaEarthdataCredentialProvider(
-                credentials_endpoint, auth=token
+                credentials_endpoint,
+                auth=token,
             ),
             virtual_hosted_style_request=False,
             client_options={"allow_http": True},

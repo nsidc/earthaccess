@@ -31,7 +31,7 @@ class TestUatEnvironmentArgument:
             status=200,
         )
 
-        with open(Path(__file__).parent / "fixtures" / "atl03_umm.json", "r") as f:
+        with open(Path(__file__).parent / "fixtures" / "atl03_umm.json") as f:
             cmr_json_response = json.loads(f.read())
 
         responses.add(
