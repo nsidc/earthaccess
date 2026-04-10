@@ -45,10 +45,12 @@ def _patch_internals(mock_vds: MagicMock | None = None):
         mock_vds = MagicMock()
     return (
         patch(
-            "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock(),
+            "earthaccess.virtual.core.build_obstore_registry",
+            return_value=MagicMock(),
         ),
         patch(
-            "earthaccess.virtual.core._open_virtual_mfdataset", return_value=mock_vds,
+            "earthaccess.virtual.core._open_virtual_mfdataset",
+            return_value=mock_vds,
         ),
     )
 
@@ -62,7 +64,7 @@ def test_virtualize_empty_granules_raises() -> None:
     """virtualize() raises ValueError when granules list is empty."""
     from earthaccess.virtual.core import virtualize
 
-    with pytest.raises(ValueError, match="[Nn]o granules"):
+    with pytest.raises(ValueError, match=r"[Nn]o granules"):
         virtualize([])
 
 
@@ -71,7 +73,8 @@ def test_virtualize_multi_granule_no_concat_dim_raises() -> None:
     from earthaccess.virtual.core import virtualize
 
     with patch(
-        "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock(),
+        "earthaccess.virtual.core.build_obstore_registry",
+        return_value=MagicMock(),
     ):
         with pytest.raises(ValueError, match="concat_dim"):
             virtualize(_make_granules(2))
@@ -116,7 +119,9 @@ def test_virtualize_load_true_delegates_to_kerchunk(tmp_path) -> None:
             return_value=expected_ds,
         ) as mock_load:
             result = virtualize(
-                _make_granules(1), load=True, reference_dir=str(tmp_path),
+                _make_granules(1),
+                load=True,
+                reference_dir=str(tmp_path),
             )
 
     mock_load.assert_called_once()
@@ -142,10 +147,12 @@ def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
         return mock_vds_hdf
 
     with patch(
-        "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock(),
+        "earthaccess.virtual.core.build_obstore_registry",
+        return_value=MagicMock(),
     ):
         with patch(
-            "earthaccess.virtual.core._open_virtual_mfdataset", side_effect=side_effect,
+            "earthaccess.virtual.core._open_virtual_mfdataset",
+            side_effect=side_effect,
         ):
             with pytest.warns(UserWarning, match="HDFParser"):
                 result = virtualize(_make_granules(1), parser="DMRPPParser")
@@ -199,7 +206,9 @@ def test_get_urls_dmrpp_appends_dmrpp_suffix() -> None:
     granule = cast("DataGranule", MagicMock())
     granule.data_links.return_value = ["s3://bucket/file.nc"]  # type: ignore[attr-defined]
     urls = get_urls_for_parser(
-        [granule], resolve_parser("DMRPPParser"), access="direct",
+        [granule],
+        resolve_parser("DMRPPParser"),
+        access="direct",
     )
     assert urls == ["s3://bucket/file.nc.dmrpp"]
 

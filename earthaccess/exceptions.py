@@ -10,7 +10,6 @@ class LoginStrategyUnavailable(Exception):
     """
 
 
-
 class LoginAttemptFailure(Exception):
     """The login attempt failed.
 
@@ -24,14 +23,12 @@ class LoginAttemptFailure(Exception):
     """
 
 
-
 class DownloadFailure(Exception):
     """The download attempt failed.
 
     This should be raised when a download attempt fails, for example, because
     the file could not be retrieved or the download process was interrupted.
     """
-
 
 
 class ServiceOutage(Exception):
@@ -42,11 +39,9 @@ class ServiceOutage(Exception):
     """
 
 
-
 class EulaNotAccepted(DownloadFailure):
     """The user has not accepted the EULA.
 
     This should be raised when a user attempts to access data that requires
     EULA acceptance, but they have not accepted the EULA.
     """
-

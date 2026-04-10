@@ -118,7 +118,8 @@ DAAC_TEST_URLS = [
 
 
 def find_provider(
-    daac_short_name: str | None = None, cloud_hosted: bool | None = None,
+    daac_short_name: str | None = None,
+    cloud_hosted: bool | None = None,
 ) -> str | None:
     for daac in DAACS:
         if daac_short_name == daac["short-name"]:

@@ -616,7 +616,8 @@ class DataGranules(GranuleQuery):
 
         if "short_name" in self.params:
             provider = find_provider_by_shortname(
-                self.params["short_name"], cloud_hosted,
+                self.params["short_name"],
+                cloud_hosted,
             )
             if provider is not None:
                 self.params["provider"] = provider
@@ -889,7 +890,10 @@ class DataGranules(GranuleQuery):
             ValueError: A coordinate could not be converted to a float.
         """
         return super().bounding_box(
-            lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat,
+            lower_left_lon,
+            lower_left_lat,
+            upper_right_lon,
+            upper_right_lat,
         )
 
     @override

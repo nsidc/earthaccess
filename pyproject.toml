@@ -192,10 +192,10 @@ src = ["earthaccess", "stubs", "tests"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "D1", 
-  "D205", 
-  "D401", 
-  "D417", 
+  "D1",
+  "D205",
+  "D401",
+  "D417",
   "G004",
   "A001",
   "A002",

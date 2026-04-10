@@ -195,7 +195,8 @@ class Auth:
             return {}
 
         auth_url = endpoint or self._get_cloud_auth_url(
-            daac_shortname=daac, provider=provider,
+            daac_shortname=daac,
+            provider=provider,
         )
 
         if not auth_url.startswith("https://"):
@@ -376,13 +377,13 @@ class Auth:
         return True
 
     def _get_cloud_auth_url(
-        self, daac_shortname: str | None = "", provider: str | None = "",
+        self,
+        daac_shortname: str | None = "",
+        provider: str | None = "",
     ) -> str:
         for daac in DAACS:
-            if (
-                daac_shortname == daac["short-name"]
-                or (provider in daac["cloud-providers"]
-                and len(daac["s3-credentials"]) > 0)
+            if daac_shortname == daac["short-name"] or (
+                provider in daac["cloud-providers"] and len(daac["s3-credentials"]) > 0
             ):
                 return str(daac["s3-credentials"])
         return ""

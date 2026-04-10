@@ -307,11 +307,17 @@ class DataCollection(CustomDict):
             for service in services
         )
 
-        return {service: query.get_all() for service, query in zip(services, queries, strict=False)}
+        return {
+            service: query.get_all()
+            for service, query in zip(services, queries, strict=False)
+        }
 
     def __repr__(self) -> str:
         return json.dumps(
-            self.render_dict, sort_keys=False, indent=2, separators=(",", ": "),
+            self.render_dict,
+            sort_keys=False,
+            indent=2,
+            separators=(",", ": "),
         )
 
 
@@ -433,7 +439,9 @@ class DataGranule(CustomDict):
         return s3_links
 
     def data_links(
-        self, access: str | None = None, in_region: bool = False,
+        self,
+        access: str | None = None,
+        in_region: bool = False,
     ) -> list[str]:
         """Placeholder.
 
@@ -538,7 +546,8 @@ class DataGranule(CustomDict):
                             ]
                             # In UMM-G, ExclusiveZone is optional.
                             for boundary in poly.get("ExclusiveZone", {}).get(
-                                "Boundaries", [],
+                                "Boundaries",
+                                [],
                             )
                         ),
                     ]

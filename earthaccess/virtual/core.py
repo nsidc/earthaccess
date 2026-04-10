@@ -166,7 +166,8 @@ def virtualize(
             stacklevel=2,
         )
         resolved_parser = resolve_parser(
-            "HDFParser", group=group if group != "/" else None,
+            "HDFParser",
+            group=group if group != "/" else None,
         )
         registry = build_obstore_registry(granules, access=access)
         vds = _open_virtual_mfdataset(

@@ -136,7 +136,8 @@ def build_obstore_registry(
             bucket=bucket,
             region=region,
             credential_provider=NasaEarthdataCredentialProvider(
-                credentials_endpoint, auth=token,
+                credentials_endpoint,
+                auth=token,
             ),
             virtual_hosted_style_request=False,
             client_options={"allow_http": True},

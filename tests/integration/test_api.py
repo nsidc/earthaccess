@@ -218,7 +218,10 @@ def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], boo
     first_mtimes = [f.stat().st_mtime for f in files]
     second_files = earthaccess.download(results, str(tmp_path), force=force)
     second_mtimes = [f.stat().st_mtime for f in second_files]
-    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes, strict=False))
+    assert all(
+        cmp(*mtime_pair)
+        for mtime_pair in zip(first_mtimes, second_mtimes, strict=False)
+    )
 
 
 def fail_to_download_file(*args, **kwargs):

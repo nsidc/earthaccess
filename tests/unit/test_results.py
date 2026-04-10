@@ -161,7 +161,8 @@ class TestResults(VCRTestCase):
         to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(
-            short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000,
+            short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04",
+            count=2000,
         )
 
         # Assert that we performed a hits query and one search results query
@@ -175,13 +176,15 @@ class TestResults(VCRTestCase):
         to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(
-            short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000,
+            short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2",
+            count=3000,
         )
 
         # Assert that we performed a hits query and two search results queries
         self.assertEqual(len(self.cassette), 3)
         self.assertEqual(
-            len(granules), int(self.cassette.responses[0]["headers"]["CMR-Hits"][0]),
+            len(granules),
+            int(self.cassette.responses[0]["headers"]["CMR-Hits"][0]),
         )
         self.assertEqual(
             len(granules),

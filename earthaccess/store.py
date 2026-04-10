@@ -59,7 +59,9 @@ class EarthAccessFile:
     """Handle for a file-like object pointing to an on-prem or Earthdata Cloud granule."""
 
     def __init__(
-        self, f: fsspec.spec.AbstractBufferedFile, granule: DataGranule,
+        self,
+        f: fsspec.spec.AbstractBufferedFile,
+        granule: DataGranule,
     ) -> None:
         """EarthAccessFile connects an Earthdata search result with an open file-like object.
 
@@ -147,12 +149,17 @@ def _open_files(
 
     # this {#n_jobs} is for the unittests as this method is not public and pqdm will have values at this point
     return pqdm(
-        url_mapping.items(), multi_thread_open, **(pqdm_kwargs or {"n_jobs": 8}),
+        url_mapping.items(),
+        multi_thread_open,
+        **(pqdm_kwargs or {"n_jobs": 8}),
     )
 
 
 def make_instance(
-    cls: Any, granule: DataGranule, auth: Auth, data: Any,
+    cls: Any,
+    granule: DataGranule,
+    auth: Auth,
+    data: Any,
 ) -> EarthAccessFile:
     # Attempt to re-authenticate
     if not earthaccess.__auth__.authenticated:
@@ -171,7 +178,8 @@ def make_instance(
 
 
 def _get_url_granule_mapping(
-    granules: list[DataGranule], access: str,
+    granules: list[DataGranule],
+    access: str,
 ) -> Mapping[str, DataGranule]:
     """Construct a mapping between file urls and granules."""
     url_mapping = {}
@@ -231,7 +239,8 @@ class Store:
         if auth.authenticated is True:
             self.auth = auth
             self._s3_credentials: dict[
-                tuple, tuple[datetime.datetime, dict[str, str]],
+                tuple,
+                tuple[datetime.datetime, dict[str, str]],
             ] = {}
             oauth_profile = f"https://{auth.system.edl_hostname}/profile"
             # sets the initial URS cookie
@@ -310,7 +319,10 @@ class Store:
         if resp.status_code in [400, 401, 403]:
             new_session = requests.Session()
             resp_req = new_session.request(
-                method, url, allow_redirects=True, cookies=self._requests_cookies,
+                method,
+                url,
+                allow_redirects=True,
+                cookies=self._requests_cookies,
             )
             if resp_req.status_code in [400, 401, 403]:
                 resp.raise_for_status()
@@ -855,7 +867,8 @@ class Store:
         )
 
     def _clone_session_in_local_thread(
-        self, original_session: requests.Session,
+        self,
+        original_session: requests.Session,
     ) -> None:
         """Clone the original session and store it in the local thread context.
 
