@@ -1,7 +1,6 @@
 import logging
 import random
 from pathlib import Path
-from typing import Union
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,7 @@ def top_collections_for_provider(provider: str, *, n: int) -> list[str]:
 def get_sample_granules(
     granules: list,
     sample_size: int,
-    max_granule_size: Union[int, float],
+    max_granule_size: float,
     round_ndigits: int | None = None,
 ):
     """Return a list of randomly-sampled granules and their size in MB.
@@ -49,20 +48,19 @@ def get_sample_granules(
         if g.size() > max_granule_size:
             logger.debug(
                 f"Granule {g['meta']['concept-id']} exceeded max size: {g.size()}."
-                "Trying another random sample."
+                "Trying another random sample.",
             )
             tries += 1
             continue
-        else:
-            logger.debug(
-                f"Adding granule to random sample: {g['meta']['concept-id']} size: {g.size()}"
-            )
+        logger.debug(
+            f"Adding granule to random sample: {g['meta']['concept-id']} size: {g.size()}",
+        )
 
-            sample.append(g)
-            granules_set.remove(g)
+        sample.append(g)
+        granules_set.remove(g)
 
-            total_size += g.size()
-            if len(sample) >= sample_size:
-                break
+        total_size += g.size()
+        if len(sample) >= sample_size:
+            break
 
     return sample, round(total_size, round_ndigits)

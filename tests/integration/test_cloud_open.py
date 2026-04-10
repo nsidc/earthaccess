@@ -88,12 +88,12 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         )
         if len(granules_to_open) == 0:
             logger.debug(
-                f"Skipping {concept_id}, granule size exceeds configured max size"
+                f"Skipping {concept_id}, granule size exceeds configured max size",
             )
             continue
         logger.info(
             f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}"
+            f"download size(MB): {total_size_cmr}",
         )
 
         store = Store(Auth().login(strategy="environment"))

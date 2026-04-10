@@ -63,7 +63,7 @@ class TestEula(unittest.TestCase):
         )
         store = Store(self.auth)
         with self.assertRaisesRegex(
-            EulaNotAccepted, f"Eula Acceptance Failure for {mocked_url}"
+            EulaNotAccepted, f"Eula Acceptance Failure for {mocked_url}",
         ):
             store.get([mocked_url], "/tmp")
 
@@ -85,7 +85,7 @@ class TestEula(unittest.TestCase):
         )
         store = Store(self.auth)
         with self.assertRaisesRegex(
-            DownloadFailure, f"Download failed for {mocked_url}. Status code: 401"
+            DownloadFailure, f"Download failed for {mocked_url}. Status code: 401",
         ):
             store.get([mocked_url], "/tmp")
 
@@ -104,7 +104,6 @@ class TestEula(unittest.TestCase):
         assert isinstance(store.auth, Auth)
         https_fs = store.get_fsspec_session()
         assert type(https_fs) is type(fsspec.filesystem("https"))
-        return None
 
 
 class TestStoreSessions(unittest.TestCase):
@@ -145,7 +144,6 @@ class TestStoreSessions(unittest.TestCase):
         self.assertTrue(isinstance(store.auth, Auth))
         https_fs = store.get_fsspec_session()
         self.assertEqual(type(https_fs), type(fsspec.filesystem("https")))
-        return None
 
     @responses.activate
     def test_store_can_create_s3_fsspec_session(self):
@@ -229,7 +227,6 @@ class TestStoreSessions(unittest.TestCase):
         with pytest.raises(ValueError, match="parameters must be specified"):
             store.get_s3_filesystem()
 
-        return None
 
     @responses.activate
     def test_session_reuses_token_download(self):
@@ -248,7 +245,7 @@ class TestStoreSessions(unittest.TestCase):
                 urls = [f"https://example.com/file{i}" for i in range(1, n_files + 1)]
                 for i, url in enumerate(urls):
                     responses.add(
-                        responses.GET, url, body=f"Content of file {i + 1}", status=200
+                        responses.GET, url, body=f"Content of file {i + 1}", status=200,
                     )
 
                 edl_hostname = "urs.earthdata.nasa.gov"
@@ -296,7 +293,7 @@ class TestStoreSessions(unittest.TestCase):
                         return mock_directory / f"{url.split('/')[-1]}"
 
                     with patch.object(
-                        store, "_download_file", side_effect=mock_download_file
+                        store, "_download_file", side_effect=mock_download_file,
                     ):
                         # Test multi-threaded download
                         pqdm(urls, store._download_file, n_jobs=n_threads)  # type: ignore
@@ -342,7 +339,7 @@ def test_earthaccess_file_getattr():
     ],
 )
 def test_open_files_parametrized(
-    file_size, open_kwargs, expected_cache_type, expected_block_size
+    file_size, open_kwargs, expected_cache_type, expected_block_size,
 ):
     fs = MagicMock()
     fs.info.return_value = {"size": file_size}

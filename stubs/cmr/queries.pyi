@@ -1,20 +1,21 @@
 import sys
 from datetime import date, datetime
-from typing import Any, Optional, SupportsFloat, Union
+from typing import Any, SupportsFloat
 
 if sys.version_info < (3, 9):
-    from typing import List, MutableMapping, Sequence, Tuple
+    from collections.abc import MutableMapping, Sequence
+    from typing import List, Tuple
 else:
     from builtins import list as List, tuple as Tuple
     from collections.abc import MutableMapping, Sequence
 
 if sys.version_info < (3, 10):
-    from typing_extensions import TypeAlias
+    from typing import TypeAlias
 else:
     from typing import TypeAlias
 
 if sys.version_info < (3, 11):
-    from typing_extensions import Self
+    from typing import Self
 else:
     from typing import Self
 
@@ -22,7 +23,7 @@ CMR_OPS: str
 CMR_UAT: str
 CMR_SIT: str
 
-FloatLike: TypeAlias = Union[str, SupportsFloat]
+FloatLike: TypeAlias = str | SupportsFloat
 PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
 
 class Query:
@@ -48,8 +49,8 @@ class GranuleCollectionBaseQuery(Query):
     def online_only(self, online_only: bool = True) -> Self: ...
     def temporal(
         self,
-        date_from: Optional[Union[str, date, datetime]],
-        date_to: Optional[Union[str, date, datetime]],
+        date_from: str | date | datetime | None,
+        date_to: str | date | datetime | None,
         exclude_boundary: bool = False,
     ) -> Self: ...
     def short_name(self, short_name: str) -> Self: ...
@@ -73,13 +74,13 @@ class GranuleQuery(GranuleCollectionBaseQuery):
     def orbit_number(
         self,
         orbit1: FloatLike,
-        orbit2: Optional[FloatLike] = ...,
+        orbit2: FloatLike | None = ...,
     ) -> Self: ...
     def day_night_flag(self, day_night_flag: str) -> Self: ...
     def cloud_cover(
         self,
-        min_cover: Optional[FloatLike] = ...,
-        max_cover: Optional[FloatLike] = ...,
+        min_cover: FloatLike | None = ...,
+        max_cover: FloatLike | None = ...,
     ) -> Self: ...
     def instrument(self, instrument: str) -> Self: ...
     def platform(self, platform: str) -> Self: ...

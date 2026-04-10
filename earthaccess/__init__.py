@@ -72,7 +72,7 @@ except ImportError:
     __version__ = get_version("earthaccess")
 
 _auth = Auth()
-_store: Optional[Store] = None
+_store: Store | None = None
 _lock = threading.Lock()
 
 

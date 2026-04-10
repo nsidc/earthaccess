@@ -9,7 +9,6 @@ class LoginStrategyUnavailable(Exception):
     a `LoginAttemptFailure` should be thrown instead.
     """
 
-    pass
 
 
 class LoginAttemptFailure(Exception):
@@ -24,7 +23,6 @@ class LoginAttemptFailure(Exception):
     thrown instead.
     """
 
-    pass
 
 
 class DownloadFailure(Exception):
@@ -34,7 +32,6 @@ class DownloadFailure(Exception):
     the file could not be retrieved or the download process was interrupted.
     """
 
-    pass
 
 
 class ServiceOutage(Exception):
@@ -44,7 +41,6 @@ class ServiceOutage(Exception):
     outages that prevent normal operations.
     """
 
-    pass
 
 
 class EulaNotAccepted(DownloadFailure):
@@ -54,4 +50,3 @@ class EulaNotAccepted(DownloadFailure):
     EULA acceptance, but they have not accepted the EULA.
     """
 
-    pass

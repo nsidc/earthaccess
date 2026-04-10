@@ -38,7 +38,7 @@ granules_valid_params = [
 ]
 
 services = ("Earthdata Login", "Common Metadata Repository")
-expected = {service: "Unknown" for service in services}
+expected = dict.fromkeys(services, "Unknown")
 
 nasa_statuses = {
     PROD: {
@@ -104,7 +104,7 @@ def test_earthdata_status_service_outage():
             "statuses": [
                 {"name": "Earthdata Login", "status": "Degraded"},
                 {"name": "Common Metadata Repository", "status": "OK"},
-            ]
+            ],
         },
         status=200,
     )
@@ -218,11 +218,11 @@ def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], boo
     first_mtimes = [f.stat().st_mtime for f in files]
     second_files = earthaccess.download(results, str(tmp_path), force=force)
     second_mtimes = [f.stat().st_mtime for f in second_files]
-    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes))
+    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes, strict=False))
 
 
 def fail_to_download_file(*args, **kwargs):
-    raise IOError("Download failed")
+    raise OSError("Download failed")
 
 
 def test_download_immediate_failure(tmp_path: Path):

@@ -22,7 +22,7 @@ from earthaccess.virtual._parser import SUPPORTED_PARSERS
 from earthaccess.virtual.core import virtualize
 
 __all__ = [
-    "virtualize",
-    "get_granule_credentials_endpoint_and_region",
     "SUPPORTED_PARSERS",
+    "get_granule_credentials_endpoint_and_region",
+    "virtualize",
 ]

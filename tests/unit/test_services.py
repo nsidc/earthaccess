@@ -34,10 +34,10 @@ class TestServices(VCRTestCase):
 
         self.assertTrue(actual[0]["umm"]["Type"] == "OPeNDAP")
         self.assertTrue(
-            actual[0]["umm"]["ServiceOrganizations"][0]["ShortName"] == "UCAR/UNIDATA"
+            actual[0]["umm"]["ServiceOrganizations"][0]["ShortName"] == "UCAR/UNIDATA",
         )
         self.assertTrue(
-            actual[0]["umm"]["Description"] == "Earthdata OPEnDAP in the cloud"
+            actual[0]["umm"]["Description"] == "Earthdata OPEnDAP in the cloud",
         )
         self.assertTrue(actual[0]["umm"]["LongName"] == "PO.DAAC OPeNDADP In the Cloud")
 
@@ -54,15 +54,15 @@ class TestServices(VCRTestCase):
         results = datasets[0].services()
 
         self.assertTrue(
-            results["S2004184019-POCLOUD"][0]["meta"]["provider-id"] == "POCLOUD"
+            results["S2004184019-POCLOUD"][0]["meta"]["provider-id"] == "POCLOUD",
         )
         self.assertTrue(
             results["S2004184019-POCLOUD"][0]["umm"]["URL"]["URLValue"]
-            == "https://opendap.earthdata.nasa.gov/"
+            == "https://opendap.earthdata.nasa.gov/",
         )
         self.assertTrue(
             results["S2606110201-XYZ_PROV"][0]["umm"]["Name"]
-            == "Harmony GDAL Adapter (HGA)"
+            == "Harmony GDAL Adapter (HGA)",
         )
         self.assertTrue(results["S2164732315-XYZ_PROV"][0]["umm"]["Type"] == "Harmony")
 
