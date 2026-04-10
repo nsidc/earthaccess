@@ -28,7 +28,7 @@ PointLike: TypeAlias = tuple[FloatLike, FloatLike]
 
 
 class DataCollections(CollectionQuery):
-    """Placeholder.
+    """Query CMR for collection metadata.
 
     ???+ Info
         The DataCollection class queries against
