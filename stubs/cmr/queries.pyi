@@ -1,23 +1,10 @@
 import sys
 from datetime import date, datetime
-from typing import Any, SupportsFloat
+from typing import Any, SupportsFloat, TypeAlias, Self
 
-if sys.version_info < (3, 9):
-    from collections.abc import MutableMapping, Sequence
-    from typing import List, Tuple
-else:
-    from builtins import list as List, tuple as Tuple
-    from collections.abc import MutableMapping, Sequence
 
-if sys.version_info < (3, 10):
-    from typing import TypeAlias
-else:
-    from typing import TypeAlias
-
-if sys.version_info < (3, 11):
-    from typing import Self
-else:
-    from typing import Self
+from builtins import list as List, tuple as Tuple
+from collections.abc import MutableMapping, Sequence
 
 CMR_OPS: str
 CMR_UAT: str
