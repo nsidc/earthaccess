@@ -291,7 +291,7 @@ ignore = [
   "TD004",
   "TRY002",
   "TRY003",
-  "TRY400"
+  "TRY400",
 ]
 
 [tool.ruff.lint.isort]
