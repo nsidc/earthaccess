@@ -928,7 +928,7 @@ class Store:
 
                 with (
                     _sibling_tempfile(path) as temp_path,
-                    open(temp_path, "wb") as f,
+                    temp_path.open("wb") as f,
                 ):
                     # Cap memory usage for large files at 1MB per write to disk per thread
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
