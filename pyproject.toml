@@ -291,17 +291,7 @@ ignore = [
   "TD004",
   "TRY002",
   "TRY003",
-  "TRY400",
-  "UP004",
-  "UP006",
-  "UP007",
-  "UP015",
-  "UP024",
-  "UP032",
-  "UP034",
-  "UP035",
-  "UP036",
-  "UP045",
+  "TRY400"
 ]
 
 [tool.ruff.lint.isort]
