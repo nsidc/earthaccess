@@ -139,7 +139,7 @@ def test_multi_file_granule(tmp_path, force: bool, cmp: Callable[[float, float],
     assert {Path(f).name for f in urls} == {Path(f).name for f in files}
 
     # Make sure no temp files are left behind
-    assert len(os.listdir(tmp_path)) == len(files)
+    assert len(list(tmp_path.iterdir())) == len(files)
 
     # Verify force behavior by calling download again and checking mtimes
     first_mtimes = [f.stat().st_mtime for f in files]
