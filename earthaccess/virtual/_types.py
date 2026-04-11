@@ -7,16 +7,16 @@ from typing import Any, Literal, Union
 # parser instance.  The strings are the exact class names exported from
 # ``virtualizarr.parsers`` so that callers can pass them directly without
 # importing VirtualiZarr themselves.
-ParserType = Union[
+ParserType = (
     Literal[
         "DMRPPParser",
         "HDFParser",
         "NetCDF3Parser",
         "KerchunkJSONParser",
         "KerchunkParquetParser",
-    ],
-    Any,
-]
+    ]
+    | Any
+)
 
 AccessType = Literal["direct", "indirect"]
 ParallelType = Literal["dask", "lithops", False]
@@ -33,10 +33,10 @@ CompatType = Literal[
 ]
 
 # Mirrors xarray.core.types.CombineAttrsOptions
-CombineAttrsType = Union[
-    Literal["drop", "identical", "no_conflicts", "drop_conflicts", "override"],
-    Callable[..., Any],
-]
+CombineAttrsType = (
+    Literal["drop", "identical", "no_conflicts", "drop_conflicts", "override"]
+    | Callable[..., Any]
+)
 
 # Mirrors the data_vars parameter of xarray.combine_nested / open_mfdataset
-DataVarsType = Union[Literal["all", "minimal", "different"], list[str]]
+DataVarsType = Literal["all", "minimal", "different"] | list[str]
