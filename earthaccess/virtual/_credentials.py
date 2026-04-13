@@ -11,15 +11,18 @@ Provides two public helpers:
 from __future__ import annotations
 
 import logging
-from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 import earthaccess
-from earthaccess.virtual._types import AccessType
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from virtualizarr.registry import ObjectStoreRegistry
+
+    from earthaccess.virtual._types import AccessType
+
 
 logger = logging.getLogger(__name__)
 

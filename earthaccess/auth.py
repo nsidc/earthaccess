@@ -9,8 +9,12 @@ import shutil
 from collections.abc import Mapping
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+    from http.cookiejar import CookieJar
 
 import requests
 import requests.cookies
@@ -54,7 +58,6 @@ class BasicAuthResponseHook:
         self.auth = auth
 
     def __call__(self, r: requests.Response, **kwargs: Any) -> requests.Response:
-        from http.cookiejar import CookieJar
 
         # If the response's URL is not for the EDL system we're authenticating
         # against, then simply return the response unchanged.  Otherwise, we'll
