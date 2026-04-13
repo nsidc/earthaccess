@@ -1,10 +1,34 @@
+~~
+
+NOTES
+* General workflow:
+* - New issue entered
+  - Triager reviews issue. All new issues begin without a status. Ultimate goal is to decide whether to close as unplanned, or move to the backlog.
+      - Add labels
+      - Add priority
+      - Add to Backlog status. Priority is then reflected in the project view
+
+## Issue Labels
+This is a guide walking through the various labels...
+
+## Issue Priority
+
+## 
+
+~~
+
+
+
 # Issue Triaging and Prioritization Guide
 
 With constant influx of new issues, it's essential to prioritize and categorize them efficiently to ensure that the most important problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized, prioritized, and up-to-date issue tracker via the `earthaccess` [GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1). 
 
 !!! tip
 
-    We hope that this guide will help empower anyone to contribute to issue triaging, and ultimately address a common question for new and veteran contributors alike: "I'm interested in working on important issues that will fix or improve `earthaccess`. Where do I begin?"
+    We hope that this guide will help empower anyone to contribute to issue triaging, and ultimately address a common question for new or experienced contributors: "I'm interested in working on the highest priority issues that will solve important problems facing the `earthaccess` community. Where do I begin?"
+
+
+
 
 ## Labeling Issues
 
