@@ -9,25 +9,28 @@ from __future__ import annotations
 import logging
 import tempfile
 import warnings
-from collections.abc import Callable
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import earthaccess
 from earthaccess.virtual._credentials import build_obstore_registry
 from earthaccess.virtual._parser import get_urls_for_parser, resolve_parser
-from earthaccess.virtual._types import (
-    AccessType,
-    CombineAttrsType,
-    CompatType,
-    DataVarsType,
-    ParallelType,
-    ParserType,
-    ReferenceFormatType,
-)
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     import xarray as xr
+
+    from earthaccess.virtual._types import (
+        AccessType,
+        CombineAttrsType,
+        CompatType,
+        DataVarsType,
+        ParallelType,
+        ParserType,
+        ReferenceFormatType,
+    )
+
 
 logger = logging.getLogger(__name__)
 

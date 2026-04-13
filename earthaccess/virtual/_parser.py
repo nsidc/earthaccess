@@ -13,6 +13,8 @@ from earthaccess.virtual._types import AccessType, ParserType
 
 if TYPE_CHECKING:
     import earthaccess
+    from earthaccess.virtual._types import AccessType, ParserType
+
 
 logger = logging.getLogger(__name__)
 
