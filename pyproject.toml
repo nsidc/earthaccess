@@ -39,7 +39,7 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
 ]
 
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 
 dependencies = [
   "python-cmr >=0.10.0",
