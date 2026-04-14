@@ -16,7 +16,7 @@ from earthaccess.exceptions import LoginStrategyUnavailable, ServiceOutage
 from earthaccess.services import DataServices
 
 from .auth import Auth
-from .results import DataCollection, DataGranule
+from .results import DataCollection, DataGranule, Results
 from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
 from .store import Store
 from .system import PROD, System
@@ -88,7 +88,7 @@ def _normalize_location(location: str | None) -> str | None:
     return location
 
 
-def search_datasets(count: int = -1, **kwargs: Any) -> list[DataCollection]:
+def search_datasets(count: int = -1, **kwargs: Any) -> Results[DataCollection]:
     """Search datasets (collections) using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -140,7 +140,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> list[DataCollection]:
             * **debug**: (bool) If True prints CMR request.  Default: True
 
     Returns:
-        A list of DataCollection results that can be used to get information about a
+        A Results object of DataCollection results that can be used to get information about a
             dataset, e.g. concept_id, doi, etc.
 
     Raises:
@@ -182,11 +182,12 @@ def search_datasets(count: int = -1, **kwargs: Any) -> list[DataCollection]:
     datasets_found = query.hits()
     logger.info("Datasets found: %s", datasets_found)
     if count > 0:
-        return query.get(count)
-    return query.get_all()
+        return Results(query.get(count))
+
+    return Results(query.get_all())
 
 
-def search_data(count: int = -1, **kwargs: Any) -> list[DataGranule]:
+def search_data(count: int = -1, **kwargs: Any) -> Results[DataGranule]:
     """Search for dataset files (granules) using NASA's CMR.
 
     [https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html](https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html)
@@ -247,8 +248,8 @@ def search_data(count: int = -1, **kwargs: Any) -> list[DataGranule]:
 
 
     Returns:
-        a list of DataGranules that can be used to access the granule files by using
-            `download()` or `open()`.
+        a Results object of DataGranules that can be used to access the granule
+            files by using `download()` or `open()`.
 
     Raises:
         RuntimeError: The CMR query failed.
@@ -276,8 +277,8 @@ def search_data(count: int = -1, **kwargs: Any) -> list[DataGranule]:
     granules_found = query.hits()
     logger.info("Granules found: %s", granules_found)
     if count > 0:
-        return query.get(count)
-    return query.get_all()
+        return Results(query.get(count))
+    return Results(query.get_all())
 
 
 def search_services(count: int = -1, **kwargs: Any) -> list[Any]:

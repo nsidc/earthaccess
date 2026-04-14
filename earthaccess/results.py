@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 import json
 import uuid
 import warnings
 from functools import cache
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from geopandas import GeoDataFrame
 
 import requests
 
@@ -603,3 +608,15 @@ class DataGranule(CustomDict):
 
         msg = f"Invalid Geometry in granule's horizontal spatial extent: {geometry}"
         raise ValueError(msg)
+
+
+class Results[T: (DataCollection, DataGranule)](list[T]):
+    def to_gdf(self) -> GeoDataFrame:
+        if self and isinstance(self[0], DataCollection):
+            raise TypeError("Only supports DataGranule results")
+
+        try:
+            from geopandas import GeoDataFrame
+        except ImportError as e:
+            raise ImportError("GeoPandas must be installed") from e
+        return GeoDataFrame(geometry=self, crs="EPSG:4326")
