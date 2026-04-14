@@ -616,7 +616,12 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
             raise TypeError("Only supports DataGranule results")
 
         try:
+            import pandas as pd
             from geopandas import GeoDataFrame
         except ImportError as e:
             raise ImportError("GeoPandas must be installed") from e
-        return GeoDataFrame(geometry=self, crs="EPSG:4326")
+        return GeoDataFrame(
+            pd.json_normalize(self),
+            geometry=self,
+            crs="EPSG:4326",
+        )
