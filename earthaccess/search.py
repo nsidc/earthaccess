@@ -104,12 +104,13 @@ class DataCollections(CollectionQuery):
             [
                 DataCollection(collection, self._fields)
                 for collection in get_results(self.session, self, limit)
-            ]
+            ],
+            query=self,
         )
 
     @override
     def get_all(self) -> Results[DataCollection]:
-        return Results(super().get_all())
+        return Results(super().get_all(), query=self)
 
     @override
     def concept_id(self, IDs: Sequence[str]) -> Self:
@@ -491,11 +492,12 @@ class DataGranules(GranuleQuery):
 
         return Results(
             [DataGranule(granule, cloud_hosted=cloud) for granule in response],
+            query=self,
         )
 
     @override
     def get_all(self) -> Results[DataGranule]:
-        return Results(super().get_all())
+        return Results(super().get_all(), query=self)
 
     @override
     def parameters(self, **kwargs: Any) -> Self:

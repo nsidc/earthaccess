@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from geopandas import GeoDataFrame
 
+    from .search import DataCollections, DataGranules
+
 import requests
 
 import earthaccess
@@ -611,6 +613,25 @@ class DataGranule(CustomDict):
 
 
 class Results[T: (DataCollection, DataGranule)](list[T]):
+    def __init__(
+        self,
+        items: list[T],
+        *,
+        # TODO: How should we constrain this so that we can't
+        #       mix-and-match item types and query types?
+        query: DataCollections | DataGranules,
+    ) -> None:
+        super().__init__(items)
+        self._query = query
+
+    @property
+    def query_parameters(self):
+        return self._query.params
+
+    @property
+    def query_options(self):
+        return self._query.options
+
     def to_gdf(self) -> GeoDataFrame:
         if self and isinstance(self[0], DataCollection):
             raise TypeError("Only supports DataGranule results")
