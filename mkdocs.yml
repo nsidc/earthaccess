@@ -1,13 +1,14 @@
 site_name: earthaccess
 site_description: Client library for NASA Earthdata APIs
-site_url: https://github.com/nsidc/earthaccess
+site_url: https://github.com/earthaccess-dev/earthaccess
 
 # Fail on broken links
-strict: false
+# Do not disable if the build fails! Fix the broken links :)
+strict: true
 
 theme:
   name: "material"
-  logo: earth.png
+  logo: logo.png
   favicon: earth.png
   palette:
     - scheme: default
@@ -23,16 +24,25 @@ theme:
     # Allow navigation sections to link to index/overview pages.
     # See: https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages
     - navigation.indexes
+    # Enable navigation breadcrumbs
+    - navigation.path
+    # Display top-level nav elements in the top bar
+    - navigation.tabs
+    # Add "Edit this page" button
+    - content.action.edit
+    # Add "View source" buton
+    - content.action.view
 
-repo_name: nsidc/earthaccess
-repo_url: https://github.com/nsidc/earthaccess
-edit_uri: ""
+repo_name: "earthaccess-dev/earthaccess"
+repo_url: "https://github.com/earthaccess-dev/earthaccess"
+edit_uri: "edit/main/docs/"
 
 extra_css:
   - css/styles.css
 
 plugins:
   - search
+  - awesome-nav
   - mermaid2
   - mkdocstrings:
       default_handler: python
@@ -49,79 +59,22 @@ plugins:
   - autorefs
   - redirects:
       redirect_maps:
-        "CODE_OF_CONDUCT.md": "contributing/code-of-conduct.md"
+        "CODE_OF_CONDUCT.md": "contributor/code-of-conduct.md"
+        "contributing/our-meet-ups.md": "calendar.md"
   - mkdocs-jupyter:
       execute: true
+      execute_ignore:
+        - "user/tutorials/SSL.ipynb"
+        - "user/tutorials/dmrpp-virtualizarr.ipynb"
+        - "user/tutorials/dask.ipynb"
+        - "user/howto/edl.ipynb"
+        - "user/howto/fsspec.ipynb"
       ignore:
-        - "tutorials/dask.ipynb"
         - "**/.ipynb_checkpoints/*"
-        - "user_guide/fsspec.ipynb"
-        - "tutorials/SSL.ipynb"
-        - "tutorials/dmrpp-virtualizarr.ipynb"
-        - "howto/edl.ipynb"
-
-nav:
-  - "What is earthaccess?": "index.md"
-  - "Quick start": "quick-start.md"
-  - "Work with us":
-      - "contributing/index.md" # << Link target of the parent node
-      - "Development Guide": "contributing/development.md"
-      - "Releasing Guide": "contributing/releasing.md"
-      - "Maintainers Guide": "contributing/maintainers-guide.md"
-      - "Triaging Guide": "contributing/triaging.md"
-      - "Code of Conduct": "contributing/code-of-conduct.md"
-      - "Contributing naming convention": "contributing/naming-convention.md"
-      - "Meet-ups": "contributing/our-meet-ups.md"
-      - "Topics":
-          - "Naming conventions": "contributing/naming-convention.md"
-          - "Integration tests": "contributing/integration-tests.md"
-  - "Resources": "resources.md"
-  - USER GUIDE:
-      - "user_guide/index.md"
-      - "Authentication": "user_guide/authenticate.md"
-      - "Status": "user_guide/status.md"
-      - "Search": "user_guide/search.md"
-      - "Access": "user_guide/access.md"
-      - "Backwards Compatibility": "user_guide/backwards-compatibility.md"
-  - HOW-TO:
-      - "Authenticate with Earthdata Login": "howto/authenticate.md"
-      - "Search NASA datasets using filters": "howto/search-collections.md"
-      - "Search for data using filters": "howto/search-granules.md"
-      - "Determine if a dataset is available in the cloud": "howto/storage-location.md"
-      - "Access data": "howto/access-data.md"
-      - "Using authenticated sessions to access data": "howto/edl.ipynb"
-      - "Remote access and caching with earthaccess": "user_guide/fsspec.ipynb"
-      - "Download data from on-prem location": "howto/onprem.md"
-      - "Direct S3 access - Open/stream files in the cloud": "howto/cloud.md"
-      - "Search for services": "howto/search-services.md"
-  - TUTORIALS:
-      - "Accessing remote NASA data with fsspec": "tutorials/file-access.ipynb"
-      - "Search and access of restricted datasets": "tutorials/restricted-datasets.ipynb"
-      # - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb" TODO: make this faster
-      - "Accessing and visualizing EMIT data with a few lines of code": "tutorials/emit-earthaccess.ipynb"
-      - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
-  - USER REFERENCE:
-      - API:
-          - "Search and Access": "user-reference/api/api.md"
-      - Modules:
-          - Collections:
-              - "Collection Queries": "user-reference/collections/collections-query.md"
-              - "Collection Results": "user-reference/collections/collections.md"
-              - "Collection Services": "user-reference/collections/collections-services.md"
-          - Granules:
-              - "Granule Queries": "user-reference/granules/granules-query.md"
-              - "Granule Results": "user-reference/granules/granules.md"
-          - Store:
-              - "Store": "user-reference/store/store.md"
-          - Auth:
-              - "Auth": "user-reference/auth/auth.md"
-      - Glossary:
-          - "NASA Glossary": "user-reference/glossary/nasa-glossary.md"
-          - "Cloud Computing Terminology": "user-reference/glossary/cloud-glossary.md"
-  - "About Us": "about-us.md"
 
 markdown_extensions:
   - admonition
+  - attr_list
   - callouts
   - pymdownx.details
   - meta

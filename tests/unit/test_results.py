@@ -91,7 +91,7 @@ class TestResults(VCRTestCase):
                 "last_name",
                 "email_address",
                 "nams_auid",
-            ]
+            ],
         )
 
         myvcr.before_record_request = redact_login_request
@@ -102,7 +102,7 @@ class TestResults(VCRTestCase):
         """If we search for a collection that doesn't exist, we should get no results."""
         granules = earthaccess.search_data(
             # STAC collection name; correct short name is OPERA_L3_DSWX-HLS_V1
-            # Example discussed in: https://github.com/nsidc/earthaccess/pull/839
+            # Example discussed in: https://github.com/earthaccess-dev/earthaccess/pull/839
             short_name="OPERA_L3_DSWX-HLS_V1_1.0",
             bounding_box=(-95.19, 30.59, -94.99, 30.79),
             temporal=("2024-04-30", "2024-05-31"),
@@ -128,7 +128,7 @@ class TestResults(VCRTestCase):
         assert g.data_links(access="direct", in_region=False)[0].startswith("s3://")
         assert g.data_links(access="external", in_region=True)[0].startswith("https://")
         assert g.data_links(access="external", in_region=False)[0].startswith(
-            "https://"
+            "https://",
         )
 
     def test_get_more_than_2000(self):
@@ -161,7 +161,8 @@ class TestResults(VCRTestCase):
         to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(
-            short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04", count=2000
+            short_name="TELLUS_GRAC_L3_JPL_RL06_LND_v04",
+            count=2000,
         )
 
         # Assert that we performed a hits query and one search results query
@@ -175,13 +176,15 @@ class TestResults(VCRTestCase):
         to not fetch back more results than we ask for.
         """
         granules = earthaccess.search_data(
-            short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2", count=3000
+            short_name="CYGNSS_NOAA_L2_SWSP_25KM_V1.2",
+            count=3000,
         )
 
         # Assert that we performed a hits query and two search results queries
         self.assertEqual(len(self.cassette), 3)
         self.assertEqual(
-            len(granules), int(self.cassette.responses[0]["headers"]["CMR-Hits"][0])
+            len(granules),
+            int(self.cassette.responses[0]["headers"]["CMR-Hits"][0]),
         )
         self.assertEqual(
             len(granules),
@@ -230,7 +233,7 @@ class TestResults(VCRTestCase):
 
 def test_get_doi_returns_doi_when_present():
     collection = DataCollection(
-        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
+        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}},
     )
 
     assert collection.doi() == "doi:10.16904/envidat.lwf.34"
@@ -251,7 +254,7 @@ def test_get_doi_returns_empty_string_when_doi_key_missing():
 @responses.activate
 def test_get_citation_apa_format():
     collection = DataCollection(
-        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
+        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}},
     )
 
     responses.add(
@@ -272,7 +275,7 @@ def test_get_citation_apa_format():
 @responses.activate
 def test_get_citation_different_language():
     collection = DataCollection(
-        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}}
+        {"umm": {"DOI": {"DOI": "doi:10.16904/envidat.lwf.34"}}, "meta": {}},
     )
 
     responses.add(

@@ -1,19 +1,16 @@
 import datetime as dt
 import logging
+from collections.abc import Iterable, Sequence
 from inspect import getmembers, ismethod
+from typing import (
+    Any,
+    Self,
+    TypeAlias,
+)
 
 import requests
 from typing_extensions import (
-    Any,
-    Iterable,
-    List,
-    Optional,
-    Self,
-    Sequence,
     SupportsFloat,
-    Tuple,
-    TypeAlias,
-    Union,
     override,
 )
 
@@ -26,12 +23,12 @@ from .utils._search import get_results
 
 logger = logging.getLogger(__name__)
 
-FloatLike: TypeAlias = Union[str, SupportsFloat]
-PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
+FloatLike: TypeAlias = str | SupportsFloat
+PointLike: TypeAlias = tuple[FloatLike, FloatLike]
 
 
 class DataCollections(CollectionQuery):
-    """Placeholder.
+    """Query CMR for collection metadata.
 
     ???+ Info
         The DataCollection class queries against
@@ -39,10 +36,10 @@ class DataCollections(CollectionQuery):
         the response has to be in umm_json to use the result classes.
     """
 
-    _fields: Optional[List[str]] = None
+    _fields: list[str] | None = None
     _format = "umm_json"
 
-    def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Auth | None = None, *args: Any, **kwargs: Any) -> None:
         """Builds an instance of DataCollections to query the CMR.
 
         Parameters:
@@ -52,10 +49,9 @@ class DataCollections(CollectionQuery):
         super().__init__(*args, **kwargs)
 
         self.session = (
-            # To search, we need the new bearer tokens from NASA Earthdata
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth and auth.authenticated
-            else requests.session()
+            else requests.sessions.Session()
         )
 
         if auth:
@@ -88,7 +84,7 @@ class DataCollections(CollectionQuery):
         return int(response.headers["CMR-Hits"])
 
     @override
-    def get(self, limit: int = 2000) -> List[DataCollection]:
+    def get(self, limit: int = 2000) -> list[DataCollection]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -247,7 +243,7 @@ class DataCollections(CollectionQuery):
         for key, val in kwargs.items():
             # verify the key matches one of our methods
             if key not in methods:
-                raise ValueError("Unknown key {}".format(key))
+                raise ValueError(f"Unknown key {key}")
 
             # call the method
             if isinstance(val, tuple):
@@ -260,10 +256,12 @@ class DataCollections(CollectionQuery):
     def print_help(self, method: str = "fields") -> None:
         """Prints the help information for a given method."""
         print("Class components: \n")  # noqa: T201
-        print([method for method in dir(self) if method.startswith("_") is False])  # noqa: T201
+        print(  # noqa: T201
+            [method for method in dir(self) if method.startswith("_") is False],
+        )
         help(getattr(self, method))
 
-    def fields(self, fields: Optional[List[str]] = None) -> Self:
+    def fields(self, fields: list[str] | None = None) -> Self:
         """Masks the response by only showing the fields included in this list.
 
         Parameters:
@@ -386,8 +384,8 @@ class DataCollections(CollectionQuery):
     @override
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_from: str | dt.date | dt.datetime | None = None,
+        date_to: str | dt.date | dt.datetime | None = None,
         exclude_boundary: bool = False,
     ) -> Self:
         """Filter by an open or closed date range. Dates can be provided as date objects
@@ -425,14 +423,13 @@ class DataGranules(GranuleQuery):
 
     _format = "umm_json"
 
-    def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Auth | None = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
         self.session = (
-            # To search, we need the new bearer tokens from NASA Earthdata
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth and auth.authenticated
-            else requests.session()
+            else requests.sessions.Session()
         )
 
         if auth:
@@ -462,13 +459,12 @@ class DataGranules(GranuleQuery):
         except requests.exceptions.HTTPError as ex:
             if ex.response is not None:
                 raise RuntimeError(ex.response.text) from ex
-            else:
-                raise RuntimeError(str(ex)) from ex
+            raise RuntimeError(str(ex)) from ex
 
         return int(response.headers["CMR-Hits"])
 
     @override
-    def get(self, limit: int = 2000) -> List[DataGranule]:
+    def get(self, limit: int = 2000) -> list[DataGranule]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -522,7 +518,7 @@ class DataGranules(GranuleQuery):
         for key, val in kwargs.items():
             # verify the key matches one of our methods
             if key not in methods:
-                raise ValueError("Unknown key {}".format(key))
+                raise ValueError(f"Unknown key {key}")
 
             # call the method
             if isinstance(val, tuple):
@@ -583,7 +579,7 @@ class DataGranules(GranuleQuery):
     def orbit_number(
         self,
         orbit1: FloatLike,
-        orbit2: Optional[FloatLike] = None,
+        orbit2: FloatLike | None = None,
     ) -> Self:
         """Filter by the orbit number the granule was acquired during. Either a single
         orbit can be targeted or a range of orbits.
@@ -620,7 +616,8 @@ class DataGranules(GranuleQuery):
 
         if "short_name" in self.params:
             provider = find_provider_by_shortname(
-                self.params["short_name"], cloud_hosted
+                self.params["short_name"],
+                cloud_hosted,
             )
             if provider is not None:
                 self.params["provider"] = provider
@@ -645,7 +642,7 @@ class DataGranules(GranuleQuery):
         """
         if not isinstance(granule_name, Iterable):
             raise TypeError(
-                "granule_name must be of type string or Iterable of strings"
+                "granule_name must be of type string or Iterable of strings",
             )
         if not isinstance(granule_name, str):
             # Convert iterable to list of strings. Since str is also Iterable, make
@@ -724,8 +721,8 @@ class DataGranules(GranuleQuery):
     @override
     def cloud_cover(
         self,
-        min_cover: Optional[FloatLike] = 0,
-        max_cover: Optional[FloatLike] = 100,
+        min_cover: FloatLike | None = 0,
+        max_cover: FloatLike | None = 100,
     ) -> Self:
         """Filter by the percentage of cloud cover present in the granule.
 
@@ -793,8 +790,8 @@ class DataGranules(GranuleQuery):
     @override
     def temporal(
         self,
-        date_from: Optional[Union[str, dt.date, dt.datetime]] = None,
-        date_to: Optional[Union[str, dt.date, dt.datetime]] = None,
+        date_from: str | dt.date | dt.datetime | None = None,
+        date_to: str | dt.date | dt.datetime | None = None,
         exclude_boundary: bool = False,
     ) -> Self:
         """Filter by an open or closed date range. Dates can be provided as date objects
@@ -893,7 +890,10 @@ class DataGranules(GranuleQuery):
             ValueError: A coordinate could not be converted to a float.
         """
         return super().bounding_box(
-            lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat
+            lower_left_lon,
+            lower_left_lat,
+            upper_right_lon,
+            upper_right_lat,
         )
 
     @override
@@ -958,7 +958,7 @@ class DataGranules(GranuleQuery):
             # TODO consider removing this print statement since we don't print such
             # a message in other cases where no results are found.  Seems arbitrary.
             logger.info(
-                f"earthaccess couldn't find any associated collections with the DOI: {doi}"
+                f"earthaccess couldn't find any associated collections with the DOI: {doi}",
             )
 
         return self

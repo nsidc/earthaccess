@@ -1,5 +1,7 @@
 import logging
+import operator as op
 import os
+from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
 
@@ -15,7 +17,7 @@ logger = logging.getLogger(__name__)
 dataset_valid_params = [
     {"data_center": "NSIDC", "cloud_hosted": True},
     {"keyword": "aerosol", "cloud_hosted": False},
-    {"daac": "NSIDC", "keyword": "ocean"},
+    {"daac": "NSIDC", "keyword": "ocean", "cloud_hosted": True},
 ]
 
 granules_valid_params = [
@@ -36,7 +38,7 @@ granules_valid_params = [
 ]
 
 services = ("Earthdata Login", "Common Metadata Repository")
-expected = {service: "Unknown" for service in services}
+expected = dict.fromkeys(services, "Unknown")
 
 nasa_statuses = {
     PROD: {
@@ -102,7 +104,7 @@ def test_earthdata_status_service_outage():
             "statuses": [
                 {"name": "Earthdata Login", "status": "Degraded"},
                 {"name": "Common Metadata Repository", "status": "OK"},
-            ]
+            ],
         },
         status=200,
     )
@@ -189,8 +191,41 @@ def test_download(tmp_path, selection, use_url):
     assert all(Path(f).exists() for f in files)
 
 
+@pytest.mark.parametrize(
+    ("force", "cmp"),
+    [
+        # Redownloading should update all of the mtimes, so first list of mtimes will be less than second list of mtimes
+        (True, op.lt),
+        # No forced downloading, so first list of mtimes will be the same as the second list of mtimes
+        (False, op.eq),
+    ],
+)
+def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], bool]):
+    results = earthaccess.search_data(
+        count=2,
+        short_name="ATL08",
+        cloud_hosted=True,
+        bounding_box=(-92.86, 16.26, -91.58, 16.97),
+    )
+    files = earthaccess.download(results, str(tmp_path), force=force)
+    assert isinstance(files, list)
+    assert all(Path(f).exists() for f in files)
+
+    # Make sure no temp files are left behind
+    assert len(list(tmp_path.iterdir())) == len(files)
+
+    # Verify force behavior by calling download again and checking mtimes
+    first_mtimes = [f.stat().st_mtime for f in files]
+    second_files = earthaccess.download(results, str(tmp_path), force=force)
+    second_mtimes = [f.stat().st_mtime for f in second_files]
+    assert all(
+        cmp(*mtime_pair)
+        for mtime_pair in zip(first_mtimes, second_mtimes, strict=False)
+    )
+
+
 def fail_to_download_file(*args, **kwargs):
-    raise IOError("Download failed")
+    raise OSError("Download failed")
 
 
 def test_download_immediate_failure(tmp_path: Path):

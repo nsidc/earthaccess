@@ -8,7 +8,7 @@ doi: "10.5281/zenodo.8365009"
 abstract: "Python Library for NASA Earthdata APIs"
 contact:
   - name: "The earthaccess community"
-    website: "https://github.com/nsidc/earthaccess/discussions"
+    website: "https://github.com/earthaccess-dev/earthaccess/discussions"
   - name: "NSIDC"
     email: "nsidc@nsidc.org"
 type: "software"
@@ -24,10 +24,10 @@ keywords:
   - "Earthdata Login"
 
 url: "https://earthaccess.readthedocs.io"
-repository-code: "https://github.com/nsidc/earthaccess"
+repository-code: "https://github.com/earthaccess-dev/earthaccess"
 
-version: "0.15.1"
-date-released: "2025-09-16"
+version: "0.17.0"
+date-released: "2026-04-02"
 
 authors:
   - family-names: "Barrett"
@@ -42,6 +42,13 @@ authors:
     given-names: "James"
     orcid: "https://orcid.org/0000-0003-2164-7789"
     website: "https://github.com/jrbourbeau"
+  - family-names: "Carroll"
+    given-names: "Ian"
+    orcid: "https://orcid.org/0000-0002-3616-810X"
+    website: "https://github.com/itcarroll"
+  - family-names: "Daniels"
+    given-names: "Chuck"
+    website: "https://github.com/chuckwondo"
   - family-names: "Fisher"
     given-names: "Matt"
     orcid: "https://orcid.org/0000-0003-3260-5445"

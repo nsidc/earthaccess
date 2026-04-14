@@ -61,7 +61,9 @@ def test_search_data_with_version():
     returned expected_count.
     """
     results = earthaccess.search_data(
-        short_name=short_name, version=version, count=expected_count
+        short_name=short_name,
+        version=version,
+        count=expected_count,
     )
     assert len(results) == expected_count
 
@@ -169,7 +171,9 @@ def test_search_data_by_short_name_with_granule_name():
 def test_search_data_by_short_name_with_day_night_flag():
     """Tests granule search by short_name and granule name."""
     results = earthaccess.search_data(
-        short_name="MOD10A1", day_night_flag="Day", count=expected_count
+        short_name="MOD10A1",
+        day_night_flag="Day",
+        count=expected_count,
     )
     assert len(results) > 0
 

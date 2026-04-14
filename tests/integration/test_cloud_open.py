@@ -5,13 +5,13 @@ import magic
 import pytest
 from earthaccess import Auth, DataGranules, Store
 
-from .param import TestParam
+from .param import ProviderParam
 from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
 
-daacs_list: list[TestParam] = [
+daacs_list: list[ProviderParam] = [
     {
         "provider_name": "NSIDC_CPRD",
         "n_for_top_collections": 2,
@@ -88,12 +88,12 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         )
         if len(granules_to_open) == 0:
             logger.debug(
-                f"Skipping {concept_id}, granule size exceeds configured max size"
+                f"Skipping {concept_id}, granule size exceeds configured max size",
             )
             continue
         logger.info(
             f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}"
+            f"download size(MB): {total_size_cmr}",
         )
 
         store = Store(Auth().login(strategy="environment"))

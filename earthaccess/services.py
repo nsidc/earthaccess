@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any
 
 import requests
 
@@ -16,7 +16,7 @@ class DataServices(ServiceQuery):
 
     _format = "umm_json"
 
-    def __init__(self, auth: Optional[Auth] = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, auth: Auth | None = None, *args: Any, **kwargs: Any) -> None:
         """Build an instance of DataService to query CMR.
 
         auth is an optional parameter for queries that need authentication,
@@ -28,14 +28,13 @@ class DataServices(ServiceQuery):
         super().__init__(*args, **kwargs)
         self._debug = False
 
-        # To search, we need the new bearer tokens from NASA Earthdata
         self.session = (
-            auth.get_session(bearer_token=True)
+            auth.get_session()
             if auth is not None and auth.authenticated
             else requests.sessions.Session()
         )
 
-    def get(self, limit: int = 2000) -> List:
+    def get(self, limit: int = 2000) -> list:
         """Get all service results up to some limit.
 
         Parameters

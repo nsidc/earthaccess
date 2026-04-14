@@ -1,18 +1,21 @@
 import logging
+import operator as op
+import os
 import shutil
+from collections.abc import Callable
 from pathlib import Path
 
 import earthaccess
 import pytest
 from earthaccess import Auth, DataGranules, Store
 
-from .param import TestParam
+from .param import ProviderParam
 from .sample import get_sample_granules, top_collections_for_provider
 
 logger = logging.getLogger(__name__)
 
 
-daac_list: list[TestParam] = [
+daac_list: list[ProviderParam] = [
     {
         "provider_name": "NSIDC_CPRD",
         "n_for_top_collections": 3,
@@ -84,12 +87,12 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         )
         if len(granules_to_download) == 0:
             logger.warning(
-                f"Skipping {concept_id}, granule size exceeds configured max size"
+                f"Skipping {concept_id}, granule size exceeds configured max size",
             )
             continue
         logger.info(
             f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}"
+            f"download size(MB): {total_size_cmr}",
         )
         path = tmp_path / "tests" / "integration" / "data" / concept_id
         path.mkdir(parents=True)
@@ -103,7 +106,7 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
 
         # test that we downloaded the mb reported by CMR
         total_mb_downloaded = round(
-            (sum(file.stat().st_size for file in path.rglob("*")) / 1024**2)
+            sum(file.stat().st_size for file in path.rglob("*")) / 1024**2,
         )
         # clean the directory
         shutil.rmtree(path)
@@ -113,11 +116,20 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         if total_mb_downloaded != total_size_cmr:
             logger.warning(
                 f"Warning: {concept_id} downloaded size {total_mb_downloaded}MB is "
-                f"different from the size reported by CMR: {total_size_cmr}MB"
+                f"different from the size reported by CMR: {total_size_cmr}MB",
             )
 
 
-def test_multi_file_granule(tmp_path):
+@pytest.mark.parametrize(
+    ("force", "cmp"),
+    [
+        # Redownloading should update all of the mtimes, so first list of mtimes will be less than second list of mtimes
+        (True, op.lt),
+        # No forced downloading, so first list of mtimes will be the same as the second list of mtimes
+        (False, op.eq),
+    ],
+)
+def test_multi_file_granule(tmp_path, force: bool, cmp: Callable[[float, float], bool]):
     # Ensure granules that contain multiple files are handled correctly
     granules = earthaccess.search_data(short_name="HLSL30", count=1)
     assert len(granules) == 1
@@ -125,3 +137,15 @@ def test_multi_file_granule(tmp_path):
     assert len(urls) > 1
     files = earthaccess.download(granules, str(tmp_path))
     assert {Path(f).name for f in urls} == {Path(f).name for f in files}
+
+    # Make sure no temp files are left behind
+    assert len(list(tmp_path.iterdir())) == len(files)
+
+    # Verify force behavior by calling download again and checking mtimes
+    first_mtimes = [f.stat().st_mtime for f in files]
+    second_files = earthaccess.download(granules, str(tmp_path), force=force)
+    second_mtimes = [f.stat().st_mtime for f in second_files]
+    assert all(
+        cmp(*mtime_pair)
+        for mtime_pair in zip(first_mtimes, second_mtimes, strict=False)
+    )
