@@ -15,7 +15,7 @@ from cmr import CollectionQuery, GranuleQuery
 
 from .auth import Auth
 from .daac import find_provider, find_provider_by_shortname
-from .results import DataCollection, DataGranule
+from .results import DataCollection, DataGranule, Results
 from .utils._search import get_results
 
 logger = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ class DataCollections(CollectionQuery):
         return int(response.headers["CMR-Hits"])
 
     @override
-    def get(self, limit: int = 2000) -> list[DataCollection]:
+    def get(self, limit: int = 2000) -> Results[DataCollection]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -100,10 +100,16 @@ class DataCollections(CollectionQuery):
         Raises:
             RuntimeError: The CMR query failed.
         """
-        return [
-            DataCollection(collection, self._fields)
-            for collection in get_results(self.session, self, limit)
-        ]
+        return Results(
+            [
+                DataCollection(collection, self._fields)
+                for collection in get_results(self.session, self, limit)
+            ]
+        )
+
+    @override
+    def get_all(self) -> Results[DataCollection]:
+        return Results(super().get_all())
 
     @override
     def concept_id(self, IDs: Sequence[str]) -> Self:
@@ -461,7 +467,7 @@ class DataGranules(GranuleQuery):
         return int(response.headers["CMR-Hits"])
 
     @override
-    def get(self, limit: int = 2000) -> list[DataGranule]:
+    def get(self, limit: int = 2000) -> Results[DataGranule]:
         """Get all the collections (datasets) that match with our current parameters
         up to some limit, even if spanning multiple pages.
 
@@ -483,7 +489,13 @@ class DataGranules(GranuleQuery):
         response = get_results(self.session, self, limit)
         cloud = len(response) > 0 and self._is_cloud_hosted(response[0])
 
-        return [DataGranule(granule, cloud_hosted=cloud) for granule in response]
+        return Results(
+            [DataGranule(granule, cloud_hosted=cloud) for granule in response],
+        )
+
+    @override
+    def get_all(self) -> Results[DataGranule]:
+        return Results(super().get_all())
 
     @override
     def parameters(self, **kwargs: Any) -> Self:

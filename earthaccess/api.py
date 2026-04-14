@@ -182,9 +182,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> Results[DataCollection]:
     datasets_found = query.hits()
     logger.info("Datasets found: %s", datasets_found)
     if count > 0:
-        return Results(query.get(count))
+        return query.get(count)
 
-    return Results(query.get_all())
+    return query.get_all()
 
 
 def search_data(count: int = -1, **kwargs: Any) -> Results[DataGranule]:
@@ -277,8 +277,8 @@ def search_data(count: int = -1, **kwargs: Any) -> Results[DataGranule]:
     granules_found = query.hits()
     logger.info("Granules found: %s", granules_found)
     if count > 0:
-        return Results(query.get(count))
-    return Results(query.get_all())
+        return query.get(count)
+    return query.get_all()
 
 
 def search_services(count: int = -1, **kwargs: Any) -> list[Any]:
