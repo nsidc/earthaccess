@@ -11,6 +11,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - Relocated community resources section from overview page to resources page ([#1253](https://github.com/earthaccess-dev/earthaccess/discussions/1253)) ([@Sherwin-14](https://github.com/Sherwin-14))
 
+### Added
+
+- Added the NASA Atmospheric Science Data Center's cloud
+  provider to the integration tests.
+  ([#460](https://github.com/nsidc/earthaccess/issues/460))
+  ([@danielfromearth](https://github.com/danielfromearth))
+
 ## [v0.17.0] - 2026-04-02
 
 ### Changed
