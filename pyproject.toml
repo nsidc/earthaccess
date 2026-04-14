@@ -155,7 +155,7 @@ docs = [
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.12"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
