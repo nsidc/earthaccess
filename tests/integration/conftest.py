@@ -28,6 +28,6 @@ def mock_netrc(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch):
     password = os.environ["EARTHDATA_PASSWORD"]
 
     netrc.write_text(
-        f"machine urs.earthdata.nasa.gov login {username} password {password}\n"
+        f"machine urs.earthdata.nasa.gov login {username} password {password}\n",
     )
     netrc.chmod(0o600)

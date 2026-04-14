@@ -2,9 +2,16 @@
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+path = "earthaccess/__init__.py"
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "earthaccess/_version.py"
+
 [project]
 name = "earthaccess"
-version = "0.16.0"
+dynamic = ["version"]
 description = "Client library for NASA Earthdata APIs"
 authors = [{ name = "earthaccess contributors" }]
 maintainers = [
@@ -54,6 +61,13 @@ Documentation = "https://earthaccess.readthedocs.io"
 Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
+# IMPORTANT: When adding a new optional dependencies group, include it in this
+# "all" optional dependencies group.
+all = [
+  "earthaccess[kerchunk]",
+  "earthaccess[virtualizarr]",
+]
+
 kerchunk = [
   "kerchunk>=0.2.9",
   "dask",
@@ -76,12 +90,7 @@ virtualizarr = [
 ]
 
 [dependency-groups]
-dev = [
-  "bump-my-version >=0.10.0",
-  "nox",
-  "pre-commit >=2.4",
-  "ruff >=0.6.3",
-]
+dev = ["bump-my-version >=0.10.0", "nox", "pre-commit >=2.4", "ruff >=0.6.3"]
 test = [
   "zarr >=3.1.1",
   "numpy >=1.26.4",
@@ -96,11 +105,10 @@ test = [
   "types-setuptools >=0.1",
   "types-geopandas",
   "vcrpy >=7.0.0",
-  "earthaccess[kerchunk]",
-  "earthaccess[virtualizarr]",
   "dask[distributed]>=2025.7.0",
   "xarray",
-  "geopandas"
+  "h5netcdf",
+  "geopandas",
 ]
 docs = [
   "jupyterlab >=3",
@@ -117,10 +125,12 @@ docs = [
   "markdown-include >=0.6",
   "mkdocs-jupyter >=0.19.0",
   "mkdocs-mermaid2-plugin >=1.2.1",
+  "mkdocs-pandoc >=0.2.0",
   "mkdocstrings[python] >=0.19.0",
   "pymdown-extensions >=9.2",
   "pygments >=2.11.1",
   "xarray",
+  "h5netcdf",
   "matplotlib >=3.3",
   "h5netcdf >=0.11",
   "pyproj >=3.5.0; python_version < '3.12'",
@@ -141,12 +151,11 @@ docs = [
   "mkdocs-awesome-nav>=3.3.0",
 ]
 
-
-[tool.pytest]
+[tool.pytest.ini_options]
 filterwarnings = ["error::UserWarning"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 files = ["earthaccess", "tests"]
 mypy_path = ["earthaccess", "tests", "stubs"]
 disallow_untyped_defs = true
@@ -164,11 +173,11 @@ module = [
   "fsspec.*",
   "h5netcdf.*",
   "dask.*",
-  "kerchunk.*",
   "pqdm.*",
   "s3fs",
-  "tinynetrc.*",  # TODO: generate stubs for tinynetrc and remove this line
-  "vcr.unittest", # TODO: generate stubs for vcr and remove this line
+  "tinynetrc.*",
+  "vcr.unittest",
+  "obspec_utils.*",
 ]
 ignore_missing_imports = true
 
@@ -181,8 +190,104 @@ line-length = 88
 src = ["earthaccess", "stubs", "tests"]
 
 [tool.ruff.lint]
-extend-select = ["I", "T20", "D", "G"]
-ignore = ["D1", "D205", "D401", "D417", "G004"]
+select = ["ALL"]
+ignore = [
+  "A001",
+  "A002",
+  "A004",
+  "ANN001",
+  "ANN002",
+  "ANN003",
+  "ANN201",
+  "ANN202",
+  "ANN204",
+  "ANN401",
+  "ARG001",
+  "ARG002",
+  "B018",
+  "B019",
+  "B023",
+  "B905",
+  "BLE001",
+  "C402",
+  "C408",
+  "C416",
+  "C420",
+  "C901",
+  "D1",
+  "D205",
+  "D401",
+  "D417",
+  "DTZ001",
+  "DTZ005",
+  "E501",
+  "EM",
+  "ERA001",
+  "F401",
+  "FBT",
+  "FIX002",
+  "FURB122",
+  "G004",
+  "INP001",
+  "N803",
+  "N806",
+  "N812",
+  "N818",
+  "PD002",
+  "PD010",
+  "PD011",
+  "PERF401",
+  "PERF403",
+  "PGH003",
+  "PIE790",
+  "PLC0415",
+  "PLR0913",
+  "PLR1704",
+  "PLR1711",
+  "PLR2004",
+  "PLR5501",
+  "PLW0127",
+  "PLW0602",
+  "PT006",
+  "PT007",
+  "PT009",
+  "PT011",
+  "PT012",
+  "PT017",
+  "PT027",
+  "PYI041",
+  "PYI066",
+  "RET501",
+  "RET504",
+  "RET505",
+  "RET506",
+  "RET507",
+  "RUF002",
+  "RUF012",
+  "RUF015",
+  "RUF021",
+  "RUF022",
+  "S101",
+  "S108",
+  "S113",
+  "S301",
+  "S603",
+  "S607",
+  "SIM101",
+  "SIM102",
+  "SIM103",
+  "SIM114",
+  "SIM115",
+  "SIM117",
+  "SIM300",
+  "SLF001",
+  "TD002",
+  "TD003",
+  "TD004",
+  "TRY002",
+  "TRY003",
+  "TRY400",
+]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
@@ -195,15 +300,12 @@ combine-as-imports = true
 convention = "google"
 
 [tool.bumpversion]
-current_version = "0.16.0"
+current_version = "0.17.0"
 commit = false
-tag = false
-regex = true
-
-[[tool.bumpversion.files]]
-filename = "pyproject.toml"
-search = '^version = "{current_version}"$'
-replace = 'version = "{new_version}"'
+tag = true
+allow_dirty = false
+tag_name = "v{new_version}"
+tag_message = "v{new_version}"
 
 [[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
@@ -224,6 +326,7 @@ replace = 'version: "{new_version}"'
 
 [[tool.bumpversion.files]]
 filename = "CITATION.cff"
+regex = true
 search = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
 replace = 'date-released: "{now:%Y-%m-%d}"'
 

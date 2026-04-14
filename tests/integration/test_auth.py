@@ -44,7 +44,8 @@ def test_auth_can_create_authenticated_requests_sessions():
 
 
 @pytest.mark.parametrize(
-    "daac", [daac for daac in earthaccess.daac.DAACS if daac["s3-credentials"]]
+    "daac",
+    [daac for daac in earthaccess.daac.DAACS if daac["s3-credentials"]],
 )
 def test_auth_can_fetch_s3_credentials(daac):
     auth = earthaccess.login(strategy="environment")
