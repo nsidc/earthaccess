@@ -34,7 +34,7 @@ for dataset in datasets:
 Alternatively, you may search directly for services.  For example:
 
 ```py
-services = earthaccess.search_services(provider="POCLOUD", keyword="COG")
+services = earthaccess.search_services(provider="POCLOUD")
 ```
 
 The keyword arguments supported by the `search_services` function are
