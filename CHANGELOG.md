@@ -10,13 +10,17 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Changed
 
 - Relocated community resources section from overview page to resources page ([#1253](https://github.com/earthaccess-dev/earthaccess/discussions/1253)) ([@Sherwin-14](https://github.com/Sherwin-14))
-
-### Removed
-
-- Removed `keyword` and `type` kwargs from `search_services` documentation to be consistent with `search_for_services` documentation.
+- Explicitly documented kwargs for `search_services` documentation, consistent with `docs/user_guid/search.md` documentation.
   ([#1093](https://github.com/nsidc/earthaccess/issues/1093))
   ([@battistowx](https://github.com/battistowx))
 
+### Added
+
+- Added the NASA Atmospheric Science Data Center's cloud
+  provider to the integration tests.
+  ([#460](https://github.com/nsidc/earthaccess/issues/460))
+  ([@danielfromearth](https://github.com/danielfromearth))
+ 
 ## [v0.17.0] - 2026-04-02
 
 ### Changed
