@@ -8,8 +8,8 @@ CMR_OPS: str
 CMR_UAT: str
 CMR_SIT: str
 
-FloatLike: TypeAlias = str | SupportsFloat
-PointLike: TypeAlias = Tuple[FloatLike, FloatLike]
+type FloatLike = str | SupportsFloat
+type PointLike = Tuple[FloatLike, FloatLike]
 
 class Query:
     params: MutableMapping[str, Any]
