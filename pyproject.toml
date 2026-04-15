@@ -71,7 +71,7 @@ all = [
 kerchunk = [
   "kerchunk>=0.2.9",
   "dask",
-  "h5py >=3.14.0",
+  "h5py >=3.15.0",
   "h5netcdf",
   "xarray >=2025.04.0",
   "zarr >=3.1.1",
