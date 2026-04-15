@@ -4,6 +4,7 @@ import json
 import uuid
 import warnings
 from functools import cache
+from textwrap import dedent
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -623,6 +624,55 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
     ) -> None:
         super().__init__(items)
         self._query = query
+
+    def _preview(self, *, n: int) -> list[str]:
+        """Returns a list of previews of the first N results."""
+        return [item["meta"]["native-id"] for item in self[:n]]
+
+    def __repr__(self) -> str:
+        return (
+            f"{self.__class__.__name__}<"
+            f"length={len(self)},"
+            f" preview=[{','.join(self._preview(n=3))}]"
+            ">"
+        )
+
+    def __str__(self) -> str:
+        return dedent(f"""
+        Length: {len(self)}
+        Preview: [{",".join(self._preview(n=3))}]
+        Query parameters:
+            - {self.query_parameters}
+
+            Query parameter options:
+            - {self.query_options}
+        """)
+
+    def _repr_html_(self) -> str:
+        return dedent(f"""
+            <table>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Length</td>
+                    <td>{len(self)}</td>
+                </tr>
+                <tr>
+                    <td>Preview</td>
+                    <td>{",".join(self._preview(n=3))}
+                </tr>
+                <tr>
+                    <td>Query parameters</td>
+                    <td>{self.query_parameters}</td>
+                </tr>
+                <tr>
+                    <td>Query parameter options</td>
+                    <td>{self.query_options}</td>
+                </tr>
+            </table>
+        """)
 
     @property
     def query_parameters(self):
