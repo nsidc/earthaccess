@@ -295,7 +295,7 @@ def search_services(count: int = -1, **kwargs: Any) -> list[Any]:
             * **name**: (str) Filter granules by product short name; e.g. ATL08
             * **provider**: (str) Only match granules from a given provider.  A DAAC can
               have more than one provider, e.g PODAAC and POCLOUD, NSIDC_ECS and NSIDC_CPRD.
-            * **native_id**: (str) An alternative name of the service, e.g "POCLOUD_podaac_swodlr" 
+            * **native_id**: (str) An alternative name of the service, e.g "POCLOUD_podaac_swodlr"
             * **concept_id**: (str) The concept ID of the service, e.g. "S3084748458-POCLOUD" (starts with a "S")
 
     Returns:

@@ -20,7 +20,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   provider to the integration tests.
   ([#460](https://github.com/nsidc/earthaccess/issues/460))
   ([@danielfromearth](https://github.com/danielfromearth))
- 
+
 ## [v0.17.0] - 2026-04-02
 
 ### Changed
