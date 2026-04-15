@@ -92,7 +92,6 @@ virtualizarr = [
 [dependency-groups]
 dev = [
   "bump-my-version >=1.3.0",
-  "pydantic>=2.12",  # Not required, but fails to build for Python 3.14 unless pinned
   "nox",
   "pre-commit >=2.4",
   "ruff >=0.6.3",
@@ -155,6 +154,11 @@ docs = [
   "cftime>=1.6.4",
   "cartopy>=0.24.1",
   "mkdocs-awesome-nav>=3.3.0",
+]
+
+[tool.uv]
+constraint-dependencies = [
+  "pydantic>=2.12",  # Lower versions fail to build for Python 3.14 unless pinned
 ]
 
 [tool.pytest.ini_options]

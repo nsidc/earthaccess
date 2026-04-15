@@ -10,6 +10,9 @@ resolution-markers = [
     "python_full_version < '3.13' and platform_python_implementation == 'PyPy'",
 ]
 
+[manifest]
+constraints = [{ name = "pydantic", specifier = ">=2.12" }]
+
 [[package]]
 name = "aiobotocore"
 version = "2.24.1"
@@ -989,7 +992,6 @@ dev = [
     { name = "bump-my-version" },
     { name = "nox" },
     { name = "pre-commit" },
-    { name = "pydantic" },
     { name = "ruff" },
 ]
 docs = [
@@ -1088,7 +1090,6 @@ dev = [
     { name = "bump-my-version", specifier = ">=1.3.0" },
     { name = "nox" },
     { name = "pre-commit", specifier = ">=2.4" },
-    { name = "pydantic", specifier = ">=2.12" },
     { name = "ruff", specifier = ">=0.6.3" },
 ]
 docs = [
