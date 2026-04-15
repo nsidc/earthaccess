@@ -10,7 +10,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Changed
 
 - Relocated community resources section from overview page to resources page ([#1253](https://github.com/earthaccess-dev/earthaccess/discussions/1253)) ([@Sherwin-14](https://github.com/Sherwin-14))
-- Explicitly documented kwargs for `search_services` documentation, consistent with `docs/user_guid/search.md` documentation.
+- List available kwargs in `search_services` docstring, consistent with `docs/user_guid/search.md` documentation.
   ([#1093](https://github.com/nsidc/earthaccess/issues/1093))
   ([@battistowx](https://github.com/battistowx))
 
