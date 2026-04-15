@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import json
+import pprint
 import uuid
 import warnings
 from functools import cache
-from textwrap import dedent
+from textwrap import dedent, indent
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -629,6 +630,14 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
         """Returns a list of previews of the first N results."""
         return [item["meta"]["native-id"] for item in self[:n]]
 
+    def _preview_str(self, *, n: int, sep: str) -> str:
+        """Returns a string of the preview."""
+        preview = self._preview(n=n)
+        preview_str = sep.join(preview)
+        if len(self) > len(preview):
+            preview_str += f"{sep}and {len(self) - len(preview)} more..."
+        return preview_str
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}<"
@@ -638,15 +647,14 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
         )
 
     def __str__(self) -> str:
-        return dedent(f"""
-        Length: {len(self)}
-        Preview: [{",".join(self._preview(n=3))}]
-        Query parameters:
-            - {self.query_parameters}
-
-            Query parameter options:
-            - {self.query_options}
-        """)
+        return (
+            f"Length: {len(self)}\n"
+            f"Preview: [\n{indent(self._preview_str(n=3, sep='\n'), ' ' * 4)}\n]\n"
+            f"Query parameters:\n"
+            f"{indent(pprint.pformat(self.query_parameters), ' ' * 4)}\n"
+            f"Query parameter options:\n"
+            f"{indent(pprint.pformat(self.query_options), ' ' * 4)}"
+        )
 
     def _repr_html_(self) -> str:
         return dedent(f"""
@@ -661,7 +669,7 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
                 </tr>
                 <tr>
                     <td>Preview</td>
-                    <td>{",".join(self._preview(n=3))}
+                    <td>{self._preview_str(n=3, sep="<br>")}</td>
                 </tr>
                 <tr>
                     <td>Query parameters</td>
