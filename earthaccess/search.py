@@ -5,14 +5,11 @@ from inspect import getmembers, ismethod
 from typing import (
     Any,
     Self,
-    TypeAlias,
-)
-
-import requests
-from typing_extensions import (
     SupportsFloat,
     override,
 )
+
+import requests
 
 from cmr import CollectionQuery, GranuleQuery
 
@@ -23,8 +20,8 @@ from .utils._search import get_results
 
 logger = logging.getLogger(__name__)
 
-FloatLike: TypeAlias = str | SupportsFloat
-PointLike: TypeAlias = tuple[FloatLike, FloatLike]
+type FloatLike = str | SupportsFloat
+type PointLike = tuple[FloatLike, FloatLike]
 
 
 class DataCollections(CollectionQuery):
