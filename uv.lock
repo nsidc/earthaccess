@@ -10,9 +10,6 @@ resolution-markers = [
     "python_full_version < '3.13' and platform_python_implementation == 'PyPy'",
 ]
 
-[manifest]
-constraints = [{ name = "pydantic", specifier = ">=2.12" }]
-
 [[package]]
 name = "aiobotocore"
 version = "2.24.1"
@@ -1052,8 +1049,7 @@ requires-dist = [
     { name = "h5netcdf", marker = "extra == 'all'" },
     { name = "h5netcdf", marker = "extra == 'kerchunk'" },
     { name = "h5py", marker = "extra == 'all'", specifier = ">=3.14.0" },
-    { name = "h5py", marker = "extra == 'all'", specifier = ">=3.15.0" },
-    { name = "h5py", marker = "extra == 'kerchunk'", specifier = ">=3.15.0" },
+    { name = "h5py", marker = "extra == 'kerchunk'", specifier = ">=3.14.0" },
     { name = "h5py", marker = "extra == 'virtualizarr'", specifier = ">=3.14.0" },
     { name = "importlib-resources", specifier = ">=6.3.2" },
     { name = "kerchunk", marker = "extra == 'all'", specifier = ">=0.2.9" },

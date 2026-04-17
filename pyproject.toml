@@ -33,7 +33,6 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14",
   "Topic :: Software Development :: Libraries",
   "Topic :: Software Development",
   "License :: OSI Approved :: MIT License",
@@ -71,7 +70,7 @@ all = [
 kerchunk = [
   "kerchunk>=0.2.9",
   "dask",
-  "h5py >=3.15.0",
+  "h5py >=3.14.0",
   "h5netcdf",
   "xarray >=2025.04.0",
   "zarr >=3.1.1",
@@ -156,10 +155,6 @@ docs = [
   "mkdocs-awesome-nav>=3.3.0",
 ]
 
-[tool.uv]
-constraint-dependencies = [
-  "pydantic>=2.12",  # Lower versions fail to build for Python 3.14 unless pinned
-]
 
 [tool.pytest.ini_options]
 filterwarnings = ["error::UserWarning"]

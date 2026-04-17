@@ -68,8 +68,6 @@ jobs:
             save-pr-number: true
           - python-version: 3.13
             save-pr-number: false
-          - python-version: 3.14
-            save-pr-number: false
       fail-fast: false
 
     steps:
