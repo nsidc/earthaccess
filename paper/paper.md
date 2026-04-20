@@ -143,9 +143,7 @@ access. These both may even occur within a single analysis workflow. During work
 Openscapes [@nasa_openscapes; @lowndes2019], the need for simpler tools became evident.
 `earthaccess` was created to address this gap: it provides uniform access to NASA
 Earthdata regardless of data storage location and handles authentication, credentials, and tokening behind the scenes, enabling researchers to focus more on scientific interpretation and discovery.
-The target audience includes Earth scientists, remote sensing researchers, climate modelers,
-hydrologists, ecologists, and any researcher, application developer, or educator who needs
-to work with NASA Earth science data. The library is designed to be approachable for those new to Python -- with a
+The target audience spans Earth system science — from atmospheric scientists and oceanographers to ecologists and land surface modelers — as well as operational communities such as weather forecasters and disaster response practitioners. It also serves remote sensing researchers, application developers, educators, and decision-makers who work with NASA Earth science data. The library is designed to be approachable for those new to Python -- with a
 three-step workflow of `login()`, `search_data()`, and `download()` -- while offering
 sufficient depth for advanced users who need direct S3 access, streaming file handles,
 or virtual dataset construction for large-scale analysis.
@@ -206,9 +204,9 @@ component of the data access workflow:
    preserve the full metadata response while exposing convenience methods for data
    links, spatial footprints, and formatted citations.
 
-3. **Access**: Detects at runtime whether the process is running within AWS `us-west-2`
+3. **Access**: Attempts to detect at runtime whether the process is running within AWS `us-west-2`
    and automatically selects the optimal access path -- direct S3 reads for in-region
-   access or HTTPS downloads otherwise. Files can be opened as `fsspec`-compatible
+   access or HTTPS downloads otherwise. Users can manually specify an access path if needed.  Files can be opened as `fsspec`-compatible
    file-like objects for streaming into libraries such as xarray [@xarray], or
    downloaded to disk with parallel, fault-tolerant transfers.
 
@@ -268,8 +266,8 @@ and independent open-source contributors. This breadth reflects both the library
 relevance across domains and the health of its contributor community.
 
 **Integration with the NASA ecosystem.** `earthaccess` is featured in the official NASA
-Earthdata tutorials, including <https://www.earthdata.nasa.gov/data/tools/earthaccess>, has been presented at multiple large professional meetings (including several American Geophysical Union Annual and Earth System Information Partnership (ESIP) meetings), and was the subject of
-a NASA ESDS Tech Spotlight presentation. The documentation includes executable Jupyter
+Earthdata tools catalog (<https://www.earthdata.nasa.gov/data/tools/earthaccess>) and in other NASA Earthdata tutorials. It has been presented at multiple large professional meetings -- including several American Geophysical Union (AGU) Annual Meetings and Earth System Information Partnership (ESIP) meetings -- and was the subject of
+a NASA ESDS Tech Spotlight presentation (see <https://earthaccess.readthedocs.io> homepage for links to recent slides and recordings). The documentation includes executable Jupyter
 notebooks demonstrating workflows with ICESat-2, EMIT, TEMPO, SMAP, and other missions,
 providing reproducible entry points for researchers.
 
@@ -284,7 +282,7 @@ Preparation of this manuscript was assisted by Claude [Sonnet 4.6 and Opus 4.6] 
 # Acknowledgements
 
 The development of `earthaccess` was supported by NASA's Earth Science Data Systems
-(ESDS) program through the Openscapes project (NASA award **______**, PIs Julia
+(ESDS) program through the NASA Openscapes project (NASA award #20-TWSC20-2-0003 “Openscapes: Enabling a new era of science on the cloud, in response to the 2020 NASA ROSES Element E2”,
 Lowndes and Erin Robinson). We thank NASA Openscapes for the community workshops, collaborative working environment, and people-first approach that have motivated and continue to support this work. We are grateful to the
 National Snow and Ice Data Center (NSIDC) for hosting the repository during its initial
 development, and to all contributors who have shaped `earthaccess` through contributing code,
