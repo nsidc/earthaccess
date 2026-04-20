@@ -115,24 +115,77 @@ https://github.com/earthaccess-dev/earthaccess/labels/good%20first%20issue
 
 ## Issue Prioritization
 
-TODO
+Issue priorities are surfaced within the [Bug Priority](https://github.com/orgs/earthaccess-dev/projects/1/views/4) and [Docs](https://github.com/orgs/earthaccess-dev/projects/1/views/6) project views. When triaging a new issue, select a priority based on the user impact and urgency. The following guidelines apply broadly across issue types, with additional notes for bugs and documentation issues.
 
-Definitions of priority labels for docs:
-**Critical:**
-- If it’s broken
-- Would a user see this and immediately stop using the docs
-**Important:**
-- Does it impact primary user workflows but not necessarily broken
-**Nice to have:** 
-- Sprinkles and confetti 
-- Contributoring docs lower priority than end-users
-- Depends on doc sections:
--- User guide: main audience is the end user
-https://earthaccess.readthedocs.io/en/latest/contributor/ vs https://earthaccess.readthedocs.io/en/latest/user/, https://earthaccess.readthedocs.io/en/latest/api/ (contributor is also the user), and Overview (https://earthaccess.readthedocs.io/en/latest/) 
+### Priority: `1- Critical`
+
+The issue has significant, immediate impact on users and/or major components of the `earthaccess` library. 
+
+- Core functionality is broken or inaccessible for a meaningful number of users
+- Key workflows or use cases are blocked
+- Users are likely to stop using the library or lose trust in it
+
+*Bug example:* Users cannot search or access data for a significant number of collections or key `earthaccess` workflows.
+*Documentation example:* Content is incorrect or missing in a way that would immediately block or mislead a user.
+
+### Priority: `2 - Important`
+
+The issue has real impact but is not immediately blocking a majority of users.
+
+- Affects primary user workflows but a workaround exists, or only a subset of users is affected
+- Incorrect or confusing content that degrades the experience without fully blocking users
+- Less common use cases or data collections are impacted
+
+*Bug example:* Functionality is degraded but users can still accomplish their goals.
+*Documentation example:* A Tutorial or secondary documentation is broken or unclear; contributing docs with significant usability issues.
+
+### Priority: `3 - Nice to have` 
+
+The issue is a real improvement but not urgent.
+
+- Affects a small percentage of users, data collections, or use cases
+- Polish, enhancements, or "nice to haves" with no meaningful workflow impact
+- Minor inconsistencies or style issues
+
+*Bug example:* Affects a small number of users, data collections, or edge-case workflows; a workaround is readily available or the impact is cosmetic.
+*Documentation example:* Minor inconsistencies, typos, or style issues; improvements to contributing or developer-facing docs with no impact on end-user workflows.
+
+### Notes for Triagers
+
+- **When in doubt, start at Medium** and adjust based on community feedback or additional context.
+- The [User Guide](https://earthaccess.readthedocs.io/en/stable/user/) and [API Reference](https://earthaccess.readthedocs.io/en/stable/api/) generally warrant higher priority than contributing or developer docs when impact is otherwise similar.
+- Priority reflects *impact and urgency*, not effort — a quick fix can still be High priority.
+
+## Issue Triaging Workflow
+
+``` mermaid
+
+flowchart TD
+  %%{init: {"flowchart": {"htmlLabels": false}} }%%
+  classDef default font-size:32pt;
+  start{"`Followed
+  issue
+  template?`"}
+  start ==NO==> close1[Request needed information from reporter and update issue on behalf of reporter]
+  start == YES ==> dupe{Is duplicate?}
+  dupe == YES ==> close2[Close and point to duplicate]
+  dupe == NO ==> repro{Has proper reproduction?}
+  repro == NO ==> close3[Label: 'needs reproduction' bot will auto close if no update has been made in 3 days]
+  repro == YES ==> real{Is actually a bug?}
+  real == NO ==> intended{Is the intended behaviour?}
+  intended == YES ==> explain[Explain and close point to docs if needed]
+  intended == NO ==> open[Keep open for discussion Remove 'pending triage' label]
+  real == YES ==> real2["Confirm that 'Bug' label was automatically added as part of the Bug Issue template, otherwise add 'Bug' label."]
+
+
+  %% Link Color %%
+    linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
+
+```
 
 
 ## Discussions vs Issues
-TODO Move to https://earthaccess.readthedocs.io/en/latest/contributor/ 
+TODO Move to https://earthaccess.readthedocs.io/en/latest/contributor/ ?
 
 This section would cover the guidelines for when to use discussions versus issues, and how to migrate between them.
 
@@ -168,29 +221,4 @@ Migrate an issue to a discussion when:
 - The issue is a general question or topic.
 - The issue is not specific or actionable.
 
-## Issue Triaging Workflow
 
-``` mermaid
-
-flowchart TD
-  %%{init: {"flowchart": {"htmlLabels": false}} }%%
-  classDef default font-size:32pt;
-  start{"`Followed
-  issue
-  template?`"}
-  start ==NO==> close1[Request needed information from reporter and update issue on behalf of reporter]
-  start == YES ==> dupe{Is duplicate?}
-  dupe == YES ==> close2[Close and point to duplicate]
-  dupe == NO ==> repro{Has proper reproduction?}
-  repro == NO ==> close3[Label: 'needs reproduction' bot will auto close if no update has been made in 3 days]
-  repro == YES ==> real{Is actually a bug?}
-  real == NO ==> intended{Is the intended behaviour?}
-  intended == YES ==> explain[Explain and close point to docs if needed]
-  intended == NO ==> open[Keep open for discussion Remove 'pending triage' label]
-  real == YES ==> real2["Confirm that 'Bug' label was automatically added as part of the Bug Issue template, otherwise add 'Bug' label."]
-
-
-  %% Link Color %%
-    linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
-
-```
