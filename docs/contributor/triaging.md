@@ -21,9 +21,11 @@ With a constant influx of new issues, it's essential to prioritize and categoriz
 
 Details on each of these workflow steps are provided below. 
 
+
 ## Moving an issue to Backlog status
 
 This section will cover the `earthaccess` project status, guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
+
 
 ### Project status
 
@@ -33,11 +35,10 @@ By default, all new issues are created without a project status. Issues without 
 - In Review
 - Done
 
-Move the issue to the Backlog unless it ought to be closed as "not planned", as outlined below. On the righthand side of the issue page, the "Projects" section contains an `earthaccess` project box. Click "no status" to select the status options. Select "Backlog". This will move the project out of the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view into its relevant backlog view depending on issue type. See below for more details on these other project views.
+When triaging a new issue, review the information and provide a response or follow up with question(s) if needed. Providing gratitude for the submission as a text or emoji response is highly encouraged. Move the issue to the Backlog unless it ought to be closed as "not planned", as outlined below. If you are unsure, add the **needs: triage** label. On the righthand side of the issue page, the "Projects" section contains an `earthaccess` project box. Click "no status" to select the status options. Select "Backlog". This will move the project out of the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view into its relevant backlog view depending on issue type. See below for more details on these other project views. 
 
-### Close Issue as Not Planned
 
-#### When to "Close as not planned"?
+### When to "Close as not planned"?
 
 Close issues as "not planned" when:
 
@@ -64,7 +65,7 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 - **type: decision record**: Use this label for issues and PR's that address a new decision record document (e.g. https://github.com/earthaccess-dev/earthaccess/pull/1047).   
 - **type: duplicate**: Use this label for issues that are duplicates of existing ones.
 - **type: enhancement**: Use this label for requests for new features or improvements to existing functionalities.
-- **type: experience report**: Use this label for issues that include the reporter's usability experience 
+- **type: experience report**: Use this label for issues that describe a firsthand usability experience. 
 - **type: metrics**: This label is automatically applied upon creation of the Monthly metrics issue. See the [Monthly issue metrics](https://github.com/earthaccess-dev/earthaccess/blob/main/.github/workflows/issue-metrics.yml) action for more details.  
 - **type: will not do**: Use this label for issues that won’t be addressed or fixed.
 
@@ -76,13 +77,17 @@ These labels describe what portion of the project they affect:
 - **impact: core**: Issues that affect the core Python codebase.
 - **impact: dependencies**: Use this label for issues concerning dependencies.
 - **impact: documentation**: Use this label for issues related to documentation.
-- **impact: automation**: Use this label for issues related to the CI/CD pipeline or automation
+- **impact: automation**: Use this label for issues related to the CI/CD pipeline or automation.
+- **impact: governance**: Issues that impact the project's governance or decision-making process.
+
+Impact labels are also used to help group related issues based on a particular feature or topic. For example, **impact: virtual-datasets** is used to categorize Issues or Discussions related to virtualizarr integration and support. These labels may evolve over time as new features are worked. 
 
 ### Needs labels
 
 - **needs: decision**: We're struggling to decide what to do and the decision committee needs to help.
 - **needs: feedback**:  Use this label for issues where feedback is requested from the team or our community.
 - **needs: help**: Use this label for issues where additional help or contributions are needed.
+- **needs: triage**: Use this label for new issues that require additional information to determine whether it should move to the backlog, or close as not planned. 
 
 ### Special labels
 
