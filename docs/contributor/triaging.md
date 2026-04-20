@@ -1,6 +1,6 @@
 # Issue Triaging and Prioritization Guide
 
-With constant influx of new issues, it's essential to prioritize and categorize them efficiently to ensure that the most important problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized, prioritized, and up-to-date issue tracker via the `earthaccess` [GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1). 
+With a constant influx of new issues, it's essential to prioritize and categorize them efficiently to ensure that the most important problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized, prioritized, and up-to-date issue tracker via the `earthaccess` [GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1). 
 
 !!! tip
 
@@ -21,21 +21,37 @@ With constant influx of new issues, it's essential to prioritize and categorize 
 
 Details on each of these workflow steps are provided below. 
 
-## Issue Prioritization
-TODO
+## Moving an issue to Backlog status
 
-Definitions of priority labels for docs:
-Critical:
-If it’s broken
-Would a user see this and immediately stop using the docs
-Important:
-Does it impact primary user workflows but not necessarily broken
-Nice to have: 
-Sprinkles and confetti 
-Contributoring docs lower priority than end-users
-Depends on doc sections:
-User guide: main audience is the end user
-https://earthaccess.readthedocs.io/en/latest/contributor/ vs https://earthaccess.readthedocs.io/en/latest/user/, https://earthaccess.readthedocs.io/en/latest/api/ (contributor is also the user), and Overview (https://earthaccess.readthedocs.io/en/latest/) 
+This section will cover the `earthaccess` project status, guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
+
+### Project status
+
+By default, all new issues are created without a project status. Issues without a status are listed in the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view. Statuses include:
+- Backlog
+- In Progress
+- In Review
+- Done
+
+Move the issue to the Backlog unless it ought to be closed as "not planned", as outlined below. On the righthand side of the issue page, the "Projects" section contains an `earthaccess` project box. Click "no status" to select the status options. Select "Backlog". This will move the project out of the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view into its relevant backlog view depending on issue type. See below for more details on these other project views.
+
+### Close Issue as Not Planned
+
+#### When to "Close as not planned"?
+
+Close issues as "not planned" when:
+
+- An issue is not aligned with the project's goals or priorities.
+- An issue is not feasible to be addressed due to technical or resource constraints.
+- An issue is a duplicate of an existing issue that has already been addressed.
+
+When closing an issue as not planned, keep the following best practices in mind:
+
+- Provide a clear explanation as to why the issue is not planned or feasible.
+- Offer alternative solutions or workarounds, if possible.
+- Link to relevant documentation or resources, if applicable.
+- Add the **type: will not do** label.
+
 
 ## Labeling Issues
 
@@ -44,9 +60,12 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 
 ### Issue Types
 
-- **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior.
+- **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior. This label is applied automatically if the [Bug template](https://github.com/earthaccess-dev/earthaccess/issues/new?template=bug.yml) is used.
+- **type: decision record**: Use this label for issues and PR's that address a new decision record document (e.g. https://github.com/earthaccess-dev/earthaccess/pull/1047).   
 - **type: duplicate**: Use this label for issues that are duplicates of existing ones.
 - **type: enhancement**: Use this label for requests for new features or improvements to existing functionalities.
+- **type: experience report**: Use this label for issues that include the reporter's usability experience 
+- **type: metrics**: This label is automatically applied upon creation of the Monthly metrics issue. See the [Monthly issue metrics](https://github.com/earthaccess-dev/earthaccess/blob/main/.github/workflows/issue-metrics.yml) action for more details.  
 - **type: will not do**: Use this label for issues that won’t be addressed or fixed.
 
 ### Impact labels
@@ -89,26 +108,26 @@ For example, to link to the "good first issue" label in the earthaccess-dev/eart
 https://github.com/earthaccess-dev/earthaccess/labels/good%20first%20issue
 ```
 
+## Issue Prioritization
 
-## Close Issue as Not Planned
+TODO
 
-This section will cover the guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
+Definitions of priority labels for docs:
+**Critical:**
+- If it’s broken
+- Would a user see this and immediately stop using the docs
+**Important:**
+- Does it impact primary user workflows but not necessarily broken
+**Nice to have:** 
+- Sprinkles and confetti 
+- Contributoring docs lower priority than end-users
+- Depends on doc sections:
+-- User guide: main audience is the end user
+https://earthaccess.readthedocs.io/en/latest/contributor/ vs https://earthaccess.readthedocs.io/en/latest/user/, https://earthaccess.readthedocs.io/en/latest/api/ (contributor is also the user), and Overview (https://earthaccess.readthedocs.io/en/latest/) 
 
-### When to "Close as not planned"?
-
-Close issues as "not planned" when:
-
-- An issue is not aligned with the project's goals or priorities.
-- An issue is not feasible to be addressed due to technical or resource constraints.
-- An issue is a duplicate of an existing issue that has already been addressed.
-
-When closing an issue as not planned, keep the following best practices in mind:
-
-- Provide a clear explanation as to why the issue is not planned or feasible.
-- Offer alternative solutions or workarounds, if possible.
-- Link to relevant documentation or resources, if applicable.
 
 ## Discussions vs Issues
+TODO Move to https://earthaccess.readthedocs.io/en/latest/contributor/ 
 
 This section would cover the guidelines for when to use discussions versus issues, and how to migrate between them.
 
