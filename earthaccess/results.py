@@ -683,11 +683,11 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
         """)
 
     @property
-    def query_parameters(self):
+    def _query_parameters(self):
         return self._query.params
 
     @property
-    def query_options(self):
+    def _query_options(self):
         return self._query.options
 
     def to_gdf(self) -> GeoDataFrame:
