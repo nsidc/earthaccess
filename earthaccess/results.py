@@ -363,6 +363,11 @@ class DataGranule(CustomDict):
             A basic representation of a data granule.
         """
         data_links = [link for link in self.data_links()]
+
+        # Not all granules have spatial coverage, set to None if missing
+        if "SpatialExtent" not in self["umm"]:
+            self["umm"]["SpatialExtent"] = None
+
         rep_str = f"""
         Collection: {self["umm"]["CollectionReference"]}
         Spatial coverage: {self["umm"]["SpatialExtent"]}
