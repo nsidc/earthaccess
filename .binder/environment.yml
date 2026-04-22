@@ -2,7 +2,7 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - python==3.11
+  - python==3.12
   - pip>=25.1
 variables:
   # Allow pip installs when conda environment is active

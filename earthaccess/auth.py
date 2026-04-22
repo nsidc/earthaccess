@@ -212,10 +212,10 @@ class Auth:
             if r:
                 return r.json()
 
-            logger.error(
+            logger.exception(
                 f"Authentication with Earthdata Login failed with:\n{r.text[:1000]}",
             )
-            logger.error(
+            logger.exception(
                 f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}",
             )
 
@@ -317,7 +317,7 @@ class Auth:
 
             if not (token_resp.ok):  # type: ignore
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
-                logger.error(msg)
+                logger.exception(msg)
                 raise LoginAttemptFailure(msg)
 
             logger.info("You're now authenticated with NASA Earthdata Login")
@@ -346,8 +346,8 @@ class Auth:
         try:
             netrc_loc.touch(exist_ok=True)
             netrc_loc.chmod(0o600)
-        except Exception as e:
-            logger.error(e)
+        except Exception:
+            logger.exception("")
             return False
 
         my_netrc = Netrc(str(netrc_loc))

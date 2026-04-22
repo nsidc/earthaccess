@@ -99,7 +99,7 @@ We'd love to see you there! :open_hands:
 
 ## Compatibility
 
-The _minimum_ supported Python version is **3.11**.
+The _minimum_ supported Python version is **3.12**.
 
 
 ## How to Contribute to `earthaccess`

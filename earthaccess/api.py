@@ -62,7 +62,7 @@ def status(system: System = PROD, raise_on_outage: bool = False) -> dict[str, st
             if service := next(filter(name.startswith, services), None):
                 statuses[service] = entry.get("status", "Unknown")
     except (json.JSONDecodeError, requests.exceptions.RequestException):
-        logger.error(msg)
+        logger.exception(msg)
 
     if raise_on_outage and any(
         status not in {"OK", "Unknown"} for status in statuses.values()
@@ -435,9 +435,9 @@ def download(
             pqdm_kwargs=pqdm_kwargs,
             force=force,
         )
-    except AttributeError as err:
-        logger.error(
-            f"{err}: You must call earthaccess.login() before you can download data",
+    except AttributeError:
+        logger.exception(
+            "You must call earthaccess.login() before you can download data",
         )
 
     return []
