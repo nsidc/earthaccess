@@ -53,8 +53,8 @@ def test_auth_can_fetch_s3_credentials(daac):
 
     try:
         credentials = earthaccess.get_s3_credentials(daac["short-name"])
-    except requests.RequestException as e:
-        logger.error(f"Failed to fetch S3 credentials: {e}")
+    except requests.RequestException:
+        logger.exception("Failed to fetch S3 credentials")
     else:
         assert isinstance(credentials, dict)
         assert "accessKeyId" in credentials
