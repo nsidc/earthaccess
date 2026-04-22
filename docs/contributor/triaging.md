@@ -115,7 +115,7 @@ https://github.com/earthaccess-dev/earthaccess/labels/good%20first%20issue
 
 Issue priorities are surfaced within the [Bug Priority](https://github.com/orgs/earthaccess-dev/projects/1/views/4) and [Docs](https://github.com/orgs/earthaccess-dev/projects/1/views/6) project views. When triaging a new issue, select a priority based on the user impact and urgency. The following guidelines apply broadly across issue types, with additional notes for bugs and documentation issues.
 
-### Priority: `1- Critical`
+### Priority: `1 - Critical`
 
 The issue has significant, immediate impact on users and/or major components of the `earthaccess` library. 
 
