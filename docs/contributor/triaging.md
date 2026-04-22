@@ -124,6 +124,7 @@ The issue has significant, immediate impact on users and/or major components of 
 - Users are likely to stop using the library or lose trust in it
 
 *Bug example:* Users cannot search or access data for a significant number of collections or key `earthaccess` workflows.
+
 *Documentation example:* Content is incorrect or missing in a way that would immediately block or mislead a user.
 
 ### Priority: `2 - Important`
