@@ -135,6 +135,7 @@ The issue has real impact but is not immediately blocking a majority of users.
 - Less common use cases or data collections are impacted
 
 *Bug example:* Functionality is degraded but users can still accomplish their goals.
+
 *Documentation example:* A Tutorial or secondary documentation is broken or unclear; contributing docs with significant usability issues.
 
 ### Priority: `3 - Nice to have` 
