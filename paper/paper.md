@@ -261,7 +261,7 @@ hand-written NSIDC DAAC data-fetching routines with `earthaccess` calls, elimina
 hard-coded URLs and custom authentication logic. `earthaccess` has replaced tens of lines of code across countless NASA data access tutorials, increasing user accessibility and reducing the amount of "getting started" overhead.
 
 **Multi-institutional development.** Contributors span NASA's Distributed Active Archive Centers (DAACs) — including ASDC, ASF, GES DISC, LP DAAC, NSIDC DAAC, OB.DAAC, ORNL DAAC, and PO.DAAC — as well as other federal and academic institutions (USGS,
-University of New Hampshire), private industry (Coiled, Development Seed),
+NOAA, University of New Hampshire, University of Maryland), private industry (Coiled, Development Seed),
 and independent open-source contributors. This breadth reflects both the library's
 relevance across domains and the health of its contributor community.
 
