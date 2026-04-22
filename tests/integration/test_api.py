@@ -38,7 +38,7 @@ granules_valid_params = [
 ]
 
 services = ("Earthdata Login", "Common Metadata Repository")
-expected = {service: "Unknown" for service in services}
+expected = dict.fromkeys(services, "Unknown")
 
 nasa_statuses = {
     PROD: {
@@ -104,7 +104,7 @@ def test_earthdata_status_service_outage():
             "statuses": [
                 {"name": "Earthdata Login", "status": "Degraded"},
                 {"name": "Common Metadata Repository", "status": "OK"},
-            ]
+            ],
         },
         status=200,
     )
@@ -162,8 +162,8 @@ def test_dataset_search_returns_valid_results(kwargs):
 
 def test_dataset_search_summary_missing_file_dist_info():
     results = earthaccess.search_datasets(short_name="AIRS_CPR_IND", daac="GES_DISC")
-    collection_with_no_FileDistributionInformation = results[0]
-    assert collection_with_no_FileDistributionInformation.summary()["file-type"] == ""
+    collection_with_no_file_distribution_information = results[0]
+    assert collection_with_no_file_distribution_information.summary()["file-type"] == ""
 
 
 @pytest.mark.parametrize("kwargs", granules_valid_params)
@@ -212,17 +212,20 @@ def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], boo
     assert all(Path(f).exists() for f in files)
 
     # Make sure no temp files are left behind
-    assert len(os.listdir(tmp_path)) == len(files)
+    assert len(list(tmp_path.iterdir())) == len(files)
 
     # Verify force behavior by calling download again and checking mtimes
     first_mtimes = [f.stat().st_mtime for f in files]
     second_files = earthaccess.download(results, str(tmp_path), force=force)
     second_mtimes = [f.stat().st_mtime for f in second_files]
-    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes))
+    assert all(
+        cmp(*mtime_pair)
+        for mtime_pair in zip(first_mtimes, second_mtimes, strict=False)
+    )
 
 
 def fail_to_download_file(*args, **kwargs):
-    raise IOError("Download failed")
+    raise OSError("Download failed")
 
 
 def test_download_immediate_failure(tmp_path: Path):

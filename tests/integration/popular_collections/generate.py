@@ -13,7 +13,7 @@ all_providers = [
     provider
     for daac_info in DAACS
     for provider in set(
-        list(daac_info["cloud-providers"]) + list(daac_info["on-prem-providers"])
+        list(daac_info["cloud-providers"]) + list(daac_info["on-prem-providers"]),
     )
 ]
 
@@ -25,7 +25,7 @@ def top_collections(
 ) -> list[str]:
     if num > 2000:
         raise RuntimeError(
-            "Paging not supported, can only get up to 2000 top collections"
+            "Paging not supported, can only get up to 2000 top collections",
         )
 
     response = requests.post(

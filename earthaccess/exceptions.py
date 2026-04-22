@@ -1,4 +1,4 @@
-class LoginStrategyUnavailable(Exception):
+class LoginStrategyUnavailable(Exception):  # noqa: N818
     """The selected login strategy was skipped.
 
     This should be raised when a login strategy can't be attempted, for example because
@@ -9,10 +9,8 @@ class LoginStrategyUnavailable(Exception):
     a `LoginAttemptFailure` should be thrown instead.
     """
 
-    pass
 
-
-class LoginAttemptFailure(Exception):
+class LoginAttemptFailure(Exception):  # noqa: N818
     """The login attempt failed.
 
     This should be raised when a login attempt fails, for example, because
@@ -24,27 +22,21 @@ class LoginAttemptFailure(Exception):
     thrown instead.
     """
 
-    pass
 
-
-class DownloadFailure(Exception):
+class DownloadFailure(Exception):  # noqa: N818
     """The download attempt failed.
 
     This should be raised when a download attempt fails, for example, because
     the file could not be retrieved or the download process was interrupted.
     """
 
-    pass
 
-
-class ServiceOutage(Exception):
+class ServiceOutage(Exception):  # noqa: N818
     """A service outage has been detected.
 
     This should be raised when Earthdata services are unavailable or experiencing
     outages that prevent normal operations.
     """
-
-    pass
 
 
 class EulaNotAccepted(DownloadFailure):
@@ -53,5 +45,3 @@ class EulaNotAccepted(DownloadFailure):
     This should be raised when a user attempts to access data that requires
     EULA acceptance, but they have not accepted the EULA.
     """
-
-    pass

@@ -34,7 +34,7 @@ repos:
     rev: v0.15.4
     hooks:
       - id: ruff
-        args: ["--fix", "--exit-non-zero-on-fix"]
+        args: ["--fix", "--show-fixes", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
@@ -72,3 +72,8 @@ repos:
       - id: "validate-cff"
         args:
           - "--verbose"
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: "1de4a94008448d1ffa57080fbf183feb615ee165"
+    hooks:
+      - id: shellcheck

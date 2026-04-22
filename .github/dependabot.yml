@@ -13,6 +13,8 @@ updates:
       pip-dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 14
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -21,3 +23,18 @@ updates:
       gha-dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 14
+  # Dependabot's github-actions ecosystem does not recurse into composite
+  # actions under .github/actions/, so each custom action needs its own entry
+  # for the `uses:` references inside action.yml to receive updates.
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/install-pkg"
+    schedule:
+      interval: "monthly"
+    groups:
+      gha-dependencies:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 14

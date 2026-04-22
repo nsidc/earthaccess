@@ -51,6 +51,13 @@ daac_list: list[ProviderParam] = [
         "granules_sample_size": 2,
         "granules_max_size_mb": 100,
     },
+    {
+        "provider_name": "LARC_CLOUD",
+        "n_for_top_collections": 3,
+        "granules_count": 100,
+        "granules_sample_size": 2,
+        "granules_max_size_mb": 100,
+    },
 ]
 
 
@@ -87,12 +94,12 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         )
         if len(granules_to_download) == 0:
             logger.warning(
-                f"Skipping {concept_id}, granule size exceeds configured max size"
+                f"Skipping {concept_id}, granule size exceeds configured max size",
             )
             continue
         logger.info(
             f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}"
+            f"download size(MB): {total_size_cmr}",
         )
         path = tmp_path / "tests" / "integration" / "data" / concept_id
         path.mkdir(parents=True)
@@ -106,7 +113,7 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
 
         # test that we downloaded the mb reported by CMR
         total_mb_downloaded = round(
-            (sum(file.stat().st_size for file in path.rglob("*")) / 1024**2)
+            sum(file.stat().st_size for file in path.rglob("*")) / 1024**2,
         )
         # clean the directory
         shutil.rmtree(path)
@@ -116,7 +123,7 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         if total_mb_downloaded != total_size_cmr:
             logger.warning(
                 f"Warning: {concept_id} downloaded size {total_mb_downloaded}MB is "
-                f"different from the size reported by CMR: {total_size_cmr}MB"
+                f"different from the size reported by CMR: {total_size_cmr}MB",
             )
 
 
@@ -139,10 +146,13 @@ def test_multi_file_granule(tmp_path, force: bool, cmp: Callable[[float, float],
     assert {Path(f).name for f in urls} == {Path(f).name for f in files}
 
     # Make sure no temp files are left behind
-    assert len(os.listdir(tmp_path)) == len(files)
+    assert len(list(tmp_path.iterdir())) == len(files)
 
     # Verify force behavior by calling download again and checking mtimes
     first_mtimes = [f.stat().st_mtime for f in files]
     second_files = earthaccess.download(granules, str(tmp_path), force=force)
     second_mtimes = [f.stat().st_mtime for f in second_files]
-    assert all(cmp(*mtime_pair) for mtime_pair in zip(first_mtimes, second_mtimes))
+    assert all(
+        cmp(*mtime_pair)
+        for mtime_pair in zip(first_mtimes, second_mtimes, strict=False)
+    )
