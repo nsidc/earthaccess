@@ -8,7 +8,7 @@ This document outlines our approach to triaging issues on GitHub, including guid
 
 1. A [new issue](https://github.com/earthaccess-dev/earthaccess/issues/new/choose) is created, either using a pre-existing template, or as a blank issue.
 2. The issue is triaged by a community member in order to: 
-   * Determine whether the issue should be pursued and moved to a Backlog status, or closed as not planned.
+   * Determine whether the issue should be worked or not. If yes, move to "Backlog" status, otherwise close as not planned.
    * Add or adjust issue labels.
    * Add an issue prioritization. 
    * Respond and follow up as needed (i.e. tagging relevant earthaccess maintainers for further support).
