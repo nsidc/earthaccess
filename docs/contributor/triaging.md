@@ -148,6 +148,7 @@ The issue is a real improvement but not urgent.
 - Minor inconsistencies or style issues
 
 *Bug example:* Affects a small number of users, data collections, or edge-case workflows; a workaround is readily available or the impact is cosmetic.
+
 *Documentation example:* Minor inconsistencies, typos, or style issues; improvements to contributing or developer-facing docs with no impact on end-user workflows.
 
 ### Notes for Triagers
