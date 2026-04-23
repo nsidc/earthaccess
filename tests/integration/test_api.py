@@ -162,8 +162,8 @@ def test_dataset_search_returns_valid_results(kwargs):
 
 def test_dataset_search_summary_missing_file_dist_info():
     results = earthaccess.search_datasets(short_name="AIRS_CPR_IND", daac="GES_DISC")
-    collection_with_no_FileDistributionInformation = results[0]
-    assert collection_with_no_FileDistributionInformation.summary()["file-type"] == ""
+    collection_with_no_file_distribution_information = results[0]
+    assert collection_with_no_file_distribution_information.summary()["file-type"] == ""
 
 
 @pytest.mark.parametrize("kwargs", granules_valid_params)

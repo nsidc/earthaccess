@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 def test_auth_can_read_earthdata_env_variables():
     auth = earthaccess.login(strategy="environment")
-    logger.info(f"Current username: {auth.username}")
-    logger.info(f"earthaccess version: {earthaccess.__version__}")
+    logger.info("Current username: %s", auth.username)
+    logger.info("earthaccess version: %s", earthaccess.__version__)
 
     assert isinstance(auth, earthaccess.Auth)
     assert isinstance(earthaccess.__auth__, earthaccess.Auth)
@@ -53,8 +53,8 @@ def test_auth_can_fetch_s3_credentials(daac):
 
     try:
         credentials = earthaccess.get_s3_credentials(daac["short-name"])
-    except requests.RequestException as e:
-        logger.error(f"Failed to fetch S3 credentials: {e}")
+    except requests.RequestException:
+        logger.exception("Failed to fetch S3 credentials")
     else:
         assert isinstance(credentials, dict)
         assert "accessKeyId" in credentials

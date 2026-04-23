@@ -68,7 +68,7 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         provider,
         n=n_for_top_collections,
     )
-    logger.info(f"On-premises collections for {provider}: {len(top_collections)}")
+    logger.info("On-premises collections for %s: %s", provider, len(top_collections))
 
     for concept_id in top_collections:
         granule_query = DataGranules().concept_id(concept_id)
@@ -78,7 +78,10 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         assert isinstance(granules[0], earthaccess.DataGranule)
         data_links = granules[0].data_links()
         if not supported_collection(data_links):
-            logger.warning(f"PODAAC DRIVE is not supported at the moment: {data_links}")
+            logger.warning(
+                "PODAAC DRIVE is not supported at the moment: %s",
+                data_links,
+            )
             continue
         granules_to_open, total_size_cmr = get_sample_granules(
             granules,
@@ -88,14 +91,16 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         )
         if len(granules_to_open) == 0:
             logger.debug(
-                f"Skipping {concept_id}, granule size exceeds configured max size",
+                "Skipping %s, granule size exceeds configured max size",
+                concept_id,
             )
             continue
         logger.info(
-            f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}",
+            "Testing %s, granules in collection: %s, download size(MB): %s",
+            concept_id,
+            total_granules,
+            total_size_cmr,
         )
-
         store = Store(Auth().login(strategy="environment"))
         # We are testing this method
         fileset = store.open(granules_to_open)
@@ -105,9 +110,9 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
         # we test that we can read some bytes and get the file type
         for file in fileset:
             if not isinstance(file, Exception):
-                logger.info(f"File type:  {magic.from_buffer(file.read(2048))}")
+                logger.info("File type: %s", magic.from_buffer(file.read(2048)))
             else:
-                logger.warning(f"File could not be open: {file}")
+                logger.warning("File could not be open: %s", file)
 
 
 def test_multi_file_granule():
