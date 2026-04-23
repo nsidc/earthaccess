@@ -205,7 +205,7 @@ class Auth:
         if not auth_url.startswith("https://"):
             # This happens if the cloud provider doesn't list the S3 credentials or the DAAC
             # does not have cloud collections yet
-            logger.info(f"Credentials for the cloud provider {daac} are not available")
+            logger.info("Credentials for the cloud provider %s are not available", daac)
             return {}
 
         with self.get_session() as session, session.get(auth_url, timeout=15) as r:
@@ -213,10 +213,13 @@ class Auth:
                 return r.json()
 
             logger.exception(
-                f"Authentication with Earthdata Login failed with:\n{r.text[:1000]}",
+                "Authentication with Earthdata Login failed with:\n%s",
+                r.text[:1000],
             )
             logger.exception(
-                f"Consider accepting the EULAs available at {self._eula_url} and applications at {self._apps_url}",
+                "Consider accepting the EULAs available at %s and applications at %s",
+                self._eula_url,
+                self._apps_url,
             )
 
             return {}
@@ -341,7 +344,7 @@ class Auth:
         # See: https://github.com/sloria/tinynetrc/issues/34
 
         netrc_loc = netrc_path()
-        logger.info(f"Persisting credentials to {netrc_loc}")
+        logger.info("Persisting credentials to %s", netrc_loc)
 
         try:
             netrc_loc.touch(exist_ok=True)

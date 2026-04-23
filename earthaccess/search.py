@@ -955,7 +955,8 @@ class DataGranules(GranuleQuery):
             # TODO consider removing this print statement since we don't print such
             # a message in other cases where no results are found.  Seems arbitrary.
             logger.info(
-                f"earthaccess couldn't find any associated collections with the DOI: {doi}",
+                "earthaccess couldn't find any associated collections with the DOI: %s",
+                doi,
             )
 
         return self

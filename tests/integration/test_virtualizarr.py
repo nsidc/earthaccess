@@ -10,7 +10,9 @@ assertions = unittest.TestCase("__init__")
 
 auth = earthaccess.login()
 logger.info(
-    f"earthaccess version: {earthaccess.__version__}, authenticated: {auth.authenticated}",
+    "earthaccess version: %s, authenticated: %s",
+    earthaccess.__version__,
+    auth.authenticated,
 )
 
 
