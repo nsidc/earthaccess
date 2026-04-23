@@ -180,7 +180,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> list[DataCollection]:
     else:
         query = DataCollections().parameters(**kwargs)
     datasets_found = query.hits()
-    logger.info(f"Datasets found: {datasets_found}")
+    logger.info("Datasets found: %s", datasets_found)
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -274,7 +274,7 @@ def search_data(count: int = -1, **kwargs: Any) -> list[DataGranule]:
     else:
         query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
-    logger.info(f"Granules found: {granules_found}")
+    logger.info("Granules found: %s", granules_found)
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -303,7 +303,7 @@ def search_services(count: int = -1, **kwargs: Any) -> list[Any]:
     """
     query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
     hits = query.hits()
-    logger.info(f"Services found: {hits}")
+    logger.info("Services found: %s", hits)
 
     return query.get(hits if count < 1 else min(count, hits))
 

@@ -523,7 +523,11 @@ class Store:
     ) -> list[Any]:
         fileset: list = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
-        logger.info(f"Opening {len(granules)} granules, approx size: {total_size} GB")
+        logger.info(
+            "Opening %s granules, approx size: %s GB",
+            len(granules),
+            total_size,
+        )
 
         if self.auth is None:
             raise ValueError(
@@ -538,10 +542,10 @@ class Store:
                     granules[0]["umm"]["RelatedUrls"],
                 )
                 if endpoint is not None:
-                    logger.info(f"using endpoint: {endpoint}")
+                    logger.info("using endpoint: %s", endpoint)
                     s3_fs = self.get_s3_filesystem(endpoint=endpoint)
                 else:
-                    logger.info(f"using provider: {provider}")
+                    logger.info("using provider: %s", provider)
                     s3_fs = self.get_s3_filesystem(provider=provider)
             else:
                 access = "on_prem"
@@ -627,7 +631,9 @@ class Store:
 
                 return fileset
             logger.error(
-                f"An error occurred while trying to retrieve the cloud credentials for provider: {provider}. endpoint: {credentials_endpoint}",
+                "An error occurred while trying to retrieve the cloud credentials for provider: %s. endpoint: %s",
+                provider,
+                credentials_endpoint,
             )
             return fileset
         if granules[0].startswith("s3"):
@@ -762,7 +768,7 @@ class Store:
 
         with _sibling_tempfile(file_name) as temp_name:
             s3_fs.get([file], str(temp_name), recursive=False)
-        logger.info(f"Downloading: {file_name}")
+        logger.info("Downloading: %s", file_name)
         return file_name
 
     @_get.register
@@ -791,11 +797,12 @@ class Store:
         if self.in_region and data_links[0].startswith("s3"):
             if credentials_endpoint is not None:
                 logger.info(
-                    f"Accessing cloud dataset using credentials_endpoint: {credentials_endpoint}",
+                    "Accessing cloud dataset using credentials_endpoint: %s",
+                    credentials_endpoint,
                 )
                 s3_fs = self.get_s3_filesystem(endpoint=credentials_endpoint)
             elif provider is not None:
-                logger.info(f"Accessing cloud dataset using provider: {provider}")
+                logger.info("Accessing cloud dataset using provider: %s", provider)
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             def _download(file: str) -> Path | None:
@@ -837,16 +844,19 @@ class Store:
         )
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
         logger.info(
-            f" Getting {len(granules)} granules, approx download size: {total_size} GB",
+            "Getting %s granules, approx download size: %s GB",
+            len(granules),
+            total_size,
         )
         if access == "direct":
             if endpoint is not None:
                 logger.info(
-                    f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}",
+                    "Accessing cloud dataset using dataset endpoint credentials: %s",
+                    endpoint,
                 )
                 s3_fs = self.get_s3_filesystem(endpoint=endpoint)
             else:
-                logger.info(f"Accessing cloud dataset using provider: {provider}")
+                logger.info("Accessing cloud dataset using provider: %s", provider)
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             local_path.mkdir(parents=True, exist_ok=True)
@@ -934,7 +944,7 @@ class Store:
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                     f.writelines(r.iter_content(chunk_size=1024 * 1024))
         else:
-            logger.info(f"File {local_filename} already downloaded")
+            logger.info("File %s already downloaded", local_filename)
         return path
 
     def _download_onprem_granules(
