@@ -27,12 +27,11 @@ logger.info(
 )
 def granules(request):
     short_name, count = request.param
-    granules = earthaccess.search_data(
+    return earthaccess.search_data(
         count=count,
         temporal=("2025"),
         short_name=short_name,
     )
-    return granules
 
 
 def test_virtualize_materialize_indexable(granules):

@@ -548,8 +548,7 @@ def get_fsspec_https_session() -> AbstractFileSystem:
             f.read(10)
         ```
     """
-    session = earthaccess.__store__.get_fsspec_session()
-    return session
+    return earthaccess.__store__.get_fsspec_session()
 
 
 def get_requests_https_session() -> requests.Session:
@@ -571,8 +570,7 @@ def get_requests_https_session() -> requests.Session:
 
         ```
     """
-    session = earthaccess.__store__.get_requests_session()
-    return session
+    return earthaccess.__store__.get_requests_session()
 
 
 @deprecated("Use get_s3_filesystem instead")
@@ -642,8 +640,7 @@ def get_edl_token() -> str:
     Returns:
         EDL token
     """
-    token = earthaccess.__auth__.token
-    return token
+    return earthaccess.__auth__.token
 
 
 def auth_environ() -> dict[str, str]:
