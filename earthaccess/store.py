@@ -258,13 +258,11 @@ class Store:
 
     def _derive_concept_provider(self, concept_id: str | None = None) -> str:
         if concept_id is not None:
-            provider = concept_id.split("-")[1]
-            return provider
+            return concept_id.split("-")[1]
         return ""
 
     def _derive_daac_provider(self, daac: str) -> str | None:
-        provider = find_provider(daac, True)
-        return provider
+        return find_provider(daac, True)
 
     def _is_cloud_collection(self, concept_id: list[str]) -> bool:
         collection = DataCollections(self.auth).concept_id(concept_id).get()
@@ -436,8 +434,7 @@ class Store:
             # auth will fail!
             "trust_env": False,
         }
-        session = fsspec.filesystem("https", client_kwargs=client_kwargs)
-        return session
+        return fsspec.filesystem("https", client_kwargs=client_kwargs)
 
     def get_requests_session(self) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
@@ -521,7 +518,6 @@ class Store:
         pqdm_kwargs: Mapping[str, Any] | None = None,
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
-        fileset: list = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
         logger.info(
             "Opening %s granules, approx size: %s GB",
@@ -554,7 +550,7 @@ class Store:
             url_mapping = _get_url_granule_mapping(granules, access)
             if s3_fs is not None:
                 try:
-                    fileset = _open_files(
+                    return _open_files(
                         url_mapping,
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
@@ -567,20 +563,18 @@ class Store:
                         f"Exception: {traceback.format_exc()}",
                     ) from e
             else:
-                fileset = self._open_urls_https(
+                return self._open_urls_https(
                     url_mapping,
                     pqdm_kwargs=pqdm_kwargs,
                     open_kwargs=open_kwargs,
                 )
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(
+            return self._open_urls_https(
                 url_mapping,
                 pqdm_kwargs=pqdm_kwargs,
                 open_kwargs=open_kwargs,
             )
-
-        return fileset
 
     @_open.register
     def _open_urls(
@@ -592,7 +586,6 @@ class Store:
         pqdm_kwargs: Mapping[str, Any] | None = None,
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
-        fileset: list = []
         s3_fs = None
         if isinstance(granules[0], str) and (
             granules[0].startswith("s3") or granules[0].startswith("http")
@@ -616,7 +609,7 @@ class Store:
                 s3_fs = self.get_s3_filesystem(endpoint=credentials_endpoint)
             if s3_fs:
                 try:
-                    fileset = _open_files(
+                    return _open_files(
                         url_mapping,
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
@@ -629,22 +622,20 @@ class Store:
                         f"Exception: {traceback.format_exc()}",
                     ) from e
 
-                return fileset
             logger.error(
                 "An error occurred while trying to retrieve the cloud credentials for provider: %s. endpoint: %s",
                 provider,
                 credentials_endpoint,
             )
-            return fileset
+            return []
         if granules[0].startswith("s3"):
             raise ValueError(
                 "We cannot open S3 links when we are not in-region, try using HTTPS links",
             )
-        fileset = self._open_urls_https(
+        return self._open_urls_https(
             url_mapping,
             pqdm_kwargs=pqdm_kwargs,
         )
-        return fileset
 
     def get(
         self,

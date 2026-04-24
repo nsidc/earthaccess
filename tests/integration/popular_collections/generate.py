@@ -42,10 +42,7 @@ def top_collections(
             "sort_key[]": "-usage_score",
         },
     )
-    collection_ids = [
-        collection["id"] for collection in response.json()["feed"]["entry"]
-    ]
-    return collection_ids
+    return [collection["id"] for collection in response.json()["feed"]["entry"]]
 
 
 def main():
