@@ -35,6 +35,12 @@ from .search import DataCollections
 
 logger = logging.getLogger(__name__)
 
+_HTTP_OK = 200
+_HTTP_REDIRECT_MIN = 300
+_HTTP_ERROR_MIN = 400
+_HTTP_REJECTED_STATUS_CODES = [400, 401, 403]
+_S3_CREDENTIALS_EXPIRY_MINUTES = 55
+
 
 def _is_interactive() -> bool:
     """Detect if earthaccess is being used in an interactive session.
@@ -293,7 +299,7 @@ class Store:
         except Exception:
             return False
 
-        if resp.status_code == 200 and resp.content == b"us-west-2":
+        if resp.status_code == _HTTP_OK and resp.content == b"us-west-2":
             # On AWS, in region us-west-2
             return True
         return False
@@ -314,7 +320,7 @@ class Store:
 
         resp = self._http_session.request(method, url, allow_redirects=True)
 
-        if resp.status_code in [400, 401, 403]:
+        if resp.status_code in _HTTP_REJECTED_STATUS_CODES:
             new_session = requests.Session()
             resp_req = new_session.request(
                 method,
@@ -322,11 +328,11 @@ class Store:
                 allow_redirects=True,
                 cookies=self._requests_cookies,
             )
-            if resp_req.status_code in [400, 401, 403]:
+            if resp_req.status_code in _HTTP_REJECTED_STATUS_CODES:
                 resp.raise_for_status()
             else:
                 self._requests_cookies.update(new_session.cookies.get_dict())
-        elif 200 <= resp.status_code < 300:
+        elif _HTTP_OK <= resp.status_code < _HTTP_REDIRECT_MIN:
             self._requests_cookies = self._http_session.cookies.get_dict()
         else:
             resp.raise_for_status()
@@ -395,7 +401,7 @@ class Store:
         else:
             # If cached credentials are expired, invalidate the cache
             delta = datetime.datetime.now() - dt_init
-            if round(delta.seconds / 60, 2) > 55:
+            if round(delta.seconds / 60, 2) > _S3_CREDENTIALS_EXPIRY_MINUTES:
                 need_new_creds = True
                 self._s3_credentials.pop(location)
 
@@ -918,11 +924,11 @@ class Store:
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
-                if r.status_code in [401, 403]:
+                if r.status_code in _HTTP_REJECTED_STATUS_CODES:
                     text = (r.text or "").lower()
                     if "eula" in text:
                         raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
-                if r.status_code >= 400:
+                if r.status_code >= _HTTP_ERROR_MIN:
                     raise DownloadFailure(
                         f"Download failed for {url}. Status code: {r.status_code}",
                     )
