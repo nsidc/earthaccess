@@ -321,7 +321,7 @@ class Store:
 
         resp = self._http_session.request(method, url, allow_redirects=True)
 
-        if resp.status_code in _HTTP_REJECTED_STATUS_CODES:
+        if resp.status_code in _HTTP_CLIENT_ERROR_CODES:
             new_session = requests.Session()
             resp_req = new_session.request(
                 method,
