@@ -740,13 +740,9 @@ class DataGranules(GranuleQuery):
         # spatial params must be paired with a collection limiting parameter
         spatial_keys = ["point", "polygon", "bounding_box", "line"]
         collection_keys = ["short_name", "entry_title", "concept_id"]
-
-        if any(key in self.params for key in spatial_keys):
-            if not any(key in self.params for key in collection_keys):
-                return False
-
-        # all good then
-        return True
+        return not any(key in self.params for key in spatial_keys) or any(
+            key in self.params for key in collection_keys
+        )
 
     def _is_cloud_hosted(self, granule: Any) -> bool:
         """Check if a granule record, from CMR, advertises "direct access"."""

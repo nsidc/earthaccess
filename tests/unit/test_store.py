@@ -392,10 +392,12 @@ def test_sibling_tempfile_error(tmp_path):
     orig_text = "Should get replaced"
     new_text = "New-fangled text"
     trg_file.write_text(orig_text)
-    with pytest.raises(Exception, match="Some error to trigger cleanup"):
-        with _sibling_tempfile(trg_file) as temp_file:
-            temp_file.write_text(new_text)
-            raise RuntimeError("Some error to trigger cleanup")
+    with (
+        pytest.raises(Exception, match="Some error to trigger cleanup"),
+        _sibling_tempfile(trg_file) as temp_file,
+    ):
+        temp_file.write_text(new_text)
+        raise RuntimeError("Some error to trigger cleanup")
     assert not temp_file.exists()
     assert trg_file.exists()
     assert trg_file.read_text() == orig_text

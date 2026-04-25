@@ -420,7 +420,7 @@ def download(
     """
     provider = _normalize_location(str(provider))
 
-    if isinstance(granules, DataGranule):
+    if isinstance(granules, DataGranule):  # noqa: SIM114
         granules = [granules]
     elif isinstance(granules, str):
         granules = [granules]

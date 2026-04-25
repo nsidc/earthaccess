@@ -72,12 +72,13 @@ def test_virtualize_multi_granule_no_concat_dim_raises() -> None:
     """virtualize() raises ValueError for >1 granule without concat_dim."""
     from earthaccess.virtual.core import virtualize
 
-    with patch(
-        "earthaccess.virtual.core.build_obstore_registry",
-        return_value=MagicMock(),
+    with (
+        patch(
+            "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock(),
+        ),
+        pytest.raises(ValueError, match="concat_dim"),
     ):
-        with pytest.raises(ValueError, match="concat_dim"):
-            virtualize(_make_granules(2))
+        virtualize(_make_granules(2))
 
 
 def test_virtualize_invalid_parser_string_raises() -> None:
@@ -99,9 +100,12 @@ def test_virtualize_load_false_returns_virtual_dataset() -> None:
 
     mock_vds = MagicMock()
     reg_patch, open_patch = _patch_internals(mock_vds)
-    with reg_patch, open_patch:
-        with patch("earthaccess.virtual.core._load_via_kerchunk") as mock_load:
-            result = virtualize(_make_granules(1), load=False)
+    with (
+        reg_patch,
+        open_patch,
+        patch("earthaccess.virtual.core._load_via_kerchunk") as mock_load,
+    ):
+        result = virtualize(_make_granules(1), load=False)
 
     assert result is mock_vds
     mock_load.assert_not_called()
@@ -113,16 +117,18 @@ def test_virtualize_load_true_delegates_to_kerchunk(tmp_path) -> None:
 
     expected_ds = MagicMock()
     reg_patch, open_patch = _patch_internals()
-    with reg_patch, open_patch:
-        with patch(
-            "earthaccess.virtual.core._load_via_kerchunk",
-            return_value=expected_ds,
-        ) as mock_load:
-            result = virtualize(
-                _make_granules(1),
-                load=True,
-                reference_dir=str(tmp_path),
-            )
+    with (
+        reg_patch,
+        open_patch,
+        patch(
+            "earthaccess.virtual.core._load_via_kerchunk", return_value=expected_ds,
+        ) as mock_load,
+    ):
+        result = virtualize(
+            _make_granules(1),
+            load=True,
+            reference_dir=str(tmp_path),
+        )
 
     mock_load.assert_called_once()
     assert result is expected_ds
@@ -146,16 +152,18 @@ def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
             raise FileNotFoundError("no .dmrpp sidecar")
         return mock_vds_hdf
 
-    with patch(
-        "earthaccess.virtual.core.build_obstore_registry",
-        return_value=MagicMock(),
-    ):
-        with patch(
+    with (
+        patch(
+            "earthaccess.virtual.core.build_obstore_registry",
+            return_value=MagicMock(),
+        ),
+        patch(
             "earthaccess.virtual.core._open_virtual_mfdataset",
             side_effect=side_effect,
-        ):
-            with pytest.warns(UserWarning, match="HDFParser"):
-                result = virtualize(_make_granules(1), parser="DMRPPParser")
+        ),
+        pytest.warns(UserWarning, match="HDFParser"),
+    ):
+        result = virtualize(_make_granules(1), parser="DMRPPParser")
 
     assert result is mock_vds_hdf
     assert call_count["n"] == 2
