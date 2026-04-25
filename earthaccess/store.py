@@ -329,11 +329,11 @@ class Store:
                 allow_redirects=True,
                 cookies=self._requests_cookies,
             )
-            if resp_req.status_code in _HTTP_REJECTED_STATUS_CODES:
+            if resp_req.status_code in _HTTP_CLIENT_ERROR_CODES:
                 resp.raise_for_status()
             else:
                 self._requests_cookies.update(new_session.cookies.get_dict())
-        elif _HTTP_OK <= resp.status_code < _HTTP_REDIRECT_MIN:
+        elif resp.status_code in _HTTP_SUCCESS_CODES:
             self._requests_cookies = self._http_session.cookies.get_dict()
         else:
             resp.raise_for_status()
@@ -925,11 +925,11 @@ class Store:
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
-                if r.status_code in _HTTP_REJECTED_STATUS_CODES:
+                if r.status_code in _HTTP_NO_AUTH_CODES:
                     text = (r.text or "").lower()
                     if "eula" in text:
                         raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
-                if r.status_code >= _HTTP_ERROR_MIN:
+                if not r.ok:
                     raise DownloadFailure(
                         f"Download failed for {url}. Status code: {r.status_code}",
                     )
