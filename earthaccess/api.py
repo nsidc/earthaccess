@@ -351,10 +351,10 @@ def login(
     earthaccess._auth._set_earthdata_system(system)
 
     if strategy == "all":
-        for strategy in ["environment", "netrc", "interactive"]:
+        for strategy_name in ["environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
-                    strategy=strategy,
+                    strategy=strategy_name,
                     persist=persist,
                     system=system,
                 )
