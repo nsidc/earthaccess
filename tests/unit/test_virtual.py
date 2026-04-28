@@ -74,7 +74,8 @@ def test_virtualize_multi_granule_no_concat_dim_raises() -> None:
 
     with (
         patch(
-            "earthaccess.virtual.core.build_obstore_registry", return_value=MagicMock(),
+            "earthaccess.virtual.core.build_obstore_registry",
+            return_value=MagicMock(),
         ),
         pytest.raises(ValueError, match="concat_dim"),
     ):
@@ -121,7 +122,8 @@ def test_virtualize_load_true_delegates_to_kerchunk(tmp_path) -> None:
         reg_patch,
         open_patch,
         patch(
-            "earthaccess.virtual.core._load_via_kerchunk", return_value=expected_ds,
+            "earthaccess.virtual.core._load_via_kerchunk",
+            return_value=expected_ds,
         ) as mock_load,
     ):
         result = virtualize(

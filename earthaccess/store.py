@@ -298,10 +298,7 @@ class Store:
         except Exception:
             return False
 
-        if resp.status_code == _HTTP_OK and resp.content == b"us-west-2":
-            # On AWS, in region us-west-2
-            return True
-        return False
+        return resp.status_code == _HTTP_OK and resp.content == b"us-west-2"
 
     def set_requests_session(self, url: str, method: str = "get") -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
