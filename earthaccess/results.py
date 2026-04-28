@@ -614,18 +614,10 @@ class DataGranule(CustomDict):
         raise ValueError(msg)
 
 
-class Results[T: (DataCollection, DataGranule)](list[T]):
-    def __init__(
-        self,
-        items: list[T],
-        *,
-        # TODO: How should we constrain this so that we can't
-        #       mix-and-match item types and query types?
-        query: DataCollections | DataGranules,
-    ) -> None:
-        super().__init__(items)
-        self._query = query
-
+class Results:
+    """An immutable iterable of search results with convenience methods."""
+    # TODO: Needs to support both a lazy generator approach and an in-memory approach where
+    #       items are never consumed.
     def _preview(self, *, n: int) -> list[str]:
         """Returns a list of previews of the first N results."""
         return [item["meta"]["native-id"] for item in self[:n]]
@@ -682,25 +674,40 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
             </table>
         """)
 
-    @property
-    def _query_parameters(self):
-        return self._query.params
 
-    @property
-    def _query_options(self):
-        return self._query.options
+class GranuleResults(Results):
+    def __init__(
+        self,
+        items: list[DataGranule],
+        *,
+        query: DataGranules,  # TODO: DataGranules is a bad name! Should be DataGranuleQuery.
+    ) -> None:
+        super().__init__(items)
+        self._query = query
 
     def to_gdf(self) -> GeoDataFrame:
-        if self and isinstance(self[0], DataCollection):
-            raise TypeError("Only supports DataGranule results")
-
+        # TODO: Allow user to receive the raw normalized gdf and rename columns?
+        # TODO: Pre-massage the GDF to a small set of "known useful" columns and
+        #       give them more reader-friendly names. Avoid future breaking changes
+        #       that might arise from selecting too many columns.
         try:
             import pandas as pd
             from geopandas import GeoDataFrame
         except ImportError as e:
             raise ImportError("GeoPandas must be installed") from e
+
         return GeoDataFrame(
             pd.json_normalize(self),
             geometry=self,
             crs="EPSG:4326",
         )
+
+class CollectionResults(Results):
+    def __init__(
+        self,
+        items: list[DataCollection],
+        *,
+        query: DataCollections,
+    ) -> None:
+        super().__init__(items)
+        self._query = query
