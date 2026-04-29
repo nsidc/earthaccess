@@ -365,10 +365,11 @@ class DataGranule(CustomDict):
         data_links = [link for link in self.data_links()]
 
         # Not all granules have spatial coverage, set to None if missing
+        # TODO: We should have a granule metadata validator method
         if "SpatialExtent" not in self["umm"]:
             self["umm"]["SpatialExtent"] = None
 
-        rep_str = f"""
+        return f"""
         Collection: {self["umm"]["CollectionReference"]}
         Spatial coverage: {self["umm"]["SpatialExtent"]}
         Temporal coverage: {self["umm"]["TemporalExtent"]}
