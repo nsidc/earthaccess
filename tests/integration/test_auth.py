@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 def test_auth_can_read_earthdata_env_variables():
     auth = earthaccess.login(strategy="environment")
-    logger.info(f"Current username: {auth.username}")
-    logger.info(f"earthaccess version: {earthaccess.__version__}")
+    logger.info("Current username: %s", auth.username)
+    logger.info("earthaccess version: %s", earthaccess.__version__)
 
     assert isinstance(auth, earthaccess.Auth)
     assert isinstance(earthaccess.__auth__, earthaccess.Auth)

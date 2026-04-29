@@ -35,6 +35,13 @@ from .search import DataCollections
 
 logger = logging.getLogger(__name__)
 
+_HTTP_OK = 200
+_HTTP_SUCCESS_CODES = range(200, 300)
+_HTTP_CLIENT_ERROR_CODES = range(400, 500)
+_HTTP_SERVER_ERROR_CODES = range(500, 600)
+_HTTP_NO_AUTH_CODES = {401, 403}
+_S3_CREDENTIALS_EXPIRY_MINUTES = 55
+
 
 def _is_interactive() -> bool:
     """Detect if earthaccess is being used in an interactive session.
@@ -258,13 +265,11 @@ class Store:
 
     def _derive_concept_provider(self, concept_id: str | None = None) -> str:
         if concept_id is not None:
-            provider = concept_id.split("-")[1]
-            return provider
+            return concept_id.split("-")[1]
         return ""
 
     def _derive_daac_provider(self, daac: str) -> str | None:
-        provider = find_provider(daac, True)
-        return provider
+        return find_provider(daac, True)
 
     def _is_cloud_collection(self, concept_id: list[str]) -> bool:
         collection = DataCollections(self.auth).concept_id(concept_id).get()
@@ -295,7 +300,7 @@ class Store:
         except Exception:
             return False
 
-        if resp.status_code == 200 and resp.content == b"us-west-2":
+        if resp.status_code == _HTTP_OK and resp.content == b"us-west-2":
             # On AWS, in region us-west-2
             return True
         return False
@@ -316,7 +321,7 @@ class Store:
 
         resp = self._http_session.request(method, url, allow_redirects=True)
 
-        if resp.status_code in [400, 401, 403]:
+        if resp.status_code in _HTTP_CLIENT_ERROR_CODES:
             new_session = requests.Session()
             resp_req = new_session.request(
                 method,
@@ -324,11 +329,11 @@ class Store:
                 allow_redirects=True,
                 cookies=self._requests_cookies,
             )
-            if resp_req.status_code in [400, 401, 403]:
+            if resp_req.status_code in _HTTP_CLIENT_ERROR_CODES:
                 resp.raise_for_status()
             else:
                 self._requests_cookies.update(new_session.cookies.get_dict())
-        elif 200 <= resp.status_code < 300:
+        elif resp.status_code in _HTTP_SUCCESS_CODES:
             self._requests_cookies = self._http_session.cookies.get_dict()
         else:
             resp.raise_for_status()
@@ -397,7 +402,7 @@ class Store:
         else:
             # If cached credentials are expired, invalidate the cache
             delta = datetime.datetime.now() - dt_init
-            if round(delta.seconds / 60, 2) > 55:
+            if round(delta.seconds / 60, 2) > _S3_CREDENTIALS_EXPIRY_MINUTES:
                 need_new_creds = True
                 self._s3_credentials.pop(location)
 
@@ -436,8 +441,7 @@ class Store:
             # auth will fail!
             "trust_env": False,
         }
-        session = fsspec.filesystem("https", client_kwargs=client_kwargs)
-        return session
+        return fsspec.filesystem("https", client_kwargs=client_kwargs)
 
     def get_requests_session(self) -> requests.Session:
         """Returns a requests HTTPS session with bearer tokens that are used by CMR.
@@ -521,9 +525,12 @@ class Store:
         pqdm_kwargs: Mapping[str, Any] | None = None,
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
-        fileset: list = []
         total_size = round(sum([granule.size() for granule in granules]) / 1024, 2)
-        logger.info(f"Opening {len(granules)} granules, approx size: {total_size} GB")
+        logger.info(
+            "Opening %s granules, approx size: %s GB",
+            len(granules),
+            total_size,
+        )
 
         if self.auth is None:
             raise ValueError(
@@ -538,10 +545,10 @@ class Store:
                     granules[0]["umm"]["RelatedUrls"],
                 )
                 if endpoint is not None:
-                    logger.info(f"using endpoint: {endpoint}")
+                    logger.info("using endpoint: %s", endpoint)
                     s3_fs = self.get_s3_filesystem(endpoint=endpoint)
                 else:
-                    logger.info(f"using provider: {provider}")
+                    logger.info("using provider: %s", provider)
                     s3_fs = self.get_s3_filesystem(provider=provider)
             else:
                 access = "on_prem"
@@ -550,7 +557,7 @@ class Store:
             url_mapping = _get_url_granule_mapping(granules, access)
             if s3_fs is not None:
                 try:
-                    fileset = _open_files(
+                    return _open_files(
                         url_mapping,
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
@@ -563,20 +570,18 @@ class Store:
                         f"Exception: {traceback.format_exc()}",
                     ) from e
             else:
-                fileset = self._open_urls_https(
+                return self._open_urls_https(
                     url_mapping,
                     pqdm_kwargs=pqdm_kwargs,
                     open_kwargs=open_kwargs,
                 )
         else:
             url_mapping = _get_url_granule_mapping(granules, access="on_prem")
-            fileset = self._open_urls_https(
+            return self._open_urls_https(
                 url_mapping,
                 pqdm_kwargs=pqdm_kwargs,
                 open_kwargs=open_kwargs,
             )
-
-        return fileset
 
     @_open.register
     def _open_urls(
@@ -588,7 +593,6 @@ class Store:
         pqdm_kwargs: Mapping[str, Any] | None = None,
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
-        fileset: list = []
         s3_fs = None
         if isinstance(granules[0], str) and (
             granules[0].startswith("s3") or granules[0].startswith("http")
@@ -612,7 +616,7 @@ class Store:
                 s3_fs = self.get_s3_filesystem(endpoint=credentials_endpoint)
             if s3_fs:
                 try:
-                    fileset = _open_files(
+                    return _open_files(
                         url_mapping,
                         fs=s3_fs,
                         pqdm_kwargs=pqdm_kwargs,
@@ -625,20 +629,20 @@ class Store:
                         f"Exception: {traceback.format_exc()}",
                     ) from e
 
-                return fileset
             logger.error(
-                f"An error occurred while trying to retrieve the cloud credentials for provider: {provider}. endpoint: {credentials_endpoint}",
+                "An error occurred while trying to retrieve the cloud credentials for provider: %s. endpoint: %s",
+                provider,
+                credentials_endpoint,
             )
-            return fileset
+            return []
         if granules[0].startswith("s3"):
             raise ValueError(
                 "We cannot open S3 links when we are not in-region, try using HTTPS links",
             )
-        fileset = self._open_urls_https(
+        return self._open_urls_https(
             url_mapping,
             pqdm_kwargs=pqdm_kwargs,
         )
-        return fileset
 
     def get(
         self,
@@ -762,7 +766,7 @@ class Store:
 
         with _sibling_tempfile(file_name) as temp_name:
             s3_fs.get([file], str(temp_name), recursive=False)
-        logger.info(f"Downloading: {file_name}")
+        logger.info("Downloading: %s", file_name)
         return file_name
 
     @_get.register
@@ -791,11 +795,12 @@ class Store:
         if self.in_region and data_links[0].startswith("s3"):
             if credentials_endpoint is not None:
                 logger.info(
-                    f"Accessing cloud dataset using credentials_endpoint: {credentials_endpoint}",
+                    "Accessing cloud dataset using credentials_endpoint: %s",
+                    credentials_endpoint,
                 )
                 s3_fs = self.get_s3_filesystem(endpoint=credentials_endpoint)
             elif provider is not None:
-                logger.info(f"Accessing cloud dataset using provider: {provider}")
+                logger.info("Accessing cloud dataset using provider: %s", provider)
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             def _download(file: str) -> Path | None:
@@ -837,16 +842,19 @@ class Store:
         )
         total_size = round(sum(granule.size() for granule in granules) / 1024, 2)
         logger.info(
-            f" Getting {len(granules)} granules, approx download size: {total_size} GB",
+            "Getting %s granules, approx download size: %s GB",
+            len(granules),
+            total_size,
         )
         if access == "direct":
             if endpoint is not None:
                 logger.info(
-                    f"Accessing cloud dataset using dataset endpoint credentials: {endpoint}",
+                    "Accessing cloud dataset using dataset endpoint credentials: %s",
+                    endpoint,
                 )
                 s3_fs = self.get_s3_filesystem(endpoint=endpoint)
             else:
-                logger.info(f"Accessing cloud dataset using provider: {provider}")
+                logger.info("Accessing cloud dataset using provider: %s", provider)
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             local_path.mkdir(parents=True, exist_ok=True)
@@ -917,11 +925,11 @@ class Store:
             self._clone_session_in_local_thread(original_session)
             session = self.thread_locals.local_thread_session
             with session.get(url, stream=True, allow_redirects=True) as r:
-                if r.status_code in [401, 403]:
+                if r.status_code in _HTTP_NO_AUTH_CODES:
                     text = (r.text or "").lower()
                     if "eula" in text:
                         raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
-                if r.status_code >= 400:
+                if not r.ok:
                     raise DownloadFailure(
                         f"Download failed for {url}. Status code: {r.status_code}",
                     )
@@ -934,7 +942,7 @@ class Store:
                     # https://docs.python-requests.org/en/latest/user/quickstart/#raw-response-content
                     f.writelines(r.iter_content(chunk_size=1024 * 1024))
         else:
-            logger.info(f"File {local_filename} already downloaded")
+            logger.info("File %s already downloaded", local_filename)
         return path
 
     def _download_onprem_granules(

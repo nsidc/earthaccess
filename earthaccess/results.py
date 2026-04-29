@@ -363,14 +363,19 @@ class DataGranule(CustomDict):
             A basic representation of a data granule.
         """
         data_links = [link for link in self.data_links()]
-        rep_str = f"""
+
+        # Not all granules have spatial coverage, set to None if missing
+        # TODO: We should have a granule metadata validator method
+        if "SpatialExtent" not in self["umm"]:
+            self["umm"]["SpatialExtent"] = None
+
+        return f"""
         Collection: {self["umm"]["CollectionReference"]}
         Spatial coverage: {self["umm"]["SpatialExtent"]}
         Temporal coverage: {self["umm"]["TemporalExtent"]}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
-        return rep_str
 
     def _repr_html_(self) -> str:
         """Return an HTML representation of the granule.
@@ -378,8 +383,7 @@ class DataGranule(CustomDict):
         Returns:
             A rich representation for a data granule if we are in a Jupyter notebook.
         """
-        granule_html_repr = _repr_granule_html(self)
-        return granule_html_repr
+        return _repr_granule_html(self)
 
     def __hash__(self) -> int:  # type: ignore[override]
         return hash(self["meta"]["concept-id"])
@@ -487,8 +491,7 @@ class DataGranule(CustomDict):
         Returns:
             The data visualization links, usually the browse images.
         """
-        links = self._filter_related_links("GET RELATED VISUALIZATION")
-        return links
+        return self._filter_related_links("GET RELATED VISUALIZATION")
 
     @property
     def __geo_interface__(self) -> dict[str, object]:

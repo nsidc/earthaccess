@@ -180,7 +180,7 @@ def search_datasets(count: int = -1, **kwargs: Any) -> list[DataCollection]:
     else:
         query = DataCollections().parameters(**kwargs)
     datasets_found = query.hits()
-    logger.info(f"Datasets found: {datasets_found}")
+    logger.info("Datasets found: %s", datasets_found)
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -274,7 +274,7 @@ def search_data(count: int = -1, **kwargs: Any) -> list[DataGranule]:
     else:
         query = DataGranules().parameters(**kwargs)
     granules_found = query.hits()
-    logger.info(f"Granules found: {granules_found}")
+    logger.info("Granules found: %s", granules_found)
     if count > 0:
         return query.get(count)
     return query.get_all()
@@ -303,7 +303,7 @@ def search_services(count: int = -1, **kwargs: Any) -> list[Any]:
     """
     query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
     hits = query.hits()
-    logger.info(f"Services found: {hits}")
+    logger.info("Services found: %s", hits)
 
     return query.get(hits if count < 1 else min(count, hits))
 
@@ -351,10 +351,10 @@ def login(
     earthaccess._auth._set_earthdata_system(system)
 
     if strategy == "all":
-        for strategy in ["environment", "netrc", "interactive"]:
+        for strategy_name in ["environment", "netrc", "interactive"]:
             try:
                 earthaccess.__auth__.login(
-                    strategy=strategy,
+                    strategy=strategy_name,
                     persist=persist,
                     system=system,
                 )
@@ -548,8 +548,7 @@ def get_fsspec_https_session() -> AbstractFileSystem:
             f.read(10)
         ```
     """
-    session = earthaccess.__store__.get_fsspec_session()
-    return session
+    return earthaccess.__store__.get_fsspec_session()
 
 
 def get_requests_https_session() -> requests.Session:
@@ -571,8 +570,7 @@ def get_requests_https_session() -> requests.Session:
 
         ```
     """
-    session = earthaccess.__store__.get_requests_session()
-    return session
+    return earthaccess.__store__.get_requests_session()
 
 
 @deprecated("Use get_s3_filesystem instead")
@@ -642,8 +640,7 @@ def get_edl_token() -> str:
     Returns:
         EDL token
     """
-    token = earthaccess.__auth__.token
-    return token
+    return earthaccess.__auth__.token
 
 
 def auth_environ() -> dict[str, str]:
