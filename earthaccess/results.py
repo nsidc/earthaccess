@@ -375,7 +375,6 @@ class DataGranule(CustomDict):
         Size(MB): {self.size()}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
-        return rep_str
 
     def _repr_html_(self) -> str:
         """Return an HTML representation of the granule.
@@ -383,8 +382,7 @@ class DataGranule(CustomDict):
         Returns:
             A rich representation for a data granule if we are in a Jupyter notebook.
         """
-        granule_html_repr = _repr_granule_html(self)
-        return granule_html_repr
+        return _repr_granule_html(self)
 
     def __hash__(self) -> int:  # type: ignore[override]
         return hash(self["meta"]["concept-id"])
@@ -492,8 +490,7 @@ class DataGranule(CustomDict):
         Returns:
             The data visualization links, usually the browse images.
         """
-        links = self._filter_related_links("GET RELATED VISUALIZATION")
-        return links
+        return self._filter_related_links("GET RELATED VISUALIZATION")
 
     @property
     def __geo_interface__(self) -> dict[str, object]:
