@@ -185,7 +185,7 @@ slice of the workflow:
 - **Direct use of `fsspec`/`s3fs`** [@fsspec; @s3fs]: Advanced users can compose their
   own access workflows using these general-purpose filesystem libraries. However, this
   requires extensive knowledge of NASA's authentication flow, DAAC-specific credential
-  endpoints, and the mapping between on-premises and cloud-hosted data links.
+  endpoints, and the mapping between download versus cloud-streaming data access links.
 
 
 # Software design
