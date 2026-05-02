@@ -420,7 +420,9 @@ def download(
     """
     provider = _normalize_location(str(provider))
 
-    if isinstance(granules, DataGranule):
+    # Separate `isinstance` checks enable the typechecker to resolve `granules` as
+    # `list[DataGranule] | list[str]` instead of `list[DataGranule | str]`.
+    if isinstance(granules, DataGranule):  # noqa: SIM114
         granules = [granules]
     elif isinstance(granules, str):
         granules = [granules]

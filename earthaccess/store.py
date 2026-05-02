@@ -208,7 +208,7 @@ def _sibling_tempfile(sibling: Path) -> Generator[Path, None, None]:
     # directory if it does not already exist.  Others succeed due to exist_ok.
     sibling.parent.mkdir(parents=True, exist_ok=True)
 
-    temp_fh = tempfile.NamedTemporaryFile(
+    temp_fh = tempfile.NamedTemporaryFile(  # noqa: SIM115
         dir=sibling.parent,
         prefix="partial_",  # In case auto-delete fails, make it obvious to users
         delete=False,
@@ -273,9 +273,7 @@ class Store:
 
     def _is_cloud_collection(self, concept_id: list[str]) -> bool:
         collection = DataCollections(self.auth).concept_id(concept_id).get()
-        if len(collection) > 0 and "s3-links" in collection[0]["meta"]:
-            return True
-        return False
+        return len(collection) > 0 and "s3-links" in collection[0]["meta"]
 
     def _own_s3_credentials(self, links: list[dict[str, Any]]) -> str | None:
         for link in links:
@@ -300,10 +298,7 @@ class Store:
         except Exception:
             return False
 
-        if resp.status_code == _HTTP_OK and resp.content == b"us-west-2":
-            # On AWS, in region us-west-2
-            return True
-        return False
+        return resp.status_code == _HTTP_OK and resp.content == b"us-west-2"
 
     def set_requests_session(self, url: str, method: str = "get") -> None:
         """Sets up a `requests` session with bearer tokens that are used by CMR.
