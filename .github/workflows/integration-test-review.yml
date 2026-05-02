@@ -31,7 +31,7 @@ jobs:
         # is 'false', it means that the triggering actor does NOT have the required
         # permission.
         if: ${{ !env.ACT && steps.permission.outputs.require-result == 'false' }}
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           # Download the PR artifact that was uploaded in integration-test.yml
           script: |
@@ -73,7 +73,7 @@ jobs:
         # a PR comment indicating a security review is required because we know that
         # the integration tests "failed" due to lack of permission (i.e., they were
         # actually "aborted" without running any tests).
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
