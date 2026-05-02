@@ -255,16 +255,18 @@ def test_download_deferred_failure(tmp_path: Path):
         count=count,
     )
 
-    with patch.object(earthaccess.__store__, "_download_file", fail_to_download_file):  # noqa: SIM117
+    with (
+        patch.object(earthaccess.__store__, "_download_file", fail_to_download_file),
         # With "deferred" exceptions, pqdm catches all exceptions, then at the end
         # raises a single generic Exception, passing the sequence of caught exceptions
         # as arguments to the Exception constructor.
-        with pytest.raises(Exception) as exc_info:
-            earthaccess.download(
-                results,
-                tmp_path,
-                pqdm_kwargs=dict(exception_behaviour="deferred", disable=True),
-            )
+        pytest.raises(Exception) as exc_info,
+    ):
+        earthaccess.download(
+            results,
+            tmp_path,
+            pqdm_kwargs=dict(exception_behaviour="deferred", disable=True),
+        )
 
     errors = exc_info.value.args
     assert len(errors) == count
