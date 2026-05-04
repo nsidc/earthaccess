@@ -93,6 +93,7 @@ relevant tab to proceed.
     - Create a branch to resolve your issue
     - Update the relevant code to fix the issue
     - If you're comfortable writing tests: create one or more new tests to demonstrate the bug, verify they fail before your fix, and pass after. It's fine to let PR CI/CD run the tests for you instead of running them locally.
+      [PR #923](https://github.com/earthaccess-dev/earthaccess/pull/923) is a small example: it fixes two `open_virtual_dataset` bugs and adds tests in `tests/integration/test_virtualizarr.py` that fail before the fix and pass after.
     - If you're **not** comfortable writing tests: that's OK! Open your PR anyway and note that you'd like help with tests. We'll work with you to get them added before merging.
     - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit) (or comment `pre-commit.ci autofix` on your PR to have it done automatically)
     - Describe your changes in the `CHANGELOG.md`
@@ -104,6 +105,7 @@ relevant tab to proceed.
     - Create a branch for your new feature in your fork
     - Write the code to implement your new feature in a backwards compatible manner. If breaking changes are necessary, discuss your strategy with the team first.
     - If you're comfortable writing tests: create at least one test that exercises your feature. It's fine to let PR CI/CD run the test suite for you instead of running it locally.
+      [PR #1146](https://github.com/earthaccess-dev/earthaccess/pull/1146) is a small example: it adds the `LARC_CLOUD` provider to `daac_list` and adds an integration test that exercises it.
     - If you're **not** comfortable writing tests: that's OK! Open your PR anyway and note that you'd like help with tests. We'll work with you to get them added before merging.
     - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit) (or comment `pre-commit.ci autofix` on your PR to have it done automatically)
     - Describe your changes in the `CHANGELOG.md`
