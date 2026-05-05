@@ -22,6 +22,8 @@ nav:
               - "Store": "api/store/store.md"
           - Auth:
               - "Auth": "api/auth/auth.md"
+          - Virtual:
+              - "Virtual": "api/virtual/virtual.md"
 
   - User guide:
       - "user/index.md"
@@ -48,6 +50,7 @@ nav:
           # - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb" TODO: make this faster
           - "Accessing and visualizing EMIT data with a few lines of code": "user/tutorials/emit-earthaccess.ipynb"
           - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "user/tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
+          - "Virtual datasets with earthaccess": "tutorials/virtual_data.ipynb"
       - Reference:
           - Glossary:
               - "NASA Glossary": "user/reference/glossary/nasa-glossary.md"
