@@ -78,7 +78,8 @@ kerchunk = [
 virtualizarr = [
   "numpy >=1.26.4",
   "zarr >=3.1.1",
-  "virtualizarr >=2.1.2",
+  "virtualizarr",
+  "icechunk",
   "kerchunk>=0.2.9",
   "dask",
   "h5py >=3.14.0",
@@ -86,6 +87,8 @@ virtualizarr = [
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",
   "xarray",
+  "matplotlib",
+  "hvplot",
 ]
 
 [dependency-groups]

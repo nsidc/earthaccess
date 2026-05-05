@@ -1,9 +1,9 @@
 """Unit tests for earthaccess.virtual.
 
-Covers the three public-facing modules:
-  - core        (virtualize / _load_via_kerchunk)
-  - _parser     (SUPPORTED_PARSERS / resolve_parser / get_urls_for_parser)
-  - _credentials (get_granule_credentials_endpoint_and_region)
+Covers the high-level public API:
+  - virtualize()
+  - open_virtual() (str, DataCollection, load, force_external paths)
+  - DataCollection.virtual_collection_url() / get_s3_credentials()
 
 All external I/O is mocked so the suite runs without network access or
 optional heavy dependencies.
@@ -56,12 +56,11 @@ def _patch_internals(mock_vds: MagicMock | None = None):
 
 
 # ---------------------------------------------------------------------------
-# core — input validation
+# virtualize
 # ---------------------------------------------------------------------------
 
 
 def test_virtualize_empty_granules_raises() -> None:
-    """virtualize() raises ValueError when granules list is empty."""
     from earthaccess.virtual.core import virtualize
 
     with pytest.raises(ValueError, match=r"[Nn]o granules"):
@@ -69,7 +68,6 @@ def test_virtualize_empty_granules_raises() -> None:
 
 
 def test_virtualize_multi_granule_no_concat_dim_raises() -> None:
-    """virtualize() raises ValueError for >1 granule without concat_dim."""
     from earthaccess.virtual.core import virtualize
 
     with (
@@ -83,20 +81,13 @@ def test_virtualize_multi_granule_no_concat_dim_raises() -> None:
 
 
 def test_virtualize_invalid_parser_string_raises() -> None:
-    """virtualize() raises ValueError for an unrecognised parser string."""
     from earthaccess.virtual.core import virtualize
 
     with pytest.raises(ValueError, match="BadParser"):
         virtualize(_make_granules(1), parser="BadParser")
 
 
-# ---------------------------------------------------------------------------
-# core — happy paths
-# ---------------------------------------------------------------------------
-
-
 def test_virtualize_load_false_returns_virtual_dataset() -> None:
-    """virtualize(load=False) returns the raw virtual dataset without calling kerchunk."""
     from earthaccess.virtual.core import virtualize
 
     mock_vds = MagicMock()
@@ -113,7 +104,6 @@ def test_virtualize_load_false_returns_virtual_dataset() -> None:
 
 
 def test_virtualize_load_true_delegates_to_kerchunk(tmp_path) -> None:
-    """virtualize(load=True) calls _load_via_kerchunk and returns its result."""
     from earthaccess.virtual.core import virtualize
 
     expected_ds = MagicMock()
@@ -136,13 +126,7 @@ def test_virtualize_load_true_delegates_to_kerchunk(tmp_path) -> None:
     assert result is expected_ds
 
 
-# ---------------------------------------------------------------------------
-# core — DMR++ fallback behaviour
-# ---------------------------------------------------------------------------
-
-
 def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
-    """When DMR++ sidecars are missing, virtualize() warns and retries with HDFParser."""
     from earthaccess.virtual.core import virtualize
 
     mock_vds_hdf = MagicMock()
@@ -172,193 +156,499 @@ def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
 
 
 # ---------------------------------------------------------------------------
-# _parser — SUPPORTED_PARSERS
+# open_virtual — str URL routing
 # ---------------------------------------------------------------------------
 
 
-def test_supported_parsers_contains_canonical_names() -> None:
-    """SUPPORTED_PARSERS includes the three canonical parser names."""
-    from earthaccess.virtual._parser import SUPPORTED_PARSERS
+def test_open_virtual_unrecognised_uri_raises() -> None:
+    from earthaccess.virtual.core import open_virtual
 
-    assert isinstance(SUPPORTED_PARSERS, frozenset)
-    assert {"DMRPPParser", "HDFParser", "NetCDF3Parser"} <= SUPPORTED_PARSERS
-
-
-# ---------------------------------------------------------------------------
-# _parser — resolve_parser
-# ---------------------------------------------------------------------------
+    with pytest.raises(ValueError, match="Unrecognised"):
+        open_virtual("data.nc")
 
 
-def test_resolve_parser_dmrpp_returns_instance() -> None:
-    """resolve_parser('DMRPPParser') returns a DMRPPParser instance."""
-    from earthaccess.virtual._parser import resolve_parser
+def test_open_virtual_icechunk_delegates(tmp_path) -> None:
+    from earthaccess.virtual.core import open_virtual
 
-    assert type(resolve_parser("DMRPPParser")).__name__ == "DMRPPParser"
+    mock_ds = MagicMock()
+    icechunk_path = tmp_path / "store.icechunk"
+    icechunk_path.write_text("")
 
+    with patch(
+        "earthaccess.virtual.core._open_icechunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual(str(icechunk_path))
 
-def test_resolve_parser_invalid_string_raises() -> None:
-    """resolve_parser raises ValueError and lists valid names in the message."""
-    from earthaccess.virtual._parser import resolve_parser
-
-    with pytest.raises(ValueError, match="DMRPPParser"):
-        resolve_parser("UnknownParser")
-
-
-# ---------------------------------------------------------------------------
-# _parser — get_urls_for_parser
-# ---------------------------------------------------------------------------
+    mock_open.assert_called_once_with(str(icechunk_path), storage_options=None)
+    assert result is mock_ds
 
 
-def test_get_urls_dmrpp_appends_dmrpp_suffix() -> None:
-    """get_urls_for_parser with DMRPPParser appends '.dmrpp' to each URL."""
-    from earthaccess.virtual._parser import get_urls_for_parser, resolve_parser
+def test_open_virtual_kerchunk_json_delegates() -> None:
+    from earthaccess.virtual.core import open_virtual
 
-    granule = cast("DataGranule", MagicMock())
-    granule.data_links.return_value = ["s3://bucket/file.nc"]  # type: ignore[attr-defined]
-    urls = get_urls_for_parser(
-        [granule],
-        resolve_parser("DMRPPParser"),
-        access="direct",
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_kerchunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual("refs.json")
+
+    mock_open.assert_called_once_with("refs.json", storage_options=None)
+    assert result is mock_ds
+
+
+def test_open_virtual_kerchunk_parquet_delegates() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_kerchunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual("refs.parquet", storage_options={"key": "val"})
+
+    mock_open.assert_called_once_with(
+        "refs.parquet",
+        storage_options={"key": "val"},
     )
-    assert urls == ["s3://bucket/file.nc.dmrpp"]
+    assert result is mock_ds
 
 
-def test_get_urls_passes_access_to_data_links() -> None:
-    """get_urls_for_parser forwards the access argument to granule.data_links."""
-    from earthaccess.virtual._parser import get_urls_for_parser, resolve_parser
+def test_open_virtual_forwards_storage_options_to_icechunk(tmp_path) -> None:
+    from earthaccess.virtual.core import open_virtual
 
-    mock = MagicMock()
-    mock.data_links.return_value = ["https://example.com/file.h5"]
-    granule = cast("DataGranule", mock)
-    get_urls_for_parser([granule], resolve_parser("HDFParser"), access="indirect")
-    mock.data_links.assert_called_once_with(access="indirect")
+    mock_ds = MagicMock()
+    icechunk_path = tmp_path / "store.icechunk"
+    icechunk_path.write_text("")
+    opts = {"some": "option"}
+
+    with patch(
+        "earthaccess.virtual.core._open_icechunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual(
+            str(icechunk_path),
+            storage_options=opts,
+        )
+
+    mock_open.assert_called_once_with(str(icechunk_path), storage_options=opts)
+    assert result is mock_ds
 
 
 # ---------------------------------------------------------------------------
-# _credentials — get_granule_credentials_endpoint_and_region
-# Uses real DataGranule / DataCollection objects (no MagicMock stand-ins).
+# DataCollection — virtual_collection_url / get_s3_credentials
 # ---------------------------------------------------------------------------
 
-_granule_no_endpoint = DataGranule(
-    {
-        "meta": {"collection-concept-id": "C1234-PROV"},
-        "umm": {
-            "RelatedUrls": [
-                {"URL": "https://data.earthdata.nasa.gov/data.h5", "Type": "GET DATA"},
-            ],
-        },
-    },
-    cloud_hosted=True,
-)
 
-
-@patch("earthaccess.search_datasets")
-def test_credentials_endpoint_from_granule(mock_search_datasets) -> None:
-    """Endpoint embedded in the granule UMM-G record is used directly."""
-    from earthaccess.virtual._credentials import (
-        get_granule_credentials_endpoint_and_region,
-    )
-
-    endpoint_url = "https://archive.daac.earthdata.nasa.gov/s3credentials"
-    granule = DataGranule(
+def test_collection_virtual_url_found() -> None:
+    collection = DataCollection(
         {
-            "meta": {"collection-concept-id": "C1234-PROV"},
+            "meta": {"concept-id": "C1234-PROV"},
             "umm": {
                 "RelatedUrls": [
                     {
-                        "URL": "https://data.earthdata.nasa.gov/data.h5",
+                        "URL": "https://example.com/refs.json",
                         "Type": "GET DATA",
+                        "Subtype": "VIRTUAL COLLECTION",
                     },
                     {
-                        "URL": "s3://bucket/data.h5",
-                        "Type": "GET DATA VIA DIRECT ACCESS",
+                        "URL": "https://example.com/data.nc",
+                        "Type": "GET DATA",
                     },
-                    {"URL": endpoint_url, "Type": "VIEW RELATED INFORMATION"},
                 ],
             },
         },
-        cloud_hosted=True,
     )
-
-    assert get_granule_credentials_endpoint_and_region(granule) == (
-        endpoint_url,
-        "us-west-2",
-    )
-    mock_search_datasets.assert_not_called()
+    assert collection.virtual_collection_url() == "https://example.com/refs.json"
 
 
-@patch("earthaccess.search_datasets")
-def test_credentials_endpoint_from_collection(mock_search_datasets) -> None:
-    """Falls back to the collection record when the granule has no endpoint."""
-    from earthaccess.virtual._credentials import (
-        get_granule_credentials_endpoint_and_region,
-    )
-
-    coll_endpoint = "https://archive.other-daac.earthdata.nasa.gov/s3credentials"
-    coll_region = "us-east-1"
-    mock_search_datasets.return_value = [
-        DataCollection(
-            {
-                "meta": {"concept-id": "C1234-PROV"},
-                "umm": {
-                    "DirectDistributionInformation": {
-                        "Region": coll_region,
-                        "S3CredentialsAPIEndpoint": coll_endpoint,
+def test_collection_virtual_url_not_found() -> None:
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "RelatedUrls": [
+                    {
+                        "URL": "https://example.com/data.nc",
+                        "Type": "GET DATA",
                     },
+                ],
+            },
+        },
+    )
+    assert collection.virtual_collection_url() is None
+
+
+def test_collection_virtual_url_no_related_urls() -> None:
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {},
+        },
+    )
+    assert collection.virtual_collection_url() is None
+
+
+def test_collection_get_s3_credentials() -> None:
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "DirectDistributionInformation": {
+                    "S3CredentialsAPIEndpoint": "https://example.com/s3credentials",
+                    "Region": "us-west-2",
                 },
             },
-        ),
-    ]
-
-    assert get_granule_credentials_endpoint_and_region(_granule_no_endpoint) == (
-        coll_endpoint,
-        coll_region,
+        },
     )
-    mock_search_datasets.assert_called_once_with(count=1, concept_id="C1234-PROV")
+    mock_creds = {
+        "accessKeyId": "AKIA...",
+        "secretAccessKey": "secret...",
+        "sessionToken": "token...",
+    }
+    with patch(
+        "earthaccess.results.earthaccess.__auth__",
+        autospec=True,
+    ) as mock_auth:
+        mock_auth.get_s3_credentials.return_value = mock_creds
+        result = collection.get_s3_credentials()
 
-
-@patch("earthaccess.search_datasets")
-def test_credentials_collection_missing_region_defaults_to_us_west_2(
-    mock_search_datasets,
-) -> None:
-    """Region defaults to us-west-2 when the collection record omits it."""
-    from earthaccess.virtual._credentials import (
-        get_granule_credentials_endpoint_and_region,
+    mock_auth.get_s3_credentials.assert_called_once_with(
+        endpoint="https://example.com/s3credentials",
     )
+    assert result == mock_creds
 
-    coll_endpoint = "https://archive.other-daac.earthdata.nasa.gov/s3credentials"
-    mock_search_datasets.return_value = [
-        DataCollection(
-            {
-                "meta": {"concept-id": "C1234-PROV"},
-                "umm": {
-                    "DirectDistributionInformation": {
-                        "S3CredentialsAPIEndpoint": coll_endpoint,
-                    },
+
+def test_collection_get_s3_credentials_no_endpoint() -> None:
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "DirectDistributionInformation": {
+                    "Region": "us-west-2",
                 },
             },
-        ),
-    ]
-
-    _, region = get_granule_credentials_endpoint_and_region(_granule_no_endpoint)
-    assert region == "us-west-2"
-
-
-@patch("earthaccess.search_datasets")
-def test_credentials_raises_when_no_endpoint_anywhere(mock_search_datasets) -> None:
-    """ValueError raised when neither granule nor collection has an endpoint."""
-    from earthaccess.virtual._credentials import (
-        get_granule_credentials_endpoint_and_region,
+        },
     )
+    with pytest.raises(ValueError, match="S3CredentialsAPIEndpoint"):
+        collection.get_s3_credentials()
 
-    mock_search_datasets.return_value = [
-        DataCollection(
-            {
-                "meta": {"concept-id": "C1234-PROV"},
-                "umm": {"DirectDistributionInformation": {"Region": "us-east-1"}},
+
+# ---------------------------------------------------------------------------
+# open_virtual — DataCollection
+# ---------------------------------------------------------------------------
+
+
+def test_open_virtual_with_collection_kerchunk() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "RelatedUrls": [
+                    {
+                        "URL": "https://example.com/refs.json",
+                        "Type": "GET DATA",
+                        "Subtype": "VIRTUAL COLLECTION",
+                    },
+                ],
             },
-        ),
-    ]
+        },
+    )
+    mock_ds = MagicMock()
 
-    with pytest.raises(ValueError, match="did not provide an S3CredentialsAPIEndpoint"):
-        get_granule_credentials_endpoint_and_region(_granule_no_endpoint)
+    with patch(
+        "earthaccess.virtual.core._open_kerchunk_from_collection",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual(collection)
+
+    mock_open.assert_called_once_with(
+        collection, "https://example.com/refs.json", access="indirect"
+    )
+    assert result is mock_ds
+
+
+def test_open_virtual_with_collection_icechunk() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "RelatedUrls": [
+                    {
+                        "URL": "s3://bucket/store.icechunk",
+                        "Type": "GET DATA",
+                        "Subtype": "VIRTUAL COLLECTION",
+                    },
+                ],
+            },
+        },
+    )
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_icechunk_from_collection",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual(collection, access="direct")
+
+    mock_open.assert_called_once_with(
+        collection, "s3://bucket/store.icechunk", access="direct"
+    )
+    assert result is mock_ds
+
+
+def test_open_virtual_with_collection_no_virtual_url() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {},
+        },
+    )
+    with pytest.raises(ValueError, match="VIRTUAL COLLECTION"):
+        open_virtual(collection)
+
+
+# ---------------------------------------------------------------------------
+# open_virtual — str path still works
+# ---------------------------------------------------------------------------
+
+
+def test_open_virtual_str_path_still_works_after_refactor() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_kerchunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual("refs.parquet")
+
+    mock_open.assert_called_once_with("refs.parquet", storage_options=None)
+    assert result is mock_ds
+
+
+# ---------------------------------------------------------------------------
+# open_virtual — load=False (VirtualiZarr path)
+# ---------------------------------------------------------------------------
+
+
+def test_open_virtual_load_false_url() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_virtual_via_virtualizarr",
+        return_value=mock_ds,
+    ) as mock_vz:
+        result = open_virtual("https://example.com/refs.json", load=False)
+
+    assert mock_vz.called
+    assert result is mock_ds
+
+
+def test_open_virtual_load_false_collection() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "RelatedUrls": [
+                    {
+                        "URL": "https://example.com/refs.json",
+                        "Type": "GET DATA",
+                        "Subtype": "VIRTUAL COLLECTION",
+                    },
+                ],
+            },
+        },
+    )
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_virtual_via_virtualizarr",
+        return_value=mock_ds,
+    ) as mock_vz:
+        result = open_virtual(collection, load=False)
+
+    assert mock_vz.called
+    assert result is mock_ds
+
+
+def test_open_virtual_load_false_external_url() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_virtual_via_virtualizarr",
+        return_value=mock_ds,
+    ) as mock_vz:
+        result = open_virtual(
+            "https://its-live-data.s3-us-west-2.amazonaws.com/test-space/vds/SPL4SMGP.parquet",
+            load=False,
+        )
+
+    assert mock_vz.called
+    assert result is mock_ds
+
+
+def test_open_virtual_load_true_default_still_works() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_kerchunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual("refs.parquet")
+
+    mock_open.assert_called_once_with("refs.parquet", storage_options=None)
+    assert result is mock_ds
+
+
+# ---------------------------------------------------------------------------
+# open_virtual — force_external
+# ---------------------------------------------------------------------------
+
+
+def test_open_virtual_force_external_url() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    remote_url = "https://example.com/data/refs.json"
+    mock_session = MagicMock()
+    mock_session.storage_options = {
+        "client_kwargs": {"headers": {"Authorization": "Bearer x"}}
+    }
+    mock_ds = MagicMock()
+
+    with (
+        patch(
+            "earthaccess.virtual.core._sanitize_references_for_external",
+            return_value="/tmp/external_refs.json",
+        ) as mock_sanitize,
+        patch(
+            "earthaccess.virtual.core._open_kerchunk",
+            return_value=mock_ds,
+        ) as mock_open,
+        patch(
+            "earthaccess.get_fsspec_https_session",
+            return_value=mock_session,
+        ),
+    ):
+        result = open_virtual(remote_url, force_external=True)
+
+    mock_sanitize.assert_called_once_with(remote_url)
+    mock_open.assert_called_once_with(
+        "/tmp/external_refs.json",
+        storage_options={
+            "remote_protocol": "https",
+            "remote_options": mock_session.storage_options,
+        },
+    )
+    assert result is mock_ds
+
+
+def test_open_virtual_force_external_with_collection() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    collection = DataCollection(
+        {
+            "meta": {"concept-id": "C1234-PROV"},
+            "umm": {
+                "RelatedUrls": [
+                    {
+                        "URL": "https://example.com/data/refs.json",
+                        "Type": "GET DATA",
+                        "Subtype": "VIRTUAL COLLECTION",
+                    },
+                ],
+            },
+        },
+    )
+    mock_session = MagicMock()
+    mock_session.storage_options = {
+        "client_kwargs": {"headers": {"Authorization": "Bearer x"}}
+    }
+    mock_ds = MagicMock()
+
+    with (
+        patch(
+            "earthaccess.virtual.core._sanitize_references_for_external",
+            return_value="/tmp/external_refs.json",
+        ) as mock_sanitize,
+        patch(
+            "earthaccess.virtual.core._open_kerchunk",
+            return_value=mock_ds,
+        ) as mock_open,
+        patch(
+            "earthaccess.get_fsspec_https_session",
+            return_value=mock_session,
+        ),
+    ):
+        result = open_virtual(collection, force_external=True)
+
+    mock_sanitize.assert_called_once_with("https://example.com/data/refs.json")
+    mock_open.assert_called_once_with(
+        "/tmp/external_refs.json",
+        storage_options={
+            "remote_protocol": "https",
+            "remote_options": mock_session.storage_options,
+        },
+    )
+    assert result is mock_ds
+
+
+def test_open_virtual_force_external_does_not_affect_plain_string() -> None:
+    from earthaccess.virtual.core import open_virtual
+
+    mock_ds = MagicMock()
+
+    with patch(
+        "earthaccess.virtual.core._open_kerchunk",
+        return_value=mock_ds,
+    ) as mock_open:
+        result = open_virtual("refs.parquet")
+
+    mock_open.assert_called_once_with("refs.parquet", storage_options=None)
+    assert result is mock_ds
+
+
+# ---------------------------------------------------------------------------
+# homogenize_dataset_codec_level — data integrity after patching
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("level", [1, 6, 7, 9])
+def test_zlib_decompression_is_level_independent(level: int) -> None:
+    """Zlib decompression produces the same result regardless of the level param.
+
+    Data compressed at level 6 must decompress correctly with any level in
+    the codec config.  This validates that patching Zlib levels in
+    ManifestArray metadata is safe.
+    """
+    import numcodecs
+    import numpy as np
+
+    original = np.array([1.0, np.nan, 3.0, -999.0, 42.5], dtype="f8")
+    compressed = numcodecs.Zlib(level=6).encode(original.tobytes())
+
+    result = np.frombuffer(
+        numcodecs.Zlib(level=level).decode(compressed),
+        dtype="f8",
+    )
+    assert np.allclose(original, result, equal_nan=True), (
+        f"Mismatch at Zlib level {level}"
+    )

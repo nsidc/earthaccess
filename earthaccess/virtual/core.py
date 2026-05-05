@@ -1,11 +1,12 @@
-"""Core implementation of ``earthaccess.virtualize()``.
+"""Core implementation of ``earthaccess.virtualize()`` and ``earthaccess.open_virtual()``.
 
-This module contains the single public entry point for creating virtual
-xarray Datasets from NASA Earthdata granules.
+This module contains public entry points for creating virtual xarray
+Datasets from NASA Earthdata granules and opening existing virtual stores.
 """
 
 from __future__ import annotations
 
+import json
 import logging
 import tempfile
 import warnings
@@ -38,7 +39,7 @@ logger = logging.getLogger(__name__)
 def virtualize(
     granules: list[earthaccess.DataGranule],
     *,
-    access: AccessType = "direct",
+    access: AccessType = "indirect",
     load: bool = False,
     group: str = "/",
     concat_dim: str | None = None,
@@ -68,8 +69,9 @@ def virtualize(
     Parameters:
         granules: One or more ``DataGranule`` objects from
             ``earthaccess.search_data()``.
-        access: Cloud access mode.  ``"direct"`` uses S3 (fastest inside AWS
-            us-west-2); ``"indirect"`` uses HTTPS (works anywhere).
+        access: Cloud access mode.  ``"indirect"`` (default) uses HTTPS
+            (works anywhere); ``"direct"`` uses S3 (fastest inside AWS
+            us-west-2 but requires S3 credentials).
         load: When ``False`` (default) returns a virtual dataset with
             ``ManifestArray`` variables.  When ``True`` materialises the
             references via a kerchunk round-trip and returns a concrete,
@@ -296,3 +298,443 @@ def _load_via_kerchunk(
         engine="kerchunk",
         storage_options=storage_options,
     )
+
+
+# ---------------------------------------------------------------------------
+# open_virtual — open existing virtual stores (Icechunk / VirtualiZarr)
+# ---------------------------------------------------------------------------
+
+
+def _is_icechunk_uri(uri: str) -> bool:
+    return uri.startswith("icechunk://") or uri.endswith(".icechunk")
+
+
+def _is_kerchunk_uri(uri: str) -> bool:
+    return uri.endswith((".parquet", ".json"))
+
+
+def _open_icechunk(
+    uri: str,
+    storage_options: dict[str, Any] | None = None,
+    **kwargs: Any,
+) -> xr.Dataset:
+    try:
+        import icechunk
+        import xarray as xr
+    except ImportError as exc:
+        raise ImportError(
+            "earthaccess.open_virtual() with an Icechunk store requires "
+            "`pip install earthaccess[virtualizarr]`",
+        ) from exc
+
+    if storage_options:
+        storage = icechunk.Storage(**storage_options)
+    else:
+        storage = icechunk.Storage.filesystem(uri)
+
+    store = icechunk.open(storage=storage, mode="r")
+    return xr.open_zarr(store, **kwargs)
+
+
+def _open_kerchunk(
+    uri: str,
+    storage_options: dict[str, Any] | None = None,
+    **kwargs: Any,
+) -> xr.Dataset:
+    try:
+        import xarray as xr
+    except ImportError as exc:
+        raise ImportError(
+            "earthaccess.open_virtual() requires `pip install earthaccess[virtualizarr]`",
+        ) from exc
+
+    store_opts = storage_options or {}
+    return xr.open_dataset(uri, engine="kerchunk", storage_options=store_opts, **kwargs)
+
+
+# ---------------------------------------------------------------------------
+# force_external — download kerchunk refs and rewrite s3:// URLs to https://
+# ---------------------------------------------------------------------------
+
+
+def _transform_refs(obj: Any, https_base: str) -> None:
+    """Recursively walk a kerchunk refs dict/list and rewrite s3:// URLs in-place."""
+    prefix = "s3://"
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, str) and v.startswith(prefix):
+                obj[k] = https_base + v[len(prefix) :]
+            elif isinstance(v, (dict, list)):
+                _transform_refs(v, https_base)
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            if isinstance(v, str) and v.startswith(prefix):
+                obj[i] = https_base + v[len(prefix) :]
+            elif isinstance(v, (dict, list)):
+                _transform_refs(v, https_base)
+
+
+def _sanitize_references_for_external(url: str) -> str:
+    """Download a kerchunk reference file, rewrite ``s3://`` URLs to ``https://``.
+
+    The HTTPS base is inferred from the reference file URL's host, which works
+    for all NASA Earthdata Cloud DAACs (PODAAC, NSIDC, GES DISC, LP DAAC, …).
+
+    Returns the local path to the sanitized file.
+    """
+    from urllib.parse import urlparse
+
+    parsed = urlparse(url)
+    if not parsed.scheme:
+        return url
+
+    local = Path(tempfile.gettempdir()) / f"external_{Path(url).name}"
+
+    if local.exists():
+        return str(local)
+
+    host = parsed.netloc
+    https_base = f"https://{host}/"
+    fs = earthaccess.get_fsspec_https_session()
+
+    if url.endswith(".json"):
+        with fs.open(url, cache="first") as f:
+            refs: dict[str, Any] = json.load(f)
+        _transform_refs(refs, https_base)
+        local.write_text(json.dumps(refs))
+
+    elif url.endswith(".parquet"):
+        import pandas as pd
+
+        with fs.open(url, cache="first") as f:
+            refs_df = pd.read_parquet(f)
+        if "path" in refs_df.columns:
+            mask = refs_df["path"].str.startswith("s3://", na=False)
+            refs_df.loc[mask, "path"] = (
+                https_base + refs_df.loc[mask, "path"].str[len("s3://") :]
+            )
+        refs_df.to_parquet(local)
+
+    return str(local)
+
+
+def _open_kerchunk_from_collection(
+    collection: earthaccess.DataCollection,
+    url: str,
+    access: str = "indirect",
+    **kwargs: Any,
+) -> xr.Dataset:
+    try:
+        import fsspec
+        import xarray as xr
+        import zarr
+    except ImportError as exc:
+        raise ImportError(
+            "earthaccess.open_virtual() requires `pip install earthaccess[virtualizarr]`",
+        ) from exc
+
+    if access == "direct":
+        daac_fs = collection.get_s3_filesystem()
+        remote_protocol = "s3"
+    else:
+        daac_fs = earthaccess.get_fsspec_https_session()
+        remote_protocol = "https"
+
+    remote_options = {"asynchronous": True, **daac_fs.storage_options}
+    fs = fsspec.filesystem(
+        "reference",
+        fo=url,
+        remote_protocol=remote_protocol,
+        asynchronous=True,
+        remote_options=remote_options,
+    )
+    store = zarr.storage.FsspecStore(fs, read_only=True)
+    return xr.open_zarr(store, consolidated=False, **kwargs)
+
+
+def _open_icechunk_from_collection(
+    collection: earthaccess.DataCollection,
+    url: str,
+    access: str = "indirect",
+    **kwargs: Any,
+) -> xr.Dataset:
+    try:
+        from datetime import UTC, datetime, timedelta
+
+        import icechunk
+        import xarray as xr
+    except ImportError as exc:
+        raise ImportError(
+            "earthaccess.open_virtual() with an Icechunk store requires "
+            "`pip install earthaccess[virtualizarr]`",
+        ) from exc
+
+    if access == "direct":
+        creds = collection.get_s3_credentials()
+        ice_creds = icechunk.S3StaticCredentials(
+            access_key_id=creds["accessKeyId"],
+            secret_access_key=creds["secretAccessKey"],
+            session_token=creds["sessionToken"],
+            expires_after=datetime.now(UTC) + timedelta(hours=1),
+        )
+        storage = icechunk.S3Storage(url, get_credentials=lambda: ice_creds)
+    else:
+        storage = icechunk.Storage.filesystem(url)
+
+    repo = icechunk.Repository.open(storage=storage)
+    session = repo.readonly_session("main")
+    store = session.store
+    return xr.open_zarr(store, **kwargs)
+
+
+# ---------------------------------------------------------------------------
+# open_virtual via VirtualiZarr (load=False)
+# ---------------------------------------------------------------------------
+
+
+def _is_nasa_url(url: str) -> bool:
+    """Return ``True`` if the URL belongs to a NASA Earthdata host."""
+    return "nasa.gov" in url.lower()
+
+
+def _build_registry_for_url(url: str) -> Any:
+    """Build an ``ObjectStoreRegistry`` for the given reference file *url*.
+
+    A ``LocalStore`` for ``file://`` is always registered so that local
+    reference files can be read.  For remote URLs an authenticated
+    ``HTTPStore`` is also registered so that referenced data files can
+    be resolved with the user's EDL credentials.
+    """
+    from urllib.parse import urlparse
+
+    try:
+        from obspec_utils.registry import ObjectStoreRegistry
+        from obstore.store import HTTPStore, LocalStore
+    except ImportError:
+        try:
+            from virtualizarr.registry import ObjectStoreRegistry
+        except ImportError:
+            raise ImportError(
+                "earthaccess.open_virtual(load=False) requires "
+                "`pip install earthaccess[virtualizarr]`",
+            ) from None
+
+    stores: dict[str, Any] = {"file://": LocalStore.from_url("file:///")}
+
+    parsed = urlparse(url)
+    if parsed.scheme == "https":
+        try:
+            token = earthaccess.__auth__.token["access_token"]
+        except (AttributeError, TypeError, KeyError):
+            pass
+        else:
+            http_store = HTTPStore.from_url(
+                f"https://{parsed.netloc}",
+                client_options={
+                    "default_headers": {"Authorization": f"Bearer {token}"},
+                },
+            )
+            stores[f"https://{parsed.netloc}"] = http_store
+
+    if not parsed.scheme or parsed.scheme == "file":
+        path = Path(parsed.path).resolve()
+        parent = path.parent if path.suffix else path
+        file_prefix = parent.as_uri()
+        stores[file_prefix] = LocalStore.from_url(file_prefix)
+
+    return ObjectStoreRegistry(stores)
+
+
+def _download_reference_file(url: str) -> str:
+    """Download a remote reference file to a local cache (``/tmp/cached_*``).
+
+    Returns the local path.  Already-local files are returned as-is.
+    """
+    from urllib.parse import urlparse
+
+    parsed = urlparse(url)
+    if not parsed.scheme:
+        return url
+
+    local = Path(tempfile.gettempdir()) / f"cached_{Path(url).name}"
+    if local.exists():
+        return str(local)
+
+    if _is_nasa_url(url):
+        fs = earthaccess.get_fsspec_https_session()
+    else:
+        import fsspec
+
+        fs = fsspec.filesystem("https")
+
+    with fs.open(url) as src:
+        local.write_bytes(src.read())
+    return str(local)
+
+
+def _open_virtual_via_virtualizarr(
+    url: str,
+    *,
+    registry_url: str | None = None,
+    **kwargs: Any,
+) -> xr.Dataset:
+    """Open a kerchunk reference file using VirtualiZarr (``load=False``).
+
+    First the reference file is opened via an fsspec reference filesystem
+    to load inline coordinate values, then VirtualiZarr virtualises the
+    remaining data variables and the two results are merged.
+
+    An ``ObjectStoreRegistry`` is automatically configured from
+    *registry_url* (defaults to *url*) so that referenced data files can
+    be resolved with the user's EDL credentials.
+
+    For JSON files the reference file is first downloaded to a local cache;
+    parquet files are read directly from their URL.
+    """
+    try:
+        import fsspec
+        import virtualizarr as vz
+        import xarray as xr
+        import zarr
+        from virtualizarr.parsers import KerchunkJSONParser, KerchunkParquetParser
+    except ImportError as exc:
+        raise ImportError(
+            "earthaccess.open_virtual(load=False) requires "
+            "`pip install earthaccess[virtualizarr]`",
+        ) from exc
+
+    auth_url = registry_url or url
+    registry = _build_registry_for_url(auth_url)
+
+    ref_path = _download_reference_file(url) if url.endswith(".json") else url
+
+    daac_fs = (
+        earthaccess.get_fsspec_https_session()
+        if _is_nasa_url(auth_url)
+        else fsspec.filesystem("https")
+    )
+    remote_options = {"asynchronous": True, **daac_fs.storage_options}
+    fs = fsspec.filesystem(
+        "reference",
+        fo=ref_path,
+        remote_protocol="https",
+        asynchronous=True,
+        remote_options=remote_options,
+    )
+    store = zarr.storage.FsspecStore(fs, read_only=True)
+    kds = xr.open_zarr(store, consolidated=False)
+
+    parser: KerchunkJSONParser | KerchunkParquetParser
+    if url.endswith(".json"):
+        parser = KerchunkJSONParser(skip_variables=list(kds.coords))
+    elif url.endswith(".parquet"):
+        parser = KerchunkParquetParser(skip_variables=list(kds.coords))
+    else:
+        raise ValueError(
+            f"Unsupported virtual store format: {url}. "
+            "Expected a .json or .parquet file.",
+        )
+
+    vds = vz.open_virtual_dataset(ref_path, parser=parser, registry=registry, **kwargs)
+
+    for k in kds.coords:
+        vds.coords[k] = kds[k]
+    return vds
+
+
+def open_virtual(  # noqa: PLR0911
+    uri: str | Path | earthaccess.DataCollection,
+    *,
+    access: str = "indirect",
+    storage_options: dict[str, Any] | None = None,
+    force_external: bool = False,
+    load: bool = True,
+    **kwargs: Any,
+) -> xr.Dataset:
+    """Open a URI or collection as a virtual xarray Dataset.
+
+    Supports two kinds of virtual stores:
+
+    - **Icechunk** — a versioned Zarr store (``.icechunk`` file/URI).
+    - **VirtualiZarr / kerchunk** — reference-file-backed datasets
+      (``.parquet`` or ``.json`` files).
+
+    When given a ``DataCollection``, the virtual store URL is extracted from
+    its metadata (``GET DATA`` + ``VIRTUAL COLLECTION`` subtype).
+
+    Parameters:
+        uri: A ``DataCollection``, or a path/URI to the virtual store
+            (``.icechunk``, ``.parquet``, or ``.json``).
+        access: ``"indirect"`` (HTTPS, default) or ``"direct"`` (S3).
+        storage_options: Additional options forwarded to the storage backend.
+            Ignored when ``uri`` is a ``DataCollection``.
+        force_external: When ``True``, download kerchunk reference files and
+            rewrite ``s3://`` URLs to ``https://``, so the dataset can be
+            opened without direct S3 access.  Only applies to ``.json`` and
+            ``.parquet`` reference files.  Requires authentication.
+        load: When ``True`` (default), returns a concrete lazily-loaded dataset
+            via the kerchunk engine.  When ``False``, returns a virtual dataset
+            backed by ``ManifestArray`` objects via VirtualiZarr's
+            ``open_virtual_dataset``.
+        **kwargs: Additional keyword arguments forwarded to the opener.
+
+    Returns:
+        An ``xr.Dataset`` backed by the virtual store.
+
+    Raises:
+        ValueError: If the URI is not recognised, or the collection has no
+            virtual collection URL.
+        ImportError: If the required optional dependency is not installed.
+        AttributeError: If the user is not authenticated.
+
+    Examples:
+        >>> import earthaccess
+        >>> ds = earthaccess.open_virtual("s3://bucket/refs.parquet")
+        >>> ds = earthaccess.open_virtual("/local/store.icechunk")
+        >>> ds = earthaccess.open_virtual(collection)
+        >>> ds = earthaccess.open_virtual(collection, force_external=True)
+    """
+    if isinstance(uri, earthaccess.DataCollection):
+        url = uri.virtual_collection_url()
+        if url is None:
+            raise ValueError(
+                f"Collection {uri.get('meta', {}).get('concept-id', '')} "
+                "does not have a virtual store (no VIRTUAL COLLECTION "
+                "URL found in its RelatedUrls).",
+            )
+        if not _is_icechunk_uri(url) and not _is_kerchunk_uri(url):
+            raise ValueError(
+                f"Unrecognised virtual store URL in collection: {url}. "
+                "Expected a .icechunk, .parquet, or .json file.",
+            )
+    else:
+        url = str(uri)
+
+    if not _is_icechunk_uri(url) and not _is_kerchunk_uri(url):
+        raise ValueError(
+            f"Unrecognised virtual store URI: {uri}. "
+            "Expected a .icechunk, .parquet, or .json file/URI.",
+        )
+
+    if _is_icechunk_uri(url):
+        if isinstance(uri, earthaccess.DataCollection):
+            return _open_icechunk_from_collection(uri, url, access=access, **kwargs)
+        return _open_icechunk(url, storage_options=storage_options, **kwargs)
+
+    if not load:
+        if force_external:
+            sanitized = _sanitize_references_for_external(url)
+            return _open_virtual_via_virtualizarr(sanitized, registry_url=url, **kwargs)
+        return _open_virtual_via_virtualizarr(url, **kwargs)
+
+    if force_external:
+        sanitized = _sanitize_references_for_external(url)
+        sopts = {
+            "remote_protocol": "https",
+            "remote_options": earthaccess.get_fsspec_https_session().storage_options,
+        }
+        return _open_kerchunk(sanitized, storage_options=sopts, **kwargs)
+
+    if isinstance(uri, earthaccess.DataCollection):
+        return _open_kerchunk_from_collection(uri, url, access=access, **kwargs)
+    return _open_kerchunk(url, storage_options=storage_options, **kwargs)

@@ -5,6 +5,7 @@ from functools import cache
 from typing import Any
 
 import requests
+import s3fs
 
 import earthaccess
 
@@ -290,6 +291,53 @@ class DataCollection(CustomDict):
         )
 
         return self["umm"].get("DirectDistributionInformation", {})
+
+    def virtual_collection_url(self) -> str | None:
+        """Return the VIRTUAL COLLECTION URL from the collection's RelatedUrls.
+
+        Returns:
+            The URL of the virtual store reference file (e.g. a .json or
+            .icechunk file), or ``None`` if no such link exists.
+        """
+        for link in self["umm"].get("RelatedUrls", []):
+            if (
+                link.get("Type") == "GET DATA"
+                and link.get("Subtype") == "VIRTUAL COLLECTION"
+            ):
+                return link["URL"]
+        return None
+
+    def get_s3_credentials(self) -> dict[str, str]:
+        """Return temporary S3 credentials for this collection.
+
+        Returns:
+            A dictionary with ``accessKeyId``, ``secretAccessKey``,
+            and ``sessionToken``.
+
+        Raises:
+            ValueError: If the collection has no ``S3CredentialsAPIEndpoint``.
+        """
+        dd = self["umm"].get("DirectDistributionInformation", {})
+        endpoint = dd.get("S3CredentialsAPIEndpoint")
+        if not endpoint:
+            raise ValueError(
+                "This collection does not provide an S3CredentialsAPIEndpoint.",
+            )
+        return earthaccess.__auth__.get_s3_credentials(endpoint=endpoint)
+
+    def get_s3_filesystem(self) -> s3fs.S3FileSystem:
+        """Return an authenticated ``s3fs.S3FileSystem`` for this collection.
+
+        Returns:
+            An ``s3fs.S3FileSystem`` configured with temporary S3 credentials
+            from the collection's credentials endpoint.
+        """
+        creds = self.get_s3_credentials()
+        return s3fs.S3FileSystem(
+            key=creds["accessKeyId"],
+            secret=creds["secretAccessKey"],
+            token=creds["sessionToken"],
+        )
 
     def services(self) -> dict[Any, list[dict[str, Any]]]:
         """Return list of services available for this collection."""
