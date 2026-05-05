@@ -93,6 +93,8 @@ relevant tab to proceed.
     - Create a branch to resolve your issue
     - Update the relevant code to fix the issue
     - If you're comfortable writing tests: create one or more new tests to demonstrate the bug, verify they fail before your fix, and pass after. It's fine to let PR CI/CD run the tests for you instead of running them locally.
+        - For an example bug-fix PR with new tests, see
+          [#1015](https://github.com/earthaccess-dev/earthaccess/pull/1015), which fixes a method-resolution bug and adds covering unit and integration tests.
     - If you're **not** comfortable writing tests: that's OK! Open your PR anyway and note that you'd like help with tests. We'll work with you to get them added before merging.
     - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit) (or comment `pre-commit.ci autofix` on your PR to have it done automatically)
     - Describe your changes in the `CHANGELOG.md`
@@ -104,6 +106,8 @@ relevant tab to proceed.
     - Create a branch for your new feature in your fork
     - Write the code to implement your new feature in a backwards compatible manner. If breaking changes are necessary, discuss your strategy with the team first.
     - If you're comfortable writing tests: create at least one test that exercises your feature. It's fine to let PR CI/CD run the test suite for you instead of running it locally.
+        - For an example feature PR with new tests, see
+          [#1198](https://github.com/earthaccess-dev/earthaccess/pull/1198), which adds a `force` keyword and temporary-filename behavior to `download()` along with covering unit and integration tests.
     - If you're **not** comfortable writing tests: that's OK! Open your PR anyway and note that you'd like help with tests. We'll work with you to get them added before merging.
     - Lint and format your code with [pre-commit](development.md#usage-of-pre-commit) (or comment `pre-commit.ci autofix` on your PR to have it done automatically)
     - Describe your changes in the `CHANGELOG.md`
