@@ -197,9 +197,6 @@ src = ["earthaccess", "stubs", "tests"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "A001",
-  "A002",
-  "A004",
   "ANN001",
   "ANN002",
   "ANN003",

@@ -445,7 +445,7 @@ def download(
     return []
 
 
-def open(
+def open(  # noqa: A001
     granules: list[str] | list[DataGranule],
     provider: str | None = None,
     *,
