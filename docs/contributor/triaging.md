@@ -1,6 +1,56 @@
-# Triaging guide
+# Issue Triaging and Prioritization Guide
 
-With constant influx of new issues, it's essential to prioritize and categorize them efficiently to ensure that the most important problems are addressed promptly. This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, as well as best practices for maintaining a well-organized and up-to-date issue tracker.
+This document outlines our approach to triaging issues on GitHub, including guidelines for labeling and resolving issues, and best practices for maintaining a well-organized, prioritized, and up-to-date issue tracker via the [`earthaccess` GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1). 
+
+**We hope that this guide will help empower anyone to contribute to issue triaging, and address a common question for contributors: "I'm interested in working on the highest priority issues that will solve important problems facing the `earthaccess` community. Where do I begin?"**
+
+## Issue Lifecycle
+
+1. A [new issue](https://github.com/earthaccess-dev/earthaccess/issues/new/choose) is created, either using a pre-existing template, or as a blank issue.
+2. The issue is triaged by a community member in order to: 
+   * Determine whether the issue should be worked or not. If yes, move to "Backlog" status, otherwise close as not planned.
+   * Add or adjust issue labels.
+   * Add an issue prioritization. 
+   * Respond and follow up as needed (i.e. tagging relevant earthaccess maintainers for further support).
+3. Issues are reviewed and groomed using the `earthaccess` [GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1)
+4. An issue is worked following the [Pull Request (PR) Guide](./pr-guide.md).
+   * The issue is self-assigned and moved to an `In Progress` status.
+   * The issue is linked to the related PR, and closed after the PR is merged.
+
+Details on each of these workflow steps are provided below. 
+
+
+## Moving an issue to Backlog status
+
+This section will cover the `earthaccess` project status, guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
+
+
+### Project status
+
+By default, all new issues are created without a project status. Issues without a status are listed in the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view. Statuses include:
+- Backlog
+- In Progress
+- In Review
+- Done
+
+When triaging a new issue, review the information and provide a response or follow up with question(s) if needed. Providing gratitude for the submission as a text or emoji response is highly encouraged. Move the issue to the Backlog unless it ought to be closed as "not planned", as outlined below. If you are unsure, add the **needs: triage** label. On the righthand side of the issue page, the "Projects" section contains an `earthaccess` project box. Click "no status" to select the status options. Select "Backlog". This will move the project out of the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view into its relevant backlog view depending on issue type. See below for more details on these other project views. 
+
+
+### When to "Close as not planned"?
+
+Close issues as "not planned" when:
+
+- An issue is not aligned with the project's goals or priorities.
+- An issue is not feasible to be addressed due to technical or resource constraints.
+- An issue is a duplicate of an existing issue that has already been addressed.
+
+When closing an issue as not planned, keep the following best practices in mind:
+
+- Provide a clear explanation as to why the issue is not planned or feasible.
+- Offer alternative solutions or workarounds, if possible.
+- Link to relevant documentation or resources, if applicable.
+- Add the **type: will not do** label.
+
 
 ## Labeling Issues
 
@@ -9,9 +59,12 @@ When labeling an issue, choose the label(s) that best describes the issue. Using
 
 ### Issue Types
 
-- **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior.
+- **type: bug**: Use for issues that identify bugs causing incorrect or unexpected behavior. This label is applied automatically if the [Bug template](https://github.com/earthaccess-dev/earthaccess/issues/new?template=bug.yml) is used.
+- **type: decision record**: Use this label for issues and PR's that address a new decision record document (e.g. https://github.com/earthaccess-dev/earthaccess/pull/1047).   
 - **type: duplicate**: Use this label for issues that are duplicates of existing ones.
 - **type: enhancement**: Use this label for requests for new features or improvements to existing functionalities.
+- **type: experience report**: Use this label for issues that describe a firsthand usability experience. 
+- **type: metrics**: This label is automatically applied upon creation of the Monthly metrics issue. See the [Monthly issue metrics](https://github.com/earthaccess-dev/earthaccess/blob/main/.github/workflows/issue-metrics.yml) action for more details.  
 - **type: will not do**: Use this label for issues that won’t be addressed or fixed.
 
 ### Impact labels
@@ -22,13 +75,17 @@ These labels describe what portion of the project they affect:
 - **impact: core**: Issues that affect the core Python codebase.
 - **impact: dependencies**: Use this label for issues concerning dependencies.
 - **impact: documentation**: Use this label for issues related to documentation.
-- **impact: automation**: Use this label for issues related to the CI/CD pipeline or automation
+- **impact: automation**: Use this label for issues related to the CI/CD pipeline or automation.
+- **impact: governance**: Issues that impact the project's governance or decision-making process.
+
+Impact labels are also used to help group related issues based on a particular feature or topic. For example, **impact: virtual-datasets** is used to categorize Issues or Discussions related to virtualizarr integration and support. These labels may evolve over time as new features are worked. 
 
 ### Needs labels
 
 - **needs: decision**: We're struggling to decide what to do and the decision committee needs to help.
 - **needs: feedback**:  Use this label for issues where feedback is requested from the team or our community.
 - **needs: help**: Use this label for issues where additional help or contributions are needed.
+- **needs: triage**: Use this label for new issues that require additional information to determine whether it should move to the backlog, or close as not planned. 
 
 ### Special labels
 
@@ -54,26 +111,82 @@ For example, to link to the "good first issue" label in the earthaccess-dev/eart
 https://github.com/earthaccess-dev/earthaccess/labels/good%20first%20issue
 ```
 
+## Issue Prioritization
 
-## Close Issue as Not Planned
+Issue priorities are surfaced within the [Bug Priority](https://github.com/orgs/earthaccess-dev/projects/1/views/4) and [Docs](https://github.com/orgs/earthaccess-dev/projects/1/views/6) project views. When triaging a new issue, select a priority based on the user impact and urgency. The following guidelines apply broadly across issue types, with additional notes for bugs and documentation issues.
 
-This section will cover the guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
+### Priority: `1 - Critical`
 
-### When to "Close as not planned"?
+The issue has significant, immediate impact on users and/or major components of the `earthaccess` library. 
 
-Close issues as "not planned" when:
+- Core functionality is broken or inaccessible for a meaningful number of users
+- Key workflows or use cases are blocked
+- Users are likely to stop using the library or lose trust in it
 
-- An issue is not aligned with the project's goals or priorities.
-- An issue is not feasible to be addressed due to technical or resource constraints.
-- An issue is a duplicate of an existing issue that has already been addressed.
+*Bug example:* Users cannot search or access data for a significant number of collections or key `earthaccess` workflows.
 
-When closing an issue as not planned, keep the following best practices in mind:
+*Documentation example:* Content is incorrect or missing in a way that would immediately block or mislead a user.
 
-- Provide a clear explanation as to why the issue is not planned or feasible.
-- Offer alternative solutions or workarounds, if possible.
-- Link to relevant documentation or resources, if applicable.
+### Priority: `2 - Important`
+
+The issue has real impact but is not immediately blocking a majority of users.
+
+- Affects primary user workflows but a workaround exists, or only a subset of users is affected
+- Incorrect or confusing content that degrades the experience without fully blocking users
+- Less common use cases or data collections are impacted
+
+*Bug example:* Functionality is degraded but users can still accomplish their goals.
+
+*Documentation example:* A Tutorial or secondary documentation is broken or unclear; contributing docs with significant usability issues.
+
+### Priority: `3 - Nice to have` 
+
+The issue is a real improvement but not urgent.
+
+- Affects a small percentage of users, data collections, or use cases
+- Polish, enhancements, or "nice to haves" with no meaningful workflow impact
+- Minor inconsistencies or style issues
+
+*Bug example:* Affects a small number of users, data collections, or edge-case workflows; a workaround is readily available or the impact is cosmetic.
+
+*Documentation example:* Minor inconsistencies, typos, or style issues; improvements to contributing or developer-facing docs with no impact on end-user workflows.
+
+### Notes for Triagers
+
+- **When in doubt, start at Medium** and adjust based on community feedback or additional context.
+- The [User Guide](https://earthaccess.readthedocs.io/en/stable/user/) and [API Reference](https://earthaccess.readthedocs.io/en/stable/api/) generally warrant higher priority than contributing or developer docs when impact is otherwise similar.
+- Priority reflects *impact and urgency*, not effort — a quick fix can still be High priority.
+
+## Issue Triaging Workflow
+
+``` mermaid
+
+flowchart TD
+  %%{init: {"flowchart": {"htmlLabels": false}} }%%
+  classDef default font-size:32pt;
+  start{"`Followed
+  issue
+  template?`"}
+  start ==NO==> close1[Request needed information from reporter and update issue on behalf of reporter]
+  start == YES ==> dupe{Is duplicate?}
+  dupe == YES ==> close2[Close and point to duplicate]
+  dupe == NO ==> repro{Has proper reproduction?}
+  repro == NO ==> close3[Label: 'needs reproduction' bot will auto close if no update has been made in 3 days]
+  repro == YES ==> real{Is actually a bug?}
+  real == NO ==> intended{Is the intended behaviour?}
+  intended == YES ==> explain[Explain and close point to docs if needed]
+  intended == NO ==> open[Keep open for discussion Remove 'pending triage' label]
+  real == YES ==> real2["Confirm that 'Bug' label was automatically added as part of the Bug Issue template, otherwise add 'Bug' label."]
+
+
+  %% Link Color %%
+    linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
+
+```
+
 
 ## Discussions vs Issues
+TODO Move to https://earthaccess.readthedocs.io/en/latest/contributor/ ?
 
 This section would cover the guidelines for when to use discussions versus issues, and how to migrate between them.
 
@@ -109,29 +222,4 @@ Migrate an issue to a discussion when:
 - The issue is a general question or topic.
 - The issue is not specific or actionable.
 
-## Issue Triaging Workflow
 
-``` mermaid
-
-flowchart TD
-  %%{init: {"flowchart": {"htmlLabels": false}} }%%
-  classDef default font-size:32pt;
-  start{"`Followed
-  issue
-  template?`"}
-  start ==NO==> close1[Request needed information from reporter and update issue on behalf of reporter]
-  start == YES ==> dupe{Is duplicate?}
-  dupe == YES ==> close2[Close and point to duplicate]
-  dupe == NO ==> repro{Has proper reproduction?}
-  repro == NO ==> close3[Label: 'needs reproduction' bot will auto close if no update has been made in 3 days]
-  repro == YES ==> real{Is actually a bug?}
-  real == NO ==> intended{Is the intended behaviour?}
-  intended == YES ==> explain[Explain and close point to docs if needed]
-  intended == NO ==> open[Keep open for discussion Remove 'pending triage' label]
-  real == YES ==> real2["Confirm that 'Bug' label was automatically added as part of the Bug Issue template, otherwise add 'Bug' label."]
-
-
-  %% Link Color %%
-    linkStyle default stroke:black,stroke-width:2px,font-size:24pt;
-
-```
