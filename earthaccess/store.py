@@ -353,7 +353,7 @@ class Store:
         """
         return self.get_s3_filesystem(daac, concept_id, provider, endpoint)
 
-    def get_s3_filesystem(
+    def get_s3_filesystem(  # noqa: C901
         self,
         daac: str | None = None,
         concept_id: str | None = None,
