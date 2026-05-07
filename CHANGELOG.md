@@ -48,6 +48,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `consolidate_metadata()`, `open_virtual_dataset()` and `open_virtual_mfdataset()` have been removed
   in favor of a single `virtualize()` method ([@betolink](https://github.com/betolink))
 
+### Fixed
+
+- Fix FileExistsError when running in-region and downloading via S3 URLs
+  ([#1331](https://github.com/earthaccess-dev/earthaccess/issues/1331))
+  (@chuckwondo)
+
 ## [0.16.0] - 2026-01-30
 
 ### Changed
