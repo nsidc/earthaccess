@@ -13,10 +13,10 @@ from .services import DataServices
 
 
 @cache
-def _citation(*, doi: str, format: str, language: str) -> str:
+def _citation(*, doi: str, format_: str, language: str) -> str:
     response = requests.get(
         "https://citation.doi.org/format",
-        params={"doi": doi, "style": format, "lang": language},
+        params={"doi": doi, "style": format_, "lang": language},
     )
     response.raise_for_status()
     return response.text
@@ -60,12 +60,12 @@ class CustomDict(dict):
         basic_dict.update(filtered_dict)
         return basic_dict
 
-    def _filter_related_links(self, filter: str) -> list[str]:
+    def _filter_related_links(self, link_type: str) -> list[str]:
         """Filter RelatedUrls from the UMM fields on CMR."""
         matched_links: list = []
         if "RelatedUrls" in self["umm"]:
             for link in self["umm"]["RelatedUrls"]:
-                if link["Type"] == filter:
+                if link["Type"] == link_type:
                     matched_links.append(link["URL"])
         return matched_links
 
@@ -153,7 +153,7 @@ class DataCollection(CustomDict):
             return doi.get("DOI", None)
         return None
 
-    def citation(self, *, format: str, language: str) -> str | None:
+    def citation(self, *, format: str, language: str) -> str | None:  # noqa:A002
         """Fetch a formatted citation for this collection using its DOI.
 
         Parameters:
@@ -171,7 +171,7 @@ class DataCollection(CustomDict):
         return (
             None
             if not (doi := self.doi())
-            else _citation(doi=doi, format=format, language=language)
+            else _citation(doi=doi, format_=format, language=language)
         )
 
     def concept_id(self) -> str:
