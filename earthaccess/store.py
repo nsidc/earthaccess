@@ -748,7 +748,7 @@ class Store:
         wait=wait_exponential(multiplier=1, min=1, max=10),
         retry=retry_if_exception_type(Exception),
     )
-    def download_cloud_file(
+    def _download_cloud_file(
         self,
         s3_fs: fsspec.AbstractFileSystem,
         file: str,
@@ -760,7 +760,7 @@ class Store:
             return file_name  # Skip if already exists and not forcing re-download
 
         with _sibling_tempfile(file_name) as temp_name:
-            s3_fs.get([file], str(temp_name), recursive=False)
+            s3_fs.get_file(file, str(temp_name))
         logger.info("Downloading: %s", file_name)
         return file_name
 
@@ -799,7 +799,7 @@ class Store:
                 s3_fs = self.get_s3_filesystem(provider=provider)
 
             def _download(file: str) -> Path | None:
-                return self.download_cloud_file(s3_fs, file, local_path, force=force)
+                return self._download_cloud_file(s3_fs, file, local_path, force=force)
 
             results = pqdm(data_links, _download, **(pqdm_kwargs or {}))
             return [r for r in results if r is not None]
@@ -855,7 +855,7 @@ class Store:
             local_path.mkdir(parents=True, exist_ok=True)
 
             def _download(file: str) -> Path | None:
-                return self.download_cloud_file(s3_fs, file, local_path, force=force)
+                return self._download_cloud_file(s3_fs, file, local_path, force=force)
 
             results = pqdm(data_links, _download, **(pqdm_kwargs or {}))
             return [r for r in results if r is not None]
