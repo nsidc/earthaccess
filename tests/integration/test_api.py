@@ -243,7 +243,7 @@ def test_download_immediate_failure(tmp_path: Path):
         # By default, we set pqdm exception_behavior to "immediate" so that
         # it simply propagates the first download error it encounters, halting
         # any further downloads.
-        earthaccess.download(results, tmp_path, pqdm_kwargs=dict(disable=True))
+        earthaccess.download(results, tmp_path, pqdm_kwargs={"disable": True})
 
 
 def test_download_deferred_failure(tmp_path: Path):
@@ -265,7 +265,7 @@ def test_download_deferred_failure(tmp_path: Path):
         earthaccess.download(
             results,
             tmp_path,
-            pqdm_kwargs=dict(exception_behaviour="deferred", disable=True),
+            pqdm_kwargs={"exception_behaviour": "deferred", "disable": True},
         )
 
     errors = exc_info.value.args

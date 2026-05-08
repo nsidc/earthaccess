@@ -46,16 +46,16 @@ class CustomDict(dict):
 
     def _filter_fields_(self, fields: list[str]) -> dict[str, Any]:
         filtered_dict = {
-            "umm": dict(
+            "umm": {
                 (field, self["umm"][field]) for field in fields if field in self["umm"]
-            ),
+            },
         }
         basic_dict = {
-            "meta": dict(
+            "meta": {
                 (field, self["meta"][field])
                 for field in self._basic_meta_fields_
                 if field in self["meta"]
-            ),
+            },
         }
         basic_dict.update(filtered_dict)
         return basic_dict
@@ -362,7 +362,7 @@ class DataGranule(CustomDict):
         Returns:
             A basic representation of a data granule.
         """
-        data_links = [link for link in self.data_links()]
+        data_links = list(self.data_links())
 
         # Not all granules have spatial coverage, set to None if missing
         # TODO: We should have a granule metadata validator method
