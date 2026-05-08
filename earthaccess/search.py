@@ -508,9 +508,7 @@ class DataGranules(GranuleQuery):
             TypeError: The value of a keyword argument is not an argument or tuple
                 of arguments matching the number and type(s) of the method's parameters.
         """
-        methods = {}
-        for name, func in getmembers(self, predicate=ismethod):
-            methods[name] = func
+        methods = dict(getmembers(self, predicate=ismethod))
 
         for key, val in kwargs.items():
             # verify the key matches one of our methods
