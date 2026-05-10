@@ -7,6 +7,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+- Add example bugfix and feature PR links to the contributor PR guide ([#530](https://github.com/earthaccess-dev/earthaccess/issues/530))
 - Allow for granule search for collection without SpatialExtent information ([@lsterzinger](https://github.com/lsterzinger))
 
 ### Changed
