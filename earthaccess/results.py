@@ -62,12 +62,11 @@ class CustomDict(dict):
 
     def _filter_related_links(self, link_type: str) -> list[str]:
         """Filter RelatedUrls from the UMM fields on CMR."""
-        matched_links: list = []
-        if "RelatedUrls" in self["umm"]:
-            for link in self["umm"]["RelatedUrls"]:
-                if link["Type"] == link_type:
-                    matched_links.append(link["URL"])
-        return matched_links
+        return [
+            link["URL"]
+            for link in self["umm"].get("RelatedUrls", [])
+            if link.get("Type") == link_type
+        ]
 
 
 class DataCollection(CustomDict):
