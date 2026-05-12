@@ -628,7 +628,7 @@ class Results:
         self._query = query
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}<hits={len(self.query.hits)},>"
+        return f"{self.__class__.__name__}<hits={self.query.hits},>"
 
     def __str__(self) -> str:
         return (
