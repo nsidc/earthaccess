@@ -632,9 +632,9 @@ class Results:
 
     def __str__(self) -> str:
         return (
-            f"Hits: {self.query.hits}\n"
+            f"Hits: {self.query.hits()}\n"
             f"Query parameters:\n"
-            f"{indent(pprint.pformat(self.query.parameters), ' ' * 4)}\n"
+            f"{indent(pprint.pformat(self.query.params), ' ' * 4)}\n"
             f"Query parameter options:\n"
             f"{indent(pprint.pformat(self.query.options), ' ' * 4)}"
         )
@@ -652,11 +652,11 @@ class Results:
                 </tr>
                 <tr>
                     <td>Hits</td>
-                    <td>{self.query.hits}</td>
+                    <td>{self.query.hits()}</td>
                 </tr>
                 <tr>
                     <td>Query parameters</td>
-                    <td>{self.query.parameters}</td>
+                    <td>{self.query.params}</td>
                 </tr>
                 <tr>
                     <td>Query options</td>
