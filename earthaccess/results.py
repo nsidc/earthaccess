@@ -665,6 +665,10 @@ class Results:
             </table>
         """)
 
+    @property
+    def query(self):
+        return self._query
+
 
 class GranuleResults(Results):
     def __init__(
