@@ -372,14 +372,13 @@ class DataGranule(CustomDict):
             A basic representation of a data granule.
         """
         data_links = [link for link in self.data_links()]
-        rep_str = f"""
+        return f"""
         Collection: {self["umm"]["CollectionReference"]}
         Spatial coverage: {self["umm"]["SpatialExtent"]}
         Temporal coverage: {self["umm"]["TemporalExtent"]}
         Size(MB): {self.size()}
         Data: {data_links}\n\n
         """.strip().replace("  ", "")
-        return rep_str
 
     def _repr_html_(self) -> str:
         """Return an HTML representation of the granule.
@@ -387,8 +386,7 @@ class DataGranule(CustomDict):
         Returns:
             A rich representation for a data granule if we are in a Jupyter notebook.
         """
-        granule_html_repr = _repr_granule_html(self)
-        return granule_html_repr
+        return _repr_granule_html(self)
 
     def __hash__(self) -> int:  # type: ignore[override]
         return hash(self["meta"]["concept-id"])
@@ -496,8 +494,7 @@ class DataGranule(CustomDict):
         Returns:
             The data visualization links, usually the browse images.
         """
-        links = self._filter_related_links("GET RELATED VISUALIZATION")
-        return links
+        return self._filter_related_links("GET RELATED VISUALIZATION")
 
     @property
     def __geo_interface__(self) -> dict[str, object]:
@@ -617,46 +614,29 @@ class DataGranule(CustomDict):
         raise ValueError(msg)
 
 
-class Results[T: (DataCollection, DataGranule)](list[T]):
+class Results:
+    """An immutable iterable of search results with convenience methods."""
+
+    # TODO: Needs to support both a lazy generator approach and an in-memory approach where
+    #       items are never consumed.
     def __init__(
         self,
-        items: list[T],
+        items: list[DataGranule | DataCollection],
         *,
-        # TODO: How should we constrain this so that we can't
-        #       mix-and-match item types and query types?
-        query: DataCollections | DataGranules,
+        query: DataGranules | DataCollections,
     ) -> None:
-        super().__init__(items)
         self._query = query
 
-    def _preview(self, *, n: int) -> list[str]:
-        """Returns a list of previews of the first N results."""
-        return [item["meta"]["native-id"] for item in self[:n]]
-
-    def _preview_str(self, *, n: int, sep: str) -> str:
-        """Returns a string of the preview."""
-        preview = self._preview(n=n)
-        preview_str = sep.join(preview)
-        if len(self) > len(preview):
-            preview_str += f"{sep}and {len(self) - len(preview)} more..."
-        return preview_str
-
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}<"
-            f"length={len(self)},"
-            f" preview=[{','.join(self._preview(n=3))}]"
-            ">"
-        )
+        return f"{self.__class__.__name__}<hits={len(self.query.hits)},>"
 
     def __str__(self) -> str:
         return (
-            f"Length: {len(self)}\n"
-            f"Preview: [\n{indent(self._preview_str(n=3, sep='\n'), ' ' * 4)}\n]\n"
+            f"Hits: {self.query.hits}\n"
             f"Query parameters:\n"
-            f"{indent(pprint.pformat(self.query_parameters), ' ' * 4)}\n"
+            f"{indent(pprint.pformat(self.query.parameters), ' ' * 4)}\n"
             f"Query parameter options:\n"
-            f"{indent(pprint.pformat(self.query_options), ' ' * 4)}"
+            f"{indent(pprint.pformat(self.query.options), ' ' * 4)}"
         )
 
     def _repr_html_(self) -> str:
@@ -667,36 +647,40 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
                     <th>Value</th>
                 </tr>
                 <tr>
-                    <td>Length</td>
-                    <td>{len(self)}</td>
+                    <td>Query Type</td>
+                    <td>{self.query.__name__}</td>
                 </tr>
                 <tr>
-                    <td>Preview</td>
-                    <td>{self._preview_str(n=3, sep="<br>")}</td>
+                    <td>Hits</td>
+                    <td>{self.query.hits}</td>
                 </tr>
                 <tr>
                     <td>Query parameters</td>
-                    <td>{self.query_parameters}</td>
+                    <td>{self.query.parameters}</td>
                 </tr>
                 <tr>
-                    <td>Query parameter options</td>
-                    <td>{self.query_options}</td>
+                    <td>Query options</td>
+                    <td>{self.query.options}</td>
                 </tr>
             </table>
         """)
 
-    @property
-    def _query_parameters(self):
-        return self._query.params
 
-    @property
-    def _query_options(self):
-        return self._query.options
+class GranuleResults(Results):
+    def __init__(
+        self,
+        items: list[DataGranule],
+        *,
+        query: DataGranules,  # TODO: DataGranules is a bad name! Should be DataGranuleQuery.
+    ) -> None:
+        super().__init__(items)
+        self._query = query
 
     def to_gdf(self) -> GeoDataFrame:
-        if self and isinstance(self[0], DataCollection):
-            raise TypeError("Only supports DataGranule results")
-
+        # TODO: Allow user to receive the raw normalized gdf and rename columns?
+        # TODO: Pre-massage the GDF to a small set of "known useful" columns and
+        #       give them more reader-friendly names. Avoid future breaking changes
+        #       that might arise from selecting too many columns.
         try:
             import pandas as pd
             from geopandas import GeoDataFrame
@@ -707,3 +691,14 @@ class Results[T: (DataCollection, DataGranule)](list[T]):
             geometry=self,
             crs="EPSG:4326",
         )
+
+
+class CollectionResults(Results):
+    def __init__(
+        self,
+        items: list[DataCollection],
+        *,
+        query: DataCollections,
+    ) -> None:
+        super().__init__(items)
+        self._query = query

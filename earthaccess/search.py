@@ -6,9 +6,9 @@ from typing import (
     Any,
     Self,
     SupportsFloat,
-    TypeAlias,
     override,
 )
+
 
 import requests
 
@@ -21,8 +21,8 @@ from .utils._search import get_results
 
 logger = logging.getLogger(__name__)
 
-FloatLike: TypeAlias = str | SupportsFloat
-PointLike: TypeAlias = tuple[FloatLike, FloatLike]
+type FloatLike = str | SupportsFloat
+type PointLike = tuple[FloatLike, FloatLike]
 
 
 class DataCollections(CollectionQuery):
@@ -970,7 +970,8 @@ class DataGranules(GranuleQuery):
             # TODO consider removing this print statement since we don't print such
             # a message in other cases where no results are found.  Seems arbitrary.
             logger.info(
-                f"earthaccess couldn't find any associated collections with the DOI: {doi}",
+                "earthaccess couldn't find any associated collections with the DOI: %s",
+                doi,
             )
 
         return self

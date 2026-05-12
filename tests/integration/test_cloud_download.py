@@ -75,7 +75,7 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         provider,
         n=n_for_top_collections,
     )
-    logger.info(f"On-premises collections for {provider}: {len(top_collections)}")
+    logger.info("On-premises collections for %s: %s", provider, len(top_collections))
 
     for concept_id in top_collections:
         granule_query = DataGranules().concept_id(concept_id)
@@ -94,12 +94,15 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         )
         if len(granules_to_download) == 0:
             logger.warning(
-                f"Skipping {concept_id}, granule size exceeds configured max size",
+                "Skipping %s, granule size exceeds configured max size",
+                concept_id,
             )
             continue
         logger.info(
-            f"Testing {concept_id}, granules in collection: {total_granules}, "
-            f"download size(MB): {total_size_cmr}",
+            "Testing %s, granules in collection: %s, download size(MB): %s",
+            concept_id,
+            total_granules,
+            total_size_cmr,
         )
         path = tmp_path / "tests" / "integration" / "data" / concept_id
         path.mkdir(parents=True)
@@ -119,11 +122,13 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
         shutil.rmtree(path)
         # test that we could download the data
         if total_mb_downloaded <= 0:
-            logger.warning(f"earthaccess could not download {concept_id}")
+            logger.warning("earthaccess could not download %s", concept_id)
         if total_mb_downloaded != total_size_cmr:
             logger.warning(
-                f"Warning: {concept_id} downloaded size {total_mb_downloaded}MB is "
-                f"different from the size reported by CMR: {total_size_cmr}MB",
+                "Warning: %s downloaded size %sMB is different from the size reported by CMR: %sMB",
+                concept_id,
+                total_mb_downloaded,
+                total_size_cmr,
             )
 
 

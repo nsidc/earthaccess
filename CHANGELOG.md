@@ -18,6 +18,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#460](https://github.com/nsidc/earthaccess/issues/460))
   ([@danielfromearth](https://github.com/danielfromearth))
 
+### Removed
+
+- Python 3.11 is no longer supported.
+  ([#1296](https://github.com/earthaccess-dev/earthaccess/pull/1296))
+  ([@mfisher87](https://github.com/mfisher87))
+
 ## [v0.17.0] - 2026-04-02
 
 ### Changed

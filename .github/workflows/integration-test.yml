@@ -59,15 +59,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - python-version: 3.11
+          - python-version: 3.12
             # We must save the PR number only once, and this also prevents
             # "duplicate artifact" errors caused when attempting to save the same
             # artifact for every python version we're running with.  More specifically,
             # save-pr-number must be set to 'true' for 1 (and only 1) matrix combo
             # (it doesn't matter which combo).
             save-pr-number: true
-          - python-version: 3.12
-            save-pr-number: false
           - python-version: 3.13
             save-pr-number: false
       fail-fast: false
@@ -157,4 +155,4 @@ jobs:
       - name: Upload coverage report
         # Don't upload coverage when using the `act` tool to run the workflow locally
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
