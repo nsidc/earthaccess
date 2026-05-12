@@ -648,7 +648,7 @@ class Results:
                 </tr>
                 <tr>
                     <td>Query Type</td>
-                    <td>{self.query.__name__}</td>
+                    <td>{self.query.__class__.__name__}</td>
                 </tr>
                 <tr>
                     <td>Hits</td>
