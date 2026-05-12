@@ -268,7 +268,7 @@ combine-as-imports = true
 convention = "google"
 
 [tool.bumpversion]
-current_version = "0.17.0"
+current_version = "0.18.0"
 commit = false
 tag = true
 allow_dirty = false
@@ -285,7 +285,7 @@ replace = "## [Unreleased]\n\n## [v{new_version}] - {now:%Y-%m-%d}"
 filename = "CHANGELOG.md"
 regex = true
 search = "\\[Unreleased\\]: (https://.+?)v{current_version}\\.\\.\\.HEAD"
-replace = "[Unreleased]: \\1v{new_version}...HEAD\n[{new_version}]: \\1v{current_version}...v{new_version}"
+replace = "[v{new_version}]: \\1v{current_version}...v{new_version}\n[Unreleased]: \\1v{new_version}...HEAD"
 
 [[tool.bumpversion.files]]
 filename = "CITATION.cff"
