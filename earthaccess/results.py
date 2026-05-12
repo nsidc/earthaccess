@@ -616,36 +616,27 @@ class DataGranule(CustomDict):
 
 class Results:
     """An immutable iterable of search results with convenience methods."""
+
     # TODO: Needs to support both a lazy generator approach and an in-memory approach where
     #       items are never consumed.
-    def _preview(self, *, n: int) -> list[str]:
-        """Returns a list of previews of the first N results."""
-        return [item["meta"]["native-id"] for item in self[:n]]
-
-    def _preview_str(self, *, n: int, sep: str) -> str:
-        """Returns a string of the preview."""
-        preview = self._preview(n=n)
-        preview_str = sep.join(preview)
-        if len(self) > len(preview):
-            preview_str += f"{sep}and {len(self) - len(preview)} more..."
-        return preview_str
+    def __init__(
+        self,
+        items: list[DataGranule | DataCollection],
+        *,
+        query: DataGranules | DataCollections,
+    ) -> None:
+        self._query = query
 
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}<"
-            f"length={len(self)},"
-            f" preview=[{','.join(self._preview(n=3))}]"
-            ">"
-        )
+        return f"{self.__class__.__name__}<hits={len(self.query.hits)},>"
 
     def __str__(self) -> str:
         return (
-            f"Length: {len(self)}\n"
-            f"Preview: [\n{indent(self._preview_str(n=3, sep='\n'), ' ' * 4)}\n]\n"
+            f"Hits: {self.query.hits}\n"
             f"Query parameters:\n"
-            f"{indent(pprint.pformat(self.query_parameters), ' ' * 4)}\n"
+            f"{indent(pprint.pformat(self.query.parameters), ' ' * 4)}\n"
             f"Query parameter options:\n"
-            f"{indent(pprint.pformat(self.query_options), ' ' * 4)}"
+            f"{indent(pprint.pformat(self.query.options), ' ' * 4)}"
         )
 
     def _repr_html_(self) -> str:
@@ -656,20 +647,20 @@ class Results:
                     <th>Value</th>
                 </tr>
                 <tr>
-                    <td>Length</td>
-                    <td>{len(self)}</td>
+                    <td>Query Type</td>
+                    <td>{self.query.__name__}</td>
                 </tr>
                 <tr>
-                    <td>Preview</td>
-                    <td>{self._preview_str(n=3, sep="<br>")}</td>
+                    <td>Hits</td>
+                    <td>{self.query.hits}</td>
                 </tr>
                 <tr>
                     <td>Query parameters</td>
-                    <td>{self.query_parameters}</td>
+                    <td>{self.query.parameters}</td>
                 </tr>
                 <tr>
-                    <td>Query parameter options</td>
-                    <td>{self.query_options}</td>
+                    <td>Query options</td>
+                    <td>{self.query.options}</td>
                 </tr>
             </table>
         """)
@@ -701,6 +692,7 @@ class GranuleResults(Results):
             geometry=self,
             crs="EPSG:4326",
         )
+
 
 class CollectionResults(Results):
     def __init__(
