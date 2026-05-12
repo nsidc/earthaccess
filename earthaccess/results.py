@@ -666,7 +666,7 @@ class Results:
         """)
 
     @property
-    def query(self):
+    def query(self) -> DataGranules | DataCollections:
         return self._query
 
 
