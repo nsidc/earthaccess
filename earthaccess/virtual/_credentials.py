@@ -2,9 +2,9 @@
 
 Provides two public helpers:
 
-- ``get_granule_credentials_endpoint_and_region`` – resolve the NASA S3
+- ``get_granule_credentials_endpoint_and_region`` - resolve the NASA S3
   credentials endpoint for a granule, falling back to a CMR collection query.
-- ``build_obstore_registry`` – build an ``ObjectStoreRegistry`` suitable for
+- ``build_obstore_registry`` - build an ``ObjectStoreRegistry`` suitable for
   passing to ``vz.open_virtual_mfdataset``.
 """
 
