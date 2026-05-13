@@ -396,14 +396,14 @@ class Store:
             need_new_creds = True
         else:
             # If cached credentials are expired, invalidate the cache
-            delta = datetime.datetime.now() - dt_init
+            delta = datetime.datetime.now(tz=datetime.UTC) - dt_init
             if round(delta.seconds / 60, 2) > _S3_CREDENTIALS_EXPIRY_MINUTES:
                 need_new_creds = True
                 self._s3_credentials.pop(location)
 
         if need_new_creds:
             # Don't have existing valid S3 credentials, so get new ones
-            now = datetime.datetime.now()
+            now = datetime.datetime.now(tz=datetime.UTC)
             if endpoint is not None:
                 creds = self.auth.get_s3_credentials(endpoint=endpoint)
             elif daac is not None:
@@ -685,7 +685,7 @@ class Store:
             raise ValueError("List of URLs or DataGranule instances expected")
 
         if local_path is None:
-            today = datetime.datetime.now().strftime("%Y-%m-%d")
+            today = datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%d")
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
 
