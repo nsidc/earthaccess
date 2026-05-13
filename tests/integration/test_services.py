@@ -36,7 +36,7 @@ class TestServices(VCRTestCase):
             dataset["umm"]["ShortName"]: dataset.services() for dataset in datasets
         }
 
-        self.assertEqual(list(dataset_services.keys())[0], "MUR-JPL-L4-GLOB-v4.1")
+        self.assertEqual(next(iter(dataset_services.keys())), "MUR-JPL-L4-GLOB-v4.1")
         self.assertEqual(
             dataset_services["MUR-JPL-L4-GLOB-v4.1"]["S2606110201-XYZ_PROV"][0]["umm"][
                 "LongName"

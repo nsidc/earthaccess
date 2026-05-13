@@ -2,7 +2,7 @@ import json
 import uuid
 import warnings
 from functools import cache
-from typing import Any
+from typing import Any, ClassVar
 
 import requests
 
@@ -23,8 +23,8 @@ def _citation(*, doi: str, format_: str, language: str) -> str:
 
 
 class CustomDict(dict):
-    _basic_umm_fields_: list = []
-    _basic_meta_fields_: list = []
+    _basic_umm_fields_: ClassVar[list] = []
+    _basic_meta_fields_: ClassVar[list] = []
 
     def __init__(
         self,
@@ -72,13 +72,13 @@ class CustomDict(dict):
 class DataCollection(CustomDict):
     """Dictionary-like object to represent a data collection from CMR."""
 
-    _basic_meta_fields_ = [
+    _basic_meta_fields_: ClassVar[list] = [
         "concept-id",
         "granule-count",
         "provider-id",
     ]
 
-    _basic_umm_fields_ = [
+    _basic_umm_fields_: ClassVar[list] = [
         "ShortName",
         "Abstract",
         "SpatialExtent",
@@ -323,12 +323,12 @@ class DataCollection(CustomDict):
 class DataGranule(CustomDict):
     """Dictionary-like object to represent a granule from CMR."""
 
-    _basic_meta_fields_ = [
+    _basic_meta_fields_: ClassVar[list] = [
         "concept-id",
         "provider-id",
     ]
 
-    _basic_umm_fields_ = [
+    _basic_umm_fields_: ClassVar[list] = [
         "GranuleUR",
         "SpatialExtent",
         "TemporalExtent",
