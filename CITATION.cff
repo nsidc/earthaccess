@@ -26,8 +26,8 @@ keywords:
 url: "https://earthaccess.readthedocs.io"
 repository-code: "https://github.com/earthaccess-dev/earthaccess"
 
-version: "0.17.0"
-date-released: "2026-04-02"
+version: "0.18.0"
+date-released: "2026-05-12"
 
 authors:
   - family-names: "Barrett"
