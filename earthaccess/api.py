@@ -623,16 +623,18 @@ def get_s3_filesystem(
         if endpoint:
             session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
         else:
-            raise ValueError("No s3 credentials specified in the given DataGranule")
+            msg = "No s3 credentials specified in the given DataGranule"
+            raise ValueError(msg)
     elif endpoint:
         session = earthaccess.__store__.get_s3_filesystem(endpoint=endpoint)
     elif daac or provider:
         session = earthaccess.__store__.get_s3_filesystem(daac=daac, provider=provider)
     else:
-        raise ValueError(
+        msg = (
             "Invalid set of input arguments given. Please provide either "
             "a valid result, an endpoint, a daac, or a provider.",
         )
+        raise ValueError(msg)
     return session
 
 
@@ -648,7 +650,8 @@ def get_edl_token() -> str:
 def auth_environ() -> dict[str, str]:
     auth = earthaccess.__auth__
     if not auth.authenticated:
-        raise RuntimeError(
+        msg = (
             "`auth_environ()` requires you to first authenticate with `earthaccess.login()`",
         )
+        raise RuntimeError(msg)
     return {"EARTHDATA_USERNAME": auth.username, "EARTHDATA_PASSWORD": auth.password}
