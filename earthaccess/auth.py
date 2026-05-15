@@ -266,7 +266,9 @@ class Auth:
 
         creds = my_netrc[self.system.edl_hostname]
         if creds is None:
-            msg = (f"Earthdata Login hostname {self.system.edl_hostname} not found in .netrc file {netrc_loc}",)
+            msg = (
+                f"Earthdata Login hostname {self.system.edl_hostname} not found in .netrc file {netrc_loc}",
+            )
             raise LoginStrategyUnavailable(msg)
 
         username = creds["login"]

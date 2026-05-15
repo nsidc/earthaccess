@@ -24,10 +24,8 @@ def top_collections(
     num: int = 100,
 ) -> list[str]:
     if num > 2000:
-        raise RuntimeError(
-            "Paging not supported, can only get up to 2000 top collections",
-        )
-
+        msg = ("Paging not supported, can only get up to 2000 top collections",)
+        raise RuntimeError(msg)
     response = requests.post(
         "https://cmr.earthdata.nasa.gov/search/collections.json",
         data={
