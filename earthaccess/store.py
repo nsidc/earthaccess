@@ -596,7 +596,7 @@ class Store:
             # TODO: method to derive the DAAC from url?
             provider = provider
         else:
-            msg: str = (
+            msg = (
                 f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
             )
             raise ValueError(msg)
