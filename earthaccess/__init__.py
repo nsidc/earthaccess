@@ -85,6 +85,7 @@ def __getattr__(name):  # type: ignore
     global _auth, _store
 
     if name not in ["__auth__", "__store__"]:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+        msg = f"module {__name__!r} has no attribute {name!r}"
+        raise AttributeError(msg)
 
     return _auth if name == "__auth__" else _store

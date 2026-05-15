@@ -525,7 +525,8 @@ class DataGranule(CustomDict):
                 "Geometry"
             ]
         except KeyError:
-            raise ValueError("Granule has no horizontal spatial extent") from None
+            msg = "Granule has no horizontal spatial extent"
+            raise ValueError(msg) from None
 
         if "GPolygons" in geometry:
             return {

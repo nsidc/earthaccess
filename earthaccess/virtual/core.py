@@ -128,12 +128,14 @@ def virtualize(
         ```
     """
     if len(granules) == 0:
-        raise ValueError("No granules provided. At least one granule is required.")
+        msg = "No granules provided. At least one granule is required."
+        raise ValueError(msg)
     if len(granules) > 1 and concat_dim is None:
-        raise ValueError(
+        msg = (
             "concat_dim is required when virtualizing more than one granule. "
-            "Pass concat_dim='<dimension_name>' to specify how to concatenate.",
+            "Pass concat_dim='<dimension_name>' to specify how to concatenate."
         )
+        raise ValueError(msg)
 
     # Validate / resolve parser early so callers get a clear error before any
     # network activity.
@@ -224,9 +226,10 @@ def _open_virtual_mfdataset(
     try:
         import virtualizarr as vz
     except ImportError as exc:
-        raise ImportError(
-            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`",
-        ) from exc
+        msg = (
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(msg) from exc
 
     urls = get_urls_for_parser(granules, parser, access=access)
 

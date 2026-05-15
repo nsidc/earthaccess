@@ -225,7 +225,8 @@ def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], boo
 
 
 def fail_to_download_file(*args, **kwargs):
-    raise OSError("Download failed")
+    msg = "Download failed"
+    raise OSError(msg)
 
 
 def test_download_immediate_failure(tmp_path: Path):
