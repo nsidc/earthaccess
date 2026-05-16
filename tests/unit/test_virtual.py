@@ -148,7 +148,7 @@ def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
     mock_vds_hdf = MagicMock()
     call_count = {"n": 0}
 
-    def side_effect(*args, **kwargs):
+    def side_effect(*args, **kwargs):  # noqa: ARG001
         call_count["n"] += 1
         if call_count["n"] == 1:
             msg = "no .dmrpp sidecar"

@@ -224,7 +224,7 @@ def test_force_download(tmp_path, force: bool, cmp: Callable[[float, float], boo
     )
 
 
-def fail_to_download_file(*args, **kwargs):
+def fail_to_download_file(*args, **kwargs):  # noqa: ARG001
     msg = "Download failed"
     raise OSError(msg)
 

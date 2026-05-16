@@ -823,7 +823,7 @@ class Store:
         local_path: Path,
         provider: str | None = None,
         *,
-        credentials_endpoint: str | None = None,
+        credentials_endpoint: str | None = None,  # noqa: ARG002
         pqdm_kwargs: Mapping[str, Any] | None = None,
         force: bool = False,
     ) -> list[Path]:
