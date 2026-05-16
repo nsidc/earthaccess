@@ -1,5 +1,6 @@
 import datetime
 import logging
+import sys
 import tempfile
 import threading
 import traceback
@@ -48,15 +49,13 @@ def _is_interactive() -> bool:
     Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
     """
     try:
-        from IPython import get_ipython  # type: ignore
+        from IPython import get_ipython  # type: ignore  # noqa: PLC0415
 
         # IPython Notebook or REPL:
         if get_ipython() is not None:
             return True
     except ImportError:
         pass
-
-    import sys
 
     # Python REPL
     return hasattr(sys, "ps1")

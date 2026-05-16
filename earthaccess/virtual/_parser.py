@@ -70,7 +70,7 @@ def resolve_parser(
         return parser
 
     try:
-        from virtualizarr.parsers import (
+        from virtualizarr.parsers import (  # noqa: PLC0415
             DMRPPParser,
             HDFParser,
             KerchunkJSONParser,
