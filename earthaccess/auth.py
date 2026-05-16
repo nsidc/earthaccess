@@ -258,29 +258,28 @@ class Auth:
         try:
             my_netrc = Netrc(str(netrc_loc))
         except FileNotFoundError as err:
-            raise LoginStrategyUnavailable(f"No .netrc found at {netrc_loc}") from err
+            msg = (f"No .netrc found at {netrc_loc}",)
+            raise LoginStrategyUnavailable(msg) from err
         except NetrcParseError as err:
-            raise LoginStrategyUnavailable(
-                f"Unable to parse .netrc file {netrc_loc}",
-            ) from err
+            msg = (f"Unable to parse .netrc file {netrc_loc}",)
+            raise LoginStrategyUnavailable(msg) from err
 
         creds = my_netrc[self.system.edl_hostname]
         if creds is None:
-            raise LoginStrategyUnavailable(
+            msg = (
                 f"Earthdata Login hostname {self.system.edl_hostname} not found in .netrc file {netrc_loc}",
             )
+            raise LoginStrategyUnavailable(msg)
 
         username = creds["login"]
         password = creds["password"]
 
         if username is None:
-            raise LoginStrategyUnavailable(
-                f"Username not found in .netrc file {netrc_loc}",
-            )
+            msg = (f"Username not found in .netrc file {netrc_loc}",)
+            raise LoginStrategyUnavailable(msg)
         if password is None:
-            raise LoginStrategyUnavailable(
-                f"Password not found in .netrc file {netrc_loc}",
-            )
+            msg = (f"Password not found in .netrc file {netrc_loc}",)
+            raise LoginStrategyUnavailable(msg)
 
         authenticated = self._get_credentials(username, password, None)
 
@@ -295,11 +294,12 @@ class Auth:
         token = os.getenv("EARTHDATA_TOKEN")
 
         if (not username or not password) and not token:
-            raise LoginStrategyUnavailable(
+            msg = (
                 "Either the environment variables EARTHDATA_USERNAME and "
                 "EARTHDATA_PASSWORD must both be set, or EARTHDATA_TOKEN must be set for "
                 "the 'environment' login strategy.",
             )
+            raise LoginStrategyUnavailable(msg)
 
         logger.debug("Using environment variables for EDL")
         return self._get_credentials(username, password, token)

@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [v0.18.0] - 2026-05-12
+
 - Allow for granule search for collection without SpatialExtent information ([@lsterzinger](https://github.com/lsterzinger))
 
 ### Changed
@@ -54,7 +56,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#1331](https://github.com/earthaccess-dev/earthaccess/issues/1331))
   (@chuckwondo)
 
-## [0.16.0] - 2026-01-30
+## [v0.16.0] - 2026-01-30
 
 ### Changed
 
@@ -105,13 +107,13 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   attribute from being defined on the `Auth` instance
   ([#1181](https://github.com/earthaccess-dev/earthaccess/issues/1181)) ([@chuckwondo](https://github.com/chuckwondo))
 
-## [0.15.1] - 2025-09-16
+## [v0.15.1] - 2025-09-16
 
 ### Fixed
 
 - Obstore and VirtualiZarr should not be required ([#1097](https://github.com/earthaccess-dev/earthaccess/issues/1097)) ([@betolink](https://github.com/betolink))
 
-## [0.15.0] - 2025-09-16
+## [v0.15.0] - 2025-09-16
 
 ### Changed
 
@@ -174,7 +176,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Reflected new publisher of SEDAC datasets ([#1032](https://github.com/earthaccess-dev/earthaccess/issues/1032)) ([@itcarroll](https://github.com/itcarroll))
 - Better proxying by `EarthAccessFile` with correct MRO ([#610](https://github.com/earthaccess-dev/earthaccess/issues/610)) ([@alexandervladsemenov](https://github.com/alexandervladsemenov), [@itcarroll](https://github.com/itcarroll))
 
-## [0.14.0] - 2025-02-11
+## [v0.14.0] - 2025-02-11
 
 ### Added
 
@@ -189,7 +191,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   rejected.  If you need the old behavior, please use a `try` block.
   ([#946](https://github.com/earthaccess-dev/earthaccess/pull/946)) ([@mfisher87](https://github.com/mfisher87), [@chuckwondo](https://github.com/chuckwondo), [@jhkennedy](https://github.com/jhkennedy))
 
-## [0.13.0] - 2025-01-28
+## [v0.13.0] - 2025-01-28
 
 ### Added
 
@@ -205,7 +207,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - `earthaccess.download` now shares the authenticated session cookie among threads to avoid overloading EDL.
   ([#913](https://github.com/earthaccess-dev/earthaccess/issues/913)) ([@hailiangzhang](https://github.com/hailiangzhang))
 
-## [0.12.0] - 2024-11-13
+## [v0.12.0] - 2024-11-13
 
 ### Changed
 
@@ -241,7 +243,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Return an empty list instead of raising an `IndexError` when searches find no results.
   ([#526](https://github.com/earthaccess-dev/earthaccess/issues/526)) ([@jhkennedy](https://github.com/jhkennedy))
 
-## [0.11.0] 2024-10-01
+## [v0.11.0] 2024-10-01
 
 ### Changed
 
@@ -278,7 +280,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Remove the base class on `EarthAccessFile` to fix method resolution
   ([#610](https://github.com/earthaccess-dev/earthaccess/issues/610)) ([@itcarroll](https://github.com/itcarroll))
 
-## [0.10.0] 2024-07-19
+## [v0.10.0] 2024-07-19
 
 ### Changed
 
@@ -323,7 +325,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Fix broken image link in sea level rise tutorial
   ([#427](https://github.com/earthaccess-dev/earthaccess/issues/427)) ([@jbrownrs](https://github.com/jbrownrs))
 
-## [0.9.0] - 2024-02-28
+## [v0.9.0] - 2024-02-28
 
 ### Added
 
@@ -339,7 +341,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Use an authenticated session for hits() instead of calling parent's class
   super() ([#438](https://github.com/earthaccess-dev/earthaccess/issues/438)) ([@betolink](https://github.com/betolink), [@mfisher87](https://github.com/mfisher87), [@jhkennedy](https://github.com/jhkennedy))
 
-## [0.8.2] - 2023-12-06
+## [v0.8.2] - 2023-12-06
 
 ### Changed
 
@@ -365,7 +367,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Handle opening multi-file granules
   ([#394](https://github.com/earthaccess-dev/earthaccess/pull/394)) ([@jrbourbeau](https://github.com/jrbourbeau), [@betolink](https://github.com/betolink))
 
-## [0.8.1] - 2023-12-01
+## [v0.8.1] - 2023-12-01
 
 ### Changed
 
@@ -383,7 +385,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Add `kerchunk` metadata consolidation utility
   ([#278](https://github.com/earthaccess-dev/earthaccess/pull/278)) ([@jrbourbeau](https://github.com/jrbourbeau), [@mfisher87](https://github.com/mfisher87), [@betolink](https://github.com/betolink), [@martindurant](https://github.com/martindurant), [@lsterzinger](https://github.com/lsterzinger), [@mrocklin](https://github.com/mrocklin))
 
-## [0.8.0] - 2023-11-29
+## [v0.8.0] - 2023-11-29
 
 ### Changed
 
@@ -400,14 +402,14 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Fix zero granules being reported for restricted datasets
   ([#358](https://github.com/earthaccess-dev/earthaccess/pull/358)) ([@danielfromearth](https://github.com/danielfromearth))
 
-## [0.7.1] - 2023-11-08
+## [v0.7.1] - 2023-11-08
 
 ### Fixed
 
 - Treat granules without `RelatedUrls` as not cloud-hosted
   ([#339](https://github.com/earthaccess-dev/earthaccess/pull/339)) ([@mfisher87](https://github.com/mfisher87))
 
-## [0.7.0] - 2023-10-31
+## [v0.7.0] - 2023-10-31
 
 ### Changed
 
@@ -437,7 +439,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Return S3 data links by default when in region
   ([#318](https://github.com/earthaccess-dev/earthaccess/pull/318)) ([@jrbourbeau](https://github.com/jrbourbeau), [@mfisher87](https://github.com/mfisher87), [@jhkennedy](https://github.com/jhkennedy))
 
-## [0.6.0] - 2023-09-20
+## [v0.6.0] - 2023-09-20
 
 ### Added
 
@@ -452,7 +454,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   ([#301](https://github.com/earthaccess-dev/earthaccess/pull/301))
   ([#276](https://github.com/earthaccess-dev/earthaccess/pull/276)) ([@jrbourbeau](https://github.com/jrbourbeau), [@betolink](https://github.com/betolink))
 
-## [0.5.3] - 2023-08-01
+## [v0.5.3] - 2023-08-01
 
 ### Added
 
@@ -479,7 +481,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Add exception handling for fsspec sessions, thanks to [@jrbourbeau](https://github.com/jrbourbeau)
   ([#249](https://github.com/earthaccess-dev/earthaccess/pull/249)) ([@jrbourbeau](https://github.com/jrbourbeau))
 
-## [0.5.2] - 2023-04-21
+## [v0.5.2] - 2023-04-21
 
 ### Removed
 
@@ -493,7 +495,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   DAACs accept the same auth
   ([#234](https://github.com/earthaccess-dev/earthaccess/pull/234)) ([@betolink](https://github.com/betolink))
 
-## [0.5.1] - 2023-03-20
+## [v0.5.1] - 2023-03-20
 
 ### Changed
 
@@ -524,7 +526,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Update notebooks to use the new top level API
   ([#214](https://github.com/earthaccess-dev/earthaccess/pull/214)) ([@betolink](https://github.com/betolink))
 
-## [0.5.0] - 2023-02-23
+## [v0.5.0] - 2023-02-23
 
 ### Changed
 
@@ -552,7 +554,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Opening files using URLs was not working properly on AWS, thanks to [@amfriesz](https://github.com/amfriesz)
   for reporting it!  ([#202](https://github.com/earthaccess-dev/earthaccess/pull/202)) ([@betolink](https://github.com/betolink), [@amfriesz](https://github.com/amfriesz))
 
-## [0.4.7] - 2022-12-11
+## [v0.4.7] - 2022-12-11
 
 ### Fixed
 
@@ -560,7 +562,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Move python-magic to the dev section because it is a test dependency ([#186](https://github.com/earthaccess-dev/earthaccess/pull/186)) ([@betolink](https://github.com/betolink))
 - Make minor edits in the README ([#186](https://github.com/earthaccess-dev/earthaccess/pull/186)) ([@betolink](https://github.com/betolink))
 
-## [0.4.6] - 2022-12-08
+## [v0.4.6] - 2022-12-08
 
 ### Changed
 
@@ -573,7 +575,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Add new API documentation and simplify notation to access data
   ([#183](https://github.com/earthaccess-dev/earthaccess/pull/183)) ([@jroebuck932](https://github.com/jroebuck932))
 
-## [0.4.1] - 2022-11-02
+## [v0.4.1] - 2022-11-02
 
 ### Changed
 
@@ -593,7 +595,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Improve documentation by adding types to method signatures
   ([#131](https://github.com/earthaccess-dev/earthaccess/pull/131)) ([@betolink](https://github.com/betolink))
 
-## [0.4.0] - 2022-08-17
+## [v0.4.0] - 2022-08-17
 
 ### Added
 
@@ -604,7 +606,7 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - For `store`, can open files with fsspec in and out of region (stream into
   xarray) ([#41](https://github.com/earthaccess-dev/earthaccess/issues/41)) ([@betolink](https://github.com/betolink))
 
-## [0.3.0] - 2022-04-28
+## [v0.3.0] - 2022-04-28
 
 ### Changed
 
@@ -628,14 +630,14 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Add missing `python-datutil` dependency
   ([`747e992`](https://github.com/earthaccess-dev/earthaccess/pull/75/commits/747e9926a5ab83d75bbf7f17d4c52f24b563147b)) ([@jhkennedy](https://github.com/jhkennedy))
 
-## [0.2.2] - 2022-03-23
+## [v0.2.2] - 2022-03-23
 
 ### Fixed
 
 - Fix store to download multi-file granules ([#73](https://github.com/earthaccess-dev/earthaccess/pull/73)) ([@betolink](https://github.com/betolink))
 - Fix granule formatting ([#73](https://github.com/earthaccess-dev/earthaccess/pull/73)) ([@betolink](https://github.com/betolink))
 
-## [0.2.1] - 2022-03-19
+## [v0.2.1] - 2022-03-19
 
 ### Changed
 
@@ -646,36 +648,36 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Store can download plain links if they are on prem
   ([`92d2919`](https://github.com/earthaccess-dev/earthaccess/commit/92d291962e5b72b458c2971eae8a6b813d4bae39)) ([@betolink](https://github.com/betolink))
 
-
 ### Added
 
 - Add basic classes to interact with NASA CMR, EDL and cloud access.
 - Basic object formatting.
 
-[0.2.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.2.1
-[0.2.2]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.2.2
-[0.3.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.3.0
-[0.4.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.4.1
-[0.4.6]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.4.6
-[0.4.7]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.4.7
-[0.5.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.0
-[0.5.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.1
-[0.5.2]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.2
-[0.5.3]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.3
-[0.6.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.6.0
-[0.7.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.7.0
-[0.7.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.7.1
-[0.8.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.8.0
-[0.8.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.8.1
-[0.8.2]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.8.2
-[0.9.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.9.0
-[0.10.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.10.0
-[0.11.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.11.0
-[0.12.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.12.0
-[0.13.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.13.0
-[0.14.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.14.0
-[0.15.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.15.0
-[0.15.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.15.1
-[0.16.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.16.0
-[Unreleased]: https://github.com/earthaccess-dev/earthaccess/compare/v0.17.0...HEAD
-[0.17.0]: https://github.com/earthaccess-dev/earthaccess/compare/v0.16.0...v0.17.0
+[v0.2.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.2.1
+[v0.2.2]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.2.2
+[v0.3.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.3.0
+[v0.4.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.4.1
+[v0.4.6]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.4.6
+[v0.4.7]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.4.7
+[v0.5.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.0
+[v0.5.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.1
+[v0.5.2]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.2
+[v0.5.3]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.5.3
+[v0.6.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.6.0
+[v0.7.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.7.0
+[v0.7.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.7.1
+[v0.8.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.8.0
+[v0.8.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.8.1
+[v0.8.2]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.8.2
+[v0.9.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.9.0
+[v0.10.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.10.0
+[v0.11.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.11.0
+[v0.12.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.12.0
+[v0.13.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.13.0
+[v0.14.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.14.0
+[v0.15.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.15.0
+[v0.15.1]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.15.1
+[v0.16.0]: https://github.com/earthaccess-dev/earthaccess/releases/tag/v0.16.0
+[v0.17.0]: https://github.com/earthaccess-dev/earthaccess/compare/v0.16.0...v0.17.0
+[v0.18.0]: https://github.com/earthaccess-dev/earthaccess/compare/v0.17.0...v0.18.0
+[Unreleased]: https://github.com/earthaccess-dev/earthaccess/compare/v0.18.0...HEAD

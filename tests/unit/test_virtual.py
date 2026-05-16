@@ -148,7 +148,8 @@ def test_virtualize_dmrpp_fallback_emits_user_warning() -> None:
     def side_effect(*args, **kwargs):
         call_count["n"] += 1
         if call_count["n"] == 1:
-            raise FileNotFoundError("no .dmrpp sidecar")
+            msg = "no .dmrpp sidecar"
+            raise FileNotFoundError(msg)
         return mock_vds_hdf
 
     with (

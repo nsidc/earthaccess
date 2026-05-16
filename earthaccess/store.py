@@ -114,7 +114,7 @@ def _optimal_fsspec_block_size(file_size: int) -> int:
     Uses `blockcache` for all files with block sizes adjusted by file size:
 
     - <100MB: 4MB
-    - >100MB: 4–16MB
+    - >100MB: 4-16MB
 
     Parameters:
         file_size (int): Size of the file in bytes.
@@ -370,14 +370,14 @@ class Store:
             a s3fs file instance
         """
         if self.auth is None:
-            raise ValueError(
-                "A valid Earthdata login instance is required to retrieve S3 credentials",
-            )
+            msg = "A valid Earthdata login instance is required to retrieve S3 credentials"
+            raise ValueError(msg)
         if not any([concept_id, daac, provider, endpoint]):
-            raise ValueError(
+            msg = (
                 "At least one of the concept_id, daac, provider or endpoint"
-                "parameters must be specified. ",
+                "parameters must be specified. "
             )
+            raise ValueError(msg)
 
         if concept_id is not None:
             provider = self._derive_concept_provider(concept_id)
@@ -395,14 +395,14 @@ class Store:
             need_new_creds = True
         else:
             # If cached credentials are expired, invalidate the cache
-            delta = datetime.datetime.now() - dt_init
+            delta = datetime.datetime.now(tz=datetime.UTC) - dt_init
             if round(delta.seconds / 60, 2) > _S3_CREDENTIALS_EXPIRY_MINUTES:
                 need_new_creds = True
                 self._s3_credentials.pop(location)
 
         if need_new_creds:
             # Don't have existing valid S3 credentials, so get new ones
-            now = datetime.datetime.now()
+            now = datetime.datetime.now(tz=datetime.UTC)
             if endpoint is not None:
                 creds = self.auth.get_s3_credentials(endpoint=endpoint)
             elif daac is not None:
@@ -448,7 +448,8 @@ class Store:
         """
         if hasattr(self, "_http_session"):
             return self._http_session
-        raise AttributeError("The requests session hasn't been set up yet.")
+        msg = "The requests session hasn't been set up yet."
+        raise AttributeError(msg)
 
     def open(
         self,
@@ -507,7 +508,8 @@ class Store:
         pqdm_kwargs: Mapping[str, Any] | None = None,
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
-        raise NotImplementedError("granules should be a list of DataGranule or URLs")
+        msg = "granules should be a list of DataGranule or URLs"
+        raise NotImplementedError(msg)
 
     @_open.register
     def _open_granules(
@@ -527,10 +529,8 @@ class Store:
         )
 
         if self.auth is None:
-            raise ValueError(
-                "A valid Earthdata login instance is required to retrieve credentials",
-            )
-
+            msg = "A valid Earthdata login instance is required to retrieve credentials"
+            raise ValueError(msg)
         if self.in_region:
             if granules[0].cloud_hosted:
                 access = "direct"
@@ -558,11 +558,12 @@ class Store:
                         open_kwargs=open_kwargs,
                     )
                 except Exception as e:
-                    raise RuntimeError(
+                    msg = (
                         "An exception occurred while trying to access remote files on S3. "
                         "This may be caused by trying to access the data outside the us-west-2 region."
-                        f"Exception: {traceback.format_exc()}",
-                    ) from e
+                        f"Exception: {traceback.format_exc()}"
+                    )
+                    raise RuntimeError(msg) from e
             else:
                 return self._open_urls_https(
                     url_mapping,
@@ -594,13 +595,13 @@ class Store:
             # TODO: method to derive the DAAC from url?
             provider = provider
         else:
-            raise ValueError(
-                f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL",
+            msg = (
+                f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
             )
+            raise ValueError(msg)
         if self.auth is None:
-            raise ValueError(
-                "A valid Earthdata login instance is required to retrieve S3 credentials",
-            )
+            msg = "A valid Earthdata login instance is required to retrieve S3 credentials"
+            raise ValueError(msg)
 
         url_mapping: Mapping[str, None] = dict.fromkeys(granules)
         if self.in_region and granules[0].startswith("s3"):
@@ -617,11 +618,12 @@ class Store:
                         open_kwargs=open_kwargs,
                     )
                 except Exception as e:
-                    raise RuntimeError(
+                    msg = (
                         "An exception occurred while trying to access remote files on S3. "
                         "This may be caused by trying to access the data outside the us-west-2 region. "
-                        f"Exception: {traceback.format_exc()}",
-                    ) from e
+                        f"Exception: {traceback.format_exc()}"
+                    )
+                    raise RuntimeError(msg) from e
 
             logger.error(
                 "An error occurred while trying to retrieve the cloud credentials for provider: %s. endpoint: %s",
@@ -630,9 +632,8 @@ class Store:
             )
             return []
         if granules[0].startswith("s3"):
-            raise ValueError(
-                "We cannot open S3 links when we are not in-region, try using HTTPS links",
-            )
+            msg = "We cannot open S3 links when we are not in-region, try using HTTPS links"
+            raise ValueError(msg)
         return self._open_urls_https(
             url_mapping,
             pqdm_kwargs=pqdm_kwargs,
@@ -681,10 +682,11 @@ class Store:
             List of downloaded files
         """
         if not granules:
-            raise ValueError("List of URLs or DataGranule instances expected")
+            msg = "List of URLs or DataGranule instances expected"
+            raise ValueError(msg)
 
         if local_path is None:
-            today = datetime.datetime.now().strftime("%Y-%m-%d")
+            today = datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%d")
             uuid = uuid4().hex[:6]
             local_path = Path.cwd() / "data" / f"{today}-{uuid}"
 
@@ -739,7 +741,8 @@ class Store:
         Returns:
             None
         """
-        raise NotImplementedError(f"Cannot _get {granules}")
+        msg = f"Cannot _get {granules}"
+        raise NotImplementedError(msg)
 
     @retry(
         reraise=True,
@@ -782,10 +785,11 @@ class Store:
             and self.in_region
             and "cumulus" in data_links[0]
         ):
-            raise ValueError(
+            msg = (
                 "earthaccess can't yet guess the provider for cloud collections, "
-                "we need to use one from `earthaccess.list_cloud_providers()` or if known the S3 credential endpoint",
+                "we need to use one from `earthaccess.list_cloud_providers()` or if known the S3 credential endpoint"
             )
+            raise ValueError(msg)
         if self.in_region and data_links[0].startswith("s3"):
             if credentials_endpoint is not None:
                 logger.info(
@@ -922,11 +926,11 @@ class Store:
                 if r.status_code in _HTTP_NO_AUTH_CODES:
                     text = (r.text or "").lower()
                     if "eula" in text:
-                        raise EulaNotAccepted(f"Eula Acceptance Failure for {url}")
+                        msg = f"Eula Acceptance Failure for {url}"
+                        raise EulaNotAccepted(msg)
                 if not r.ok:
-                    raise DownloadFailure(
-                        f"Download failed for {url}. Status code: {r.status_code}",
-                    )
+                    msg = f"Download failed for {url}. Status code: {r.status_code}"
+                    raise DownloadFailure(msg)
 
                 with (
                     _sibling_tempfile(path) as temp_path,
@@ -961,11 +965,13 @@ class Store:
             A list of local filepaths to which the files were downloaded.
         """
         if urls is None:
-            raise ValueError("The granules didn't provide a valid GET DATA link")
+            msg = "The granules didn't provide a valid GET DATA link"
+            raise ValueError(msg)
         if self.auth is None:
-            raise ValueError(
-                "We need to be logged into NASA EDL in order to download data granules",
+            msg = (
+                "We need to be logged into NASA EDL in order to download data granules"
             )
+            raise ValueError(msg)
         directory.mkdir(parents=True, exist_ok=True)
 
         arguments = [(url, directory, force) for url in urls]
