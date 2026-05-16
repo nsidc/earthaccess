@@ -34,6 +34,9 @@ class DataServices(ServiceQuery):
             else requests.sessions.Session()
         )
 
+        if auth is not None:
+            self.mode(auth.system.cmr_base_url)
+
     def get(self, limit: int = 2000) -> list:
         """Get all service results up to some limit.
 
