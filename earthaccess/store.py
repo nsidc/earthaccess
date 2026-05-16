@@ -594,7 +594,7 @@ class Store:
             granules[0].startswith("s3") or granules[0].startswith("http")
         ):
             # TODO: method to derive the DAAC from url?
-            provider = provider
+            pass
         else:
             msg = (
                 f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
