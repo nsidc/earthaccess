@@ -452,7 +452,7 @@ class Store:
         msg = "The requests session hasn't been set up yet."
         raise AttributeError(msg)
 
-    def open(
+    def open(  # noqa: PLR0913
         self,
         granules: list[str] | list[DataGranule],
         provider: str | None = None,
@@ -640,7 +640,7 @@ class Store:
             pqdm_kwargs=pqdm_kwargs,
         )
 
-    def get(
+    def get(  # noqa: PLR0913
         self,
         granules: list[DataGranule] | list[str],
         local_path: Path | str | None = None,
@@ -711,7 +711,7 @@ class Store:
         )
 
     @singledispatchmethod
-    def _get(
+    def _get(  # noqa: PLR0913
         self,
         granules: list[DataGranule] | list[str],
         local_path: Path,
@@ -768,7 +768,7 @@ class Store:
         return file_name
 
     @_get.register
-    def _get_urls(
+    def _get_urls(  # noqa: PLR0913
         self,
         granules: list[str],
         local_path: Path,
@@ -817,13 +817,13 @@ class Store:
         )
 
     @_get.register
-    def _get_granules(
+    def _get_granules(  # noqa: PLR0913
         self,
         granules: list[DataGranule],
         local_path: Path,
         provider: str | None = None,
         *,
-        credentials_endpoint: str | None = None,
+        credentials_endpoint: str | None = None,  # noqa: ARG002
         pqdm_kwargs: Mapping[str, Any] | None = None,
         force: bool = False,
     ) -> list[Path]:
