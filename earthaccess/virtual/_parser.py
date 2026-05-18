@@ -165,9 +165,12 @@ def homogenize_dataset_codec_level(ds: xr.Dataset, target_level: int = 7) -> xr.
             if cd.get("name") != "numcodecs.zlib":
                 continue
             cfg = cd.get("configuration", {})
-            if cfg.get("level") == level:
-                continue
-            cd["configuration"] = {**cfg, "level": level}
+            if isinstance(cfg, dict):
+                if cfg.get("level") == level:
+                    continue
+                cd["configuration"] = {**cfg, "level": level}
+            else:
+                cd["configuration"] = {"level": level}
             codecs[i] = type(codec).from_dict(cd)
             modified = True
 

@@ -532,8 +532,8 @@ def _build_registry_for_url(url: str) -> Any:
         from obstore.store import HTTPStore, LocalStore
     except ImportError:
         try:
-            from virtualizarr.registry import (
-                ObjectStoreRegistry,  # type: ignore[no-redef]
+            from virtualizarr.registry import (  # type: ignore[no-redef]
+                ObjectStoreRegistry,
             )
         except ImportError:
             msg = (
