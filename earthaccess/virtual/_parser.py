@@ -143,8 +143,11 @@ def homogenize_dataset_codec_level(ds: xr.Dataset, target_level: int = 7) -> xr.
         import xarray as xr
         from virtualizarr.manifests import ManifestArray
     except ImportError:
+        msg = (
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+        )
         raise ImportError(
-            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`",
+            msg,
         ) from None
 
     def _patch_ma(ma: ManifestArray, level: int) -> ManifestArray:

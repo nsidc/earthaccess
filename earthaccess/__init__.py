@@ -56,12 +56,12 @@ __all__ = [
     "granule_query",
     "login",
     "open",
+    # virtual
+    "open_virtual",
     "search_data",
     "search_datasets",
     "search_services",
     "status",
-    # virtual
-    "open_virtual",
     "virtualize",
 ]
 

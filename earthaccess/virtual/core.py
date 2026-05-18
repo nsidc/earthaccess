@@ -325,9 +325,12 @@ def _open_icechunk(
         import icechunk
         import xarray as xr
     except ImportError as exc:
-        raise ImportError(
+        msg = (
             "earthaccess.open_virtual() with an Icechunk store requires "
-            "`pip install earthaccess[virtualizarr]`",
+            "`pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(
+            msg,
         ) from exc
 
     if storage_options:
@@ -347,8 +350,9 @@ def _open_kerchunk(
     try:
         import xarray as xr
     except ImportError as exc:
+        msg = "earthaccess.open_virtual() requires `pip install earthaccess[virtualizarr]`"
         raise ImportError(
-            "earthaccess.open_virtual() requires `pip install earthaccess[virtualizarr]`",
+            msg,
         ) from exc
 
     store_opts = storage_options or {}
@@ -432,8 +436,9 @@ def _open_kerchunk_from_collection(
         import xarray as xr
         import zarr
     except ImportError as exc:
+        msg = "earthaccess.open_virtual() requires `pip install earthaccess[virtualizarr]`"
         raise ImportError(
-            "earthaccess.open_virtual() requires `pip install earthaccess[virtualizarr]`",
+            msg,
         ) from exc
 
     if access == "direct":
@@ -467,9 +472,12 @@ def _open_icechunk_from_collection(
         import icechunk
         import xarray as xr
     except ImportError as exc:
-        raise ImportError(
+        msg = (
             "earthaccess.open_virtual() with an Icechunk store requires "
-            "`pip install earthaccess[virtualizarr]`",
+            "`pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(
+            msg,
         ) from exc
 
     if access == "direct":
@@ -517,9 +525,12 @@ def _build_registry_for_url(url: str) -> Any:
         try:
             from virtualizarr.registry import ObjectStoreRegistry
         except ImportError:
-            raise ImportError(
+            msg = (
                 "earthaccess.open_virtual(load=False) requires "
-                "`pip install earthaccess[virtualizarr]`",
+                "`pip install earthaccess[virtualizarr]`"
+            )
+            raise ImportError(
+                msg,
             ) from None
 
     stores: dict[str, Any] = {"file://": LocalStore.from_url("file:///")}
@@ -601,9 +612,12 @@ def _open_virtual_via_virtualizarr(
         import zarr
         from virtualizarr.parsers import KerchunkJSONParser, KerchunkParquetParser
     except ImportError as exc:
-        raise ImportError(
+        msg = (
             "earthaccess.open_virtual(load=False) requires "
-            "`pip install earthaccess[virtualizarr]`",
+            "`pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(
+            msg,
         ) from exc
 
     auth_url = registry_url or url
@@ -633,9 +647,12 @@ def _open_virtual_via_virtualizarr(
     elif url.endswith(".parquet"):
         parser = KerchunkParquetParser(skip_variables=list(kds.coords))
     else:
-        raise ValueError(
+        msg = (
             f"Unsupported virtual store format: {url}. "
-            "Expected a .json or .parquet file.",
+            "Expected a .json or .parquet file."
+        )
+        raise ValueError(
+            msg,
         )
 
     vds = vz.open_virtual_dataset(ref_path, parser=parser, registry=registry, **kwargs)
@@ -700,23 +717,32 @@ def open_virtual(  # noqa: PLR0911
     if isinstance(uri, earthaccess.DataCollection):
         url = uri.virtual_collection_url()
         if url is None:
-            raise ValueError(
+            msg = (
                 f"Collection {uri.get('meta', {}).get('concept-id', '')} "
                 "does not have a virtual store (no VIRTUAL COLLECTION "
-                "URL found in its RelatedUrls).",
+                "URL found in its RelatedUrls)."
+            )
+            raise ValueError(
+                msg,
             )
         if not _is_icechunk_uri(url) and not _is_kerchunk_uri(url):
-            raise ValueError(
+            msg = (
                 f"Unrecognised virtual store URL in collection: {url}. "
-                "Expected a .icechunk, .parquet, or .json file.",
+                "Expected a .icechunk, .parquet, or .json file."
+            )
+            raise ValueError(
+                msg,
             )
     else:
         url = str(uri)
 
     if not _is_icechunk_uri(url) and not _is_kerchunk_uri(url):
-        raise ValueError(
+        msg = (
             f"Unrecognised virtual store URI: {uri}. "
-            "Expected a .icechunk, .parquet, or .json file/URI.",
+            "Expected a .icechunk, .parquet, or .json file/URI."
+        )
+        raise ValueError(
+            msg,
         )
 
     if _is_icechunk_uri(url):

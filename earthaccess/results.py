@@ -319,8 +319,9 @@ class DataCollection(CustomDict):
         dd = self["umm"].get("DirectDistributionInformation", {})
         endpoint = dd.get("S3CredentialsAPIEndpoint")
         if not endpoint:
+            msg = "This collection does not provide an S3CredentialsAPIEndpoint."
             raise ValueError(
-                "This collection does not provide an S3CredentialsAPIEndpoint.",
+                msg,
             )
         return earthaccess.__auth__.get_s3_credentials(endpoint=endpoint)
 
