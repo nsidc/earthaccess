@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def virtualize(
+def virtualize(  # noqa: PLR0913
     granules: list[earthaccess.DataGranule],
     *,
     access: AccessType = "direct",
@@ -208,7 +208,7 @@ def virtualize(
 # ---------------------------------------------------------------------------
 
 
-def _open_virtual_mfdataset(
+def _open_virtual_mfdataset(  # noqa: PLR0913
     granules: list[earthaccess.DataGranule],
     parser: Any,
     registry: Any,
@@ -255,7 +255,7 @@ def _open_virtual_mfdataset(
         )
 
 
-def _load_via_kerchunk(
+def _load_via_kerchunk(  # noqa: PLR0913
     vds: xr.Dataset,
     granules: list[earthaccess.DataGranule],
     group: str,
