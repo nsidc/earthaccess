@@ -14,8 +14,10 @@ This document outlines our approach to triaging issues on GitHub, including guid
    * Respond and follow up as needed (i.e. tagging relevant earthaccess maintainers for further support).
 3. Issues are reviewed and groomed using the `earthaccess` [GitHub Project](https://github.com/orgs/earthaccess-dev/projects/1)
 4. An issue is worked following the [Pull Request (PR) Guide](./pr-guide.md).
-   * The issue is self-assigned and moved to an `In Progress` status.
-   * The issue is linked to the related PR, and closed after the PR is merged.
+   * [Assign](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users) the issue to the implementer.
+   * Update status to `In Progress`.
+   * Link the issue to the related PR with a comment "Resolves #N" (`N` is the issue number). The issue will auto-close when the PR is merged.
+   * If the previous step is missed, [link any related PRs](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue) before manually closing an issue.
 
 Details on each of these workflow steps are provided below. 
 
