@@ -75,7 +75,7 @@ def test_query_can_parse_single_dates(start, end, expected):
 
 
 @pytest.mark.parametrize("start,end,expected", invalid_single_dates)
-def test_query_can_handle_invalid_dates(start, end, expected):
+def test_query_can_handle_invalid_dates(start, end, expected):  # noqa: ARG001
     query = DataCollections()
     try:
         query = query.temporal(start, end)
