@@ -24,7 +24,6 @@ Details on each of these workflow steps are provided below.
 
 ## Moving an issue to Backlog status
 
-This section will cover the `earthaccess` project status, guidelines for when to use the "Close Issue as Not Planned" feature, and how to handle issues that are not planned or feasible.
 
 
 ### Project status
