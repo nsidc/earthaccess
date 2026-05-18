@@ -377,7 +377,7 @@ def login(
     return earthaccess.__auth__
 
 
-def download(  # noqa: PLR0913
+def download(
     granules: DataGranule | list[DataGranule] | str | list[str],
     local_path: Path | str | None = None,
     provider: str | None = None,
@@ -445,7 +445,7 @@ def download(  # noqa: PLR0913
     return []
 
 
-def open(  # noqa: A001, PLR0913
+def open(  # noqa: A001
     granules: list[str] | list[DataGranule],
     provider: str | None = None,
     *,
