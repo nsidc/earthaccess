@@ -1,0 +1,8 @@
+# How the CODEOWNERS file works:
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Earthaccess default set of maintainers who will be automatically requested for review
+*   @betolink @jhkennedy @jrbourbeau @mfisher87 @chuckwondo
+
+# Decision committee members
+docs/governance/decisions/*   @betolink @jhkennedy @mfisher87 @chuckwondo @asteiker @itcarroll
