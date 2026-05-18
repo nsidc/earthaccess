@@ -1,5 +1,6 @@
 import datetime
 import logging
+import sys
 import tempfile
 import threading
 import traceback
@@ -48,15 +49,13 @@ def _is_interactive() -> bool:
     Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
     """
     try:
-        from IPython import get_ipython  # type: ignore
+        from IPython import get_ipython  # type: ignore  # noqa: PLC0415
 
         # IPython Notebook or REPL:
         if get_ipython() is not None:
             return True
     except ImportError:
         pass
-
-    import sys
 
     # Python REPL
     return hasattr(sys, "ps1")
@@ -590,16 +589,15 @@ class Store:
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
         s3_fs = None
-        if isinstance(granules[0], str) and (
+        if not isinstance(granules[0], str) or not (
             granules[0].startswith("s3") or granules[0].startswith("http")
         ):
-            # TODO: method to derive the DAAC from url?
-            provider = provider
-        else:
             msg = (
                 f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
             )
             raise ValueError(msg)
+            # TODO: method to derive the DAAC from url?
+
         if self.auth is None:
             msg = "A valid Earthdata login instance is required to retrieve S3 credentials"
             raise ValueError(msg)

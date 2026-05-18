@@ -3,6 +3,7 @@ import unittest
 
 import earthaccess
 import pytest
+from virtualizarr.manifests.array import ManifestArray
 
 logger = logging.getLogger(__name__)
 assertions = unittest.TestCase("__init__")
@@ -47,8 +48,6 @@ def test_virtualize_materialize_indexable(granules):
 
 
 def test_virtualize_non_materialize(granules):
-    from virtualizarr.manifests.array import ManifestArray
-
     # Simply check that the dmrpp can be found, parsed, and loaded. Actual parser result is checked in virtualizarr
     vds = earthaccess.virtualize(
         granules,
