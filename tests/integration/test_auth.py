@@ -20,12 +20,12 @@ def test_auth_can_read_earthdata_env_variables():
     assert earthaccess.__auth__.authenticated
 
 
-def test_auth_can_read_from_netrc_file(mock_netrc):
+def test_auth_can_read_from_netrc_file(mock_netrc):  # noqa: ARG001
     auth = earthaccess.login(strategy="netrc")
     assert auth.authenticated
 
 
-def test_auth_strategy_unavailable_netrc_is_not_present(mock_missing_netrc):
+def test_auth_strategy_unavailable_netrc_is_not_present(mock_missing_netrc):  # noqa: ARG001
     with pytest.raises(LoginStrategyUnavailable):
         earthaccess.login(strategy="netrc")
 
