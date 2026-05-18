@@ -82,8 +82,6 @@ def __getattr__(name):  # type: ignore
 
     Other unhandled attributes raise as `AttributeError` as expected.
     """
-    global _auth, _store
-
     if name not in ["__auth__", "__store__"]:
         msg = f"module {__name__!r} has no attribute {name!r}"
         raise AttributeError(msg)
