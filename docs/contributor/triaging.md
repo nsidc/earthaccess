@@ -46,7 +46,7 @@ Close issues as "not planned" when:
 - An issue is not feasible to be addressed due to technical or resource constraints.
 - An issue is a duplicate of an existing issue that has already been addressed.
 
-When closing an issue as not planned, keep the following best practices in mind:
+When closing an issue as not planned:
 
 - Provide a clear explanation as to why the issue is not planned or feasible.
 - Offer alternative solutions or workarounds, if possible.
