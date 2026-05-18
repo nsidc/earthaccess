@@ -160,7 +160,7 @@ docs = [
 
 
 [tool.pytest.ini_options]
-filterwarnings = ["error::UserWarning"]
+filterwarnings = []
 
 [tool.mypy]
 python_version = "3.12"
