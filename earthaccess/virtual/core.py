@@ -334,11 +334,13 @@ def _open_icechunk(
         ) from exc
 
     if storage_options:
-        storage = icechunk.Storage(**storage_options)
+        storage = icechunk.http_storage(uri, storage_options)
     else:
-        storage = icechunk.Storage.filesystem(uri)
+        storage = icechunk.local_filesystem_storage(uri)
 
-    store = icechunk.open(storage=storage, mode="r")
+    repo = icechunk.Repository.open(storage=storage)
+    session = repo.readonly_session("main")
+    store = session.store
     return xr.open_zarr(store, **kwargs)
 
 
@@ -481,6 +483,8 @@ def _open_icechunk_from_collection(
         ) from exc
 
     if access == "direct":
+        from urllib.parse import urlparse
+
         creds = collection.get_s3_credentials()
         ice_creds = icechunk.S3StaticCredentials(
             access_key_id=creds["accessKeyId"],
@@ -488,9 +492,14 @@ def _open_icechunk_from_collection(
             session_token=creds["sessionToken"],
             expires_after=datetime.now(UTC) + timedelta(hours=1),
         )
-        storage = icechunk.S3Storage(url, get_credentials=lambda: ice_creds)
+        parsed = urlparse(url)
+        storage = icechunk.s3_storage(
+            bucket=parsed.netloc,
+            prefix=parsed.path.lstrip("/"),
+            get_credentials=lambda: ice_creds,
+        )
     else:
-        storage = icechunk.Storage.filesystem(url)
+        storage = icechunk.redirect_storage(url)
 
     repo = icechunk.Repository.open(storage=storage)
     session = repo.readonly_session("main")
@@ -523,7 +532,9 @@ def _build_registry_for_url(url: str) -> Any:
         from obstore.store import HTTPStore, LocalStore
     except ImportError:
         try:
-            from virtualizarr.registry import ObjectStoreRegistry
+            from virtualizarr.registry import (
+                ObjectStoreRegistry,  # type: ignore[no-redef]
+            )
         except ImportError:
             msg = (
                 "earthaccess.open_virtual(load=False) requires "

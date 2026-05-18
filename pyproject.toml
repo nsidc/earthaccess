@@ -186,6 +186,10 @@ module = [
   "tinynetrc.*",
   "vcr.unittest",
   "obspec_utils.*",
+  "virtualizarr.*",
+  "magic",
+  "numcodecs",
+  "responses",
 ]
 ignore_missing_imports = true
 
