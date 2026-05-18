@@ -407,7 +407,7 @@ def _sanitize_references_for_external(url: str) -> str:
     fs = earthaccess.get_fsspec_https_session()
 
     if url.endswith(".json"):
-        with fs.open(url, cache="first") as f:
+        with fs.open(url) as f:
             refs: dict[str, Any] = json.load(f)
         _transform_refs(refs, https_base)
         local.write_text(json.dumps(refs))
@@ -415,7 +415,7 @@ def _sanitize_references_for_external(url: str) -> str:
     elif url.endswith(".parquet"):
         import pandas as pd
 
-        with fs.open(url, cache="first") as f:
+        with fs.open(url) as f:
             refs_df = pd.read_parquet(f)
         if "path" in refs_df.columns:
             mask = refs_df["path"].str.startswith("s3://", na=False)

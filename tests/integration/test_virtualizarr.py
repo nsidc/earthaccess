@@ -73,14 +73,14 @@ def test_open_virtual_from_collection():
     collection = earthaccess.search_datasets(
         count=1, concept_id=MUR_COLLECTION_CONCEPT_ID
     )[0]
-    vds = earthaccess.open_virtual(collection, access="indirect")
+    vds = earthaccess.open_virtual(collection, access="indirect", force_external=True)
     assert vds is not None
     assert len(vds.dims) > 0
 
 
 def test_open_virtual_from_url():
     """open_virtual(str) opens the MUR virtual store URL via kerchunk engine."""
-    vds = earthaccess.open_virtual(MUR_VIRTUAL_URL)
+    vds = earthaccess.open_virtual(MUR_VIRTUAL_URL, force_external=True)
     assert vds is not None
     assert len(vds.dims) > 0
 
@@ -92,7 +92,9 @@ def test_open_virtual_load_false_from_collection():
     collection = earthaccess.search_datasets(
         count=1, concept_id=MUR_COLLECTION_CONCEPT_ID
     )[0]
-    vds = earthaccess.open_virtual(collection, load=False, access="indirect")
+    vds = earthaccess.open_virtual(
+        collection, load=False, access="indirect", force_external=True
+    )
     assert vds is not None
     assert len(vds.dims) > 0
     for name in vds.data_vars:
