@@ -200,9 +200,6 @@ src = ["earthaccess", "stubs", "tests"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "A001",
-  "A002",
-  "A004",
   "ANN001",
   "ANN002",
   "ANN003",
@@ -210,37 +207,25 @@ ignore = [
   "ANN202",
   "ANN204",
   "ANN401",
-  "ARG001",
-  "ARG002",
   "B018",
   "B019",
   "B023",
   "B905",
   "BLE001",
-  "C402",
-  "C408",
-  "C416",
-  "C420",
   "C901",
   "COM812",
   "D1",
   "D205",
   "D401",
   "D417",
-  "DTZ001",
-  "DTZ005",
   "E501",
-  "EM",
   "F401",
   "FBT",
   "FIX002",
   "FURB122",
   "INP001",
-  "PERF401",
-  "PERF403",
   "PGH003",
   "PLC0415",
-  "PLR0913",
   "PLW0127",
   "PLW0602",
   "PT006",
@@ -250,11 +235,6 @@ ignore = [
   "PT012",
   "PT017",
   "PT027",
-  "RUF002",
-  "RUF012",
-  "RUF015",
-  "RUF021",
-  "RUF022",
   "S101",
   "S108",
   "S113",
@@ -273,14 +253,14 @@ combine-as-imports = true
 
 [tool.ruff.lint.per-file-ignores]
 # Allow `print` and `pprint` in notebooks
-"*.ipynb" = ["T201", "T203", "N803", "RET504", "ERA001", "PLR2004", "PD002", "PD010", "PD011"]
+"*.ipynb" = ["T201", "T203", "N803", "RET504", "ERA001", "PLR2004", "PD002", "PD010", "PD011", "EM", "ARG001"]
 "tests/**/*.py" = ["PLR2004"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.bumpversion]
-current_version = "0.17.0"
+current_version = "0.18.0"
 commit = false
 tag = true
 allow_dirty = false
@@ -297,7 +277,7 @@ replace = "## [Unreleased]\n\n## [v{new_version}] - {now:%Y-%m-%d}"
 filename = "CHANGELOG.md"
 regex = true
 search = "\\[Unreleased\\]: (https://.+?)v{current_version}\\.\\.\\.HEAD"
-replace = "[Unreleased]: \\1v{new_version}...HEAD\n[{new_version}]: \\1v{current_version}...v{new_version}"
+replace = "[v{new_version}]: \\1v{current_version}...v{new_version}\n[Unreleased]: \\1v{new_version}...HEAD"
 
 [[tool.bumpversion.files]]
 filename = "CITATION.cff"

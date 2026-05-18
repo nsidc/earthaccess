@@ -397,7 +397,8 @@ def test_sibling_tempfile_error(tmp_path):
         _sibling_tempfile(trg_file) as temp_file,
     ):
         temp_file.write_text(new_text)
-        raise RuntimeError("Some error to trigger cleanup")
+        msg = "Some error to trigger cleanup"
+        raise RuntimeError(msg)
     assert not temp_file.exists()
     assert trg_file.exists()
     assert trg_file.read_text() == orig_text

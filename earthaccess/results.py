@@ -2,7 +2,7 @@ import json
 import uuid
 import warnings
 from functools import cache
-from typing import Any
+from typing import Any, ClassVar
 
 import requests
 import s3fs
@@ -14,18 +14,18 @@ from .services import DataServices
 
 
 @cache
-def _citation(*, doi: str, format: str, language: str) -> str:
+def _citation(*, doi: str, format_: str, language: str) -> str:
     response = requests.get(
         "https://citation.doi.org/format",
-        params={"doi": doi, "style": format, "lang": language},
+        params={"doi": doi, "style": format_, "lang": language},
     )
     response.raise_for_status()
     return response.text
 
 
 class CustomDict(dict):
-    _basic_umm_fields_: list = []
-    _basic_meta_fields_: list = []
+    _basic_umm_fields_: ClassVar[list] = []
+    _basic_meta_fields_: ClassVar[list] = []
 
     def __init__(
         self,
@@ -47,40 +47,39 @@ class CustomDict(dict):
 
     def _filter_fields_(self, fields: list[str]) -> dict[str, Any]:
         filtered_dict = {
-            "umm": dict(
+            "umm": {
                 (field, self["umm"][field]) for field in fields if field in self["umm"]
-            ),
+            },
         }
         basic_dict = {
-            "meta": dict(
+            "meta": {
                 (field, self["meta"][field])
                 for field in self._basic_meta_fields_
                 if field in self["meta"]
-            ),
+            },
         }
         basic_dict.update(filtered_dict)
         return basic_dict
 
-    def _filter_related_links(self, filter: str) -> list[str]:
+    def _filter_related_links(self, link_type: str) -> list[str]:
         """Filter RelatedUrls from the UMM fields on CMR."""
-        matched_links: list = []
-        if "RelatedUrls" in self["umm"]:
-            for link in self["umm"]["RelatedUrls"]:
-                if link["Type"] == filter:
-                    matched_links.append(link["URL"])
-        return matched_links
+        return [
+            link["URL"]
+            for link in self["umm"].get("RelatedUrls", [])
+            if link.get("Type") == link_type
+        ]
 
 
 class DataCollection(CustomDict):
     """Dictionary-like object to represent a data collection from CMR."""
 
-    _basic_meta_fields_ = [
+    _basic_meta_fields_: ClassVar[list] = [
         "concept-id",
         "granule-count",
         "provider-id",
     ]
 
-    _basic_umm_fields_ = [
+    _basic_umm_fields_: ClassVar[list] = [
         "ShortName",
         "Abstract",
         "SpatialExtent",
@@ -154,7 +153,7 @@ class DataCollection(CustomDict):
             return doi.get("DOI", None)
         return None
 
-    def citation(self, *, format: str, language: str) -> str | None:
+    def citation(self, *, format: str, language: str) -> str | None:  # noqa:A002
         """Fetch a formatted citation for this collection using its DOI.
 
         Parameters:
@@ -172,7 +171,7 @@ class DataCollection(CustomDict):
         return (
             None
             if not (doi := self.doi())
-            else _citation(doi=doi, format=format, language=language)
+            else _citation(doi=doi, format_=format, language=language)
         )
 
     def concept_id(self) -> str:
@@ -372,12 +371,12 @@ class DataCollection(CustomDict):
 class DataGranule(CustomDict):
     """Dictionary-like object to represent a granule from CMR."""
 
-    _basic_meta_fields_ = [
+    _basic_meta_fields_: ClassVar[list] = [
         "concept-id",
         "provider-id",
     ]
 
-    _basic_umm_fields_ = [
+    _basic_umm_fields_: ClassVar[list] = [
         "GranuleUR",
         "SpatialExtent",
         "TemporalExtent",
@@ -410,7 +409,7 @@ class DataGranule(CustomDict):
         Returns:
             A basic representation of a data granule.
         """
-        data_links = [link for link in self.data_links()]
+        data_links = list(self.data_links())
 
         # Not all granules have spatial coverage, set to None if missing
         # TODO: We should have a granule metadata validator method
@@ -574,7 +573,8 @@ class DataGranule(CustomDict):
                 "Geometry"
             ]
         except KeyError:
-            raise ValueError("Granule has no horizontal spatial extent") from None
+            msg = "Granule has no horizontal spatial extent"
+            raise ValueError(msg) from None
 
         if "GPolygons" in geometry:
             return {

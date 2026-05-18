@@ -2,9 +2,9 @@
 
 Provides two public helpers:
 
-- ``get_granule_credentials_endpoint_and_region`` – resolve the NASA S3
+- ``get_granule_credentials_endpoint_and_region`` - resolve the NASA S3
   credentials endpoint for a granule, falling back to a CMR collection query.
-- ``build_obstore_registry`` – build an ``ObjectStoreRegistry`` suitable for
+- ``build_obstore_registry`` - build an ``ObjectStoreRegistry`` suitable for
   passing to ``vz.open_virtual_mfdataset``.
 """
 
@@ -60,10 +60,11 @@ def get_granule_credentials_endpoint_and_region(
         region = collection_s3_bucket.get("Region", "us-west-2")
 
     if credentials_endpoint is None:
-        raise ValueError(
+        msg = (
             "The collection did not provide an S3CredentialsAPIEndpoint. "
-            "Direct S3 access is not available for this granule.",
+            "Direct S3 access is not available for this granule."
         )
+        raise ValueError(msg)
 
     return credentials_endpoint, region
 
@@ -80,12 +81,12 @@ def validate_granules(
         ValueError: If any granule does not have data links.
     """
     if not granules or len(granules) == 0:
-        raise ValueError("No valid granules provided.")
+        msg = "No valid granules provided."
+        raise ValueError(msg)
     for granule in granules:
         if not granule.data_links():
-            raise ValueError(
-                f"Granule {granule['meta']['concept-id']} has no data links.",
-            )
+            msg = f"Granule {granule['meta']['concept-id']} has no data links."
+            raise ValueError(msg)
 
 
 def build_obstore_registry(
@@ -114,9 +115,10 @@ def build_obstore_registry(
         from obstore.store import HTTPStore, S3Store
         from virtualizarr.registry import ObjectStoreRegistry
     except ImportError:
-        raise ImportError(
-            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`",
-        ) from None
+        msg = (
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(msg) from None
 
     validate_granules(granules)
 
@@ -124,10 +126,11 @@ def build_obstore_registry(
     auth = earthaccess.__auth__
     edl_token = getattr(auth, "token", None)
     if not edl_token or "access_token" not in edl_token:
-        raise ValueError(
+        msg = (
             "You must be logged in to use indirect access. "
-            "Call earthaccess.login() first.",
+            "Call earthaccess.login() first."
         )
+        raise ValueError(msg)
     token: str = edl_token["access_token"]
 
     if access == "direct":

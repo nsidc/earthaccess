@@ -9,8 +9,8 @@ valid_single_dates = [
     ("2021-02-01", "", "2021-02-01T00:00:00Z,"),
     ("1999-02-01 06:00", "2009-01-01", "1999-02-01T06:00:00Z,2009-01-01T23:59:59Z"),
     (
-        dt.datetime(2021, 2, 1),
-        dt.datetime(2021, 2, 2),
+        dt.datetime(2021, 2, 1, tzinfo=dt.UTC),
+        dt.datetime(2021, 2, 2, tzinfo=dt.UTC),
         "2021-02-01T00:00:00Z,2021-02-02T00:00:00Z",
     ),
     (
@@ -46,7 +46,7 @@ def test_query_can_parse_single_dates(start, end, expected):
 
 
 @pytest.mark.parametrize("start,end,expected", invalid_single_dates)
-def test_query_can_handle_invalid_dates(start, end, expected):
+def test_query_can_handle_invalid_dates(start, end, expected):  # noqa: ARG001
     granules = DataGranules().short_name("MODIS")
     try:
         granules = granules.temporal(start, end)

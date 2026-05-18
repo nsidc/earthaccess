@@ -14,7 +14,7 @@ from .api import (
     get_s3fs_session,
     granule_query,
     login,
-    open,
+    open,  # noqa: A004
     search_data,
     search_datasets,
     search_services,
@@ -30,39 +30,39 @@ from .virtual import open_virtual, virtualize
 logger = logging.getLogger(__name__)
 
 __all__ = [
-    # api.py
-    "login",
-    "status",
-    "search_datasets",
-    "search_data",
-    "search_services",
-    "get_requests_https_session",
-    "get_fsspec_https_session",
-    "get_s3fs_session",
-    "get_s3_credentials",
-    "get_s3_filesystem",
-    "get_edl_token",
-    "granule_query",
-    "collection_query",
-    "open",
-    "download",
-    "auth_environ",
-    # search.py
-    "DataGranule",
-    "DataGranules",
-    "DataCollection",
-    "DataCollections",
-    "DataServices",
-    # auth.py
-    "Auth",
-    # store.py
-    "Store",
-    # virtual
-    "open_virtual",
-    "virtualize",
     # system.py
     "PROD",
     "UAT",
+    # auth.py
+    "Auth",
+    # search.py
+    "DataCollection",
+    "DataCollections",
+    "DataGranule",
+    "DataGranules",
+    "DataServices",
+    # store.py
+    "Store",
+    # api.py
+    "auth_environ",
+    "collection_query",
+    "download",
+    "get_edl_token",
+    "get_fsspec_https_session",
+    "get_requests_https_session",
+    "get_s3_credentials",
+    "get_s3_filesystem",
+    "get_s3fs_session",
+    "granule_query",
+    "login",
+    "open",
+    "search_data",
+    "search_datasets",
+    "search_services",
+    "status",
+    # virtual
+    "open_virtual",
+    "virtualize",
 ]
 
 try:
@@ -85,6 +85,7 @@ def __getattr__(name):  # type: ignore
     global _auth, _store
 
     if name not in ["__auth__", "__store__"]:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+        msg = f"module {__name__!r} has no attribute {name!r}"
+        raise AttributeError(msg)
 
     return _auth if name == "__auth__" else _store

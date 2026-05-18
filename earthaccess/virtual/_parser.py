@@ -80,19 +80,21 @@ def resolve_parser(
             NetCDF3Parser,
         )
     except ImportError:
-        raise ImportError(
-            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`",
-        ) from None
+        msg = (
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(msg) from None
 
     # Normalise to canonical name (try aliases for lowercase input).
     canonical = _ALIASES.get(parser, parser)
 
     if canonical not in SUPPORTED_PARSERS:
-        raise ValueError(
+        msg = (
             f"Unknown parser {parser!r}. "
             f"Supported parsers: {sorted(SUPPORTED_PARSERS)}. "
-            "You can also pass a pre-built parser instance directly.",
+            "You can also pass a pre-built parser instance directly."
         )
+        raise ValueError(msg)
 
     _parser_map = {
         "DMRPPParser": lambda: DMRPPParser(group=group),
