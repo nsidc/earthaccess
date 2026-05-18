@@ -30,6 +30,7 @@ This section will cover the `earthaccess` project status, guidelines for when to
 ### Project status
 
 By default, all new issues are created without a project status. Issues without a status are listed in the [Needs Triage](https://github.com/orgs/earthaccess-dev/projects/1/views/3) project view. Statuses include:
+
 - Backlog
 - In Progress
 - In Review
