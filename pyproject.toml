@@ -62,16 +62,8 @@ Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.
 [project.optional-dependencies]
 # IMPORTANT: When adding a new optional dependencies group, include it in this
 # "all" optional dependencies group.
-all = ["earthaccess[kerchunk]", "earthaccess[virtualizarr]"]
+all = ["earthaccess[virtualizarr]"]
 
-kerchunk = [
-  "kerchunk>=0.2.9",
-  "dask",
-  "h5py >=3.14.0",
-  "h5netcdf",
-  "xarray >=2025.04.0",
-  "zarr >=3.1.1",
-]
 virtualizarr = [
   "numpy >=1.26.4",
   "zarr >=3.1.1",
@@ -80,6 +72,7 @@ virtualizarr = [
   "kerchunk>=0.2.9",
   "dask",
   "h5py >=3.14.0",
+  "h5netcdf",
   "obstore >= 0.8.0",
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",

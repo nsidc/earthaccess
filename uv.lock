@@ -995,17 +995,10 @@ all = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-kerchunk = [
-    { name = "dask" },
-    { name = "h5netcdf" },
-    { name = "h5py" },
-    { name = "kerchunk" },
-    { name = "xarray" },
-    { name = "zarr" },
-]
 virtualizarr = [
     { name = "dask" },
     { name = "fastparquet" },
+    { name = "h5netcdf" },
     { name = "h5py" },
     { name = "hvplot" },
     { name = "icechunk" },
@@ -1077,15 +1070,13 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "dask", marker = "extra == 'all'" },
-    { name = "dask", marker = "extra == 'kerchunk'" },
     { name = "dask", marker = "extra == 'virtualizarr'" },
     { name = "fastparquet", marker = "extra == 'all'", specifier = ">=2023.4.0" },
     { name = "fastparquet", marker = "extra == 'virtualizarr'", specifier = ">=2023.4.0" },
     { name = "fsspec", specifier = ">=2025.2" },
     { name = "h5netcdf", marker = "extra == 'all'" },
-    { name = "h5netcdf", marker = "extra == 'kerchunk'" },
+    { name = "h5netcdf", marker = "extra == 'virtualizarr'" },
     { name = "h5py", marker = "extra == 'all'", specifier = ">=3.14.0" },
-    { name = "h5py", marker = "extra == 'kerchunk'", specifier = ">=3.14.0" },
     { name = "h5py", marker = "extra == 'virtualizarr'", specifier = ">=3.14.0" },
     { name = "hvplot", marker = "extra == 'all'" },
     { name = "hvplot", marker = "extra == 'virtualizarr'" },
@@ -1093,7 +1084,6 @@ requires-dist = [
     { name = "icechunk", marker = "extra == 'virtualizarr'" },
     { name = "importlib-resources", specifier = ">=6.3.2" },
     { name = "kerchunk", marker = "extra == 'all'", specifier = ">=0.2.9" },
-    { name = "kerchunk", marker = "extra == 'kerchunk'", specifier = ">=0.2.9" },
     { name = "kerchunk", marker = "extra == 'virtualizarr'", specifier = ">=0.2.9" },
     { name = "matplotlib", marker = "extra == 'all'" },
     { name = "matplotlib", marker = "extra == 'virtualizarr'" },
@@ -1114,14 +1104,11 @@ requires-dist = [
     { name = "virtualizarr", marker = "extra == 'all'", specifier = ">=2.1.2" },
     { name = "virtualizarr", marker = "extra == 'virtualizarr'", specifier = ">=2.1.2" },
     { name = "xarray", marker = "extra == 'all'" },
-    { name = "xarray", marker = "extra == 'all'", specifier = ">=2025.4.0" },
-    { name = "xarray", marker = "extra == 'kerchunk'", specifier = ">=2025.4.0" },
     { name = "xarray", marker = "extra == 'virtualizarr'" },
     { name = "zarr", marker = "extra == 'all'", specifier = ">=3.1.1" },
-    { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=3.1.1" },
 ]
-provides-extras = ["all", "kerchunk", "virtualizarr"]
+provides-extras = ["all", "virtualizarr"]
 
 [package.metadata.requires-dev]
 dev = [
