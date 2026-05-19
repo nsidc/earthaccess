@@ -71,7 +71,7 @@ class BasicAuthResponseHook:
         r.close()
 
         prepared_request = r.request.copy()
-        cookies: CookieJar = prepared_request._cookies  # type: ignore
+        cookies: CookieJar = prepared_request._cookies  # type: ignore[attr-defined]
         requests.cookies.extract_cookies_to_jar(cookies, r.request, r.raw)
         prepared_request.prepare_cookies(cookies)
         prepared_request.prepare_auth(self.auth)
@@ -318,7 +318,7 @@ class Auth:
             self.password = password
             token_resp = self._find_or_create_token()
 
-            if not (token_resp.ok):  # type: ignore
+            if not (token_resp.ok):
                 msg = f"Authentication with Earthdata Login failed with:\n{token_resp.text}"
                 logger.exception(msg)
                 raise LoginAttemptFailure(msg)

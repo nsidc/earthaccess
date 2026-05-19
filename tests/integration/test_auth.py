@@ -40,7 +40,7 @@ def test_auth_populates_attrs():
 def test_auth_can_create_authenticated_requests_sessions():
     session = earthaccess.get_requests_https_session()
     assert "Authorization" in session.headers
-    assert "Bearer" in session.headers["Authorization"]  # type: ignore
+    assert "Bearer" in session.headers["Authorization"]  # type: ignore[unsupported-operation]
 
 
 @pytest.mark.parametrize(
