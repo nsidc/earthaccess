@@ -11,6 +11,7 @@ import responses
 import s3fs
 from earthaccess import Auth, Store
 from earthaccess.auth import SessionWithHeaderRedirection
+from earthaccess.daac import DAACS
 from earthaccess.exceptions import DownloadFailure, EulaNotAccepted
 from earthaccess.store import EarthAccessFile, _open_files, _sibling_tempfile
 from pqdm.threads import pqdm
@@ -149,8 +150,6 @@ class TestStoreSessions(unittest.TestCase):
 
     @responses.activate
     def test_store_can_create_s3_fsspec_session(self):
-        from earthaccess.daac import DAACS
-
         custom_endpoints = [
             "https://archive.swot.podaac.earthdata.nasa.gov/s3credentials",
             "https://api.giovanni.earthdata.nasa.gov/s3credentials",

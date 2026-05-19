@@ -111,9 +111,11 @@ def build_obstore_registry(
         ImportError: If ``earthaccess[virtualizarr]`` is not installed.
     """
     try:
-        from obstore.auth.earthdata import NasaEarthdataCredentialProvider
-        from obstore.store import HTTPStore, S3Store
-        from virtualizarr.registry import ObjectStoreRegistry
+        from obstore.auth.earthdata import (  # noqa: PLC0415
+            NasaEarthdataCredentialProvider,
+        )
+        from obstore.store import HTTPStore, S3Store  # noqa: PLC0415
+        from virtualizarr.registry import ObjectStoreRegistry  # noqa: PLC0415
     except ImportError:
         msg = (
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"

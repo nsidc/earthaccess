@@ -224,7 +224,7 @@ def _open_virtual_mfdataset(  # noqa: PLR0913
 ) -> xr.Dataset:
     """Thin wrapper around ``vz.open_virtual_mfdataset`` for testability."""
     try:
-        import virtualizarr as vz
+        import virtualizarr as vz  # noqa: PLC0415
     except ImportError as exc:
         msg = (
             "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
@@ -268,7 +268,7 @@ def _load_via_kerchunk(  # noqa: PLR0913
     Needed until https://github.com/zarr-developers/VirtualiZarr/issues/360
     is resolved. TODO: make sure this holds, I think this may have been resolved already.
     """
-    import xarray as xr
+    import xarray as xr  # noqa: PLC0415
 
     fs = earthaccess.get_fsspec_https_session()
 

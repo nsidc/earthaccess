@@ -1,13 +1,11 @@
+import earthaccess
 import geopandas as gpd
 
 COUNT = 10
 
 
 def _get_granules(collection: str):
-    import earthaccess
-
     earthaccess.login()
-
     return earthaccess.search_data(short_name=collection, count=COUNT)
 
 
