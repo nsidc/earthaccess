@@ -30,7 +30,7 @@ If you forget this step, you can "convert to draft" towards the top of the right
 panel.
 
 
-### Review [contributing documentation](/contributor/index.md)
+### Review [contributing documentation](./index.md)
 
 If you're new to our community, please ensure you're aware of how we organize
 contributions.
