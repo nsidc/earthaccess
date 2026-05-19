@@ -1,5 +1,6 @@
 import datetime
 import logging
+import sys
 import tempfile
 import threading
 import traceback
@@ -48,15 +49,12 @@ def _is_interactive() -> bool:
     Interactive sessions include Jupyter Notebooks, IPython REPL, and default Python REPL.
     """
     try:
-        from IPython import get_ipython  # type: ignore[import-not-found]
-
+        from IPython import get_ipython  # type: ignore[import-not-found # noqa: PLC0415
         # IPython Notebook or REPL:
         if get_ipython() is not None:
             return True
     except ImportError:
         pass
-
-    import sys
 
     # Python REPL
     return hasattr(sys, "ps1")
@@ -452,7 +450,7 @@ class Store:
         msg = "The requests session hasn't been set up yet."
         raise AttributeError(msg)
 
-    def open(
+    def open(  # noqa: PLR0913
         self,
         granules: list[str] | list[DataGranule],
         provider: str | None = None,
@@ -590,16 +588,15 @@ class Store:
         open_kwargs: dict[str, Any] | None = None,
     ) -> list[Any]:
         s3_fs = None
-        if isinstance(granules[0], str) and (
+        if not isinstance(granules[0], str) or not (
             granules[0].startswith("s3") or granules[0].startswith("http")
         ):
-            # TODO: method to derive the DAAC from url?
-            provider = provider
-        else:
             msg = (
                 f"Schema for {granules[0]} is not recognized, must be an HTTP or S3 URL"
             )
             raise ValueError(msg)
+            # TODO: method to derive the DAAC from url?
+
         if self.auth is None:
             msg = "A valid Earthdata login instance is required to retrieve S3 credentials"
             raise ValueError(msg)
@@ -640,7 +637,7 @@ class Store:
             pqdm_kwargs=pqdm_kwargs,
         )
 
-    def get(
+    def get(  # noqa: PLR0913
         self,
         granules: list[DataGranule] | list[str],
         local_path: Path | str | None = None,
@@ -711,7 +708,7 @@ class Store:
         )
 
     @singledispatchmethod
-    def _get(
+    def _get(  # noqa: PLR0913
         self,
         granules: list[DataGranule] | list[str],
         local_path: Path,
@@ -768,7 +765,7 @@ class Store:
         return file_name
 
     @_get.register
-    def _get_urls(
+    def _get_urls(  # noqa: PLR0913
         self,
         granules: list[str],
         local_path: Path,
@@ -817,13 +814,13 @@ class Store:
         )
 
     @_get.register
-    def _get_granules(
+    def _get_granules(  # noqa: PLR0913
         self,
         granules: list[DataGranule],
         local_path: Path,
         provider: str | None = None,
         *,
-        credentials_endpoint: str | None = None,
+        credentials_endpoint: str | None = None,  # noqa: ARG002
         pqdm_kwargs: Mapping[str, Any] | None = None,
         force: bool = False,
     ) -> list[Path]:
