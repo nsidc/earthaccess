@@ -25,7 +25,11 @@ jobs:
           # Allow absolute links; any broken internal links will get caught in the docs build
           # Ignore failed checks on earthdata.nasa.gov: They 403 on requests based on user agent. Nothing we can do short of spoofing.
           # Ignore failed links on areas of GitHub that forbid logged-out users
+          # Ignore third-party URLs that are flaky or block automated/bot traffic
           ignore_links: >-
             ^/.*
             ^https://www\.earthdata\.nasa\.gov/.*
             ^https://github\.com/.*
+            ^https://www\.gnu\.org/software/inetutils/
+            ^https://asdc\.larc\.nasa\.gov/project/TEMPO
+            ^https://www\.jpl\.nasa\.gov/missions/surface-water-and-ocean-topography-swot/
