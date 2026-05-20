@@ -319,6 +319,7 @@ def _is_kerchunk_uri(uri: str) -> bool:
 def _open_icechunk(
     uri: str,
     storage_options: dict[str, Any] | None = None,
+    access: str = "indirect",
     **kwargs: Any,
 ) -> xr.Dataset:
     try:
@@ -333,7 +334,18 @@ def _open_icechunk(
             msg,
         ) from exc
 
-    if storage_options:
+    from urllib.parse import urlparse
+
+    parsed = urlparse(uri)
+
+    if access == "direct" or parsed.scheme == "s3":
+        opts = dict(storage_options) if storage_options else {}
+        storage = icechunk.s3_storage(
+            bucket=parsed.netloc,
+            prefix=parsed.path.lstrip("/"),
+            **opts,
+        )
+    elif storage_options:
         storage = icechunk.http_storage(uri, storage_options)
     else:
         storage = icechunk.local_filesystem_storage(uri)
@@ -722,6 +734,7 @@ def open_virtual(  # noqa: PLR0911
         >>> import earthaccess
         >>> ds = earthaccess.open_virtual("s3://bucket/refs.parquet")
         >>> ds = earthaccess.open_virtual("/local/store.icechunk")
+        >>> ds = earthaccess.open_virtual("s3://bucket/store.icechunk", access="direct")
         >>> ds = earthaccess.open_virtual(collection)
         >>> ds = earthaccess.open_virtual(collection, force_external=True)
     """
@@ -759,7 +772,9 @@ def open_virtual(  # noqa: PLR0911
     if _is_icechunk_uri(url):
         if isinstance(uri, earthaccess.DataCollection):
             return _open_icechunk_from_collection(uri, url, access=access, **kwargs)
-        return _open_icechunk(url, storage_options=storage_options, **kwargs)
+        return _open_icechunk(
+            url, storage_options=storage_options, access=access, **kwargs
+        )
 
     if not load:
         if force_external:
@@ -769,11 +784,11 @@ def open_virtual(  # noqa: PLR0911
 
     if force_external:
         sanitized = _sanitize_references_for_external(url)
-        sopts = {
+        opts = {
             "remote_protocol": "https",
             "remote_options": earthaccess.get_fsspec_https_session().storage_options,
         }
-        return _open_kerchunk(sanitized, storage_options=sopts, **kwargs)
+        return _open_kerchunk(sanitized, storage_options=opts, **kwargs)
 
     if isinstance(uri, earthaccess.DataCollection):
         return _open_kerchunk_from_collection(uri, url, access=access, **kwargs)

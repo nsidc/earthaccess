@@ -334,3 +334,120 @@ def test_credentials_raises_when_no_endpoint_anywhere(mock_search_datasets) -> N
 
     with pytest.raises(ValueError, match="did not provide an S3CredentialsAPIEndpoint"):
         get_granule_credentials_endpoint_and_region(_granule_no_endpoint)
+
+
+# ---------------------------------------------------------------------------
+# core — _open_icechunk (S3 / direct-access path)
+# ---------------------------------------------------------------------------
+
+
+class TestOpenIcechunk:
+    """Unit tests for ``_open_icechunk``.
+
+    All icechunk and xarray I/O is mocked so the suite has no external
+    dependencies.
+    """
+
+    @pytest.fixture(autouse=True)
+    def _mock_all(self):
+        from unittest.mock import MagicMock, patch
+
+        store = MagicMock()
+        session = MagicMock()
+        session.store = store
+        repo_obj = MagicMock()
+        repo_obj.readonly_session.return_value = session
+        repo_cls = MagicMock()
+        repo_cls.open.return_value = repo_obj
+        dataset = MagicMock()
+
+        self.mock_store = store
+        self.mock_session = session
+        self.mock_repo_obj = repo_obj
+        self.mock_repo_cls = repo_cls
+        self.mock_dataset = dataset
+
+        p_s3 = patch("icechunk.s3_storage")
+        p_http = patch("icechunk.http_storage")
+        p_local = patch("icechunk.local_filesystem_storage")
+        p_repo = patch("icechunk.Repository", repo_cls)
+        p_xr = patch("xarray.open_zarr", return_value=dataset)
+
+        self.mock_s3 = p_s3.start()
+        self.mock_http = p_http.start()
+        self.mock_local = p_local.start()
+        p_repo.start()
+        p_xr.start()
+        yield
+        for p in [p_s3, p_http, p_local, p_repo, p_xr]:
+            p.stop()
+
+    def test_direct_access_with_https_url_calls_s3_storage(self):
+        """access='direct' with an HTTPS URL builds S3 storage from parsed URI."""
+        from earthaccess.virtual.core import _open_icechunk
+
+        result = _open_icechunk(
+            "https://bucket.daac/path/to/store.icechunk", access="direct"
+        )
+
+        self.mock_s3.assert_called_once_with(
+            bucket="bucket.daac",
+            prefix="path/to/store.icechunk",
+        )
+        self.mock_http.assert_not_called()
+        self.mock_local.assert_not_called()
+        assert result is self.mock_dataset
+
+    def test_s3_uri_calls_s3_storage(self):
+        """s3:// URI with default access builds S3 storage."""
+        from earthaccess.virtual.core import _open_icechunk
+
+        result = _open_icechunk("s3://my-bucket/key/store.icechunk")
+
+        self.mock_s3.assert_called_once_with(
+            bucket="my-bucket",
+            prefix="key/store.icechunk",
+        )
+        assert result is self.mock_dataset
+
+    def test_https_with_storage_options_calls_http_storage(self):
+        """storage_options provided with HTTPS URI calls http_storage."""
+        from earthaccess.virtual.core import _open_icechunk
+
+        sopts = {"token": "abc"}
+        result = _open_icechunk(
+            "https://example.com/store.icechunk", storage_options=sopts
+        )
+
+        self.mock_http.assert_called_once_with(
+            "https://example.com/store.icechunk", sopts
+        )
+        self.mock_s3.assert_not_called()
+        self.mock_local.assert_not_called()
+        assert result is self.mock_dataset
+
+    def test_local_file_calls_local_storage(self):
+        """Local file path with no storage_options calls local_filesystem_storage."""
+        from earthaccess.virtual.core import _open_icechunk
+
+        result = _open_icechunk("/local/store.icechunk")
+
+        self.mock_local.assert_called_once_with("/local/store.icechunk")
+        self.mock_s3.assert_not_called()
+        self.mock_http.assert_not_called()
+        assert result is self.mock_dataset
+
+    def test_s3_uri_with_extra_storage_options(self):
+        """storage_options are forwarded as kwargs to s3_storage."""
+        from earthaccess.virtual.core import _open_icechunk
+
+        sopts = {"region": "us-west-2", "from_env": True}
+        result = _open_icechunk("s3://bucket/store.icechunk", storage_options=sopts)
+
+        self.mock_s3.assert_called_once_with(
+            bucket="bucket",
+            prefix="store.icechunk",
+            region="us-west-2",
+            from_env=True,
+        )
+        assert result is self.mock_dataset
