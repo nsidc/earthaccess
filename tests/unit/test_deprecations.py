@@ -50,13 +50,13 @@ def test_deprecation_warning_for_api():
 
 def test_deprecation_warning_for_store(auth):
     store = Store(auth)
-    with warnings.catch_warnings(record=True) as w:
-        # Cause all warnings to always be triggered.
+    with (
+        mock.patch.object(store, "get_s3_filesystem", return_value=mock.Mock()),
+        warnings.catch_warnings(record=True) as w,
+    ):
         warnings.simplefilter("always")
-        # Trigger a warning.
         with contextlib.suppress(ValueError):
             store.get_s3fs_session()
-        # Verify some things
         assert issubclass(w[0].category, DeprecationWarning)
         assert "Use get_s3_filesystem instead" in str(w[0].message)
 
