@@ -58,7 +58,6 @@ class BasicAuthResponseHook:
         self.auth = auth
 
     def __call__(self, r: requests.Response, **kwargs: Any) -> requests.Response:
-
         # If the response's URL is not for the EDL system we're authenticating
         # against, then simply return the response unchanged.  Otherwise, we'll
         # prepare a new request below with the user's EDL credentials.

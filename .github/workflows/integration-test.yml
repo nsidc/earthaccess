@@ -142,8 +142,8 @@ jobs:
           EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
         run: |
-          # -rxXs: Show provided (r)eason in summary for (x)fail, (X)pass, and (s)kipped tests
           uv run pytest tests/integration \
+            -n logical \
             -rxXs \
             --cov=earthaccess \
             --cov-report=term-missing \

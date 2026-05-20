@@ -67,6 +67,7 @@ plugins:
         - "user/tutorials/SSL.ipynb"
         - "user/tutorials/dmrpp-virtualizarr.ipynb"
         - "user/tutorials/dask.ipynb"
+        - "tutorials/virtual_data.ipynb"
         - "user/howto/edl.ipynb"
         - "user/howto/fsspec.ipynb"
       ignore:

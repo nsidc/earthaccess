@@ -25,7 +25,7 @@ from .search import DataCollection, DataCollections, DataGranule, DataGranules
 from .services import DataServices
 from .store import Store
 from .system import PROD, UAT
-from .virtual import virtualize
+from .virtual import open_virtual, virtualize
 
 logger = logging.getLogger(__name__)
 
@@ -56,11 +56,12 @@ __all__ = [
     "granule_query",
     "login",
     "open",
+    # virtual
+    "open_virtual",
     "search_data",
     "search_datasets",
     "search_services",
     "status",
-    # virtual
     "virtualize",
 ]
 
@@ -73,7 +74,6 @@ except ImportError:
 
 _auth = Auth()
 _store: Store | None = None
-_lock = threading.Lock()
 
 
 def __getattr__(name):  # type: ignore

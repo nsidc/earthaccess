@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING, Any
 from earthaccess.virtual._types import AccessType, ParserType
 
 if TYPE_CHECKING:
+    import xarray as xr
+
     import earthaccess
     from earthaccess.virtual._types import AccessType, ParserType
 
@@ -70,7 +72,7 @@ def resolve_parser(
         return parser
 
     try:
-        from virtualizarr.parsers import (  # noqa: PLC0415
+        from virtualizarr.parsers import (
             DMRPPParser,
             HDFParser,
             KerchunkJSONParser,
@@ -133,3 +135,75 @@ def get_urls_for_parser(
             url = url + ".dmrpp"
         urls.append(url)
     return urls
+
+
+def homogenize_dataset_codec_level(ds: xr.Dataset, target_level: int = 7) -> xr.Dataset:
+    """Patch Zlib codec levels on all ManifestArrays in *ds* to *target_level*."""
+    try:
+        import xarray as xr
+        from virtualizarr.manifests import ManifestArray
+    except ImportError:
+        msg = (
+            "earthaccess.virtualize() requires `pip install earthaccess[virtualizarr]`"
+        )
+        raise ImportError(
+            msg,
+        ) from None
+
+    def _patch_ma(ma: ManifestArray, level: int) -> ManifestArray:
+        if not isinstance(ma, ManifestArray):
+            return ma
+
+        meta = ma.metadata
+        codecs = list(meta.codecs)
+        modified = False
+
+        for i, codec in enumerate(codecs):
+            if not hasattr(codec, "to_dict"):
+                continue
+            cd = codec.to_dict()
+            if cd.get("name") != "numcodecs.zlib":
+                continue
+            cfg = cd.get("configuration", {})
+            if isinstance(cfg, dict):
+                if cfg.get("level") == level:
+                    continue
+                cd["configuration"] = {**cfg, "level": level}
+            else:
+                cd["configuration"] = {"level": level}
+            codecs[i] = type(codec).from_dict(cd)
+            modified = True
+
+        if not modified:
+            return ma
+
+        import zarr
+
+        new_meta = zarr.core.metadata.v3.ArrayV3Metadata(
+            shape=meta.shape,
+            data_type=meta.data_type,
+            chunk_grid=meta.chunk_grid,
+            chunk_key_encoding=meta.chunk_key_encoding,
+            fill_value=meta.fill_value,
+            codecs=tuple(codecs),
+            attributes=meta.attributes,
+            dimension_names=meta.dimension_names,
+            storage_transformers=meta.storage_transformers,
+        )
+        return ManifestArray(new_meta, ma.manifest)
+
+    new_vars = {
+        name: (
+            xr.DataArray(
+                _patch_ma(var.data, target_level),
+                dims=var.dims,
+                attrs=var.attrs,
+                name=name,
+            )
+            if isinstance(var.data, ManifestArray)
+            else var
+        )
+        for name, var in ds.data_vars.items()
+    }
+
+    return xr.Dataset(new_vars, coords=ds.coords, attrs=ds.attrs)

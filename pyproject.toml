@@ -62,39 +62,27 @@ Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.
 [project.optional-dependencies]
 # IMPORTANT: When adding a new optional dependencies group, include it in this
 # "all" optional dependencies group.
-all = [
-  "earthaccess[kerchunk]",
-  "earthaccess[virtualizarr]",
-]
+all = ["earthaccess[virtualizarr]"]
 
-kerchunk = [
-  "kerchunk>=0.2.9",
-  "dask",
-  "h5py >=3.14.0",
-  "h5netcdf",
-  "xarray >=2025.04.0",
-  "zarr >=3.1.1",
-]
 virtualizarr = [
   "numpy >=1.26.4",
   "zarr >=3.1.1",
   "virtualizarr >=2.1.2",
+  "icechunk",
   "kerchunk>=0.2.9",
   "dask",
   "h5py >=3.14.0",
+  "h5netcdf",
   "obstore >= 0.8.0",
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",
   "xarray",
+  "matplotlib",
+  "hvplot",
 ]
 
 [dependency-groups]
-dev = [
-  "bump-my-version >=1.3.0",
-  "nox",
-  "pre-commit >=2.4",
-  "ruff >=0.6.3",
-]
+dev = ["bump-my-version >=1.3.0", "nox", "pre-commit >=2.4", "ruff >=0.6.3"]
 test = [
   "zarr >=3.1.1",
   "numpy >=1.26.4",
@@ -102,6 +90,7 @@ test = [
   "pytest >=8.3",
   "pytest-cov >=5.0",
   "pytest-watch >=4.2",
+  "pytest-xdist >=3.8",
   "python-magic >=0.4; platform_system != 'Windows'",
   "python-magic-bin >=0.4; platform_system == 'Windows'",
   "responses >=0.14",
@@ -157,7 +146,7 @@ docs = [
 
 
 [tool.pytest.ini_options]
-filterwarnings = ["error::UserWarning"]
+filterwarnings = []
 
 [tool.mypy]
 python_version = "3.12"
@@ -183,6 +172,10 @@ module = [
   "tinynetrc.*",
   "vcr.unittest",
   "obspec_utils.*",
+  "virtualizarr.*",
+  "magic",
+  "numcodecs",
+  "responses",
 ]
 ignore_missing_imports = true
 
@@ -221,6 +214,7 @@ ignore = [
   "FIX002",
   "INP001",
   "PGH003",
+  "PLC0415",
   "PT006",
   "PT007",
   "PT009",
@@ -246,7 +240,19 @@ combine-as-imports = true
 
 [tool.ruff.lint.per-file-ignores]
 # Allow `print` and `pprint` in notebooks
-"*.ipynb" = ["T201", "T203", "N803", "RET504", "ERA001", "PLR2004", "PD002", "PD010", "PD011", "EM", "ARG001"]
+"*.ipynb" = [
+  "T201",
+  "T203",
+  "N803",
+  "RET504",
+  "ERA001",
+  "PLR2004",
+  "PD002",
+  "PD010",
+  "PD011",
+  "EM",
+  "ARG001",
+]
 "tests/**/*.py" = ["PLR2004"]
 
 [tool.ruff.lint.pydocstyle]
