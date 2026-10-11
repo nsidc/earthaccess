@@ -486,7 +486,7 @@ def get_s3_credentials(
     daac: str | None = None,
     provider: str | None = None,
     results: list[DataGranule] | None = None,
-) -> dict[str, Any]:
+) -> dict[str, str]:
     """Returns temporary (1 hour) credentials for direct access to NASA S3 buckets. We can
     use the daac name, the provider, or a list of results from earthaccess.search_data().
     If we use results, earthaccess will use the metadata on the response to get the credentials,

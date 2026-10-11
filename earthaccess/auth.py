@@ -9,7 +9,7 @@ import shutil
 from collections.abc import Mapping
 from netrc import NetrcParseError
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Self
 from urllib.parse import urlparse
 
 if TYPE_CHECKING:
@@ -113,7 +113,7 @@ class Auth:
         strategy: str = "netrc",
         persist: bool = False,  # noqa: FBT001, FBT002
         system: System | None = None,
-    ) -> Any:
+    ) -> Self:
         """Authenticate with Earthdata login.
 
         Parameters:
