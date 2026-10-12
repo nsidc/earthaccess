@@ -34,7 +34,7 @@ These docs contain instructions and best practices for getting involved with `ea
 
 - The How-to section has a [pull request guide](./howto/pr-guide.md), [development guide](./howto/development.md), [maintainers guide](./howto/maintainers-guide.md), and content on [releasing versions](./howto/releasing.md) and [triaging](./howto/triaging.md)
 - The Explanation section has content on running [integration tests](./explanation/integration-tests.md)
-- The Reference section details our [naming conventions](./how-to/naming-convention.md)
+- The Reference section details our [naming conventions](./reference/naming-convention.md)
 
 
 New to contributing? You're welcome here! If you're not sure what to do, _don't worry_, just pick whichever option suits you best. The community will help you out! Is there other content that would be useful to have in these pages? Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to let us know! 
