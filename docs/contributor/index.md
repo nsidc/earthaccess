@@ -1,40 +1,40 @@
 # Contributor guide
 
-Thank you for your interest in contributing to _earthaccess_! We're excited for your contribution,
-whether you're finding bugs, adding new features, fixing anything broken, or improving documentation.
+**Thank you for your interest in contributing to `earthaccess`! We're excited for your contribution,
+whether you're finding bugs, adding new features, fixing anything broken, or improving documentation.**
 
-When contributing we recommend:
+!!! note "This documentation follows the Diátaxis framework:"
 
-- reading the contributing guide all the way though once before starting
-- [join us on Zulip chat](https://earthaccess.zulipchat.com) for any questions you may have
-- searching through issues, discussions, pull requests, and Zulip to see if your contribution has already been discussed
-  so you don't duplicate work
+    - **How-to guides** — shorter, goal-oriented instructions for specific tasks.
+    - **Explanation** — understanding-oriented discussions of concepts.
+    - **Reference** — information-oriented technical details.
+
+    Learn more about Diátaxis at <https://diataxis.fr/>.
+
+**Before contributing, please read through our [code of conduct](./code-of-conduct.md) and [AI policy](./ai-policy.md) pages. **
+
+When contributing, we recommend starting by:
+
+- [Joining us on Zulip chat](https://earthaccess.zulipchat.com) for any questions you may have 
+- Searching through issues, discussions, pull requests, and Zulip to see if your contribution has already been discussed
+  to avoid duplicating work
 
 Then, you can:
 
-- Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to report a bug, unexpected behavior, a stumbling block in our documentation, or any
-  other problem.
+- Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to report a bug, unexpected behavior, a stumbling block in our documentation, or any other problem
 - Open [a Q&A GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/categories/new?category=q-a) to ask
   questions, share insights, or connect with others about Earth data access (broadly)
 - Open [an Ideas GitHub Discussion](https://github.com/earthaccess-dev/earthaccess/discussions/new?category=ideas) to suggest
   new features or improvements, and find collaborators and coordinate the work
-- Join [a Collaboration Café](../calendar.md) to meet other users/developers/maintainers and get help on, or give help to,
-  anything related to Earth data access
+- Join [a Collaboration Café](../calendar.md) to meet other users/developers/maintainers and work together on anything related to Earth data access
 
-You can also open a pull request!
-Please review our [pull request guide](/contributor/pr-guide.md) first.
+Want to contribute in other ways? 
 
-If you're not sure what to do, _don't worry_, and just pick whichever suits you best. The community will help you out!
+These docs contain instructions and best practices for getting involved with `earthaccess`: 
 
-!!! tip "New to contributing? You're welcome here!"
+- The How-to section has a [pull request guide](/contributor/how-to/pr-guide.md), [development guide](/contributor/how-to/development.md), [maintainers guide](/contributor/how-to/maintainers-guide.md), and content on [releasing versions](/contributor/how-to/releasing.md) and [triaging](/contributor/how-to/triaging.md)
+- The Explanation section has content on running [integration tests](/contributor/explanation/integration-tests.md)
+- The Reference section details our [naming conventions](/reference/how-to/naming-convention.md)
 
-    If you're not comfortable writing unit tests, debugging CI failures, or setting up a
-    development environment — **we still want your contribution!** Open a pull request
-    with what you have, ask for help, and someone from the community will do their best
-    to work with you. Bug fixes and features do need tests before they can be merged, but
-    you don't have to write them on your own. See our [pull request guide](/contributor/pr-guide.md)
-    and the PR checklist for details.
 
-!!! note
-
-    We have a [code of conduct](./code-of-conduct.md). Please follow it in all of your interactions with the project.
+New to contributing? You're welcome here! If you're not sure what to do, _don't worry_, just pick whichever option suits you best. The community will help you out! Is there other content that would be useful to have in these pages? Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to let us know! 
