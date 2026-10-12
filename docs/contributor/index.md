@@ -11,7 +11,7 @@ whether you're finding bugs, adding new features, fixing anything broken, or imp
 
     Learn more about Diátaxis at <https://diataxis.fr/>.
 
-**Before contributing, please read through our [code of conduct](./code-of-conduct.md) and [AI policy](./ai-policy.md) pages. **
+**Before contributing, please read through our [code of conduct](./code-of-conduct.md) and [AI policy](./ai-policy.md) pages.**
 
 When contributing, we recommend starting by:
 
@@ -32,9 +32,9 @@ Want to contribute in other ways?
 
 These docs contain instructions and best practices for getting involved with `earthaccess`: 
 
-- The How-to section has a [pull request guide](/contributor/how-to/pr-guide.md), [development guide](/contributor/how-to/development.md), [maintainers guide](/contributor/how-to/maintainers-guide.md), and content on [releasing versions](/contributor/how-to/releasing.md) and [triaging](/contributor/how-to/triaging.md)
-- The Explanation section has content on running [integration tests](/contributor/explanation/integration-tests.md)
-- The Reference section details our [naming conventions](/reference/how-to/naming-convention.md)
+- The How-to section has a [pull request guide](./howto/pr-guide.md), [development guide](./howto/development.md), [maintainers guide](./howto/maintainers-guide.md), and content on [releasing versions](./howto/releasing.md) and [triaging](./howto/triaging.md)
+- The Explanation section has content on running [integration tests](./explanation/integration-tests.md)
+- The Reference section details our [naming conventions](./how-to/naming-convention.md)
 
 
 New to contributing? You're welcome here! If you're not sure what to do, _don't worry_, just pick whichever option suits you best. The community will help you out! Is there other content that would be useful to have in these pages? Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to let us know! 
