@@ -1,9 +1,9 @@
 # AI Policy
 
 We have this policy so that AI tools make earthaccess more enjoyable to work on,
-not harder. Making a contribution/PR used to also be a learning opportunity and
-introduce you to the people who maintain earthaccess. AI can deliver the contribution alone,
-but we ask for the learning and community as well.
+not harder. Making a contribution/PR is also a learning opportunity and
+introduces you to the people who maintain earthaccess. AI can deliver the contribution alone,
+but we continue to ask for the learning and community as well.
 
 AI assistance is welcome, and so is needing help; submitting code you haven't read
 is not.
