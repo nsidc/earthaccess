@@ -14,10 +14,12 @@ Make use of subheadings. They make pages scannable and easier to navigate, and t
 
 We use the [Diataxis](https://diataxis.fr/) framework to decide what a page is for and where it should go. The framework distinguishes four kinds of documentation:
 
-- **Tutorials** teach by walking the learner through a task.
+
 - **How-to guides** give step-by-step instructions to solve a specific problem.
-- **Reference** describes technical details for readers who already know what they're looking for.
+- **Tutorials** teach by walking the learner through a task.
 - **Explanations** provide background and context to deepen understanding.
+- **Reference** describes technical details for readers who already know what they're looking for.
+
 
 When writing a tutorial, keep the [key principles of tutorials](https://diataxis.fr/tutorials/#key-principles) in mind — such as letting the learner work and staying focused on the goal.
 
