@@ -5,7 +5,7 @@
 
 # Welcome to `earthaccess`!
 
-`earthaccess` is a Python library to **search for** and **download** or **stream** NASA Earth science data with just a few lines of code.
+`earthaccess` is a Python library to _**search for**_ and _**download**_ or _**stream**_ NASA Earth science data with just a few lines of code. Want to get started ASAP? **See our [quick start guide](./user/quick-start.md).**
 
 >*"earthaccess revolutionizes NASA data access by drastically reducing the complexity and code required. Since open science is a collaborative effort involving people from different technical backgrounds, our team took the approach that data analysis can and should be made more inclusive and accessible by reducing the complexities of underlying systems."*
 >
