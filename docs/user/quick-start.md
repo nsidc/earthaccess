@@ -78,10 +78,10 @@ As an example, we'll search for the "ATLAS/ICESat-2 L3A Land Ice Height", or ATL
 
 ```python
 results = earthaccess.search_data(
-    short_name='ATL06',
+    short_name="ATL06",
     bounding_box=(-10, 20, 10, 50),
     temporal=("1999-02", "2019-03"),
-    count=10
+    count=10,
 )
 ```
 

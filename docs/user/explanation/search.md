@@ -20,9 +20,7 @@ NASA also offers a number of services to subset and transform data.  These servi
 [`search_datasets`](../../api/index.md#earthaccess.api.search_datasets) allows you to search for NASA datasets using combinations of keywords.  As a simple example, we use the `keyword` keyword to search for all datasets matching `icesat-2`.
 
 ```python
-results = earthaccess.search_datasets(
-    keyword="icesat-2"
-    )
+results = earthaccess.search_datasets(keyword="icesat-2")
 ```
 
 `search_datasets` returns a Python list of results.  We can find the number of datasets using the built-in Python `len()` function.  If there are no matches for the search, the list is empty with length 0.
@@ -47,7 +45,7 @@ results = earthaccess.search_datasets(
     platform="icesat-2",
     downloadable=True,
     cloud_hosted=True,
-    )
+)
 print(len(results))
 ```
 ```
@@ -63,7 +61,7 @@ You might know that a particular DAAC has a dataset or just datasets for a given
 ```python
 results = earthaccess.search_datasets(
     daac="nsidc",
-    )
+)
 ```
 
 #### Search by version
@@ -74,7 +72,7 @@ In general, DAACs archive the two most recent versions of a dataset.  You might 
 results = earthaccess.search_datasets(
     short_name="ATL03",
     version="007",
-    )
+)
 ```
 
 ```python
@@ -148,7 +146,7 @@ results = earthaccess.search_data(
     short_name="ATL06",
     version="007",
     count=10,
-    )
+)
 ```
 
 ```python
@@ -176,7 +174,7 @@ results = earthaccess.search_data(
     short_name="ALT10",
     version="007",
     orbit_number=436,
-    )
+)
 ```
 
 ```python
@@ -193,10 +191,8 @@ In this example we search for data from the Harmonized-Landsat-Sentinel Sentinel
 
 ```python
 results = earthaccess.search_data(
-    concept_id="C2021957295-LPCLOUD",
-    cloud_cover=(0,50),
-    count=10
-    )
+    concept_id="C2021957295-LPCLOUD", cloud_cover=(0, 50), count=10
+)
 ```
 
 Filtering for only day-time granules is another useful filter.  This can be done with the `day_night_flag`.  `day_night_flag` accepts `day`, `night` and `unspecified`.
@@ -212,7 +208,7 @@ results = earthaccess.search_data(
     short_name="MOD10A1",
     day_night_flag="day",
     count=10,
-    )
+)
 ```
 
 The MODIS data is a big dataset.  The dataset contain 2,814,982 granules.  With `day_night_flag="day"`, a full search would return 2,465,185 granules.
@@ -227,7 +223,7 @@ Here, we search for a particular granule from the ICESat-2 Sea Ice Freeboard dat
 results = earthaccess.search_data(
     short_name="ATL10",
     granule_name="ATL10-02_20181014000347_02350101_006_02.h5",
-    )
+)
 ```
 
 The `granule_name` keyword accepts strings with wildcard characters `*?`, with `*` matching zero or more characters and `?` matching any single character.  Filenames for granules usually encode date and some form of geolocation information.  For example, MODIS granules are organized into a grid of tiles that are referenced by horizontal (`h`) and vertical (`v`) indices, e.g.
@@ -246,7 +242,7 @@ We can use wildcard characters to construct a filename string to search for a pa
 results = earthaccess.search_data(
     short_name="ATL10",
     granule_name="ATL10-02_*_0235????_006_02.h5",
-    )
+)
 len(results)
 ```
 
@@ -267,8 +263,8 @@ Date strings can be full date-time strings, for example 2025-09-07 16:00:00 or 2
 ```python
 results = earthaccess.search_data(
     short_name="ATL06",
-    temporal=("2025-01-01","2025-01-15"),
-    )
+    temporal=("2025-01-01", "2025-01-15"),
+)
 ```
 
 Python `datetime` objects can also be passed to `temporal`.  This is especially useful if you are trying to automate searches and store dates as `datetime` objects.
@@ -278,11 +274,8 @@ import datetime
 
 results = earthaccess.search_data(
     short_name="ATL06",
-    temporal=(
-        datetime.datetime(2025,1,1),
-        datetime.datetime(2025,1,15)
-        ),
-    )
+    temporal=(datetime.datetime(2025, 1, 1), datetime.datetime(2025, 1, 15)),
+)
 ```
 
 ## Search for datasets or data using a region of interest
@@ -332,7 +325,7 @@ polygon = [
 results = earthaccess.search_data(
     short_name="ATL06",
     polygon=polygon,
-    )
+)
 ```
 
 You can use tools such as [geojson.io](https://geojson.io/) to draw polygons and return a GeoJSON file.  Or use a GIS package to create a Shapefile.  The Geopandas Python package can be used to read these files and convert then to the correct format for `earthaccess`.  For example.
@@ -354,8 +347,8 @@ lon, lat = (-105.25303896425012, 40.01259873086735)
 
 results = earthaccess.search_data(
     short_name="ATL06",
-    point=(lon,lat),
-    )
+    point=(lon, lat),
+)
 ```
 
 ### Circle
@@ -364,12 +357,12 @@ A circle is defined as a longitude, latitude pair and a radius in meters.  Here,
 
 ```python
 lon, lat = (-105.25303896425012, 40.01259873086735)
-radius = 1000.
+radius = 1000.0
 
 results = earthaccess.search_data(
     short_name="ATL06",
-    circle=(lon,lat, radius),
-    )
+    circle=(lon, lat, radius),
+)
 ```
 
 ### Line
@@ -391,7 +384,7 @@ line = [
 results = earthaccess.search_data(
     short_name="ATL03",
     line=line,
-    )
+)
 ```
 
 ## Search for services
@@ -405,7 +398,7 @@ results = earthaccess.search_datasets(
     short_name="MUR-JPL-L4-GLOB-v4.1",
     cloud_hosted=True,
     temporal=("2024-02-27T00:00:00Z", "2024-02-29T23:59:59Z"),
-    )
+)
 ```
 
 ```python

@@ -5,7 +5,6 @@
 If we already have a workflow in place for downloading our data, we can use *earthaccess* as a search-only library and get HTTP links from our query results. This could be the case if our current workflow uses a different language and we only need the links as input.
 
 ```python
-
 # if the data set is cloud-hosted there will be S3 links available. The access parameter accepts "direct" or "external". Direct access is only possible if you are in the us-west-2 region in the cloud.
 data_links = [granule.data_links(access="direct") for granule in results]
 
@@ -17,10 +16,8 @@ opendap_links = [
     link["URL"]
     for granule in results
     for link in granule.get("umm", {}).get("RelatedUrls", [])
-    if link.get("Type") == "USE SERVICE API"
-    and link.get("Subtype") == "OPENDAP DATA"
+    if link.get("Type") == "USE SERVICE API" and link.get("Subtype") == "OPENDAP DATA"
 ]
-
 ```
 
 Not every collection provides OPeNDAP access. If the search results do not
@@ -33,7 +30,6 @@ include OPeNDAP service metadata, `opendap_links` will be an empty list.
 This option is practical if you have the necessary space available on disk. The *earthaccess* library will print out the approximate size of the download and its progress.
 ```python
 files = earthaccess.download(results, "./local_folder")
-
 ```
 
 **Option 3: Direct S3 Access - Stream data directly to xarray**
@@ -46,7 +42,6 @@ import xarray as xr
 files = earthaccess.open(results)
 
 ds = xr.open_mfdataset(files)
-
 ```
 
 And that's it in just one line of code! This same piece of code will also work for data that are not hosted in the cloud, i.e. located at NASA storage centers.

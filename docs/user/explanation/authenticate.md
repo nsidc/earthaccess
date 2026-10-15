@@ -159,9 +159,14 @@ import h5coro
 auth = earthaccess.login()
 s3_credentials = auth.get_s3_credentials(daac="NSIDC")
 
-s3url_atl23 = 'nsidc-cumulus-prod-protected/ATLAS/ATL23/001/2023/03/' \
-                '01/ATL23_20230401000000_10761801_001_01.h5'
-ds = xr.open_dataset(s3url_atl23, engine='h5coro',
-                     group='/mid_latitude/beam_1',
-                     credentials=s3_credentials)
+s3url_atl23 = (
+    "nsidc-cumulus-prod-protected/ATLAS/ATL23/001/2023/03/"
+    "01/ATL23_20230401000000_10761801_001_01.h5"
+)
+ds = xr.open_dataset(
+    s3url_atl23,
+    engine="h5coro",
+    group="/mid_latitude/beam_1",
+    credentials=s3_credentials,
+)
 ```
