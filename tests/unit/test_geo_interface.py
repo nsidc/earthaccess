@@ -1,5 +1,6 @@
 import pytest
-from earthaccess.results import DataGranule
+from earthaccess.results import DataCollection, DataGranule
+from earthaccess.search import DataCollections, DataGranules
 
 # Mapping from test case identifier to UMMG Geometry with the GeoJSON expected
 # to be the value of the __geo_interface__ property of a DataGranule that
@@ -279,3 +280,194 @@ def test_missing_horizontal_spatial_domain_raises():
 
     with pytest.raises(ValueError):
         _ = granule.__geo_interface__
+
+
+def _make_granule(test_case: dict[str, object], name: str) -> DataGranule:
+    """Returns a DataGranule with geometry and key attributes for testing to_geopandas()."""
+    return DataGranule(
+        {
+            "meta": {"concept-id": f"G-{name}", "provider-id": "PROV"},
+            "umm": {
+                "GranuleUR": name,
+                "SpatialExtent": {
+                    "HorizontalSpatialDomain": {"Geometry": test_case["geometry"]},
+                },
+                "TemporalExtent": {
+                    "RangeDateTime": {
+                        "BeginningDateTime": "2024-01-01T00:00:00.000Z",
+                        "EndingDateTime": "2024-01-02T23:59:59.000Z",
+                    },
+                },
+                "RelatedUrls": [
+                    {
+                        "URL": f"https://data.ornldaac.nasa.gov/protected/{name}.nc",
+                        "Type": "GET DATA",
+                        "Description": f"Download {name}.nc",
+                    },
+                ],
+            },
+        },
+    )
+
+
+def test_to_geopandas_returns_geodataframe():
+    gpd = pytest.importorskip("geopandas")
+
+    granules = [
+        _make_granule(TEST_CASES["multiple-gpolygons"], "poly"),
+        _make_granule(TEST_CASES["points"], "point"),
+        _make_granule(TEST_CASES["lines"], "line"),
+    ]
+
+    gdf = DataGranules.to_geopandas(granules)
+
+    assert isinstance(gdf, gpd.GeoDataFrame)
+    assert str(gdf.crs).upper() == "EPSG:4326"
+    assert len(gdf) == 3
+    assert list(gdf.geometry.geom_type) == [
+        "MultiPolygon",
+        "MultiPoint",
+        "MultiLineString",
+    ]
+    assert gdf.geometry.notna().all()
+
+
+def test_to_geopandas_includes_attribute_columns():
+    pytest.importorskip("geopandas")
+
+    granules = [_make_granule(TEST_CASES["bounding-rectangles"], "rect")]
+    gdf = DataGranules().to_geopandas(granules)
+
+    row = gdf.iloc[0]
+    assert row["concept_id"] == "G-rect"
+    assert row["granule_name"] == "rect"
+    assert row["beginning_datetime"] == "2024-01-01T00:00:00.000Z"
+    assert row["ending_datetime"] == "2024-01-02T23:59:59.000Z"
+    assert row["data_links"] == ["https://data.ornldaac.nasa.gov/protected/rect.nc"]
+    assert "size_MB" in gdf.columns
+
+
+def test_to_geopandas_includes_full_umm_column():
+    pytest.importorskip("geopandas")
+
+    granule = _make_granule(TEST_CASES["points"], "point")
+    gdf = DataGranules().to_geopandas([granule])
+
+    row = gdf.iloc[0]
+    assert row["umm.GranuleUR"] == granule["umm"]["GranuleUR"]
+    assert (
+        row["umm.SpatialExtent.HorizontalSpatialDomain.Geometry.Points"]
+        == TEST_CASES["points"]["geometry"]["Points"]
+    )
+
+
+def test_to_geopandas_keeps_granules_without_spatial_extent():
+    pytest.importorskip("geopandas")
+
+    with_geom = _make_granule(TEST_CASES["points"], "point")
+    without_geom = DataGranule(
+        {
+            "meta": {"concept-id": "G-nospatial"},
+            "umm": {"GranuleUR": "nospatial", "SpatialExtent": {"Orbit": {}}},
+        },
+    )
+    gdf = DataGranules().to_geopandas([with_geom, without_geom])
+    assert len(gdf) == 2
+    assert gdf.geometry.iloc[0] is not None
+    assert gdf.geometry.iloc[1] is None
+    assert gdf["concept_id"].tolist() == ["G-point", "G-nospatial"]
+
+
+def test_to_geopandas_empty_result():
+    pytest.importorskip("geopandas")
+    gdf = DataGranules().to_geopandas([])
+    assert len(gdf) == 0
+
+
+def _make_collection(test_case: dict[str, object], name: str) -> DataCollection:
+    """Returns a DataCollection with geometry and key attributes for testing to_geopandas()."""
+    return DataCollection(
+        {
+            "meta": {"concept-id": f"C-{name}", "provider-id": "PROV"},
+            "umm": {
+                "ShortName": name,
+                "Version": "2.1",
+                "SpatialExtent": {
+                    "HorizontalSpatialDomain": {"Geometry": test_case["geometry"]},
+                },
+                "EntryTitle": name,
+                "DOI": {"DOI": "10.3334/ORNLDAAC/146", "Authority": "https://doi.org"},
+            },
+        },
+    )
+
+
+def test_collections_to_geopandas_returns_geodataframe():
+    gpd = pytest.importorskip("geopandas")
+    collections = [
+        _make_collection(TEST_CASES["bounding-rectangles"], "coll-rect"),
+        _make_collection(TEST_CASES["multiple-gpolygons"], "coll-poly"),
+        _make_collection(TEST_CASES["points"], "coll-point"),
+    ]
+    gdf = DataCollections.to_geopandas(collections)
+
+    assert isinstance(gdf, gpd.GeoDataFrame)
+    assert str(gdf.crs).upper() == "EPSG:4326"
+    assert len(gdf) == 3
+    assert list(gdf.geometry.geom_type) == [
+        "MultiPolygon",
+        "MultiPolygon",
+        "MultiPoint",
+    ]
+    assert gdf.geometry.notna().all()
+
+
+def test_collections_to_geopandas_includes_attribute_columns():
+    pytest.importorskip("geopandas")
+    collection = _make_collection(TEST_CASES["bounding-rectangles"], "coll-rect")
+    gdf = DataCollections.to_geopandas([collection])
+
+    row = gdf.iloc[0]
+    assert row["concept_id"] == "C-coll-rect"
+    assert row["short_name"] == "coll-rect"
+    assert row["version"] == "2.1"
+    assert row["title"] == "coll-rect"
+    assert row["doi"] == "10.3334/ORNLDAAC/146"
+
+
+def test_collections_to_geopandas_includes_full_umm_column():
+    pytest.importorskip("geopandas")
+
+    collection = _make_collection(TEST_CASES["points"], "coll-point")
+    gdf = DataCollections.to_geopandas([collection])
+    row = gdf.iloc[0]
+    assert row["umm.ShortName"] == collection["umm"]["ShortName"]
+    assert (
+        row["umm.SpatialExtent.HorizontalSpatialDomain.Geometry.Points"]
+        == TEST_CASES["points"]["geometry"]["Points"]
+    )
+
+
+def test_collections_to_geopandas_keeps_collections_without_spatial_extent():
+    pytest.importorskip("geopandas")
+
+    with_geom = _make_collection(TEST_CASES["points"], "coll-point")
+    without_geom = DataCollection(
+        {
+            "meta": {"concept-id": "C-nospatial"},
+            "umm": {"ShortName": "nospatial", "SpatialExtent": {}},
+        },
+    )
+
+    gdf = DataCollections.to_geopandas([with_geom, without_geom])
+    assert len(gdf) == 2
+    assert gdf.geometry.iloc[0] is not None
+    assert gdf.geometry.iloc[1] is None
+    assert gdf["concept_id"].tolist() == ["C-coll-point", "C-nospatial"]
+
+
+def test_collections_to_geopandas_empty_result():
+    pytest.importorskip("geopandas")
+
+    gdf = DataCollections.to_geopandas([])
+    assert len(gdf) == 0

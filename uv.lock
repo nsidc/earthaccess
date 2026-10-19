@@ -999,6 +999,7 @@ dependencies = [
 all = [
     { name = "dask" },
     { name = "fastparquet" },
+    { name = "geopandas" },
     { name = "h5netcdf" },
     { name = "h5py" },
     { name = "kerchunk" },
@@ -1008,6 +1009,9 @@ all = [
     { name = "virtualizarr" },
     { name = "xarray" },
     { name = "zarr" },
+]
+geopandas = [
+    { name = "geopandas" },
 ]
 kerchunk = [
     { name = "dask" },
@@ -1091,6 +1095,8 @@ requires-dist = [
     { name = "fastparquet", marker = "extra == 'all'", specifier = ">=2023.4.0" },
     { name = "fastparquet", marker = "extra == 'virtualizarr'", specifier = ">=2023.4.0" },
     { name = "fsspec", specifier = ">=2025.2" },
+    { name = "geopandas", marker = "extra == 'all'", specifier = ">=1.0" },
+    { name = "geopandas", marker = "extra == 'geopandas'", specifier = ">=1.0" },
     { name = "h5netcdf", marker = "extra == 'all'" },
     { name = "h5netcdf", marker = "extra == 'kerchunk'" },
     { name = "h5py", marker = "extra == 'all'", specifier = ">=3.14.0" },
@@ -1124,7 +1130,7 @@ requires-dist = [
     { name = "zarr", marker = "extra == 'kerchunk'", specifier = ">=3.1.1" },
     { name = "zarr", marker = "extra == 'virtualizarr'", specifier = ">=3.1.1" },
 ]
-provides-extras = ["all", "kerchunk", "virtualizarr"]
+provides-extras = ["all", "geopandas", "kerchunk", "virtualizarr"]
 
 [package.metadata.requires-dev]
 dev = [

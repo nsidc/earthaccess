@@ -66,6 +66,7 @@ Changelog = "https://github.com/earthaccess-dev/earthaccess/blob/main/CHANGELOG.
 all = [
   "earthaccess[kerchunk]",
   "earthaccess[virtualizarr]",
+  "earthaccess[geopandas]",
 ]
 
 kerchunk = [
@@ -87,6 +88,9 @@ virtualizarr = [
   "fastparquet >= 2023.4.0",
   "numcodecs >= 0.16.2",
   "xarray",
+]
+geopandas =[
+  "geopandas>=1.0",
 ]
 
 [dependency-groups]
