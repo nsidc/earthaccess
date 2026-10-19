@@ -1,10 +1,10 @@
 # Authenticate with Earthdata Login
 
 !!! important
-
-   You will need a NASA Earthdata Login account to download or stream NASA Earthdata.
-   To obtain a NASA Earthdata Login account , please follow the instructions at
-   [NASA EDL](https://urs.earthdata.nasa.gov/)
+    
+    You will need a NASA Earthdata Login account to download or stream NASA Earthdata.
+    To obtain a NASA Earthdata Login account , please follow the instructions at
+    [NASA EDL](https://urs.earthdata.nasa.gov/)
 
 
 Once you have a NASA Earthdata Login account you can use [`earthaccess.login`](https://earthaccess.readthedocs.io/en/stable/api/#earthaccess.api.login) to authenticate.
