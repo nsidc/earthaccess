@@ -64,3 +64,5 @@ nav:
           - "Integration tests": "contributor/explanation/integration-tests.md"
       - Reference:
           - "Naming conventions": "contributor/reference/naming-convention.md"
+          - "Documentation style guide": "contributor/reference/documentation-style-guide.md"
+          - "Code style guide": "contributor/reference/code-style-guide.md"
