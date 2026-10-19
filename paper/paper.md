@@ -106,7 +106,7 @@ bibliography: paper.bib
 
 # Summary
 
-`earthaccess` is an open-source Python library that simplifies the discovery,
+`earthaccess` is an open-source Python library that simplifies discovery,
 authentication, and access of NASA Earth science data. NASA's Earth Observing System
 Data and Information System (EOSDIS) distributes over 100 petabytes of data across 11
 Distributed Active Archive Centers (DAACs) [@nasa_earthdata], encompassing satellite
@@ -114,18 +114,17 @@ imagery, climate records, atmospheric measurements, and other geospatial dataset
 critical to Earth science research. Accessing these data programmatically has
 historically required researchers to navigate multiple authentication systems,
 understand provider-specific APIs and protocols, and write substantial boilerplate code
--- challenges that particularly affect researchers without deep software engineering
+-- challenges that particularly deter researchers without deep software engineering
 experience.
 
-`earthaccess` provides a unified, high-level Python interface that reduces this workflow
+`earthaccess` provides a unified, high-level Python interface that simplifies this workflow
 to just a few lines of code. The library handles authentication with NASA's Earthdata
-Login (EDL) service [@nasa_edl], exposes NASA's Common Metadata Repository (CMR)
-[@nasa_cmr] for data discovery, and manages data retrieval through a single interface
-covering both HTTPS download and direct Amazon Web Services (AWS) S3 access to data in
-NASA's Earthdata Cloud. `earthaccess` also supports streaming data directly into
+Login (EDL) service [@nasa_edl], queries to NASA's Common Metadata Repository (CMR)
+[@nasa_cmr] for data discovery, and data retrieval through a single interface
+covering both HTTPS download and direct Amazon Web Services (AWS) S3 access. `earthaccess` also supports streaming data directly into
 analysis-ready formats using `fsspec` [@fsspec] and constructing virtual Zarr stores
-from archival formats (e.g., HDF5 and NetCDF4) using DMR++ metadata [@dmrpp], powered by
-`VirtualiZarr` [@virtualizarr] and `kerchunk` [@kerchunk], enabling drastic
+from archival formats (e.g., HDF5 and NetCDF4) using DMR++ metadata [@dmrpp] (powered by
+`VirtualiZarr` [@virtualizarr] and `kerchunk` [@kerchunk]) enabling drastic
 improvements in access performance.
 
 
@@ -138,13 +137,13 @@ underlying data infrastructure presents a significant barrier to scientific
 productivity. A typical data access workflow requires a researcher to: (1) search the
 CMR API to discover relevant datasets and products; (2) parse the returned metadata to
 identify specific granules and extract the appropriate access URLs; (3) authenticate
-with NASA Earthdata Login and maintain authenticated sessions that handle tokens and
+with NASA Earthdata Login and maintain authenticated sessions that handle
 cross-domain redirects; (4) for NASA Earth science data hosted in the same AWS region as
 the researcher's compute environment, obtain and periodically renew temporary AWS S3
 credentials; and (5) retrieve the data by downloading it over HTTPS, streaming it
 directly from S3, or passing the information into a third-party package for
 customization services. Researchers must know enough about the technical implementation
-of multiple APIs to perform these steps accurately, each of which introduces
+of multiple unique APIs to perform these steps accurately, each of which introduces
 opportunities for error. DAAC-specific configurations and NASA's migration of data to
 the Earthdata Cloud compound the challenge.
 
@@ -153,7 +152,7 @@ must now choose between two possible access paradigms: traditional HTTPS downloa
 S3-based access. These both may even occur within a single analysis workflow. During
 workshops organized by NASA Openscapes [@nasa_openscapes; @lowndes2019], the need for
 simpler tools became evident. `earthaccess` is a community project that was created to
-address this gap: it provides uniform access to NASA Earthdata regardless of data
+address this gap: it provides a uniform interface for access to NASA Earthdata regardless of data
 storage location and handles authentication, credentials, and tokening behind the
 scenes, enabling researchers to focus more on scientific interpretation and discovery.
 The target audience spans Earth system science — from atmospheric scientists and
@@ -198,8 +197,8 @@ the workflow, or addressing the full workflow for only a subset of NASA's data h
 - **icepyx** [@icepyx] provides a mission-specific solution to the general problem
   solved by earthaccess: search, discovery, authentication, and access to ICESat-2
   [@icesat2] data products. Established about a year before earthaccess, it handles
-  workflow steps 1, 2, and 5 on its own and now leverages earthaccess via a mixin to
-  provide authentication and tokening when users perform an action that requires logging
+  workflow steps 1, 2, and 5 on its own and now leverages earthaccess to
+  authenticate when users perform an action that requires logging
   in.
 
 - **earthdatalogin** [@earthdatalogin_r] provides similar authentication and access
@@ -216,17 +215,17 @@ the workflow, or addressing the full workflow for only a subset of NASA's data h
 
 # Software design
 
-`earthaccess` is organized into four core layers, each encapsulating a distinct
+`earthaccess` is organized into four core components, each encapsulating a distinct
 component of the data access workflow:
 
-- **Authentication**: Manages the full lifecycle of NASA Earthdata Login credentials,
+- **Authentication**: Manages the lifecycle of NASA Earthdata Login credentials,
   supporting environment variables, `.netrc` files, and interactive prompts. Once
-  authenticated, the library creates HTTP sessions that correctly handle NASA's
+  authenticated, the library creates HTTP sessions that safely handle NASA's
   cross-domain redirects and retrieves and renews temporary AWS S3 credentials for
   direct S3 access.
 
 - **Search**: Extends `python-cmr` with DAAC-aware provider resolution, cloud-hosting
-  detection, and deep-paging support. Query results are wrapped in rich objects that
+  detection, and deep-paging support. Query results (powered by `python-cmr`) are wrapped in rich objects that
   preserve the full metadata response while exposing convenience methods for data links,
   spatial footprints, and formatted citations.
 
@@ -250,7 +249,7 @@ component of the data access workflow:
 
 Several deliberate design decisions shape the library:
 
-**Build on, don't replace, existing libraries.** `earthaccess` composes existing
+**Build on existing libraries.** `earthaccess` composes existing
 open-source tools -- `python-cmr` for search, `fsspec` and `s3fs` for file I/O,
 `VirtualiZarr` and `kerchunk` for virtual datasets -- rather than reimplementing their
 functionality. The library's unique contribution is the NASA-specific integration layer
@@ -259,9 +258,9 @@ product [@tempo_o3tot_l3] directly from the Earthdata Cloud with `boto3`, `reque
 and `s3fs` requires about two dozen lines of code (excluding imports) to set up
 Earthdata Login authentication, request and periodically refresh temporary S3
 credentials, and serially transfer each granule. The equivalent `earthaccess` workflow
-is about four lines (`login()`, `search_data()`, `open()`, and opening the result with
+is about four lines (`login()`, `search_data()`, `open()`, and passing the result to
 `xarray`) and additionally handles CMR-based discovery. Because that integration also
-composes `fsspec` for byte-range access, streaming a single variable across 28 granules
+leverages `fsspec` for byte-range access, streaming a single variable across 28 granules
 (6.7 GB) and computing a summary statistic completed in roughly 45 seconds end-to-end,
 compared with roughly 78 seconds to download the full files serially beforehand (medians
 of three runs on the NASA-Openscapes `us-west-2` JupyterHub). Constructing or reading
@@ -271,20 +270,20 @@ pattern applies to other granule-heavy products, such as ICESat-2 ATL06 land-ice
 data [@atl06], and is most pronounced where an analysis touches only a small portion of
 each file.
 
-**Contribute upstream, don't accumulate.** When community discussions surface features
+**Contribute upstream.** When community discussions surface features
 that belong in a dependency, the project contributes that work upstream rather than
 absorbing it. Advanced CMR query capabilities were developed in `python-cmr` rather than
 duplicated in `earthaccess`, and aspects of DMR++ parsing and multi-file virtual dataset
 functionality were migrated to `VirtualiZarr` where they could benefit the wider
-community. This upstream-first discipline avoids scope creep, reduces maintenance
+community. This upstream-first discipline prevents scope creep, reduces maintenance
 burden, and strengthens the broader ecosystem that `earthaccess` depends on.
 
 **Location-transparent access.** The same user code works whether the computation runs
 in the cloud or on a local workstation, without requiring code changes; users who want
-direct S3 access can request it explicitly. This reflects the reality that researchers
+direct S3 access can request that optimization explicitly. This reflects the reality that researchers
 are at varying stages of cloud adoption.
 
-**Flat, functional top-level API.** All primary operations are exposed as module-level
+**Flat and functional top-level API.** All primary operations are exposed as module-level
 functions (e.g., `earthaccess.login()`, `earthaccess.search_data()`,
 `earthaccess.download()`), minimizing conceptual overhead for new users while keeping
 the underlying object-oriented classes accessible for advanced use cases.
@@ -302,26 +301,26 @@ Several other research studies and geospatial technology publications utilize li
 dependent on `earthaccess`, including [@Scheick2025], [@Xiahou2026], [@Widlansky2025].
 
 **Community adoption.** The library is a dependency of 260 public GitHub repositories
-(as of 4 September 2026), spanning data analysis workflows, Jupyter-based tutorials, and
+(as of 4 September 2026), spanning data analysis workflows, Jupyter Notebook tutorials, and
 downstream libraries. It is distributed through both PyPI and conda-forge and 
 installed and used in cloud-hosted Jupyter environments provided by NASA and partner
-organizations. As one example of downstream adoption, icepack -- a finite element
+organizations. As one example of downstream adoption, `icepack` -- a finite element
 library for ice sheet and glacier modeling [@shapero2021] -- replaced its hand-written
 NSIDC DAAC data-fetching routines with `earthaccess` calls, eliminating hard-coded URLs
 and custom authentication logic. `earthaccess` has replaced tens of lines of code across
 countless NASA data access tutorials, increasing user accessibility and reducing the
-amount of "getting started" overhead.
+overhead to "get started" working with NASA data.
 
 **Multi-institutional development.** Contributors span NASA's Distributed Active Archive
-Centers (DAACs) — including ASDC, ASF, GES DISC, LP DAAC, NSIDC DAAC, OB.DAAC, ORNL
-DAAC, and PO.DAAC — as well as other federal and academic institutions (USGS, NOAA,
-University of New Hampshire, University of Maryland), private industry (Coiled,
+Centers (DAACs) (including ASDC, ASF, GES DISC, LP DAAC, NSIDC DAAC, OB.DAAC, ORNL
+DAAC, and PO.DAAC) as well as other federal and academic institutions (USGS, NOAA,
+University of New Hampshire, University of Maryland, UC Berkeley), private industry (Coiled,
 Development Seed), and independent open-source contributors. This breadth reflects both
 the library's relevance across domains and the health of its contributor community.
 
 **Integration with the NASA ecosystem.** `earthaccess` is featured in the official NASA
 Earthdata tools catalog (<https://www.earthdata.nasa.gov/data/tools/earthaccess>) and in
-other NASA Earthdata tutorials. It has been presented at multiple large professional
+NASA Earthdata tutorials. It has been presented at multiple large professional
 meetings -- including several American Geophysical Union (AGU) Annual Meetings and Earth
 System Information Partnership (ESIP) meetings -- and was the subject of a NASA ESDS
 Tech Spotlight presentation (see <https://earthaccess.readthedocs.io> homepage for links
@@ -337,11 +336,10 @@ The `earthaccess` project has adopted a contributor AI policy
 disclosure of AI assistance, holds contributors responsible for understanding and being
 able to explain any code they submit, and prohibits fully autonomous AI-generated pull
 requests. The version of `earthaccess` described here was developed without generative
-AI assistance; all architectural and design decisions were made by the authors and
-contributors. Subsequent development may use AI tools under the terms of that policy.
+AI assistance. Subsequent development may use AI tools under the terms of that policy.
 
 Preparation of this manuscript was assisted by Claude [Sonnet 4.6, Opus 4.6, and Opus 5]
-(Anthropic), which was applied to the full manuscript using the repository source code,
+(Anthropic) using the repository source code,
 documentation, commit history, and project metadata as context. Assistance was used for
 manuscript drafting and editorial revision. All content was reviewed, revised, and
 verified for accuracy by the authors, who bear full responsibility for the submitted
