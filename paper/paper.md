@@ -124,7 +124,7 @@ Login (EDL) service [@nasa_edl], queries to NASA's Common Metadata Repository (C
 covering both HTTPS download and direct Amazon Web Services (AWS) S3 access. `earthaccess` also supports streaming data directly into
 analysis-ready formats using `fsspec` [@fsspec] and constructing virtual Zarr stores
 from archival formats (e.g., HDF5 and NetCDF4) using DMR++ metadata [@dmrpp] (powered by
-`VirtualiZarr` [@virtualizarr] and `kerchunk` [@kerchunk]) enabling drastic
+`VirtualiZarr` [@virtualizarr] and `kerchunk` [@kerchunk]), enabling drastic
 improvements in access performance.
 
 
@@ -170,8 +170,7 @@ large-scale analysis.
 
 The scholarly contribution of `earthaccess` is the _integration_ of search,
 authentication, and access into a coherent abstraction that masks the heterogeneity of
-NASA Earthdata's infrastructure. No existing tool provides this end-to-end,
-provider-agnostic workflow. Rather than reinventing query or filesystem libraries,
+NASA Earthdata's infrastructure. No existing tool provides this end-to-end workflow across the full breadth of NASA Earthdata. Rather than reinventing query or filesystem libraries,
 `earthaccess` composes and extends existing open-source tools and contributes the
 NASA-specific domain knowledge (DAAC configurations, credential endpoints,
 authentication flows, and the mapping between HTTPS and direct-S3 access links) that
@@ -187,7 +186,7 @@ the workflow, or addressing the full workflow for only a subset of NASA's data h
   not handle authentication, data download, or cloud access (steps 3–5) -- the areas
   where researchers face many workflow difficulties.
 
-- **asf_search** [@asf_search] sits between `python-cmr` and `earthaccess`: it focuses
+- **asf_search** [@asf_search] sits between `python-cmr` and `earthaccess` in scope: it focuses
   on search and discovery but also handles authentication and access (workflow steps
   1–5). It emerged around the same time as `earthaccess`, from similar access
   challenges. Unlike `earthaccess`, which is mission- and domain-agnostic, `asf_search`
@@ -216,17 +215,17 @@ the workflow, or addressing the full workflow for only a subset of NASA's data h
 # Software design
 
 `earthaccess` is organized into four core components, each encapsulating a distinct
-component of the data access workflow:
+stage of the data access workflow:
 
 - **Authentication**: Manages the lifecycle of NASA Earthdata Login credentials,
   supporting environment variables, `.netrc` files, and interactive prompts. Once
   authenticated, the library creates HTTP sessions that safely handle NASA's
-  cross-domain redirects and retrieves and renews temporary AWS S3 credentials for
+  cross-domain redirects, and it retrieves and renews temporary AWS S3 credentials for
   direct S3 access.
 
 - **Search**: Extends `python-cmr` with DAAC-aware provider resolution, cloud-hosting
   detection, and deep-paging support. Query results (powered by `python-cmr`) are wrapped in rich objects that
-  preserve the full metadata response while exposing convenience methods for data links,
+  preserve the full metadata response while exposing convenient accessors for data links,
   spatial footprints, and formatted citations.
 
 - **Access**: Presents a single interface over both access mechanisms -- HTTPS and
@@ -261,12 +260,12 @@ credentials, and serially transfer each granule. The equivalent `earthaccess` wo
 is about four lines (`login()`, `search_data()`, `open()`, and passing the result to
 `xarray`) and additionally handles CMR-based discovery. Because that integration also
 leverages `fsspec` for byte-range access, streaming a single variable across 28 granules
-(6.7 GB) and computing a summary statistic completed in roughly 45 seconds end-to-end,
-compared with roughly 78 seconds to download the full files serially beforehand (medians
+and computing a summary statistic completed in roughly 45 seconds end-to-end,
+compared with roughly 78 seconds to download all 6.7 GB of those granules serially beforehand (medians
 of three runs on the NASA-Openscapes `us-west-2` JupyterHub). Constructing or reading
 virtual data stores over the same files with `VirtualiZarr` [@virtualizarr], which
 enables reading only the requested chunks, can reduce access time further. The same
-pattern applies to other granule-heavy products, such as ICESat-2 ATL06 land-ice height
+pattern applies to other products with large numbers of granules, such as ICESat-2 ATL06 land-ice height
 data [@atl06], and is most pronounced where an analysis touches only a small portion of
 each file.
 
@@ -307,8 +306,7 @@ installed and used in cloud-hosted Jupyter environments provided by NASA and par
 organizations. As one example of downstream adoption, `icepack` -- a finite element
 library for ice sheet and glacier modeling [@shapero2021] -- replaced its hand-written
 NSIDC DAAC data-fetching routines with `earthaccess` calls, eliminating hard-coded URLs
-and custom authentication logic. `earthaccess` has replaced tens of lines of code across
-countless NASA data access tutorials, increasing user accessibility and reducing the
+and custom authentication logic. Across NASA data access tutorials, `earthaccess` typically replaces tens of lines of setup code in each tutorial with a few function calls, increasing user accessibility and reducing the
 overhead to "get started" working with NASA data.
 
 **Multi-institutional development.** Contributors span NASA's Distributed Active Archive
@@ -338,7 +336,7 @@ able to explain any code they submit, and prohibits fully autonomous AI-generate
 requests. The version of `earthaccess` described here was developed without generative
 AI assistance. Subsequent development may use AI tools under the terms of that policy.
 
-Preparation of this manuscript was assisted by Claude [Sonnet 4.6, Opus 4.6, and Opus 5]
+Preparation of this manuscript was assisted by Claude [Sonnet 4.6, Opus 4.6, Opus 5, and Opus 5.5]
 (Anthropic) using the repository source code,
 documentation, commit history, and project metadata as context. Assistance was used for
 manuscript drafting and editorial revision. All content was reviewed, revised, and
