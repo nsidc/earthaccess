@@ -13,6 +13,8 @@ whether you're finding bugs, adding new features, fixing anything broken, or imp
 
 **Before contributing, please read through our [code of conduct](./code-of-conduct.md) and [AI policy](./ai-policy.md) pages.**
 
+New to contributing? You're welcome here! If you're not sure what to do, _don't worry_, just pick whichever option suits you best. The community will help you out! 
+
 When contributing, we recommend starting by:
 
 - [Joining us on Zulip chat](https://earthaccess.zulipchat.com) for any questions you may have 
@@ -36,5 +38,4 @@ These docs contain instructions and best practices for getting involved with `ea
 - The Explanation section has content on running [integration tests](./explanation/integration-tests.md)
 - The Reference section details our [naming conventions](./reference/naming-convention.md)
 
-
-New to contributing? You're welcome here! If you're not sure what to do, _don't worry_, just pick whichever option suits you best. The community will help you out! Is there other content that would be useful to have in these pages? Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to let us know! 
+Is there other content that would be useful to have in these pages? Open [a GitHub issue](https://github.com/earthaccess-dev/earthaccess/issues) to let us know! 
