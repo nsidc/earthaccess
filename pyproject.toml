@@ -128,12 +128,17 @@ docs = [
   "mkdocs-redirects >=1.2.1",
   "markdown-callouts >=0.2.0",
   "markdown-include >=0.6",
-  "mkdocs-jupyter >=0.19.0",
+  # >=0.26 adds notebook conversion caching (cache/cache_dir options)
+  "mkdocs-jupyter >=0.26.3",
   "mkdocs-mermaid2-plugin >=1.2.1",
   "mkdocs-pandoc >=0.2.0",
   "mkdocstrings[python] >=0.19.0",
   "pymdown-extensions >=9.2",
-  "pygments >=2.11.1",
+  # pygments 2.20.0 crashes with pymdown-extensions when rendering
+  # docstring examples (HtmlFormatter receives filename=None and pygments
+  # calls html.escape() on it -> AttributeError). Keep pygments below 2.20
+  # so the docs build works identically across uv and conda environments.
+  "pygments >=2.11.1,<2.20",
   "xarray",
   "h5netcdf",
   "matplotlib >=3.3",

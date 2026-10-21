@@ -8,6 +8,7 @@ __pycache__
 htmlcov
 dist
 site
+.cache
 .coverage
 .coverage.*
 coverage.xml
@@ -106,4 +107,6 @@ Temporary Items
 ### asdf ###
 /.tool-versions
 
+
+docs/user/howto/data/
 # End of https://www.toptal.com/developers/gitignore/api/asdf

@@ -62,6 +62,9 @@ plugins:
         "CODE_OF_CONDUCT.md": "contributor/code-of-conduct.md"
         "contributing/our-meet-ups.md": "calendar.md"
   - mkdocs-jupyter:
+      # Cache notebook conversion results (see mkdocs-jupyter README) so
+      # unchanged notebooks are not re-converted/executed on every build.
+      cache: true
       execute: true
       execute_ignore:
         - "user/tutorials/SSL.ipynb"

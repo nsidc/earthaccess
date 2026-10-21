@@ -22,3 +22,19 @@
   border-bottom: 3px solid currentColor;
   padding-bottom: 0;
 }
+
+/* Give content (especially rendered notebooks) more horizontal space
+ * by widening the page container and trimming the content margins.
+ */
+.md-grid {
+  max-width: 78rem;
+}
+
+.md-main__inner {
+  margin-top: 1rem;
+}
+
+.md-content__inner {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}

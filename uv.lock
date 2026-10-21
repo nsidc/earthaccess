@@ -1148,13 +1148,13 @@ docs = [
     { name = "matplotlib", specifier = ">=3.3" },
     { name = "mkdocs", specifier = ">=1.2,!=1.6.0,<2.0" },
     { name = "mkdocs-awesome-nav", specifier = ">=3.3.0" },
-    { name = "mkdocs-jupyter", specifier = ">=0.19.0" },
+    { name = "mkdocs-jupyter", specifier = ">=0.26.3" },
     { name = "mkdocs-material", specifier = ">=9.7.1,<10.0" },
     { name = "mkdocs-mermaid2-plugin", specifier = ">=1.2.1" },
     { name = "mkdocs-pandoc", specifier = ">=0.2.0" },
     { name = "mkdocs-redirects", specifier = ">=1.2.1" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.19.0" },
-    { name = "pygments", specifier = ">=2.11.1" },
+    { name = "pygments", specifier = ">=2.11.1,<2.20" },
     { name = "pymdown-extensions", specifier = ">=9.2" },
     { name = "pyproj", marker = "python_full_version < '3.12'", specifier = ">=3.5.0" },
     { name = "pyproj", marker = "python_full_version >= '3.12'", specifier = ">=3.6.1" },
@@ -2386,7 +2386,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-jupyter"
-version = "0.25.1"
+version = "0.26.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipykernel" },
@@ -2396,9 +2396,9 @@ dependencies = [
     { name = "nbconvert" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6c/23/6ffb8d2fd2117aa860a04c6fe2510b21bc3c3c085907ffdd851caba53152/mkdocs_jupyter-0.25.1.tar.gz", hash = "sha256:0e9272ff4947e0ec683c92423a4bfb42a26477c103ab1a6ab8277e2dcc8f7afe", size = 1626747, upload-time = "2024-10-15T14:56:32.373Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/aa/f8d15409a9a3112486994a80d5a975694c7d145c4f8b5b484aeb383420ef/mkdocs_jupyter-0.26.3.tar.gz", hash = "sha256:e1e8bd48a1b96542e84e3028e3066112bac7b94d95ab69f8b91305c84003ca26", size = 1628353, upload-time = "2026-04-17T18:56:31.517Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/37/5f1fd5c3f6954b3256f8126275e62af493b96fb6aef6c0dbc4ee326032ad/mkdocs_jupyter-0.25.1-py3-none-any.whl", hash = "sha256:3f679a857609885d322880e72533ef5255561bbfdb13cfee2a1e92ef4d4ad8d8", size = 1456197, upload-time = "2024-10-15T14:56:29.854Z" },
+    { url = "https://files.pythonhosted.org/packages/13/95/cf3f7fe4910cf0365fa8ea0c731f4b8a624d97cd76ea777913ac8d0868e2/mkdocs_jupyter-0.26.3-py3-none-any.whl", hash = "sha256:cd6644fb578131157194d750fd4d10fc2fd8f1e84e00036ee62df3b5b4b84c82", size = 1459740, upload-time = "2026-04-17T18:56:30.031Z" },
 ]
 
 [[package]]

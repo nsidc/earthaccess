@@ -32,13 +32,13 @@ nav:
           - "Access data": "user/howto/access-data.md"
           - "Using authenticated sessions to access data": "user/howto/edl.ipynb"
           # - "Download data from on-prem location": "user/howto/onprem.md"
-          - "Direct S3 access - Open/stream files in the cloud": "user/howto/cloud.md"
           - "Search for services": "user/howto/search-services.md"
       - Tutorials:
           - "Search and access of restricted datasets": "user/tutorials/restricted-datasets.ipynb"
           # - "Reproducing NASA sea level rise infographic": "tutorials/SSL.ipynb" TODO: make this faster
           - "Accessing and visualizing EMIT data with a few lines of code": "user/tutorials/emit-earthaccess.ipynb"
           - "Cloud optimized access to TEMPO air quality data with earthaccess and virtualizarr": "user/tutorials/virtual_dataset_tutorial_with_TEMPO_Level3.ipynb"
+          - "Open/stream files": "user/tutorials/streaming.ipynb"
       - Explanation:
           - "Authentication": "user/explanation/authenticate.md"
           - "Status": "user/explanation/status.md"

@@ -13,3 +13,11 @@ We also give some simple definitions for commonly used terms in this documentati
 **concept-id**: a unique identifier for a collection, granule, service or tool.  Concept-id can be used to search for datasets or granules using `earthaccess`.
 
 **Granule**: the smallest aggregation of data.  It could be an individual scene or swath acquired at a given timestep.  You can think of granules as files.
+
+**earthaccess**: Python library for searching, downloading, and streaming NASA Earthdata.
+
+**CMR (Common Metadata Repository)**: NASA's searchable catalog of granule/collection metadata. `search_data()` queries this catalog, not the actual science data.
+
+**DAAC (Distributed Active Archive Center)**: a NASA-funded data center (e.g., GES DISC, NSIDC, ASF) responsible for archiving and distributing a subset of Earth science data.
+
+**EDL (Earthdata Login)**: NASA's single sign-on system. `earthaccess.login()` authenticates against it.

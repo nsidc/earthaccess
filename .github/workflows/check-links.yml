@@ -4,7 +4,7 @@ on:
   push:
     branches: main
   pull_request:
-    branches: '*'
+    branches: "*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -32,5 +32,6 @@ jobs:
             ^https://github\.com/.*
             ^https://www\.gnu\.org/software/inetutils/
             ^https://asdc\.larc\.nasa\.gov/project/TEMPO
+            ^https://wiki.esipfed.org/FUNding_Friday_Projects
             ^https://www\.jpl\.nasa\.gov/missions/surface-water-and-ocean-topography-swot/
             ^https://wiki\.esipfed\.org/FUNding_Friday_Projects
