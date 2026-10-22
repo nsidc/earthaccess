@@ -8,7 +8,7 @@ import requests
 import earthaccess
 
 from .formatters import _repr_granule_html
-from .services import DataServices
+from .services import DataServicesQuery
 
 
 @cache
@@ -226,7 +226,7 @@ class DataCollection(CustomDict):
         """Return list of services available for this collection."""
         services = self.get("meta", {}).get("associations", {}).get("services", [])
         queries = (
-            DataServices(auth=earthaccess.__auth__).parameters(concept_id=service)
+            DataServicesQuery(auth=earthaccess.__auth__).parameters(concept_id=service)
             for service in services
         )
 

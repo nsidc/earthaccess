@@ -3,7 +3,7 @@ import logging
 import earthaccess
 import magic
 import pytest
-from earthaccess import Auth, DataGranules, Store
+from earthaccess import Auth, DataGranulesQuery, Store
 
 from .param import ProviderParam
 from .sample import get_sample_granules, top_collections_for_provider
@@ -71,7 +71,7 @@ def test_earthaccess_can_open_onprem_collection_granules(daac):
     logger.info("On-premises collections for %s: %s", provider, len(top_collections))
 
     for concept_id in top_collections:
-        granule_query = DataGranules().concept_id(concept_id)
+        granule_query = DataGranulesQuery().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
         assert len(granules) > 0, "Could not fetch granules"

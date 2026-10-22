@@ -32,7 +32,7 @@ from .auth import Auth
 from .daac import DAAC_TEST_URLS, find_provider
 from .exceptions import DownloadFailure, EulaNotAccepted
 from .results import DataGranule
-from .search import DataCollections
+from .search import DataCollectionsQuery
 
 logger = logging.getLogger(__name__)
 
@@ -274,7 +274,7 @@ class Store:
         return find_provider(daac, True)  # noqa: FBT003
 
     def _is_cloud_collection(self, concept_id: list[str]) -> bool:
-        collection = DataCollections(self.auth).concept_id(concept_id).get()
+        collection = DataCollectionsQuery(self.auth).concept_id(concept_id).get()
         return len(collection) > 0 and "s3-links" in collection[0]["meta"]
 
     def _own_s3_credentials(self, links: list[dict[str, Any]]) -> str | None:

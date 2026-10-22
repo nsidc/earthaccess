@@ -6,7 +6,7 @@ from pathlib import Path
 
 import earthaccess
 import pytest
-from earthaccess import Auth, DataGranules, Store
+from earthaccess import Auth, DataGranulesQuery, Store
 
 from .param import ProviderParam
 from .sample import get_sample_granules, top_collections_for_provider
@@ -77,7 +77,7 @@ def test_earthaccess_can_download_cloud_collection_granules(tmp_path, daac):
     logger.info("On-premises collections for %s: %s", provider, len(top_collections))
 
     for concept_id in top_collections:
-        granule_query = DataGranules().concept_id(concept_id)
+        granule_query = DataGranulesQuery().concept_id(concept_id)
         total_granules = granule_query.hits()
         granules = granule_query.get(granules_count)
 

@@ -8,7 +8,7 @@ from .auth import Auth
 from .utils import _search as search
 
 
-class DataServices(ServiceQuery):
+class DataServicesQuery(ServiceQuery):
     """A Service client for NASA CMR that returns data on collection services.
 
     API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html#service
@@ -17,7 +17,7 @@ class DataServices(ServiceQuery):
     _format = "umm_json"
 
     def __init__(self, auth: Auth | None = None, *args: Any, **kwargs: Any) -> None:
-        """Build an instance of DataService to query CMR.
+        """Build an instance of DataServicesQuery to query CMR.
 
         auth is an optional parameter for queries that need authentication,
         e.g. restricted datasets.

@@ -1,8 +1,8 @@
-# Documentation for `DataCollections`
+# Documentation for `DataCollectionsQuery`
 
-### DataCollections is the class `earthaccess` uses to query CMR at the **dataset** level.
+### DataCollectionsQuery is the class `earthaccess` uses to query CMR at the **dataset** level.
 
-::: earthaccess.search.DataCollections
+::: earthaccess.search.DataCollectionsQuery
     options:
         show_source: false
         inherited_members: true

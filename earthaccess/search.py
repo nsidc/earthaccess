@@ -24,11 +24,11 @@ type FloatLike = str | SupportsFloat
 type PointLike = tuple[FloatLike, FloatLike]
 
 
-class DataCollections(CollectionQuery):
+class DataCollectionsQuery(CollectionQuery):
     """Query CMR for collection metadata.
 
     ???+ Info
-        The DataCollection class queries against
+        The DataCollectionsQuery class queries against
         https://cmr.earthdata.nasa.gov/search/collections.umm_json,
         the response has to be in umm_json to use the result classes.
     """
@@ -37,7 +37,7 @@ class DataCollections(CollectionQuery):
     _format = "umm_json"
 
     def __init__(self, auth: Auth | None = None, *args: Any, **kwargs: Any) -> None:
-        """Builds an instance of DataCollections to query the CMR.
+        """Builds an instance of DataCollectionsQuery to query the CMR.
 
         Parameters:
             auth: An authenticated `Auth` instance. This is an optional parameter
@@ -223,7 +223,7 @@ class DataCollections(CollectionQuery):
 
         ???+ Example
             ```python
-            query = DataCollections.parameters(
+            query = DataCollectionsQuery.parameters(
                 short_name="AST_L1T",
                 temporal=("2015-01","2015-02"),
                 point=(42.5, -101.25)
@@ -418,7 +418,7 @@ class DataCollections(CollectionQuery):
         return super().temporal(date_from, date_to, exclude_boundary)
 
 
-class DataGranules(GranuleQuery):
+class DataGranulesQuery(GranuleQuery):
     """A Granule oriented client for NASA CMR.
 
     API: https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html
@@ -481,7 +481,7 @@ class DataGranules(GranuleQuery):
             limit: The number of results to return.
 
         Returns:
-            Query results as a (possibly empty) list of `DataGranules` instances.
+            Query results as a (possibly empty) list of `DataGranule` instances.
 
         Raises:
             RuntimeError: The CMR query failed.
@@ -499,7 +499,7 @@ class DataGranules(GranuleQuery):
 
         ???+ Example
             ```python
-            query = DataCollections.parameters(
+            query = DataCollectionsQuery.parameters(
                 short_name="AST_L1T",
                 temporal=("2015-01","2015-02"),
                 point=(42.5, -101.25)
@@ -945,7 +945,7 @@ class DataGranules(GranuleQuery):
             RuntimeError: The CMR query to get the collection for the DOI fails.
         """
         # TODO consider deferring this query until the search is executed
-        collection = DataCollections().doi(doi).get()
+        collection = DataCollectionsQuery().doi(doi).get()
 
         # TODO consider raising an exception when there are multiple collections, since
         # we can't know which one the user wants, and choosing one is arbitrary.

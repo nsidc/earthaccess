@@ -2,7 +2,7 @@
 import datetime as dt
 
 import pytest
-from earthaccess.search import DataGranules
+from earthaccess.search import DataGranulesQuery
 
 valid_single_dates = [
     ("2001-12-12", "2001-12-21", "2001-12-12T00:00:00Z,2001-12-21T23:59:59Z"),
@@ -41,13 +41,13 @@ bbox_queries = [
 
 @pytest.mark.parametrize("start,end,expected", valid_single_dates)
 def test_query_can_parse_single_dates(start, end, expected):
-    granules = DataGranules().short_name("MODIS").temporal(start, end)
+    granules = DataGranulesQuery().short_name("MODIS").temporal(start, end)
     assert granules.params["temporal"][0] == expected
 
 
 @pytest.mark.parametrize("start,end,expected", invalid_single_dates)
 def test_query_can_handle_invalid_dates(start, end, expected):  # noqa: ARG001
-    granules = DataGranules().short_name("MODIS")
+    granules = DataGranulesQuery().short_name("MODIS")
     assert "temporal" not in granules.params
     with pytest.raises(ValueError):
         granules.temporal(start, end)
@@ -55,5 +55,5 @@ def test_query_can_handle_invalid_dates(start, end, expected):  # noqa: ARG001
 
 @pytest.mark.parametrize("bbox,expected", bbox_queries)
 def test_query_handles_bbox(bbox, expected):
-    granules = DataGranules().short_name("MODIS").bounding_box(*bbox)
+    granules = DataGranulesQuery().short_name("MODIS").bounding_box(*bbox)
     assert ("bounding_box" in granules.params) == expected

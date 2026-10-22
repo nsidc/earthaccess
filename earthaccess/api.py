@@ -13,11 +13,16 @@ from typing_extensions import (
 
 import earthaccess
 from earthaccess.exceptions import LoginStrategyUnavailable, ServiceOutage
-from earthaccess.services import DataServices
+from earthaccess.services import DataServicesQuery
 
 from .auth import Auth
 from .results import DataCollection, DataGranule
-from .search import CollectionQuery, DataCollections, DataGranules, GranuleQuery
+from .search import (
+    CollectionQuery,
+    DataCollectionsQuery,
+    DataGranulesQuery,
+    GranuleQuery,
+)
 from .store import Store
 from .system import PROD, System
 from .utils import _validation as validate
@@ -176,9 +181,9 @@ def search_datasets(count: int = -1, **kwargs: Any) -> list[DataCollection]:
         )
         return []
     if earthaccess.__auth__.authenticated:
-        query = DataCollections(auth=earthaccess.__auth__).parameters(**kwargs)
+        query = DataCollectionsQuery(auth=earthaccess.__auth__).parameters(**kwargs)
     else:
-        query = DataCollections().parameters(**kwargs)
+        query = DataCollectionsQuery().parameters(**kwargs)
     datasets_found = query.hits()
     logger.info("Datasets found: %s", datasets_found)
     if count > 0:
@@ -270,9 +275,9 @@ def search_data(count: int = -1, **kwargs: Any) -> list[DataGranule]:
         ```
     """
     if earthaccess.__auth__.authenticated:
-        query = DataGranules(earthaccess.__auth__).parameters(**kwargs)
+        query = DataGranulesQuery(earthaccess.__auth__).parameters(**kwargs)
     else:
-        query = DataGranules().parameters(**kwargs)
+        query = DataGranulesQuery().parameters(**kwargs)
     granules_found = query.hits()
     logger.info("Granules found: %s", granules_found)
     if count > 0:
@@ -301,7 +306,7 @@ def search_services(count: int = -1, **kwargs: Any) -> list[Any]:
         services = search_services(provider="POCLOUD", keyword="COG")
         ```
     """
-    query = DataServices(auth=earthaccess.__auth__).parameters(**kwargs)
+    query = DataServicesQuery(auth=earthaccess.__auth__).parameters(**kwargs)
     hits = query.hits()
     logger.info("Services found: %s", hits)
 
@@ -515,9 +520,9 @@ def collection_query() -> CollectionQuery:
         a query builder instance for data collections.
     """
     if earthaccess.__auth__.authenticated:
-        query_builder = DataCollections(earthaccess.__auth__)
+        query_builder = DataCollectionsQuery(earthaccess.__auth__)
     else:
-        query_builder = DataCollections()
+        query_builder = DataCollectionsQuery()
     return query_builder
 
 
@@ -528,9 +533,9 @@ def granule_query() -> GranuleQuery:
         a query builder instance for data granules.
     """
     if earthaccess.__auth__.authenticated:
-        query_builder = DataGranules(earthaccess.__auth__)
+        query_builder = DataGranulesQuery(earthaccess.__auth__)
     else:
-        query_builder = DataGranules()
+        query_builder = DataGranulesQuery()
     return query_builder
 
 

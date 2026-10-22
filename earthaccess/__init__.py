@@ -20,8 +20,8 @@ from .api import (
     status,
 )
 from .auth import Auth
-from .search import DataCollection, DataCollections, DataGranule, DataGranules
-from .services import DataServices
+from .search import DataCollection, DataCollectionsQuery, DataGranule, DataGranulesQuery
+from .services import DataServicesQuery
 from .store import Store
 from .system import PROD, UAT
 from .virtual import virtualize
@@ -36,10 +36,10 @@ __all__ = [
     "Auth",
     # search.py
     "DataCollection",
-    "DataCollections",
+    "DataCollectionsQuery",
     "DataGranule",
-    "DataGranules",
-    "DataServices",
+    "DataGranulesQuery",
+    "DataServicesQuery",
     # store.py
     "Store",
     # api.py

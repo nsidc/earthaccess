@@ -7,6 +7,14 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Breaking changes
+
+- Renamed the query classes `DataCollections`, `DataGranules`, and
+  `DataServices` to `DataCollectionsQuery`, `DataGranulesQuery`, and
+  `DataServicesQuery`.
+  ([#1363](https://github.com/earthaccess-dev/earthaccess/issues/1363))
+  ([@Sherwin-14](https://github.com/Sherwin-14))
+
 ## [v0.19.0] - 2026-09-03
 
 ### Breaking changes

@@ -2,7 +2,7 @@
 import datetime as dt
 
 import pytest
-from earthaccess.search import DataCollections
+from earthaccess.search import DataCollectionsQuery
 
 valid_single_dates = [
     ("2001-12-12", "2001-12-21", "2001-12-12T00:00:00Z,2001-12-21T23:59:59Z"),
@@ -33,50 +33,50 @@ invalid_single_dates = [
 
 
 def test_no_default_params():
-    query = DataCollections()
+    query = DataCollectionsQuery()
     assert len(query.params) == 0
 
 
 def test_query_can_find_cloud_provider():
-    query = DataCollections().daac("PODAAC").cloud_hosted(True)
+    query = DataCollectionsQuery().daac("PODAAC").cloud_hosted(True)
     assert query.params["provider"] == "POCLOUD"
-    query = DataCollections().cloud_hosted(True).daac("PODAAC")
+    query = DataCollectionsQuery().cloud_hosted(True).daac("PODAAC")
     assert query.params["provider"] == "POCLOUD"
     # SEDAC does not have a cloud provider, so it should default to the on prem provider
-    query = DataCollections().cloud_hosted(True).daac("SEDAC")
+    query = DataCollectionsQuery().cloud_hosted(True).daac("SEDAC")
     assert query.params["provider"] == "ESDIS"
-    query = DataCollections().daac("ASDC").cloud_hosted(True)
+    query = DataCollectionsQuery().daac("ASDC").cloud_hosted(True)
     assert query.params["provider"] == "LARC_CLOUD"
-    query = DataCollections().cloud_hosted(True).daac("ASDC")
+    query = DataCollectionsQuery().cloud_hosted(True).daac("ASDC")
     assert query.params["provider"] == "LARC_CLOUD"
 
 
 def test_querybuilder_can_handle_doi():
     doi = "10.5067/AQR50-3Q7CS"
-    query = DataCollections().doi(doi)
+    query = DataCollectionsQuery().doi(doi)
     assert query.params["doi"] == doi
-    query = DataCollections().cloud_hosted(True).daac("PODAAC").doi(doi)
+    query = DataCollectionsQuery().cloud_hosted(True).daac("PODAAC").doi(doi)
     assert query.params["doi"] == doi
 
 
 def test_querybuilder_can_handle_has_granules():
-    query = DataCollections().has_granules(False)
+    query = DataCollectionsQuery().has_granules(False)
     assert not query.params["has_granules"]
-    query = DataCollections().has_granules(True)
+    query = DataCollectionsQuery().has_granules(True)
     assert query.params["has_granules"]
-    query = DataCollections().has_granules(None)
+    query = DataCollectionsQuery().has_granules(None)
     assert "has_granules" not in query.params
 
 
 @pytest.mark.parametrize("start,end,expected", valid_single_dates)
 def test_query_can_parse_single_dates(start, end, expected):
-    query = DataCollections().temporal(start, end)
+    query = DataCollectionsQuery().temporal(start, end)
     assert query.params["temporal"][0] == expected
 
 
 @pytest.mark.parametrize("start,end,expected", invalid_single_dates)
 def test_query_can_handle_invalid_dates(start, end, expected):  # noqa: ARG001
-    query = DataCollections()
+    query = DataCollectionsQuery()
     assert "temporal" not in query.params
     with pytest.raises(ValueError):
         query.temporal(start, end)
